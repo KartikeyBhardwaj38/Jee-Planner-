@@ -1,495 +1,1106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>JEE Preparation System</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kartikey Bhardwaj — JEE System</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.development.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      background: #0a0a0f;
-      color: #e2e8f0;
-      font-family: 'Courier New', monospace;
-      min-height: 100vh;
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{background:#0a0a0f;color:#e2e8f0;font-family:'Courier New',monospace;min-height:100vh;}
+    ::-webkit-scrollbar{width:4px;}
+    ::-webkit-scrollbar-track{background:#0a0a0f;}
+    ::-webkit-scrollbar-thumb{background:#1e293b;}
+    .gbg{position:fixed;inset:0;z-index:0;pointer-events:none;
+      background-image:linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);
+      background-size:40px 40px;}
+    .tbar{position:fixed;top:0;left:0;right:0;height:3px;z-index:100;}
+    .wrap{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:36px 16px 80px;}
+    button{font-family:'Courier New',monospace;cursor:pointer;}
+    input,textarea{font-family:'Courier New',monospace;}
+    @media(max-width:640px){
+      .twocol{grid-template-columns:1fr !important;}
+      .sgrid{grid-template-columns:1fr 1fr !important;}
+      .tgrid{grid-template-columns:1fr !important;}
     }
-    ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: #0a0a0f; }
-    ::-webkit-scrollbar-thumb { background: #1e293b; }
-    .grid-bg {
-      position: fixed; inset: 0; z-index: 0; pointer-events: none;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-      background-size: 40px 40px;
-    }
-    .top-bar {
-      position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 100;
-    }
-    .container {
-      position: relative; z-index: 1;
-      max-width: 960px; margin: 0 auto;
-      padding: 32px 16px 60px;
-    }
-    button { font-family: 'Courier New', monospace; cursor: pointer; }
-    @media (max-width: 640px) {
-      .two-col { grid-template-columns: 1fr !important; }
-      .stats-grid { grid-template-columns: 1fr 1fr !important; }
-    }
+    @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+    .shake{animation:shake 0.35s ease;}
+    .fadeup{animation:fadeUp 0.35s ease;}
   </style>
 </head>
 <body>
-  <div class="grid-bg"></div>
-  <div id="root"></div>
+<div class="gbg"></div>
+<div class="tbar" id="topBar"></div>
+<div id="root"></div>
 
-  <script type="text/babel">
-    const { useState, useEffect } = React;
+<script type="text/babel">
 
-    const PHASES = [
-      {
-        id: 1,
-        name: "Phase 1 — Foundation Grind",
-        label: "JEE MAINS PREP",
-        startDate: "2025-03-02",
-        endDate: "2025-03-11",
-        days: 10,
-        color: "#f59e0b",
-        accent: "#fcd34d",
-        schedule: [
-          { subject: "Physics",   hours: 6,   detail: "Full concept + problem solving",        icon: "⚡", color: "#60a5fa" },
-          { subject: "Maths",     hours: 3.5, detail: "Core topics + practice",                 icon: "∑",  color: "#a78bfa" },
-          { subject: "Chemistry", hours: 4,   detail: "3.5hr study + 0.5hr NCERT reading",      icon: "⚗", color: "#34d399" },
-          { subject: "Revision",  hours: 2,   detail: "Daily consolidation",                    icon: "↺", color: "#f87171" },
-        ],
-        total: 15.5,
-        tips: [
-          "High volume phase — prioritize consistency",
-          "6hr Physics = deep concept building",
-          "NCERT Chemistry 0.5hr daily — don't skip",
-        ],
-      },
-      {
-        id: 2,
-        name: "Phase 2 — Mains Sharpening",
-        label: "JEE MAINS PREP",
-        startDate: "2025-03-12",
-        endDate: "2025-04-02",
-        days: 22,
-        color: "#3b82f6",
-        accent: "#93c5fd",
-        schedule: [
-          {
-            subject: "Physics", hours: 4, detail: "2hr PG Illustration + 2hr Mains revision", icon: "⚡", color: "#60a5fa",
-            breakdown: ["2hr — PG Illustration (problem solving)", "2hr — Mains revision"],
-          },
-          {
-            subject: "Maths", hours: 5, detail: "2hr Mains lecture + 1hr sheet/DPP + 2hr advance", icon: "∑", color: "#a78bfa",
-            breakdown: ["2hr — Mains lecture", "1hr — Must-do sheet + DPP", "2hr — Advance created"],
-          },
-          {
-            subject: "Chemistry", hours: 5, detail: "Same as Maths + NCERT questions", icon: "⚗", color: "#34d399",
-            breakdown: ["2hr — Mains lecture", "1hr — Must-do sheet + DPP", "2hr — Advance created", "+ NCERT questions"],
-          },
-          {
-            subject: "Revision", hours: 2, detail: "1.5hr active revision + 0.5hr NCERT reading", icon: "↺", color: "#f87171",
-            breakdown: ["1.5hr — Active revision", "0.5hr — NCERT reading"],
-          },
-        ],
-        total: 16,
-        tips: [
-          "Shift to Mains-focused strategy",
-          "Advance prep begins — future-proof your study",
-          "NCERT reading is your scoring edge",
-        ],
-      },
-      {
-        id: 3,
-        name: "Phase 3 — Advanced Assault",
-        label: "JEE ADVANCED PREP",
-        startDate: null,
-        endDate: null,
-        days: 40,
-        color: "#ec4899",
-        accent: "#f9a8d4",
-        schedule: [],
-        total: null,
-        tips: [
-          "Schedule set after JEE Mains",
-          "40 days of focused advanced preparation",
-          "Harder problems, deeper understanding",
-        ],
-        locked: true,
-      },
-    ];
+/* ── globals ── */
+const {useState, useEffect, useRef} = React;
 
-    const TASKS = {
-      1: [
-        "Physics — 6 hours complete",
-        "Maths — 3.5 hours complete",
-        "Chemistry — 3.5 hours complete",
-        "Chemistry NCERT — 0.5 hours",
-        "Revision — 2 hours complete",
-        "Notes updated",
-        "DPP attempted",
-      ],
-      2: [
-        "Physics PG Illustration — 2hr",
-        "Physics Mains Revision — 2hr",
-        "Maths Mains Lecture — 2hr",
-        "Maths Sheet + DPP — 1hr",
-        "Maths Advance — 2hr",
-        "Chemistry Mains Lecture — 2hr",
-        "Chemistry Sheet + DPP — 1hr",
-        "Chemistry Advance + NCERT — 2hr",
-        "Active Revision — 1.5hr",
-        "NCERT Reading — 0.5hr",
-      ],
-    };
+const PASSWORD = "Devasena";
 
-    function loadStorage(key, fallback) {
-      try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }
-      catch { return fallback; }
+const TESTS = [
+  {id:"t1", date:"2026-03-05", label:"Mastery 2.7",     type:"Offline", tags:"12th"},
+  {id:"t2", date:"2026-03-08", label:"Comeback Test",   type:"Online",  tags:"11/12 Part"},
+  {id:"t3", date:"2026-03-10", label:"Mastery 2.8",     type:"Offline", tags:"Full"},
+  {id:"t4", date:"2026-03-12", label:"Mastery 2.9",     type:"Offline", tags:"Full"},
+  {id:"t5", date:"2026-03-15", label:"RTS Real Test",   type:"Online",  tags:""},
+  {id:"t6", date:"2026-03-19", label:"PYQ 2024 Test",   type:"Offline", tags:""},
+  {id:"t7", date:"2026-03-22", label:"AITS-17",         type:"Offline", tags:""},
+  {id:"t8", date:"2026-03-24", label:"PYQ 2025 Test",   type:"Offline", tags:""},
+  {id:"t9", date:"2026-03-26", label:"Mastery 2.11",    type:"Offline", tags:""},
+  {id:"t10",date:"2026-03-28", label:"Mock Test 1",     type:"Online",  tags:""},
+  {id:"t11",date:"2026-03-29", label:"AITS-18",         type:"Offline", tags:""},
+  {id:"t12",date:"2026-03-30", label:"Mock Test 2",     type:"Online",  tags:""},
+  {id:"t13",date:"2026-03-31", label:"Final Mock",      type:"Online",  tags:""},
+];
+
+const PHASES = [
+  {
+    id:1, name:"Phase 1 — Foundation Grind",
+    startDate:"2026-03-02", endDate:"2026-03-11", days:10,
+    color:"#f59e0b", accent:"#fcd34d",
+    schedule:[
+      {subject:"Physics",  hours:6,  icon:"⚡",color:"#60a5fa",detail:"Full concept + problem solving"},
+      {subject:"Maths",    hours:3.5,icon:"∑", color:"#a78bfa",detail:"Core topics + practice"},
+      {subject:"Chemistry",hours:4,  icon:"⚗",color:"#34d399",detail:"3.5hr study + 0.5hr NCERT reading"},
+      {subject:"Revision", hours:2,  icon:"↺",color:"#f87171",detail:"Daily consolidation"},
+    ],
+    total:15.5,
+    tips:["High volume phase — prioritize consistency","6hr Physics = deep concept building","NCERT Chemistry 0.5hr daily — don't skip"],
+  },
+  {
+    id:2, name:"Phase 2 — Mains Sharpening",
+    startDate:"2026-03-12", endDate:"2026-04-02", days:22,
+    color:"#3b82f6", accent:"#93c5fd",
+    schedule:[
+      {subject:"Physics",  hours:4,icon:"⚡",color:"#60a5fa",detail:"2hr PG Illustration + 2hr Mains revision",   breakdown:["2hr — PG Illustration","2hr — Mains revision"]},
+      {subject:"Maths",    hours:5,icon:"∑", color:"#a78bfa",detail:"2hr Mains lecture + 1hr sheet/DPP + 2hr adv",breakdown:["2hr — Mains lecture","1hr — Must-do sheet + DPP","2hr — Advance created"]},
+      {subject:"Chemistry",hours:5,icon:"⚗",color:"#34d399",detail:"Same as Maths + NCERT questions",            breakdown:["2hr — Mains lecture","1hr — Must-do sheet + DPP","2hr — Advance created","+ NCERT questions"]},
+      {subject:"Revision", hours:2,icon:"↺",color:"#f87171",detail:"1.5hr active revision + 0.5hr NCERT reading",breakdown:["1.5hr — Active revision","0.5hr — NCERT reading"]},
+    ],
+    total:16,
+    tips:["Shift to Mains-focused strategy","Advance prep begins — future-proof your study","NCERT reading is your scoring edge"],
+  },
+  {
+    id:3, name:"Phase 3 — Advanced Assault",
+    startDate:null, endDate:null, days:40,
+    color:"#ec4899", accent:"#f9a8d4",
+    schedule:[], total:null, locked:true,
+    tips:["Schedule set after JEE Mains","40 days of focused advanced preparation","Harder problems, deeper understanding"],
+  },
+];
+
+const TASKS_P1 = ["Physics — 6 hours complete","Maths — 3.5 hours complete","Chemistry — 3.5 hours complete","Chemistry NCERT — 0.5 hours","Revision — 2 hours complete","Notes updated","DPP attempted"];
+const TASKS_P2 = ["Physics PG Illustration — 2hr","Physics Mains Revision — 2hr","Maths Mains Lecture — 2hr","Maths Sheet + DPP — 1hr","Maths Advance — 2hr","Chemistry Mains Lecture — 2hr","Chemistry Sheet + DPP — 1hr","Chemistry Advance + NCERT — 2hr","Active Revision — 1.5hr","NCERT Reading — 0.5hr"];
+const TASKS_TEST = ["Physics — 4 hours complete","Maths — 4 hours complete","Chemistry — 4 hours complete","Revision — 1 hour complete","Test attempted seriously","Mistakes noted down","Weak areas identified"];
+const SCHED_TEST = [{subject:"Physics",hours:4,color:"#60a5fa"},{subject:"Maths",hours:4,color:"#a78bfa"},{subject:"Chemistry",hours:4,color:"#34d399"},{subject:"Revision",hours:1,color:"#f87171"}];
+
+const GUIDE = [
+  {icon:"🔐",title:"Password Protected",   desc:"Secured with 'Devasena'. Only you can access this planner."},
+  {icon:"📅",title:"Study Planner",         desc:"Phase 1 (Mar 2-11): Foundation 15.5hrs/day. Phase 2 (Mar 12 - Apr 2): Mains sharpening 16hrs/day. Click any day box to open it."},
+  {icon:"✅",title:"Daily Checklist",        desc:"Every day shows tasks. Tick each one off. Click 'Mark Day Complete' when everything is done for the day."},
+  {icon:"T", title:"Test Days (13 hrs)",     desc:"Days marked T are test days — special 13hr schedule: 4hr Physics + 4hr Maths + 4hr Chemistry + 1hr Revision."},
+  {icon:"📝",title:"Topic Logger",           desc:"In TOPICS tab, write exactly what you studied each day per subject. Builds a full log of your coverage."},
+  {icon:"📊",title:"Progress Score",         desc:"PROGRESS tab shows your score from 0 to 100. Rises as you complete days AND enter test scores. Aim for ELITE (80+)."},
+  {icon:"🎯",title:"Test Tracker",           desc:"After each test, go to TESTS tab, click the test, enter subject-wise scores. See chart + rating instantly."},
+  {icon:"🔒",title:"Phase 3 Locked",         desc:"JEE Advanced unlocks after Mains. 40 days of intense advanced prep waiting for you."},
+];
+
+/* ── utils ── */
+function ld(k,fb){try{const v=localStorage.getItem(k);return v?JSON.parse(v):fb;}catch{return fb;}}
+function sv(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch{}}
+function dkey(d){return d.toISOString().split("T")[0];}
+function todayStr(){return dkey(new Date());}
+
+function todayPhase(){
+  const now = new Date();
+  for(const p of PHASES){
+    if(p.startDate && p.endDate && now >= new Date(p.startDate) && now <= new Date(p.endDate)) return p.id;
+  }
+  if(now < new Date(PHASES[0].startDate)) return 1;
+  return 2;
+}
+
+function scoreRank(tot){
+  if(tot===null||tot===undefined) return null;
+  if(tot>=250) return {label:"EXCELLENT",color:"#34d399"};
+  if(tot>=200) return {label:"GOOD",     color:"#60a5fa"};
+  if(tot>=150) return {label:"AVERAGE",  color:"#f59e0b"};
+  return          {label:"NEEDS WORK",   color:"#f87171"};
+}
+
+/* ── small components ── */
+function Card(props){
+  return React.createElement("div",{style:{background:"#0d1117",border:"1px solid #1e293b",padding:"14px",...(props.style||{})}},props.children);
+}
+function Lbl(props){
+  return React.createElement("div",{style:{fontSize:"9px",letterSpacing:"3px",color:"#475569",marginBottom:"10px",fontWeight:700,...(props.style||{})}},props.children);
+}
+
+/* ── ScoreBox ── */
+function ScoreBox({value, onChange, color}){
+  return (
+    <input
+      type="number" min="0" max="300"
+      placeholder="—"
+      value={value !== null && value !== undefined ? value : ""}
+      onChange={e => onChange(e.target.value === "" ? null : Number(e.target.value))}
+      style={{
+        width:"58px", background:"transparent",
+        border:`1px solid ${value ? color : "#1e293b"}`,
+        color: value ? color : "#475569",
+        fontSize:"13px", fontWeight:700,
+        padding:"4px 6px", textAlign:"center", outline:"none",
+      }}
+    />
+  );
+}
+
+/* ══════════════════════════════════════════════════════════
+   PASSWORD SCREEN
+══════════════════════════════════════════════════════════ */
+function PasswordScreen({onUnlock}){
+  const [val,   setVal]      = useState("");
+  const [err,   setErr]      = useState(false);
+  const [shake, setShake]    = useState(false);
+  const [tries, setTries]    = useState(0);
+  const ref = useRef(null);
+
+  useEffect(()=>{ if(ref.current) ref.current.focus(); },[]);
+
+  function attempt(){
+    if(val === PASSWORD){
+      onUnlock();
+    } else {
+      setErr(true); setShake(true); setTries(t=>t+1); setVal("");
+      setTimeout(()=>setShake(false), 400);
     }
-    function saveStorage(key, val) {
-      try { localStorage.setItem(key, JSON.stringify(val)); } catch {}
-    }
+  }
 
-    function todayPhaseId() {
-      const now = new Date();
-      for (const p of PHASES) {
-        if (p.startDate && p.endDate) {
-          if (now >= new Date(p.startDate) && now <= new Date(p.endDate)) return p.id;
+  return (
+    <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",padding:"20px"}}>
+      <div className="fadeup" style={{width:"100%",maxWidth:"380px"}}>
+
+        <div style={{textAlign:"center",marginBottom:"40px"}}>
+          <div style={{fontSize:"10px",letterSpacing:"5px",color:"#334155",marginBottom:"10px"}}>◈ PRIVATE ACCESS</div>
+          <div style={{fontSize:"clamp(24px,6vw,36px)",fontWeight:900,letterSpacing:"-2px",lineHeight:1}}>
+            KARTIKEY
+          </div>
+          <div style={{fontSize:"clamp(24px,6vw,36px)",fontWeight:900,letterSpacing:"-2px",color:"#f59e0b",lineHeight:1}}>
+            BHARDWAJ
+          </div>
+          <div style={{fontSize:"9px",color:"#1e293b",marginTop:"10px",letterSpacing:"4px"}}>JEE PREPARATION SYSTEM</div>
+        </div>
+
+        <div className={shake?"shake":""}>
+          <div style={{fontSize:"9px",letterSpacing:"3px",color:"#475569",marginBottom:"8px"}}>ACCESS CODE</div>
+          <input
+            ref={ref}
+            type="password"
+            value={val}
+            onChange={e=>{ setVal(e.target.value); setErr(false); }}
+            onKeyDown={e=>{ if(e.key==="Enter") attempt(); }}
+            placeholder="••••••••"
+            style={{
+              width:"100%", padding:"14px 16px",
+              background:"#0d1117",
+              border:`1px solid ${err?"#ef4444":"#1e293b"}`,
+              color:"#e2e8f0", fontSize:"18px",
+              letterSpacing:"6px", textAlign:"center", outline:"none",
+              transition:"border-color 0.2s",
+            }}
+          />
+        </div>
+
+        {err && (
+          <div className="fadeup" style={{
+            margin:"12px 0", padding:"10px 14px",
+            background:"#ef444412", border:"1px solid #ef444433",
+            fontSize:"11px", color:"#f87171", textAlign:"center", letterSpacing:"1px",
+          }}>
+            ✕ WRONG CODE — ACCESS DENIED
+            {tries >= 3 && (
+              <div style={{marginTop:"5px",fontSize:"10px",color:"#7f1d1d"}}>
+                Hint: the name of your warrior 🗡️
+              </div>
+            )}
+          </div>
+        )}
+
+        <button
+          onClick={attempt}
+          onMouseOver={e=>{ e.currentTarget.style.background="#f59e0b"; e.currentTarget.style.color="#000"; }}
+          onMouseOut={e=>{  e.currentTarget.style.background="transparent"; e.currentTarget.style.color="#f59e0b"; }}
+          style={{
+            width:"100%", marginTop:"4px", padding:"13px",
+            background:"transparent", border:"1px solid #f59e0b",
+            color:"#f59e0b", fontSize:"12px", letterSpacing:"3px",
+            fontWeight:700, transition:"all 0.2s",
+          }}
+        >
+          ◈ UNLOCK PLANNER
+        </button>
+
+        <div style={{textAlign:"center",marginTop:"20px",fontSize:"9px",color:"#1a1a2e",letterSpacing:"2px"}}>
+          PRIVATE · DO NOT SHARE
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════
+   GUIDE TAB
+══════════════════════════════════════════════════════════ */
+function GuideTab(){
+  const [open, setOpen] = useState(null);
+  return (
+    <div className="fadeup">
+      <Card style={{marginBottom:"18px",borderColor:"#f59e0b44",background:"#f59e0b08"}}>
+        <div style={{fontSize:"11px",color:"#f59e0b",fontWeight:700,letterSpacing:"2px",marginBottom:"6px"}}>👋 WELCOME, KARTIKEY BHARDWAJ</div>
+        <div style={{fontSize:"12px",color:"#94a3b8",lineHeight:1.7}}>
+          This is your personal JEE Preparation System. Study schedule, test scores, topic log, and full progress tracking — all in one place. Read below to understand each section.
+        </div>
+      </Card>
+
+      <Lbl>HOW TO USE THIS SYSTEM</Lbl>
+      {GUIDE.map((s,i) => (
+        <div key={i} onClick={()=>setOpen(open===i?null:i)}
+          style={{background:"#0d1117",border:`1px solid ${open===i?"#f59e0b":"#1e293b"}`,
+            padding:"13px",marginBottom:"8px",cursor:"pointer",transition:"border-color 0.2s"}}>
+          <div style={{display:"flex",alignItems:"center",gap:"12px"}}>
+            <div style={{width:"30px",height:"30px",minWidth:"30px",background:"#0a0a0f",
+              border:"1px solid #1e293b",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"14px"}}>
+              {s.icon}
+            </div>
+            <div style={{flex:1}}>
+              <div style={{fontSize:"12px",fontWeight:700,color:open===i?"#f59e0b":"#e2e8f0"}}>{s.title}</div>
+              {open===i && <div style={{fontSize:"11px",color:"#94a3b8",marginTop:"6px",lineHeight:1.6}}>{s.desc}</div>}
+            </div>
+            <div style={{color:"#334155",fontSize:"11px"}}>{open===i?"▲":"▼"}</div>
+          </div>
+        </div>
+      ))}
+
+      <Card style={{marginTop:"16px"}}>
+        <Lbl>QUICK REFERENCE</Lbl>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"8px"}}>
+          {[
+            {l:"Phase 1 Dates",  v:"Mar 2 – Mar 11",  c:"#f59e0b"},
+            {l:"Phase 2 Dates",  v:"Mar 12 – Apr 2",  c:"#3b82f6"},
+            {l:"Total Tests",    v:"13 tests",         c:"#34d399"},
+            {l:"Normal Day",     v:"15.5 – 16 hrs",   c:"#a78bfa"},
+            {l:"Test Day",       v:"13 hrs (4+4+4+1)", c:"#f87171"},
+            {l:"Phase 3",        v:"40 days Advanced", c:"#ec4899"},
+          ].map(r => (
+            <div key={r.l} style={{padding:"8px 10px",background:"#0a0a0f",border:"1px solid #1e293b"}}>
+              <div style={{fontSize:"9px",color:"#475569",letterSpacing:"2px",marginBottom:"2px"}}>{r.l.toUpperCase()}</div>
+              <div style={{fontSize:"12px",fontWeight:700,color:r.c}}>{r.v}</div>
+            </div>
+          ))}
+        </div>
+      </Card>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════
+   TOPIC LOG TAB
+══════════════════════════════════════════════════════════ */
+function TopicTab(){
+  const [topics, setTopics] = useState(()=>ld("jee_topics",{}));
+  const [selDate, setSelDate] = useState(todayStr());
+  const [draft, setDraft] = useState({Physics:"",Maths:"",Chemistry:""});
+  const [saved, setSaved] = useState(false);
+
+  const SUBJ = [{name:"Physics",color:"#60a5fa",icon:"⚡"},{name:"Maths",color:"#a78bfa",icon:"∑"},{name:"Chemistry",color:"#34d399",icon:"⚗"}];
+
+  useEffect(()=>{
+    const ex = topics[selDate] || {};
+    setDraft({Physics:ex.Physics||"", Maths:ex.Maths||"", Chemistry:ex.Chemistry||""});
+    setSaved(false);
+  },[selDate]);
+
+  function saveDraft(){
+    if(!draft.Physics && !draft.Maths && !draft.Chemistry) return;
+    const n = {...topics,[selDate]:draft};
+    setTopics(n); sv("jee_topics",n); setSaved(true);
+    setTimeout(()=>setSaved(false),2000);
+  }
+
+  const entries = Object.keys(topics).sort((a,b)=>b.localeCompare(a));
+
+  return (
+    <div className="fadeup">
+      <div className="twocol" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"20px"}}>
+
+        <div>
+          <Lbl>LOG TODAY'S TOPICS</Lbl>
+          <Card style={{marginBottom:"12px"}}>
+            <div style={{fontSize:"10px",color:"#f59e0b",fontWeight:700,letterSpacing:"2px",marginBottom:"10px"}}>
+              📅 {new Date(selDate+"T00:00:00").toLocaleDateString("en-IN",{weekday:"long",day:"numeric",month:"long"})}
+            </div>
+            <input type="date" value={selDate} onChange={e=>setSelDate(e.target.value)}
+              style={{width:"100%",background:"#0a0a0f",border:"1px solid #1e293b",color:"#64748b",padding:"7px 10px",fontSize:"11px",outline:"none"}}/>
+          </Card>
+
+          {SUBJ.map(s => (
+            <div key={s.name} style={{marginBottom:"12px"}}>
+              <div style={{fontSize:"10px",color:s.color,fontWeight:700,letterSpacing:"2px",marginBottom:"5px"}}>
+                {s.icon} {s.name.toUpperCase()}
+              </div>
+              <textarea
+                value={draft[s.name]}
+                onChange={e=>setDraft({...draft,[s.name]:e.target.value})}
+                placeholder={`e.g. Kinematics — equations of motion, projectile...`}
+                rows={3}
+                style={{
+                  width:"100%",background:"#0d1117",resize:"vertical",
+                  border:`1px solid ${draft[s.name]?s.color:"#1e293b"}`,
+                  color:"#e2e8f0",padding:"10px",fontSize:"11px",
+                  outline:"none",lineHeight:1.5,transition:"border-color 0.2s",
+                }}
+              />
+            </div>
+          ))}
+
+          <button onClick={saveDraft}
+            onMouseOver={e=>e.currentTarget.style.background="#f59e0b22"}
+            onMouseOut={e=>e.currentTarget.style.background="transparent"}
+            style={{
+              width:"100%",padding:"10px",background:"transparent",
+              border:`1px solid ${saved?"#34d399":"#f59e0b"}`,
+              color:saved?"#34d399":"#f59e0b",
+              fontSize:"11px",letterSpacing:"2px",fontWeight:700,transition:"all 0.2s",
+            }}>
+            {saved ? "✓ SAVED!" : "◈ SAVE TOPICS"}
+          </button>
+        </div>
+
+        <div>
+          <Lbl>TOPIC HISTORY</Lbl>
+          {entries.length === 0 ? (
+            <Card><div style={{textAlign:"center",color:"#334155",fontSize:"12px",padding:"24px 0"}}>No topics logged yet.<br/>Start logging on the left!</div></Card>
+          ) : (
+            entries.slice(0,15).map(d => {
+              const e = topics[d];
+              if(!e || (!e.Physics && !e.Maths && !e.Chemistry)) return null;
+              return (
+                <Card key={d} style={{marginBottom:"10px"}}>
+                  <div style={{fontSize:"10px",color:"#f59e0b",fontWeight:700,letterSpacing:"2px",marginBottom:"8px"}}>
+                    {new Date(d+"T00:00:00").toLocaleDateString("en-IN",{weekday:"short",day:"numeric",month:"short"})}
+                  </div>
+                  {SUBJ.map(s => e[s.name] && (
+                    <div key={s.name} style={{marginBottom:"6px"}}>
+                      <div style={{fontSize:"9px",color:s.color,letterSpacing:"2px",marginBottom:"2px"}}>{s.icon} {s.name.toUpperCase()}</div>
+                      <div style={{fontSize:"11px",color:"#94a3b8",lineHeight:1.5}}>{e[s.name]}</div>
+                    </div>
+                  ))}
+                </Card>
+              );
+            })
+          )}
+        </div>
+      </div>
+
+      {entries.length > 0 && (
+        <Card style={{marginTop:"16px"}}>
+          <Lbl>COVERAGE STATS</Lbl>
+          <div style={{display:"flex",gap:"24px",flexWrap:"wrap"}}>
+            {[
+              {l:"DAYS LOGGED",  v:entries.filter(d=>topics[d]&&(topics[d].Physics||topics[d].Maths||topics[d].Chemistry)).length, c:"#e2e8f0"},
+              {l:"PHY ENTRIES",  v:entries.filter(d=>topics[d]&&topics[d].Physics).length,   c:"#60a5fa"},
+              {l:"MATH ENTRIES", v:entries.filter(d=>topics[d]&&topics[d].Maths).length,     c:"#a78bfa"},
+              {l:"CHEM ENTRIES", v:entries.filter(d=>topics[d]&&topics[d].Chemistry).length, c:"#34d399"},
+            ].map(r => (
+              <div key={r.l}>
+                <div style={{fontSize:"9px",color:"#475569",letterSpacing:"2px",marginBottom:"3px"}}>{r.l}</div>
+                <div style={{fontSize:"22px",fontWeight:900,color:r.c}}>{r.v}</div>
+              </div>
+            ))}
+          </div>
+        </Card>
+      )}
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════
+   PROGRESS TAB
+══════════════════════════════════════════════════════════ */
+function ProgressTab({doneDays, scores}){
+  const SUBJ = ["Physics","Maths","Chemistry"];
+
+  function calcScore(){
+    let pts=0, total=0;
+    for(const p of PHASES){
+      if(!p.locked){
+        for(let d=1;d<=p.days;d++){
+          total+=2;
+          if(doneDays[`p${p.id}_d${d}`]) pts+=2;
         }
       }
-      if (now < new Date(PHASES[0].startDate)) return 1;
-      return 2;
     }
+    for(const t of TESTS){
+      const vals = SUBJ.map(s=>scores[`${t.id}_${s}`]).filter(v=>v!==null&&v!==undefined);
+      if(vals.length){
+        const tot = vals.reduce((a,b)=>a+b,0);
+        total+=3; pts+=Math.min(3,(tot/300)*3);
+      }
+    }
+    if(!total) return 0;
+    return Math.min(100,Math.round((pts/total)*100));
+  }
 
-    function Card({ children, style = {} }) {
-      return (
-        <div style={{
-          background: "#0d1117",
-          border: "1px solid #1e293b",
-          padding: "14px",
-          ...style,
-        }}>
-          {children}
+  const overall = calcScore();
+
+  function level(s){
+    if(s>=80) return {name:"ELITE",       color:"#f59e0b"};
+    if(s>=60) return {name:"ADVANCED",    color:"#34d399"};
+    if(s>=40) return {name:"PROGRESSING", color:"#60a5fa"};
+    if(s>=20) return {name:"BUILDING",    color:"#a78bfa"};
+    return           {name:"STARTING",    color:"#475569"};
+  }
+  const lv = level(overall);
+
+  function phaseProgress(pid){
+    const p=PHASES[pid-1]; if(p.locked) return 0;
+    const done=Object.keys(doneDays).filter(k=>k.startsWith(`p${pid}`)).length;
+    return Math.round((done/p.days)*100);
+  }
+
+  const testDone = TESTS.filter(t=>{
+    const vals=SUBJ.map(s=>scores[`${t.id}_${s}`]).filter(v=>v!==null&&v!==undefined);
+    return vals.length>0;
+  });
+  const testTotals = testDone.map(t=>SUBJ.map(s=>scores[`${t.id}_${s}`]).filter(v=>v!==null&&v!==undefined).reduce((a,b)=>a+b,0));
+  const testAvg = testTotals.length ? Math.round(testTotals.reduce((a,b)=>a+b,0)/testTotals.length) : null;
+  const testBest = testTotals.length ? Math.max(...testTotals) : null;
+
+  // streak
+  let streak=0;
+  for(let i=0;i<100;i++){
+    const d=new Date(); d.setDate(d.getDate()-i);
+    const ds=dkey(d); let found=false;
+    for(const p of PHASES){
+      if(!p.locked&&p.startDate){
+        const diff=Math.floor((d-new Date(p.startDate))/86400000)+1;
+        if(diff>=1&&diff<=p.days&&doneDays[`p${p.id}_d${diff}`]){found=true;break;}
+      }
+    }
+    if(found) streak++; else if(i>0) break;
+  }
+
+  // 20-day timeline
+  const timeline=[];
+  for(let i=19;i>=0;i--){
+    const d=new Date(); d.setDate(d.getDate()-i);
+    const ds=dkey(d); let done=false;
+    for(const p of PHASES){
+      if(!p.locked&&p.startDate){
+        const diff=Math.floor((d-new Date(p.startDate))/86400000)+1;
+        if(diff>=1&&diff<=p.days&&doneDays[`p${p.id}_d${diff}`]){done=true;break;}
+      }
+    }
+    timeline.push({done,label:d.getDate()});
+  }
+
+  return (
+    <div className="fadeup">
+      {/* Hero */}
+      <Card style={{textAlign:"center",padding:"36px 20px",marginBottom:"20px",borderColor:`${lv.color}44`,background:`${lv.color}06`}}>
+        <div style={{fontSize:"9px",letterSpacing:"4px",color:"#475569",marginBottom:"8px"}}>KARTIKEY'S OVERALL PROGRESS</div>
+        <div style={{fontSize:"80px",fontWeight:900,color:lv.color,lineHeight:1}}>{overall}</div>
+        <div style={{fontSize:"10px",letterSpacing:"5px",color:lv.color,marginBottom:"20px"}}>{lv.name}</div>
+        <div style={{height:"8px",background:"#1e293b",overflow:"hidden",maxWidth:"320px",margin:"0 auto"}}>
+          <div style={{height:"100%",width:`${overall}%`,background:`linear-gradient(90deg,${lv.color},#fcd34d)`,transition:"width 1s ease"}}/>
         </div>
-      );
-    }
+        <div style={{fontSize:"10px",color:"#334155",marginTop:"8px"}}>starts at 0 — rises with every completed day + test score</div>
+      </Card>
 
-    function Label({ children, style = {} }) {
-      return (
-        <div style={{
-          fontSize: "9px",
-          letterSpacing: "3px",
-          color: "#475569",
-          marginBottom: "12px",
-          fontWeight: 700,
-          ...style,
-        }}>
-          {children}
+      {/* Stats */}
+      <div className="sgrid" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"10px",marginBottom:"20px"}}>
+        {[
+          {l:"STREAK",    v:`${streak}d`,                               c:"#f59e0b"},
+          {l:"TEST AVG",  v:testAvg?`${testAvg}`:"—",                  c:"#34d399"},
+          {l:"TESTS DONE",v:`${testDone.length}/${TESTS.length}`,       c:"#60a5fa"},
+          {l:"LEVEL",     v:lv.name.slice(0,4),                         c:lv.color},
+        ].map(s=>(
+          <Card key={s.l}>
+            <div style={{fontSize:"9px",letterSpacing:"2px",color:"#475569",marginBottom:"4px"}}>{s.l}</div>
+            <div style={{fontSize:"18px",fontWeight:900,color:s.c}}>{s.v}</div>
+          </Card>
+        ))}
+      </div>
+
+      <div className="twocol" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"20px"}}>
+        <div>
+          <Lbl>PHASE COMPLETION</Lbl>
+          {PHASES.map(p=>{
+            const pct=phaseProgress(p.id);
+            return (
+              <Card key={p.id} style={{marginBottom:"10px"}}>
+                <div style={{display:"flex",justifyContent:"space-between",marginBottom:"8px"}}>
+                  <div style={{fontSize:"11px",fontWeight:700,color:p.locked?"#334155":p.color}}>
+                    {p.locked?"🔒 ":""}PHASE {p.id}
+                  </div>
+                  <div style={{fontSize:"14px",fontWeight:900,color:p.locked?"#334155":p.color}}>{p.locked?"—":`${pct}%`}</div>
+                </div>
+                <div style={{height:"4px",background:"#1e293b"}}>
+                  <div style={{height:"100%",width:`${pct}%`,background:p.locked?"#1e293b":p.color,transition:"width 0.5s"}}/>
+                </div>
+                {!p.locked&&<div style={{fontSize:"9px",color:"#475569",marginTop:"5px"}}>{Object.keys(doneDays).filter(k=>k.startsWith(`p${p.id}`)).length} / {p.days} days</div>}
+              </Card>
+            );
+          })}
+
+          <Card>
+            <Lbl>TEST SCORE CHART</Lbl>
+            {testDone.length===0
+              ? <div style={{fontSize:"11px",color:"#334155",textAlign:"center",padding:"16px 0"}}>No scores entered yet</div>
+              : (
+                <div style={{display:"flex",alignItems:"flex-end",gap:"5px",height:"80px",overflowX:"auto"}}>
+                  {TESTS.map((t,i)=>{
+                    const vals=SUBJ.map(s=>scores[`${t.id}_${s}`]).filter(v=>v!==null&&v!==undefined);
+                    const tot=vals.length?vals.reduce((a,b)=>a+b,0):null;
+                    const r=scoreRank(tot); const pct=tot?(tot/300)*100:0;
+                    return (
+                      <div key={t.id} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:"2px",minWidth:"28px"}}>
+                        {tot!==null&&<div style={{fontSize:"7px",color:r.color,fontWeight:700}}>{tot}</div>}
+                        <div style={{width:"22px",height:tot?`${Math.max(pct*0.6,3)}px`:"3px",background:tot?r.color:"#1e293b",opacity:tot?0.9:0.3}}/>
+                        <div style={{fontSize:"7px",color:"#334155"}}>{i+1}</div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )
+            }
+            {testBest!==null&&(
+              <div style={{marginTop:"8px",paddingTop:"8px",borderTop:"1px solid #0f172a",display:"flex",justifyContent:"space-between",fontSize:"11px"}}>
+                <span style={{color:"#475569"}}>BEST</span>
+                <span style={{color:"#34d399",fontWeight:700}}>{testBest}/300</span>
+              </div>
+            )}
+          </Card>
         </div>
-      );
-    }
 
-    function App() {
-      const [activePhase, setActivePhase] = useState(todayPhaseId);
-      const [viewDay, setViewDay]         = useState(1);
-      const [expanded, setExpanded]       = useState(null);
-      const [checks, setChecks]           = useState(() => loadStorage("jee_checks", {}));
-      const [doneDays, setDoneDays]       = useState(() => loadStorage("jee_done", {}));
-
-      const phase      = PHASES[activePhase - 1];
-      const tasks      = TASKS[activePhase] || [];
-      const taskKey    = `p${activePhase}_d${viewDay}`;
-      const completedN = Object.keys(doneDays).filter(k => k.startsWith(`p${activePhase}`)).length;
-
-      function toggleCheck(i) {
-        const next = { ...checks, [`${taskKey}_${i}`]: !checks[`${taskKey}_${i}`] };
-        setChecks(next); saveStorage("jee_checks", next);
-      }
-      function markDone() {
-        const next = { ...doneDays, [taskKey]: true };
-        setDoneDays(next); saveStorage("jee_done", next);
-      }
-      function switchPhase(id) {
-        setActivePhase(id); setViewDay(1); setExpanded(null);
-      }
-
-      // top bar gradient
-      useEffect(() => {
-        const bar = document.querySelector(".top-bar");
-        if (bar) bar.style.background = `linear-gradient(90deg, ${phase.color}, ${phase.accent}, ${phase.color})`;
-      }, [activePhase]);
-
-      return (
-        <div className="container">
-          {/* Header */}
-          <div style={{ marginBottom: "28px" }}>
-            <div style={{ fontSize: "10px", letterSpacing: "4px", color: phase.color, marginBottom: "4px", fontWeight: 700 }}>
-              ◈ JEE PREPARATION SYSTEM
-            </div>
-            <h1 style={{ fontSize: "clamp(20px, 4vw, 34px)", fontWeight: 900, letterSpacing: "-1px", lineHeight: 1.1 }}>
-              {phase.name}
-            </h1>
-            <div style={{ fontSize: "11px", color: "#64748b", marginTop: "6px", letterSpacing: "2px" }}>
-              {phase.startDate
-                ? `${new Date(phase.startDate).toDateString()} → ${new Date(phase.endDate).toDateString()}`
-                : "DATES TBD AFTER MAINS"
-              } · {phase.days} DAYS
-            </div>
-          </div>
-
-          {/* Phase Tabs */}
-          <div style={{ display: "flex", gap: "8px", marginBottom: "28px", flexWrap: "wrap" }}>
-            {PHASES.map(p => {
-              const active = activePhase === p.id;
-              return (
-                <button key={p.id} onClick={() => switchPhase(p.id)} style={{
-                  padding: "8px 16px",
-                  border: `1px solid ${active ? p.color : "#1e293b"}`,
-                  background: active ? `${p.color}18` : "transparent",
-                  color: active ? p.color : "#475569",
-                  fontSize: "11px", letterSpacing: "2px",
-                  transition: "all 0.2s",
-                  fontWeight: active ? 700 : 400,
+        <div>
+          <Lbl>20-DAY ACTIVITY</Lbl>
+          <Card style={{marginBottom:"12px"}}>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(10,1fr)",gap:"4px"}}>
+              {timeline.map((d,i)=>(
+                <div key={i} style={{
+                  aspectRatio:"1",background:d.done?"#0d2a1a":"#0d1117",
+                  border:`1px solid ${d.done?"#34d399":"#1e293b"}`,
+                  display:"flex",alignItems:"center",justifyContent:"center",
+                  fontSize:"8px",color:d.done?"#34d399":"#334155",
                 }}>
-                  {p.locked ? "🔒 " : ""}PHASE {p.id}
-                  {p.id === todayPhaseId() && (
-                    <span style={{
-                      marginLeft: "6px", fontSize: "8px",
-                      background: p.color, color: "#000", padding: "1px 5px",
-                    }}>NOW</span>
-                  )}
-                </button>
+                  {d.done?"✓":d.label}
+                </div>
+              ))}
+            </div>
+            <div style={{marginTop:"8px",fontSize:"9px",color:"#475569",display:"flex",gap:"12px"}}>
+              <span><span style={{color:"#34d399"}}>✓</span> completed</span>
+              <span>number = date</span>
+            </div>
+          </Card>
+
+          <Card style={{marginBottom:"12px"}}>
+            <Lbl>AVG SUBJECT SCORES VS TARGET</Lbl>
+            {[
+              {s:"Physics",  c:"#60a5fa", target:80},
+              {s:"Maths",    c:"#a78bfa", target:60},
+              {s:"Chemistry",c:"#34d399", target:90},
+            ].map(({s,c,target})=>{
+              const arr=TESTS.map(t=>scores[`${t.id}_${s}`]).filter(v=>v!==null&&v!==undefined);
+              const avg=arr.length?Math.round(arr.reduce((a,b)=>a+b,0)/arr.length):null;
+              const hit = avg !== null && avg >= target;
+              const pct = avg || 0;
+              const targetPct = target;
+              return (
+                <div key={s} style={{marginBottom:"14px"}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"4px"}}>
+                    <div style={{display:"flex",alignItems:"center",gap:"6px"}}>
+                      <div style={{fontSize:"10px",color:c,fontWeight:700}}>{s}</div>
+                      <div style={{fontSize:"9px",color:"#334155",letterSpacing:"1px"}}>TARGET: <span style={{color:hit?"#34d399":c}}>{target}+</span></div>
+                    </div>
+                    <div style={{display:"flex",alignItems:"center",gap:"6px"}}>
+                      <div style={{fontSize:"12px",fontWeight:900,color:avg!==null?(hit?"#34d399":"#f87171"):"#334155"}}>
+                        {avg!==null?`${avg}/100`:"—"}
+                      </div>
+                      {avg!==null&&(
+                        <div style={{fontSize:"9px",padding:"1px 5px",background:hit?"#0d2a1a":"#2a0d0d",color:hit?"#34d399":"#f87171",border:`1px solid ${hit?"#34d39933":"#f8717133"}`}}>
+                          {hit?"✓ HIT":`-${target-avg}`}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  {/* bar with target marker */}
+                  <div style={{position:"relative",height:"6px",background:"#1e293b"}}>
+                    <div style={{height:"100%",width:`${pct}%`,background:avg!==null?(hit?c:"#f87171"):"#1e293b",transition:"width 0.5s",opacity:0.9}}/>
+                    {/* target line */}
+                    <div style={{position:"absolute",top:"-3px",left:`${targetPct}%`,width:"2px",height:"12px",background:c,opacity:0.7}}/>
+                  </div>
+                  <div style={{display:"flex",justifyContent:"space-between",marginTop:"3px"}}>
+                    <div style={{fontSize:"8px",color:"#334155"}}>0</div>
+                    <div style={{fontSize:"8px",color:c,opacity:0.6}}>target: {target}</div>
+                    <div style={{fontSize:"8px",color:"#334155"}}>100</div>
+                  </div>
+                </div>
+              );
+            })}
+            {testDone.length===0&&<div style={{fontSize:"10px",color:"#334155",textAlign:"center",paddingTop:"6px"}}>Enter test scores to see subject averages</div>}
+          </Card>
+
+          <Card style={{borderColor:"#f59e0b22",background:"#f59e0b06"}}>
+            <div style={{fontSize:"9px",color:"#f59e0b",letterSpacing:"3px",marginBottom:"8px"}}>◈ YOUR GOAL</div>
+            <div style={{fontSize:"13px",fontWeight:700,color:"#e2e8f0",lineHeight:1.6}}>
+              Every day you complete moves you forward.<br/>
+              <span style={{color:"#f59e0b"}}>Current score: {overall}/100</span><br/>
+              <span style={{fontSize:"11px",color:"#64748b"}}>Target: 80+ (ELITE)</span>
+            </div>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════
+   TEST TRACKER TAB
+══════════════════════════════════════════════════════════ */
+function TestsTab(){
+  const [scores, setScores] = useState(()=>ld("jee_scores",{}));
+  const [checks, setChecks] = useState(()=>ld("jee_tc",{}));
+  const [sel, setSel] = useState(null);
+  const today = todayStr();
+  const SUBJ = ["Physics","Maths","Chemistry"];
+
+  function getTotal(id){
+    const vals=SUBJ.map(s=>scores[`${id}_${s}`]).filter(v=>v!==null&&v!==undefined);
+    return vals.length ? vals.reduce((a,b)=>a+b,0) : null;
+  }
+  function setScore(id,s,v){ const n={...scores,[`${id}_${s}`]:v}; setScores(n); sv("jee_scores",n); }
+  function tog(id,i){ const k=`${id}_${i}`; const n={...checks,[k]:!checks[k]}; setChecks(n); sv("jee_tc",n); }
+
+  const done = TESTS.filter(t=>getTotal(t.id)!==null);
+  const totals = done.map(t=>getTotal(t.id));
+
+  return (
+    <div className="fadeup">
+      {done.length>0 && (
+        <Card style={{marginBottom:"18px"}}>
+          <Lbl>SCORE TREND</Lbl>
+          <div style={{display:"flex",alignItems:"flex-end",gap:"8px",height:"90px",overflowX:"auto",paddingBottom:"4px"}}>
+            {done.map(t=>{
+              const tot=getTotal(t.id); const r=scoreRank(tot); const pct=(tot/300)*100;
+              return (
+                <div key={t.id} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:"4px",minWidth:"50px"}}>
+                  <div style={{fontSize:"10px",color:r.color,fontWeight:900}}>{tot}</div>
+                  <div style={{width:"38px",height:`${Math.max(pct*0.65,4)}px`,background:r.color,opacity:0.85}}/>
+                  <div style={{fontSize:"8px",color:"#475569",textAlign:"center",lineHeight:1.2}}>
+                    {t.label.split(" ")[0]}<br/>
+                    {new Date(t.date).toLocaleDateString("en-IN",{day:"numeric",month:"short"})}
+                  </div>
+                </div>
               );
             })}
           </div>
+        </Card>
+      )}
 
-          {/* LOCKED PHASE */}
-          {phase.locked ? (
-            <Card style={{ textAlign: "center", padding: "52px 24px" }}>
-              <div style={{ fontSize: "52px", marginBottom: "16px" }}>🔒</div>
-              <div style={{ fontSize: "20px", fontWeight: 700, color: phase.color, marginBottom: "8px" }}>
-                JEE ADVANCED — 40 DAYS
-              </div>
-              <div style={{ color: "#475569", fontSize: "13px", lineHeight: 1.8 }}>
-                This phase unlocks after JEE Mains.<br />
-                40 days of pure advanced preparation await.
-              </div>
-              <div style={{ marginTop: "24px", display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
-                {phase.tips.map((t, i) => (
-                  <div key={i} style={{
-                    padding: "8px 14px", border: "1px solid #1e293b",
-                    color: "#64748b", fontSize: "11px", letterSpacing: "1px",
-                  }}>{t}</div>
-                ))}
-              </div>
-            </Card>
-          ) : (
-            <>
-              {/* Stats */}
-              <div className="stats-grid" style={{
-                display: "grid", gridTemplateColumns: "repeat(4, 1fr)",
-                gap: "10px", marginBottom: "24px",
-              }}>
-                {[
-                  { label: "HRS / DAY",    value: `${phase.total}h`,                               color: phase.color },
-                  { label: "DAYS DONE",    value: `${completedN}/${phase.days}`,                   color: "#34d399" },
-                  { label: "SUBJECTS",     value: phase.schedule.length,                           color: "#a78bfa" },
-                  { label: "PROGRESS",     value: `${Math.round((completedN / phase.days) * 100)}%`, color: "#f59e0b" },
-                ].map(s => (
-                  <Card key={s.label}>
-                    <div style={{ fontSize: "9px", letterSpacing: "3px", color: "#475569", marginBottom: "4px" }}>{s.label}</div>
-                    <div style={{ fontSize: "22px", fontWeight: 900, color: s.color }}>{s.value}</div>
-                  </Card>
-                ))}
+      <div className="tgrid" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"10px"}}>
+        {TESTS.map(t=>{
+          const tDate=new Date(t.date);
+          const isPast=tDate<new Date()&&t.date!==today;
+          const isToday=t.date===today;
+          const tot=getTotal(t.id); const r=scoreRank(tot);
+          const isOpen=sel===t.id;
+
+          return (
+            <div key={t.id} onClick={()=>setSel(isOpen?null:t.id)}
+              style={{background:"#0d1117",padding:"12px",cursor:"pointer",transition:"border-color 0.2s",
+                border:`1px solid ${isOpen?"#f59e0b":isToday?"#f59e0b55":tot!==null?"#1a3a2a":"#1e293b"}`}}>
+
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+                <div style={{flex:1,marginRight:"8px"}}>
+                  <div style={{fontSize:"11px",fontWeight:700,marginBottom:"2px",
+                    color:isToday?"#f59e0b":tot!==null?"#e2e8f0":isPast?"#475569":"#94a3b8"}}>
+                    {t.label}
+                    {isToday&&<span style={{marginLeft:"6px",fontSize:"8px",background:"#f59e0b",color:"#000",padding:"1px 5px"}}>TODAY</span>}
+                  </div>
+                  <div style={{fontSize:"9px",color:"#475569",letterSpacing:"1px"}}>
+                    {tDate.toLocaleDateString("en-IN",{day:"numeric",month:"short"})} · {t.type}{t.tags?` · ${t.tags}`:""}
+                  </div>
+                </div>
+                <div style={{textAlign:"right",minWidth:"52px"}}>
+                  {tot!==null
+                    ? <><div style={{fontSize:"18px",fontWeight:900,color:r.color}}>{tot}</div><div style={{fontSize:"8px",color:r.color,letterSpacing:"1px"}}>{r.label}</div></>
+                    : <div style={{fontSize:"9px",color:"#334155"}}>{isPast?"NO SCORE":"UPCOMING"}</div>
+                  }
+                </div>
               </div>
 
-              {/* Progress bar */}
-              <div style={{ height: "3px", background: "#1e293b", marginBottom: "24px" }}>
-                <div style={{
-                  height: "100%",
-                  width: `${(completedN / phase.days) * 100}%`,
-                  background: `linear-gradient(90deg, ${phase.color}, ${phase.accent})`,
-                  transition: "width 0.5s",
-                }} />
-              </div>
+              {tot!==null&&<div style={{marginTop:"8px",height:"2px",background:"#1e293b"}}><div style={{height:"100%",width:`${(tot/300)*100}%`,background:r.color}}/></div>}
 
-              {/* Two columns */}
-              <div className="two-col" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
-
-                {/* LEFT — Schedule */}
-                <div>
-                  <Label>DAILY SCHEDULE</Label>
-
-                  {phase.schedule.map(s => (
-                    <div key={s.subject}
-                      onClick={() => setExpanded(expanded === s.subject ? null : s.subject)}
-                      style={{
-                        marginBottom: "10px", padding: "14px",
-                        background: "#0d1117",
-                        border: `1px solid ${expanded === s.subject ? s.color : "#1e293b"}`,
-                        cursor: "pointer", transition: "border-color 0.2s",
-                      }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                          <span style={{ fontSize: "20px" }}>{s.icon}</span>
-                          <div>
-                            <div style={{ fontWeight: 700, fontSize: "13px", color: s.color }}>{s.subject}</div>
-                            <div style={{ fontSize: "10px", color: "#475569", marginTop: "1px" }}>{s.detail}</div>
-                          </div>
+              {isOpen && (
+                <div onClick={e=>e.stopPropagation()} style={{marginTop:"12px",paddingTop:"12px",borderTop:"1px solid #1e293b"}}>
+                  <div style={{fontSize:"9px",letterSpacing:"2px",color:"#475569",marginBottom:"8px"}}>ENTER SCORES (max 100 each)</div>
+                  <div style={{display:"flex",gap:"10px",flexWrap:"wrap",alignItems:"flex-end",marginBottom:"14px"}}>
+                    {SUBJ.map(s=>{
+                      const sc=s==="Physics"?"#60a5fa":s==="Maths"?"#a78bfa":"#34d399";
+                      return (
+                        <div key={s} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:"4px"}}>
+                          <div style={{fontSize:"9px",color:sc,letterSpacing:"1px"}}>{s.slice(0,4).toUpperCase()}</div>
+                          <ScoreBox value={scores[`${t.id}_${s}`]} onChange={v=>setScore(t.id,s,v)} color={sc}/>
                         </div>
-                        <div style={{ fontSize: "20px", fontWeight: 900, color: s.color }}>{s.hours}h</div>
+                      );
+                    })}
+                    {tot!==null&&(
+                      <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:"4px"}}>
+                        <div style={{fontSize:"9px",color:"#f59e0b",letterSpacing:"1px"}}>TOTAL</div>
+                        <div style={{fontSize:"22px",fontWeight:900,color:r.color}}>{tot}</div>
                       </div>
-                      <div style={{ marginTop: "10px", height: "3px", background: "#1e293b" }}>
-                        <div style={{ height: "100%", width: `${(s.hours / 6) * 100}%`, background: s.color }} />
-                      </div>
-                      {expanded === s.subject && s.breakdown && (
-                        <div style={{ marginTop: "12px", paddingTop: "10px", borderTop: "1px solid #1e293b" }}>
-                          {s.breakdown.map((b, i) => (
-                            <div key={i} style={{ fontSize: "11px", color: "#94a3b8", padding: "3px 0", display: "flex", gap: "8px" }}>
-                              <span style={{ color: s.color }}>→</span> {b}
-                            </div>
-                          ))}
+                    )}
+                  </div>
+                  <div style={{fontSize:"9px",letterSpacing:"2px",color:"#475569",marginBottom:"8px"}}>TEST DAY TASKS</div>
+                  {TASKS_TEST.map((task,i)=>{
+                    const chk=checks[`${t.id}_${i}`];
+                    return (
+                      <div key={i} onClick={()=>tog(t.id,i)}
+                        style={{display:"flex",gap:"8px",alignItems:"flex-start",padding:"5px 0",
+                          borderBottom:i<TASKS_TEST.length-1?"1px solid #0f172a":"none",cursor:"pointer"}}>
+                        <div style={{width:"12px",height:"12px",minWidth:"12px",marginTop:"1px",
+                          border:`1px solid ${chk?"#34d399":"#334155"}`,background:chk?"#0d2a1a":"transparent",
+                          display:"flex",alignItems:"center",justifyContent:"center"}}>
+                          {chk&&<span style={{color:"#34d399",fontSize:"8px"}}>✓</span>}
                         </div>
-                      )}
+                        <span style={{fontSize:"10px",color:chk?"#475569":"#94a3b8",textDecoration:chk?"line-through":"none"}}>{task}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      {done.length>0&&(
+        <Card style={{marginTop:"16px"}}>
+          <Lbl>PERFORMANCE SUMMARY</Lbl>
+          <div style={{display:"flex",gap:"28px",flexWrap:"wrap"}}>
+            {[
+              {l:"TESTS TAKEN",v:done.length},
+              {l:"BEST SCORE", v:`${Math.max(...totals)}/300`, c:"#34d399"},
+              {l:"AVG SCORE",  v:`${Math.round(totals.reduce((a,b)=>a+b,0)/totals.length)}/300`, c:"#60a5fa"},
+              {l:"REMAINING",  v:TESTS.length-done.length},
+            ].map(s=>(
+              <div key={s.l}>
+                <div style={{fontSize:"9px",color:"#475569",letterSpacing:"2px",marginBottom:"3px"}}>{s.l}</div>
+                <div style={{fontSize:"22px",fontWeight:900,color:s.c||"#e2e8f0"}}>{s.v}</div>
+              </div>
+            ))}
+          </div>
+        </Card>
+      )}
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════
+   PLANNER TAB
+══════════════════════════════════════════════════════════ */
+function PlannerTab(){
+  const [activePhase, setActivePhase] = useState(todayPhase);
+  const [viewDay, setViewDay] = useState(()=>{
+    const p=PHASES[todayPhase()-1];
+    if(!p.startDate) return 1;
+    const diff=Math.floor((new Date()-new Date(p.startDate))/86400000)+1;
+    return Math.max(1,Math.min(diff,p.days));
+  });
+  const [expanded, setExpanded] = useState(null);
+  const [checks, setChecks] = useState(()=>ld("jee_checks",{}));
+  const [doneDays, setDoneDays] = useState(()=>ld("jee_done",{}));
+
+  const phase = PHASES[activePhase-1];
+  const tasks = activePhase===1 ? TASKS_P1 : TASKS_P2;
+  const taskKey = `p${activePhase}_d${viewDay}`;
+  const completedN = Object.keys(doneDays).filter(k=>k.startsWith(`p${activePhase}`)).length;
+  const phaseStart = phase.startDate ? new Date(phase.startDate) : null;
+  const viewDayStr = phaseStart ? dkey(new Date(phaseStart.getTime()+(viewDay-1)*86400000)) : null;
+  const testForDay = viewDayStr ? TESTS.find(t=>t.date===viewDayStr) : null;
+
+  function togCheck(i){ const n={...checks,[`${taskKey}_${i}`]:!checks[`${taskKey}_${i}`]}; setChecks(n); sv("jee_checks",n); }
+  function markDone(){ const n={...doneDays,[taskKey]:true}; setDoneDays(n); sv("jee_done",n); }
+  function switchPhase(id){ setActivePhase(id); setViewDay(1); setExpanded(null); }
+
+  return (
+    <div className="fadeup">
+      {/* Phase selector */}
+      <div style={{display:"flex",gap:"8px",marginBottom:"20px",flexWrap:"wrap"}}>
+        {PHASES.map(p=>{
+          const active=activePhase===p.id; const isNow=p.id===todayPhase();
+          return (
+            <button key={p.id} onClick={()=>switchPhase(p.id)}
+              style={{padding:"8px 14px",border:`1px solid ${active?p.color:"#1e293b"}`,
+                background:active?`${p.color}18`:"transparent",color:active?p.color:"#475569",
+                fontSize:"11px",letterSpacing:"2px",fontWeight:active?700:400,transition:"all 0.2s"}}>
+              {p.locked?"🔒 ":""}PHASE {p.id}
+              {isNow&&<span style={{marginLeft:"6px",fontSize:"8px",background:p.color,color:"#000",padding:"1px 5px"}}>NOW</span>}
+            </button>
+          );
+        })}
+      </div>
+
+      {phase.locked ? (
+        <Card style={{textAlign:"center",padding:"52px 24px"}}>
+          <div style={{fontSize:"52px",marginBottom:"16px"}}>🔒</div>
+          <div style={{fontSize:"20px",fontWeight:700,color:phase.color,marginBottom:"8px"}}>JEE ADVANCED — 40 DAYS</div>
+          <div style={{color:"#475569",fontSize:"13px",lineHeight:1.8}}>Unlocks after JEE Mains.<br/>40 days of advanced preparation await.</div>
+          <div style={{marginTop:"24px",display:"flex",gap:"12px",justifyContent:"center",flexWrap:"wrap"}}>
+            {phase.tips.map((t,i)=><div key={i} style={{padding:"8px 14px",border:"1px solid #1e293b",color:"#64748b",fontSize:"11px"}}>{t}</div>)}
+          </div>
+        </Card>
+      ) : (
+        <>
+          {/* Stats row */}
+          <div className="sgrid" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"10px",marginBottom:"18px"}}>
+            {[
+              {l:"HRS / DAY", v:`${testForDay?"13":phase.total}h`, c:phase.color},
+              {l:"DAYS DONE", v:`${completedN}/${phase.days}`,     c:"#34d399"},
+              {l:"SUBJECTS",  v:phase.schedule.length,             c:"#a78bfa"},
+              {l:"PROGRESS",  v:`${Math.round((completedN/phase.days)*100)}%`, c:"#f59e0b"},
+            ].map(s=>(
+              <Card key={s.l}>
+                <div style={{fontSize:"9px",letterSpacing:"3px",color:"#475569",marginBottom:"4px"}}>{s.l}</div>
+                <div style={{fontSize:"22px",fontWeight:900,color:s.c}}>{s.v}</div>
+              </Card>
+            ))}
+          </div>
+
+          <div style={{height:"3px",background:"#1e293b",marginBottom:"22px"}}>
+            <div style={{height:"100%",width:`${(completedN/phase.days)*100}%`,background:`linear-gradient(90deg,${phase.color},${phase.accent})`,transition:"width 0.5s"}}/>
+          </div>
+
+          <div className="twocol" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"20px"}}>
+            {/* Schedule */}
+            <div>
+              <Lbl>DAILY SCHEDULE {testForDay?"— TEST DAY (13HRS)":""}</Lbl>
+              {(testForDay?SCHED_TEST:phase.schedule).map(s=>(
+                <div key={s.subject}
+                  onClick={()=>!testForDay&&setExpanded(expanded===s.subject?null:s.subject)}
+                  style={{marginBottom:"10px",padding:"14px",background:"#0d1117",
+                    border:`1px solid ${expanded===s.subject?s.color:"#1e293b"}`,
+                    cursor:testForDay?"default":"pointer",transition:"border-color 0.2s"}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                    <div style={{display:"flex",alignItems:"center",gap:"10px"}}>
+                      <span style={{fontSize:"18px"}}>{s.icon||"◈"}</span>
+                      <div>
+                        <div style={{fontWeight:700,fontSize:"13px",color:s.color}}>{s.subject}</div>
+                        {s.detail&&<div style={{fontSize:"10px",color:"#475569",marginTop:"1px"}}>{s.detail}</div>}
+                      </div>
+                    </div>
+                    <div style={{fontSize:"20px",fontWeight:900,color:s.color}}>{s.hours}h</div>
+                  </div>
+                  <div style={{marginTop:"10px",height:"3px",background:"#1e293b"}}>
+                    <div style={{height:"100%",width:`${(s.hours/(testForDay?4:6))*100}%`,background:s.color}}/>
+                  </div>
+                  {expanded===s.subject&&s.breakdown&&(
+                    <div style={{marginTop:"12px",paddingTop:"10px",borderTop:"1px solid #1e293b"}}>
+                      {s.breakdown.map((b,i)=>(
+                        <div key={i} style={{fontSize:"11px",color:"#94a3b8",padding:"3px 0",display:"flex",gap:"8px"}}>
+                          <span style={{color:s.color}}>→</span>{b}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+
+              {!testForDay&&(
+                <Card>
+                  <Lbl>PHASE NOTES</Lbl>
+                  {phase.tips.map((t,i)=>(
+                    <div key={i} style={{fontSize:"11px",color:"#64748b",padding:"4px 0",display:"flex",gap:"8px"}}>
+                      <span style={{color:phase.color}}>◈</span>{t}
                     </div>
                   ))}
-
-                  {/* Phase notes */}
-                  <Card style={{ marginTop: "4px" }}>
-                    <Label>PHASE NOTES</Label>
-                    {phase.tips.map((t, i) => (
-                      <div key={i} style={{ fontSize: "11px", color: "#64748b", padding: "4px 0", display: "flex", gap: "8px" }}>
-                        <span style={{ color: phase.color }}>◈</span> {t}
-                      </div>
-                    ))}
-                  </Card>
+                </Card>
+              )}
+              {testForDay&&(
+                <div style={{padding:"10px 14px",background:"#f59e0b0a",border:"1px solid #f59e0b33"}}>
+                  <div style={{fontSize:"10px",color:"#f59e0b",fontWeight:700,letterSpacing:"2px"}}>⚡ {testForDay.label}</div>
+                  <div style={{fontSize:"9px",color:"#92400e",marginTop:"3px"}}>{testForDay.type}{testForDay.tags?` · ${testForDay.tags}`:""} · Log score in TESTS tab</div>
                 </div>
+              )}
+            </div>
 
-                {/* RIGHT — Tracker */}
-                <div>
-                  <Label>DAY TRACKER</Label>
-
-                  {/* Day grid */}
-                  <div style={{
-                    display: "grid",
-                    gridTemplateColumns: `repeat(${Math.min(11, phase.days)}, 1fr)`,
-                    gap: "4px", marginBottom: "14px",
-                  }}>
-                    {Array.from({ length: phase.days }).map((_, i) => {
-                      const d = i + 1;
-                      const done = doneDays[`p${activePhase}_d${d}`];
-                      const isV  = viewDay === d;
-                      return (
-                        <button key={d} onClick={() => setViewDay(d)} style={{
-                          aspectRatio: "1",
-                          border: `1px solid ${isV ? phase.color : done ? "#1a3a2a" : "#1e293b"}`,
-                          background: done ? "#0d2a1a" : isV ? `${phase.color}18` : "#0d1117",
-                          color: done ? "#34d399" : isV ? phase.color : "#475569",
-                          fontSize: "9px", fontWeight: isV ? 900 : 400,
-                          display: "flex", alignItems: "center", justifyContent: "center",
-                        }}>
-                          {done ? "✓" : d}
-                        </button>
-                      );
-                    })}
-                  </div>
-
-                  {/* Checklist */}
-                  <Card style={{ marginBottom: "12px" }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
-                      <div style={{ fontSize: "11px", letterSpacing: "2px", color: phase.color, fontWeight: 700 }}>
-                        DAY {viewDay} CHECKLIST
-                      </div>
-                      {doneDays[taskKey] && (
-                        <span style={{ fontSize: "9px", color: "#34d399", letterSpacing: "1px" }}>✓ COMPLETE</span>
-                      )}
-                    </div>
-
-                    {tasks.map((task, i) => {
-                      const checked = checks[`${taskKey}_${i}`];
-                      return (
-                        <div key={i} onClick={() => toggleCheck(i)} style={{
-                          display: "flex", gap: "10px", alignItems: "flex-start",
-                          padding: "7px 0",
-                          borderBottom: i < tasks.length - 1 ? "1px solid #0f172a" : "none",
-                          cursor: "pointer",
-                        }}>
-                          <div style={{
-                            width: "14px", height: "14px", minWidth: "14px",
-                            marginTop: "1px",
-                            border: `1px solid ${checked ? "#34d399" : "#334155"}`,
-                            background: checked ? "#0d2a1a" : "transparent",
-                            display: "flex", alignItems: "center", justifyContent: "center",
-                          }}>
-                            {checked && <span style={{ color: "#34d399", fontSize: "9px" }}>✓</span>}
-                          </div>
-                          <span style={{
-                            fontSize: "11px",
-                            color: checked ? "#475569" : "#94a3b8",
-                            textDecoration: checked ? "line-through" : "none",
-                            lineHeight: 1.5,
-                          }}>
-                            {task}
-                          </span>
-                        </div>
-                      );
-                    })}
-
-                    {!doneDays[taskKey] && (
-                      <button onClick={markDone}
-                        onMouseOver={e => e.currentTarget.style.background = `${phase.color}22`}
-                        onMouseOut={e => e.currentTarget.style.background = "transparent"}
-                        style={{
-                          width: "100%", marginTop: "14px", padding: "10px",
-                          background: "transparent",
-                          border: `1px solid ${phase.color}`,
-                          color: phase.color,
-                          fontSize: "11px", letterSpacing: "2px",
-                          fontWeight: 700, transition: "background 0.2s",
-                        }}>
-                        ◈ MARK DAY {viewDay} COMPLETE
-                      </button>
-                    )}
-                  </Card>
-
-                  {/* Hours breakdown */}
-                  <Card>
-                    <Label>HOURS BREAKDOWN</Label>
-                    {phase.schedule.map(s => (
-                      <div key={s.subject} style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "8px" }}>
-                        <div style={{ width: "64px", fontSize: "10px", color: s.color }}>{s.subject}</div>
-                        <div style={{ flex: 1, height: "5px", background: "#1e293b" }}>
-                          <div style={{ height: "100%", width: `${(s.hours / 6) * 100}%`, background: s.color }} />
-                        </div>
-                        <div style={{ fontSize: "11px", color: s.color, width: "28px", textAlign: "right" }}>{s.hours}h</div>
-                      </div>
-                    ))}
-                    <div style={{
-                      marginTop: "10px", paddingTop: "10px", borderTop: "1px solid #1e293b",
-                      display: "flex", justifyContent: "space-between", fontSize: "12px",
-                    }}>
-                      <span style={{ color: "#475569", letterSpacing: "2px" }}>TOTAL</span>
-                      <span style={{ color: phase.color, fontWeight: 900 }}>{phase.total} hrs/day</span>
-                    </div>
-                  </Card>
-                </div>
+            {/* Day tracker + checklist */}
+            <div>
+              <Lbl>DAY TRACKER</Lbl>
+              <div style={{display:"grid",gridTemplateColumns:`repeat(${Math.min(11,phase.days)},1fr)`,gap:"4px",marginBottom:"8px"}}>
+                {Array.from({length:phase.days}).map((_,i)=>{
+                  const d=i+1;
+                  const done=doneDays[`p${activePhase}_d${d}`];
+                  const isV=viewDay===d;
+                  const dStr=phaseStart?dkey(new Date(phaseStart.getTime()+i*86400000)):null;
+                  const hasT=dStr?TESTS.some(t=>t.date===dStr):false;
+                  return (
+                    <button key={d} onClick={()=>setViewDay(d)}
+                      style={{aspectRatio:"1",fontSize:"9px",fontWeight:isV?900:400,
+                        display:"flex",alignItems:"center",justifyContent:"center",
+                        border:`1px solid ${isV?phase.color:done?"#1a3a2a":hasT?"#f59e0b44":"#1e293b"}`,
+                        background:done?"#0d2a1a":hasT?"#f59e0b08":isV?`${phase.color}18`:"#0d1117",
+                        color:done?"#34d399":isV?phase.color:hasT?"#f59e0b":"#475569"}}>
+                      {done?"✓":hasT?"T":d}
+                    </button>
+                  );
+                })}
               </div>
-            </>
-          )}
+              <div style={{fontSize:"9px",color:"#475569",marginBottom:"12px"}}>
+                <span style={{color:"#f59e0b"}}>T</span> = test day &nbsp;·&nbsp; <span style={{color:"#34d399"}}>✓</span> = completed
+              </div>
+
+              {testForDay&&(
+                <div style={{marginBottom:"10px",padding:"10px 14px",background:"#f59e0b0a",border:"1px solid #f59e0b44"}}>
+                  <div style={{fontSize:"10px",color:"#f59e0b",fontWeight:700,letterSpacing:"2px"}}>⚡ TEST DAY — {testForDay.label}</div>
+                  <div style={{fontSize:"9px",color:"#92400e",marginTop:"2px"}}>{testForDay.type} · 4+4+4+1 = 13hrs</div>
+                </div>
+              )}
+
+              <Card style={{marginBottom:"12px"}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"12px"}}>
+                  <div style={{fontSize:"11px",letterSpacing:"2px",color:phase.color,fontWeight:700}}>
+                    DAY {viewDay}{testForDay?" (TEST)":""}
+                  </div>
+                  {doneDays[taskKey]&&<span style={{fontSize:"9px",color:"#34d399",letterSpacing:"1px"}}>✓ DONE</span>}
+                </div>
+                {(testForDay?TASKS_TEST:tasks).map((task,i)=>{
+                  const chk=checks[`${taskKey}_${i}`];
+                  return (
+                    <div key={i} onClick={()=>togCheck(i)}
+                      style={{display:"flex",gap:"10px",alignItems:"flex-start",padding:"7px 0",
+                        borderBottom:i<(testForDay?TASKS_TEST:tasks).length-1?"1px solid #0f172a":"none",cursor:"pointer"}}>
+                      <div style={{width:"14px",height:"14px",minWidth:"14px",marginTop:"1px",
+                        border:`1px solid ${chk?"#34d399":"#334155"}`,background:chk?"#0d2a1a":"transparent",
+                        display:"flex",alignItems:"center",justifyContent:"center"}}>
+                        {chk&&<span style={{color:"#34d399",fontSize:"9px"}}>✓</span>}
+                      </div>
+                      <span style={{fontSize:"11px",color:chk?"#475569":"#94a3b8",textDecoration:chk?"line-through":"none",lineHeight:1.5}}>{task}</span>
+                    </div>
+                  );
+                })}
+                {!doneDays[taskKey]&&(
+                  <button onClick={markDone}
+                    onMouseOver={e=>e.currentTarget.style.background=`${phase.color}22`}
+                    onMouseOut={e=>e.currentTarget.style.background="transparent"}
+                    style={{width:"100%",marginTop:"14px",padding:"10px",background:"transparent",
+                      border:`1px solid ${phase.color}`,color:phase.color,
+                      fontSize:"11px",letterSpacing:"2px",fontWeight:700,transition:"background 0.2s"}}>
+                    ◈ MARK DAY {viewDay} COMPLETE
+                  </button>
+                )}
+              </Card>
+
+              <Card>
+                <Lbl>HOURS BREAKDOWN</Lbl>
+                {(testForDay?SCHED_TEST:phase.schedule).map(s=>(
+                  <div key={s.subject} style={{display:"flex",alignItems:"center",gap:"8px",marginBottom:"8px"}}>
+                    <div style={{width:"64px",fontSize:"10px",color:s.color}}>{s.subject}</div>
+                    <div style={{flex:1,height:"5px",background:"#1e293b"}}>
+                      <div style={{height:"100%",width:`${(s.hours/(testForDay?4:6))*100}%`,background:s.color}}/>
+                    </div>
+                    <div style={{fontSize:"11px",color:s.color,width:"28px",textAlign:"right"}}>{s.hours}h</div>
+                  </div>
+                ))}
+                <div style={{marginTop:"10px",paddingTop:"10px",borderTop:"1px solid #1e293b",display:"flex",justifyContent:"space-between",fontSize:"12px"}}>
+                  <span style={{color:"#475569",letterSpacing:"2px"}}>TOTAL</span>
+                  <span style={{color:phase.color,fontWeight:900}}>{testForDay?"13":phase.total} hrs/day</span>
+                </div>
+              </Card>
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════
+   ROOT APP
+══════════════════════════════════════════════════════════ */
+function App(){
+  const [unlocked, setUnlocked] = useState(()=>ld("jee_auth",false));
+  const [tab, setTab] = useState("guide");
+  const scores = ld("jee_scores",{});
+  const doneDays = ld("jee_done",{});
+
+  const TABS = [
+    {id:"guide",    label:"◈ GUIDE",    c:"#ec4899"},
+    {id:"planner",  label:"◈ PLANNER",  c:"#f59e0b"},
+    {id:"tests",    label:"◈ TESTS",    c:"#60a5fa"},
+    {id:"topics",   label:"◈ TOPICS",   c:"#a78bfa"},
+    {id:"progress", label:"◈ PROGRESS", c:"#34d399"},
+  ];
+  const topC = TABS.find(t=>t.id===tab)?.c || "#f59e0b";
+
+  useEffect(()=>{
+    const b=document.getElementById("topBar");
+    if(b) b.style.background=`linear-gradient(90deg,${topC},#fcd34d,${topC})`;
+  },[tab]);
+
+  function handleUnlock(){ setUnlocked(true); sv("jee_auth",true); }
+  function handleLock(){   setUnlocked(false); sv("jee_auth",false); }
+
+  if(!unlocked) return <PasswordScreen onUnlock={handleUnlock}/>;
+
+  return (
+    <div className="wrap">
+      {/* Header */}
+      <div style={{marginBottom:"22px"}}>
+        <div style={{fontSize:"9px",letterSpacing:"4px",color:topC,marginBottom:"4px",fontWeight:700}}>◈ JEE PREPARATION SYSTEM 2026</div>
+        <h1 style={{fontSize:"clamp(20px,4vw,32px)",fontWeight:900,letterSpacing:"-1px",lineHeight:1.1}}>
+          KARTIKEY <span style={{color:topC}}>BHARDWAJ</span>
+        </h1>
+        <div style={{fontSize:"10px",color:"#334155",marginTop:"5px",letterSpacing:"3px"}}>
+          {tab==="guide"?"SYSTEM GUIDE":tab==="planner"?"STUDY PLANNER":tab==="tests"?"TEST TRACKER":tab==="topics"?"TOPIC LOGGER":"PROGRESS TRACKER"}
         </div>
-      );
-    }
+      </div>
 
-    const root = ReactDOM.createRoot(document.getElementById("root"));
-    root.render(<App />);
-  </script>
+      {/* Nav */}
+      <div style={{display:"flex",gap:"6px",marginBottom:"24px",flexWrap:"wrap",alignItems:"center"}}>
+        {TABS.map(t=>(
+          <button key={t.id} onClick={()=>setTab(t.id)}
+            style={{padding:"7px 13px",border:`1px solid ${tab===t.id?t.c:"#1e293b"}`,
+              background:tab===t.id?`${t.c}15`:"transparent",color:tab===t.id?t.c:"#475569",
+              fontSize:"10px",letterSpacing:"2px",fontWeight:tab===t.id?700:400,transition:"all 0.2s"}}>
+            {t.label}
+          </button>
+        ))}
+        <button onClick={handleLock}
+          style={{marginLeft:"auto",padding:"7px 12px",border:"1px solid #1e293b",
+            background:"transparent",color:"#334155",fontSize:"9px",letterSpacing:"2px"}}>
+          LOCK
+        </button>
+      </div>
 
-  <div class="top-bar"></div>
+      {tab==="guide"    && <GuideTab/>}
+      {tab==="planner"  && <PlannerTab/>}
+      {tab==="tests"    && <TestsTab/>}
+      {tab==="topics"   && <TopicTab/>}
+      {tab==="progress" && <ProgressTab doneDays={doneDays} scores={scores}/>}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(App));
+</script>
 </body>
 </html>

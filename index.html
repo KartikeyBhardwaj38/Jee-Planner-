@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JEE Preparation System</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0a0a0f;
+      color: #e2e8f0;
+      font-family: 'Courier New', monospace;
+      min-height: 100vh;
+    }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: #0a0a0f; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; }
+    .grid-bg {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .top-bar {
+      position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 100;
+    }
+    .container {
+      position: relative; z-index: 1;
+      max-width: 960px; margin: 0 auto;
+      padding: 32px 16px 60px;
+    }
+    button { font-family: 'Courier New', monospace; cursor: pointer; }
+    @media (max-width: 640px) {
+      .two-col { grid-template-columns: 1fr !important; }
+      .stats-grid { grid-template-columns: 1fr 1fr !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-bg"></div>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    const PHASES = [
+      {
+        id: 1,
+        name: "Phase 1 — Foundation Grind",
+        label: "JEE MAINS PREP",
+        startDate: "2025-03-02",
+        endDate: "2025-03-11",
+        days: 10,
+        color: "#f59e0b",
+        accent: "#fcd34d",
+        schedule: [
+          { subject: "Physics",   hours: 6,   detail: "Full concept + problem solving",        icon: "⚡", color: "#60a5fa" },
+          { subject: "Maths",     hours: 3.5, detail: "Core topics + practice",                 icon: "∑",  color: "#a78bfa" },
+          { subject: "Chemistry", hours: 4,   detail: "3.5hr study + 0.5hr NCERT reading",      icon: "⚗", color: "#34d399" },
+          { subject: "Revision",  hours: 2,   detail: "Daily consolidation",                    icon: "↺", color: "#f87171" },
+        ],
+        total: 15.5,
+        tips: [
+          "High volume phase — prioritize consistency",
+          "6hr Physics = deep concept building",
+          "NCERT Chemistry 0.5hr daily — don't skip",
+        ],
+      },
+      {
+        id: 2,
+        name: "Phase 2 — Mains Sharpening",
+        label: "JEE MAINS PREP",
+        startDate: "2025-03-12",
+        endDate: "2025-04-02",
+        days: 22,
+        color: "#3b82f6",
+        accent: "#93c5fd",
+        schedule: [
+          {
+            subject: "Physics", hours: 4, detail: "2hr PG Illustration + 2hr Mains revision", icon: "⚡", color: "#60a5fa",
+            breakdown: ["2hr — PG Illustration (problem solving)", "2hr — Mains revision"],
+          },
+          {
+            subject: "Maths", hours: 5, detail: "2hr Mains lecture + 1hr sheet/DPP + 2hr advance", icon: "∑", color: "#a78bfa",
+            breakdown: ["2hr — Mains lecture", "1hr — Must-do sheet + DPP", "2hr — Advance created"],
+          },
+          {
+            subject: "Chemistry", hours: 5, detail: "Same as Maths + NCERT questions", icon: "⚗", color: "#34d399",
+            breakdown: ["2hr — Mains lecture", "1hr — Must-do sheet + DPP", "2hr — Advance created", "+ NCERT questions"],
+          },
+          {
+            subject: "Revision", hours: 2, detail: "1.5hr active revision + 0.5hr NCERT reading", icon: "↺", color: "#f87171",
+            breakdown: ["1.5hr — Active revision", "0.5hr — NCERT reading"],
+          },
+        ],
+        total: 16,
+        tips: [
+          "Shift to Mains-focused strategy",
+          "Advance prep begins — future-proof your study",
+          "NCERT reading is your scoring edge",
+        ],
+      },
+      {
+        id: 3,
+        name: "Phase 3 — Advanced Assault",
+        label: "JEE ADVANCED PREP",
+        startDate: null,
+        endDate: null,
+        days: 40,
+        color: "#ec4899",
+        accent: "#f9a8d4",
+        schedule: [],
+        total: null,
+        tips: [
+          "Schedule set after JEE Mains",
+          "40 days of focused advanced preparation",
+          "Harder problems, deeper understanding",
+        ],
+        locked: true,
+      },
+    ];
+
+    const TASKS = {
+      1: [
+        "Physics — 6 hours complete",
+        "Maths — 3.5 hours complete",
+        "Chemistry — 3.5 hours complete",
+        "Chemistry NCERT — 0.5 hours",
+        "Revision — 2 hours complete",
+        "Notes updated",
+        "DPP attempted",
+      ],
+      2: [
+        "Physics PG Illustration — 2hr",
+        "Physics Mains Revision — 2hr",
+        "Maths Mains Lecture — 2hr",
+        "Maths Sheet + DPP — 1hr",
+        "Maths Advance — 2hr",
+        "Chemistry Mains Lecture — 2hr",
+        "Chemistry Sheet + DPP — 1hr",
+        "Chemistry Advance + NCERT — 2hr",
+        "Active Revision — 1.5hr",
+        "NCERT Reading — 0.5hr",
+      ],
+    };
+
+    function loadStorage(key, fallback) {
+      try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }
+      catch { return fallback; }
+    }
+    function saveStorage(key, val) {
+      try { localStorage.setItem(key, JSON.stringify(val)); } catch {}
+    }
+
+    function todayPhaseId() {
+      const now = new Date();
+      for (const p of PHASES) {
+        if (p.startDate && p.endDate) {
+          if (now >= new Date(p.startDate) && now <= new Date(p.endDate)) return p.id;
+        }
+      }
+      if (now < new Date(PHASES[0].startDate)) return 1;
+      return 2;
+    }
+
+    function Card({ children, style = {} }) {
+      return (
+        <div style={{
+          background: "#0d1117",
+          border: "1px solid #1e293b",
+          padding: "14px",
+          ...style,
+        }}>
+          {children}
+        </div>
+      );
+    }
+
+    function Label({ children, style = {} }) {
+      return (
+        <div style={{
+          fontSize: "9px",
+          letterSpacing: "3px",
+          color: "#475569",
+          marginBottom: "12px",
+          fontWeight: 700,
+          ...style,
+        }}>
+          {children}
+        </div>
+      );
+    }
+
+    function App() {
+      const [activePhase, setActivePhase] = useState(todayPhaseId);
+      const [viewDay, setViewDay]         = useState(1);
+      const [expanded, setExpanded]       = useState(null);
+      const [checks, setChecks]           = useState(() => loadStorage("jee_checks", {}));
+      const [doneDays, setDoneDays]       = useState(() => loadStorage("jee_done", {}));
+
+      const phase      = PHASES[activePhase - 1];
+      const tasks      = TASKS[activePhase] || [];
+      const taskKey    = `p${activePhase}_d${viewDay}`;
+      const completedN = Object.keys(doneDays).filter(k => k.startsWith(`p${activePhase}`)).length;
+
+      function toggleCheck(i) {
+        const next = { ...checks, [`${taskKey}_${i}`]: !checks[`${taskKey}_${i}`] };
+        setChecks(next); saveStorage("jee_checks", next);
+      }
+      function markDone() {
+        const next = { ...doneDays, [taskKey]: true };
+        setDoneDays(next); saveStorage("jee_done", next);
+      }
+      function switchPhase(id) {
+        setActivePhase(id); setViewDay(1); setExpanded(null);
+      }
+
+      // top bar gradient
+      useEffect(() => {
+        const bar = document.querySelector(".top-bar");
+        if (bar) bar.style.background = `linear-gradient(90deg, ${phase.color}, ${phase.accent}, ${phase.color})`;
+      }, [activePhase]);
+
+      return (
+        <div className="container">
+          {/* Header */}
+          <div style={{ marginBottom: "28px" }}>
+            <div style={{ fontSize: "10px", letterSpacing: "4px", color: phase.color, marginBottom: "4px", fontWeight: 700 }}>
+              ◈ JEE PREPARATION SYSTEM
+            </div>
+            <h1 style={{ fontSize: "clamp(20px, 4vw, 34px)", fontWeight: 900, letterSpacing: "-1px", lineHeight: 1.1 }}>
+              {phase.name}
+            </h1>
+            <div style={{ fontSize: "11px", color: "#64748b", marginTop: "6px", letterSpacing: "2px" }}>
+              {phase.startDate
+                ? `${new Date(phase.startDate).toDateString()} → ${new Date(phase.endDate).toDateString()}`
+                : "DATES TBD AFTER MAINS"
+              } · {phase.days} DAYS
+            </div>
+          </div>
+
+          {/* Phase Tabs */}
+          <div style={{ display: "flex", gap: "8px", marginBottom: "28px", flexWrap: "wrap" }}>
+            {PHASES.map(p => {
+              const active = activePhase === p.id;
+              return (
+                <button key={p.id} onClick={() => switchPhase(p.id)} style={{
+                  padding: "8px 16px",
+                  border: `1px solid ${active ? p.color : "#1e293b"}`,
+                  background: active ? `${p.color}18` : "transparent",
+                  color: active ? p.color : "#475569",
+                  fontSize: "11px", letterSpacing: "2px",
+                  transition: "all 0.2s",
+                  fontWeight: active ? 700 : 400,
+                }}>
+                  {p.locked ? "🔒 " : ""}PHASE {p.id}
+                  {p.id === todayPhaseId() && (
+                    <span style={{
+                      marginLeft: "6px", fontSize: "8px",
+                      background: p.color, color: "#000", padding: "1px 5px",
+                    }}>NOW</span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* LOCKED PHASE */}
+          {phase.locked ? (
+            <Card style={{ textAlign: "center", padding: "52px 24px" }}>
+              <div style={{ fontSize: "52px", marginBottom: "16px" }}>🔒</div>
+              <div style={{ fontSize: "20px", fontWeight: 700, color: phase.color, marginBottom: "8px" }}>
+                JEE ADVANCED — 40 DAYS
+              </div>
+              <div style={{ color: "#475569", fontSize: "13px", lineHeight: 1.8 }}>
+                This phase unlocks after JEE Mains.<br />
+                40 days of pure advanced preparation await.
+              </div>
+              <div style={{ marginTop: "24px", display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
+                {phase.tips.map((t, i) => (
+                  <div key={i} style={{
+                    padding: "8px 14px", border: "1px solid #1e293b",
+                    color: "#64748b", fontSize: "11px", letterSpacing: "1px",
+                  }}>{t}</div>
+                ))}
+              </div>
+            </Card>
+          ) : (
+            <>
+              {/* Stats */}
+              <div className="stats-grid" style={{
+                display: "grid", gridTemplateColumns: "repeat(4, 1fr)",
+                gap: "10px", marginBottom: "24px",
+              }}>
+                {[
+                  { label: "HRS / DAY",    value: `${phase.total}h`,                               color: phase.color },
+                  { label: "DAYS DONE",    value: `${completedN}/${phase.days}`,                   color: "#34d399" },
+                  { label: "SUBJECTS",     value: phase.schedule.length,                           color: "#a78bfa" },
+                  { label: "PROGRESS",     value: `${Math.round((completedN / phase.days) * 100)}%`, color: "#f59e0b" },
+                ].map(s => (
+                  <Card key={s.label}>
+                    <div style={{ fontSize: "9px", letterSpacing: "3px", color: "#475569", marginBottom: "4px" }}>{s.label}</div>
+                    <div style={{ fontSize: "22px", fontWeight: 900, color: s.color }}>{s.value}</div>
+                  </Card>
+                ))}
+              </div>
+
+              {/* Progress bar */}
+              <div style={{ height: "3px", background: "#1e293b", marginBottom: "24px" }}>
+                <div style={{
+                  height: "100%",
+                  width: `${(completedN / phase.days) * 100}%`,
+                  background: `linear-gradient(90deg, ${phase.color}, ${phase.accent})`,
+                  transition: "width 0.5s",
+                }} />
+              </div>
+
+              {/* Two columns */}
+              <div className="two-col" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
+
+                {/* LEFT — Schedule */}
+                <div>
+                  <Label>DAILY SCHEDULE</Label>
+
+                  {phase.schedule.map(s => (
+                    <div key={s.subject}
+                      onClick={() => setExpanded(expanded === s.subject ? null : s.subject)}
+                      style={{
+                        marginBottom: "10px", padding: "14px",
+                        background: "#0d1117",
+                        border: `1px solid ${expanded === s.subject ? s.color : "#1e293b"}`,
+                        cursor: "pointer", transition: "border-color 0.2s",
+                      }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                          <span style={{ fontSize: "20px" }}>{s.icon}</span>
+                          <div>
+                            <div style={{ fontWeight: 700, fontSize: "13px", color: s.color }}>{s.subject}</div>
+                            <div style={{ fontSize: "10px", color: "#475569", marginTop: "1px" }}>{s.detail}</div>
+                          </div>
+                        </div>
+                        <div style={{ fontSize: "20px", fontWeight: 900, color: s.color }}>{s.hours}h</div>
+                      </div>
+                      <div style={{ marginTop: "10px", height: "3px", background: "#1e293b" }}>
+                        <div style={{ height: "100%", width: `${(s.hours / 6) * 100}%`, background: s.color }} />
+                      </div>
+                      {expanded === s.subject && s.breakdown && (
+                        <div style={{ marginTop: "12px", paddingTop: "10px", borderTop: "1px solid #1e293b" }}>
+                          {s.breakdown.map((b, i) => (
+                            <div key={i} style={{ fontSize: "11px", color: "#94a3b8", padding: "3px 0", display: "flex", gap: "8px" }}>
+                              <span style={{ color: s.color }}>→</span> {b}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+
+                  {/* Phase notes */}
+                  <Card style={{ marginTop: "4px" }}>
+                    <Label>PHASE NOTES</Label>
+                    {phase.tips.map((t, i) => (
+                      <div key={i} style={{ fontSize: "11px", color: "#64748b", padding: "4px 0", display: "flex", gap: "8px" }}>
+                        <span style={{ color: phase.color }}>◈</span> {t}
+                      </div>
+                    ))}
+                  </Card>
+                </div>
+
+                {/* RIGHT — Tracker */}
+                <div>
+                  <Label>DAY TRACKER</Label>
+
+                  {/* Day grid */}
+                  <div style={{
+                    display: "grid",
+                    gridTemplateColumns: `repeat(${Math.min(11, phase.days)}, 1fr)`,
+                    gap: "4px", marginBottom: "14px",
+                  }}>
+                    {Array.from({ length: phase.days }).map((_, i) => {
+                      const d = i + 1;
+                      const done = doneDays[`p${activePhase}_d${d}`];
+                      const isV  = viewDay === d;
+                      return (
+                        <button key={d} onClick={() => setViewDay(d)} style={{
+                          aspectRatio: "1",
+                          border: `1px solid ${isV ? phase.color : done ? "#1a3a2a" : "#1e293b"}`,
+                          background: done ? "#0d2a1a" : isV ? `${phase.color}18` : "#0d1117",
+                          color: done ? "#34d399" : isV ? phase.color : "#475569",
+                          fontSize: "9px", fontWeight: isV ? 900 : 400,
+                          display: "flex", alignItems: "center", justifyContent: "center",
+                        }}>
+                          {done ? "✓" : d}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Checklist */}
+                  <Card style={{ marginBottom: "12px" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
+                      <div style={{ fontSize: "11px", letterSpacing: "2px", color: phase.color, fontWeight: 700 }}>
+                        DAY {viewDay} CHECKLIST
+                      </div>
+                      {doneDays[taskKey] && (
+                        <span style={{ fontSize: "9px", color: "#34d399", letterSpacing: "1px" }}>✓ COMPLETE</span>
+                      )}
+                    </div>
+
+                    {tasks.map((task, i) => {
+                      const checked = checks[`${taskKey}_${i}`];
+                      return (
+                        <div key={i} onClick={() => toggleCheck(i)} style={{
+                          display: "flex", gap: "10px", alignItems: "flex-start",
+                          padding: "7px 0",
+                          borderBottom: i < tasks.length - 1 ? "1px solid #0f172a" : "none",
+                          cursor: "pointer",
+                        }}>
+                          <div style={{
+                            width: "14px", height: "14px", minWidth: "14px",
+                            marginTop: "1px",
+                            border: `1px solid ${checked ? "#34d399" : "#334155"}`,
+                            background: checked ? "#0d2a1a" : "transparent",
+                            display: "flex", alignItems: "center", justifyContent: "center",
+                          }}>
+                            {checked && <span style={{ color: "#34d399", fontSize: "9px" }}>✓</span>}
+                          </div>
+                          <span style={{
+                            fontSize: "11px",
+                            color: checked ? "#475569" : "#94a3b8",
+                            textDecoration: checked ? "line-through" : "none",
+                            lineHeight: 1.5,
+                          }}>
+                            {task}
+                          </span>
+                        </div>
+                      );
+                    })}
+
+                    {!doneDays[taskKey] && (
+                      <button onClick={markDone}
+                        onMouseOver={e => e.currentTarget.style.background = `${phase.color}22`}
+                        onMouseOut={e => e.currentTarget.style.background = "transparent"}
+                        style={{
+                          width: "100%", marginTop: "14px", padding: "10px",
+                          background: "transparent",
+                          border: `1px solid ${phase.color}`,
+                          color: phase.color,
+                          fontSize: "11px", letterSpacing: "2px",
+                          fontWeight: 700, transition: "background 0.2s",
+                        }}>
+                        ◈ MARK DAY {viewDay} COMPLETE
+                      </button>
+                    )}
+                  </Card>
+
+                  {/* Hours breakdown */}
+                  <Card>
+                    <Label>HOURS BREAKDOWN</Label>
+                    {phase.schedule.map(s => (
+                      <div key={s.subject} style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "8px" }}>
+                        <div style={{ width: "64px", fontSize: "10px", color: s.color }}>{s.subject}</div>
+                        <div style={{ flex: 1, height: "5px", background: "#1e293b" }}>
+                          <div style={{ height: "100%", width: `${(s.hours / 6) * 100}%`, background: s.color }} />
+                        </div>
+                        <div style={{ fontSize: "11px", color: s.color, width: "28px", textAlign: "right" }}>{s.hours}h</div>
+                      </div>
+                    ))}
+                    <div style={{
+                      marginTop: "10px", paddingTop: "10px", borderTop: "1px solid #1e293b",
+                      display: "flex", justifyContent: "space-between", fontSize: "12px",
+                    }}>
+                      <span style={{ color: "#475569", letterSpacing: "2px" }}>TOTAL</span>
+                      <span style={{ color: phase.color, fontWeight: 900 }}>{phase.total} hrs/day</span>
+                    </div>
+                  </Card>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  </script>
+
+  <div class="top-bar"></div>
+</body>
+</html>

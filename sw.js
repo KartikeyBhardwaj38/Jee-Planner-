@@ -1,7 +1,7 @@
 const CACHE = "jee-planner-v1";
 const ASSETS = [
-  "/jee-planner/",
-  "/jee-planner/index.html",
+  "/Jee-Planner-/",
+  "/Jee-Planner-/index.html",
   "https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.development.js",
   "https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.js",
   "https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"
@@ -27,6 +27,20 @@ self.addEventListener("fetch", e => {
       const copy = res.clone();
       caches.open(CACHE).then(c => c.put(e.request, copy));
       return res;
-    })).catch(() => caches.match("/jee-planner/index.html"))
+    })).catch(() => caches.match("/Jee-Planner-/index.html"))
   );
 });
+```
+→ Commit
+
+---
+
+### 🔧 Fix 3 — Edit `index.html` on GitHub
+
+Find this line near the bottom:
+```
+navigator.serviceWorker.register("/jee-planner/sw.js")
+```
+Change to:
+```
+navigator.serviceWorker.register("sw.js")

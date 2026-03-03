@@ -1,4 +1,31 @@
-import { useState, useRef } from "react";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>JEE 2026 — Ultimate AI Study System</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#fff;font-family:'Inter',-apple-system,sans-serif;font-size:13px}
+  ::-webkit-scrollbar{width:5px;height:5px}
+  ::-webkit-scrollbar-track{background:#f1f5f9}
+  ::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:3px}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<!-- ⚠️ IMPORTANT: Replace YOUR_API_KEY_HERE with your Anthropic API key -->
+<!-- Never commit a real API key to a public GitHub repo.               -->
+<!-- Use a backend proxy or environment variable for production.        -->
+
+<script type="text/babel">
+const API_KEY = "YOUR_API_KEY_HERE"; // ← replace this
+
+const { useState, useRef } = React;
 
 /* ═══════════════════════════ DATA ═══════════════════════════ */
 const SUBJ = {
@@ -31,77 +58,75 @@ const PLAN = [
   {n:6,date:"Mar 9",dow:"Sat",title:"Ionic Equilibrium + Quadratic Equations",chem:"Ionic Equilibrium — pH, Buffer, Henderson, Ksp",math:"Quadratic Equations — Wavy Curve, Inequalities",isTest:false,week:2},
   {n:7,date:"Mar 10",dow:"Sun",title:"TEST + Electrochemistry + Work Energy Power",chem:"Electrochemistry — Galvanic Cell, Nernst, Faraday",phys:"Work Energy Power — Variable Force, Conservation",isTest:true,testName:"Mastery 2.8",week:2},
   {n:8,date:"Mar 11",dow:"Mon",title:"Chemical Kinetics + Sequence+Series + Binomial",chem:"Chemical Kinetics — Rate Laws, Arrhenius, Half-Life",math:"Sequence & Series + Binomial Theorem",isTest:false,week:2},
-  {n:9,date:"Mar 12",dow:"Tue",title:"TEST + Solutions+Solid State + COM+Collisions",chem:"Solutions (Raoult's) + Solid State (packing, voids)",phys:"Centre of Mass + Collisions (elastic/inelastic)",isTest:true,testName:"Mastery 2.9",week:2},
+  {n:9,date:"Mar 12",dow:"Tue",title:"TEST + Solutions+Solid State + COM+Collisions",chem:"Solutions (Raoult's) + Solid State",phys:"Centre of Mass + Collisions (elastic/inelastic)",isTest:true,testName:"Mastery 2.9",week:2},
   {n:10,date:"Mar 13",dow:"Wed",title:"p-Block Gr 13–16 + P&C + Probability",chem:"p-Block Groups 13–16 (NCERT complete)",math:"P & C + Probability + Bayes Theorem",isTest:false,week:2},
-  {n:11,date:"Mar 14",dow:"Thu",title:"p-Block Gr 17–18 + Rotational Motion Part 1",chem:"Halogens + Noble Gases + full p-Block PYQ sweep",phys:"Rotational — MOI, Torque, Parallel/Perp Axes",isTest:false,week:3},
-  {n:12,date:"Mar 15",dow:"Fri",title:"TEST + d & f Block + Complex Numbers",chem:"d-Block + f-Block — Colors, Oxidation States, Alloys",math:"Complex Numbers — Polar, De Moivre, Roots of Unity",isTest:true,testName:"RTS Benchmark",week:3},
-  {n:13,date:"Mar 16",dow:"Sat",title:"Coordination Part 1 + Rotational Part 2",chem:"Coordination — Nomenclature, Ligands, Isomerism",phys:"Rotational — Rolling, Angular Momentum, Conservation",isTest:false,week:3},
-  {n:14,date:"Mar 17",dow:"Sun",title:"Coordination Part 2 + Straight Lines + Circles",chem:"Coordination — CFT, CFSE, Color, Magnetic Properties",math:"Straight Lines + Circles (full coordinate geometry)",isTest:false,week:3},
-  {n:15,date:"Mar 18",dow:"Mon",title:"Metallurgy + GOC Intro + Gravitation+SHM+Fluid",chem:"Metallurgy (1.5hr) + GOC — Inductive, Resonance, Hyperconj",phys:"Gravitation + SHM + Fluid Mechanics (3 chapters)",isTest:false,week:3},
+  {n:11,date:"Mar 14",dow:"Thu",title:"p-Block Gr 17–18 + Rotational Motion Part 1",chem:"Halogens + Noble Gases + full p-Block PYQ",phys:"Rotational — MOI, Torque, Parallel/Perp Axes",isTest:false,week:3},
+  {n:12,date:"Mar 15",dow:"Fri",title:"TEST + d & f Block + Complex Numbers",chem:"d-Block + f-Block — Colors, Oxidation States",math:"Complex Numbers — Polar, De Moivre, Roots of Unity",isTest:true,testName:"RTS Benchmark",week:3},
+  {n:13,date:"Mar 16",dow:"Sat",title:"Coordination Part 1 + Rotational Part 2",chem:"Coordination — Nomenclature, Ligands, Isomerism",phys:"Rotational — Rolling, Angular Momentum",isTest:false,week:3},
+  {n:14,date:"Mar 17",dow:"Sun",title:"Coordination Part 2 + Straight Lines + Circles",chem:"Coordination — CFT, CFSE, Color, Magnetic",math:"Straight Lines + Circles (full coordinate geometry)",isTest:false,week:3},
+  {n:15,date:"Mar 18",dow:"Mon",title:"Metallurgy + GOC Intro + Gravitation+SHM+Fluid",chem:"Metallurgy (1.5hr) + GOC — Inductive, Resonance",phys:"Gravitation + SHM + Fluid Mechanics",isTest:false,week:3},
   {n:16,date:"Mar 19",dow:"Tue",title:"TEST + GOC Complete + Conics",chem:"GOC Part 2 — SN1, SN2, E1, E2 mechanisms",math:"Parabola + Ellipse + Hyperbola",isTest:true,testName:"PYQ 2024",week:4},
-  {n:17,date:"Mar 20",dow:"Wed",title:"Hydrocarbons+Halogens + Thermo+KTG+Waves",chem:"Hydrocarbons + Halogen Derivatives (GOC applied)",phys:"Thermodynamics (Phys) + KTG + Waves & Sound",isTest:false,week:4},
-  {n:18,date:"Mar 21",dow:"Thu",title:"Alcohols+Phenols+Ethers + Vectors+3D Geometry",chem:"Alcohols + Phenols + Ethers (Williamson synthesis)",math:"Vectors + 3D Geometry (always together)",isTest:false,week:4},
-  {n:19,date:"Mar 22",dow:"Fri",title:"TEST + Aldehydes+Ketones + Electrostatics",chem:"Aldehydes + Ketones — Aldol, Cannizzaro, Named reactions",phys:"Electrostatics — Coulomb, Gauss Law, Potential, Dipole",isTest:true,testName:"AITS-17",week:4},
-  {n:20,date:"Mar 23",dow:"Sat",title:"Carboxylic Acids+Amines + Limits+Differentiation",chem:"Carboxylic Acids + Amines + Diazonium Salts",math:"Limits + Continuity + Differentiation (all rules)",isTest:false,week:4},
-  {n:21,date:"Mar 24",dow:"Sun",title:"TEST ★ KEY + Polymers+Biomolecules + Capacitors",chem:"Polymers + Biomolecules (NCERT — free marks)",phys:"Capacitors — Series/Parallel, Energy, Dielectric",isTest:true,testName:"PYQ 2025 ★ KEY",week:4},
-  {n:22,date:"Mar 25",dow:"Mon",title:"NCERT Inorganic Revision + Integration + AOD",chem:"NCERT Inorganic Full Revision (p-Block to Coord)",math:"Indefinite Integration (full) + AOD",isTest:false,week:5},
-  {n:23,date:"Mar 26",dow:"Tue",title:"TEST + NCERT Organic Revision + Current Electricity",chem:"NCERT Organic — All Named Reactions consolidated",phys:"Current Electricity — Kirchhoff, Wheatstone, Potentiometer",isTest:true,testName:"Mastery 2.11",week:5},
-  {n:24,date:"Mar 27",dow:"Wed",title:"Physical Chem PYQ Deep + Definite Integration",chem:"Physical Chemistry Full PYQ + N Avasthi Problems",math:"Definite Integration — King's property + Advanced",isTest:false,week:5},
-  {n:25,date:"Mar 28",dow:"Thu",title:"TEST + Organic PYQ + Magnetism",chem:"Organic Full PYQ Sweep (GOC to Amines)",phys:"Magnetism — Biot-Savart, Ampere, Force on current",isTest:true,testName:"Mock 1 Online",week:5},
+  {n:17,date:"Mar 20",dow:"Wed",title:"Hydrocarbons+Halogens + Thermo+KTG+Waves",chem:"Hydrocarbons + Halogen Derivatives",phys:"Thermodynamics (Phys) + KTG + Waves & Sound",isTest:false,week:4},
+  {n:18,date:"Mar 21",dow:"Thu",title:"Alcohols+Phenols+Ethers + Vectors+3D Geometry",chem:"Alcohols + Phenols + Ethers (Williamson synthesis)",math:"Vectors + 3D Geometry",isTest:false,week:4},
+  {n:19,date:"Mar 22",dow:"Fri",title:"TEST + Aldehydes+Ketones + Electrostatics",chem:"Aldehydes + Ketones — Aldol, Cannizzaro",phys:"Electrostatics — Coulomb, Gauss Law, Potential",isTest:true,testName:"AITS-17",week:4},
+  {n:20,date:"Mar 23",dow:"Sat",title:"Carboxylic Acids+Amines + Limits+Differentiation",chem:"Carboxylic Acids + Amines + Diazonium Salts",math:"Limits + Continuity + Differentiation",isTest:false,week:4},
+  {n:21,date:"Mar 24",dow:"Sun",title:"TEST + Polymers+Biomolecules + Capacitors",chem:"Polymers + Biomolecules (NCERT — free marks)",phys:"Capacitors — Series/Parallel, Energy, Dielectric",isTest:true,testName:"PYQ 2025 ★ KEY",week:4},
+  {n:22,date:"Mar 25",dow:"Mon",title:"NCERT Inorganic Revision + Integration + AOD",chem:"NCERT Inorganic Full Revision",math:"Indefinite Integration (full) + AOD",isTest:false,week:5},
+  {n:23,date:"Mar 26",dow:"Tue",title:"TEST + NCERT Organic Revision + Current Electricity",chem:"NCERT Organic — All Named Reactions",phys:"Current Electricity — Kirchhoff, Wheatstone",isTest:true,testName:"Mastery 2.11",week:5},
+  {n:24,date:"Mar 27",dow:"Wed",title:"Physical Chem PYQ Deep + Definite Integration",chem:"Physical Chemistry Full PYQ + N Avasthi",math:"Definite Integration — King's property + Advanced",isTest:false,week:5},
+  {n:25,date:"Mar 28",dow:"Thu",title:"TEST + Organic PYQ + Magnetism",chem:"Organic Full PYQ Sweep",phys:"Magnetism — Biot-Savart, Ampere, Force",isTest:true,testName:"Mock 1 Online",week:5},
   {n:26,date:"Mar 29",dow:"Fri",title:"TEST + Inorganic PYQ + Area+Differential Equations",chem:"Inorganic Full PYQ Sweep",math:"Area Under Curves + Differential Equations",isTest:true,testName:"AITS-18",week:5},
-  {n:27,date:"Mar 30",dow:"Sat",title:"TEST + NCERT Final Scan + EMI+AC Circuits",chem:"NCERT Final Complete Scan (cover to cover)",phys:"EMI + Alternating Current (LC oscillations)",isTest:true,testName:"Mock 2 Online",week:5},
-  {n:28,date:"Mar 31",dow:"Sun",title:"TEST ★★ + NCERT Organic Final + Ray+Wave Optics",chem:"NCERT Organic Named Reactions — Final read",phys:"Ray Optics + Wave Optics (YDSE, diffraction, polarization)",isTest:true,testName:"Final Mock ★★",week:5},
+  {n:27,date:"Mar 30",dow:"Sat",title:"TEST + NCERT Final Scan + EMI+AC Circuits",chem:"NCERT Final Complete Scan",phys:"EMI + Alternating Current",isTest:true,testName:"Mock 2 Online",week:5},
+  {n:28,date:"Mar 31",dow:"Sun",title:"TEST + NCERT Organic Final + Ray+Wave Optics",chem:"NCERT Organic Named Reactions — Final read",phys:"Ray Optics + Wave Optics",isTest:true,testName:"Final Mock ★★",week:5},
   {n:29,date:"Apr 1",dow:"Tue",title:"FINAL REVISION DAY — ZERO NEW CONTENT",isRevision:true,week:5},
 ];
 
-const WEEK_NAMES = ["Week 1: Independents — Mechanics Chain Starts","Week 2: Ionic Eq + Algebra + Full Mechanics","Week 3: Inorganic + Rotation + Coord Geometry","Week 4: Organic Chain + Electrostatics + Calculus","Week 5: Test Storm + Final Revision"];
+const WEEK_NAMES=["Week 1: Independents + Mechanics Chain","Week 2: Ionic Eq + Algebra + Full Mechanics","Week 3: Inorganic + Rotation + Coord Geometry","Week 4: Organic Chain + Electrostatics + Calculus","Week 5: Test Storm + Final Revision"];
 
 /* ═══════════════════════ API HELPER ═══════════════════════ */
 async function askClaude(messages, sys="") {
   const r = await fetch("https://api.anthropic.com/v1/messages",{
-    method:"POST", headers:{"Content-Type":"application/json"},
+    method:"POST",
+    headers:{"Content-Type":"application/json","x-api-key":API_KEY,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
     body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,
-      system:sys||"You are an expert JEE Advanced tutor. Be precise, step-by-step, and educational.",messages})
+      system:sys||"You are an expert JEE Advanced tutor.",messages})
   });
   const d = await r.json();
-  return d.content?.map(c=>c.text||"").join("")||"Error";
+  if(d.error) return "API Error: "+d.error.message+" — Check your API key.";
+  return d.content?.map(c=>c.text||"").join("")||"No response";
 }
 
-/* ═══════════════════════ SHARED STYLES ═══════════════════ */
+/* ═════════ SHARED STYLES ═════════ */
 const inp={border:"1.5px solid #e5e7eb",borderRadius:8,padding:"8px 12px",fontSize:13,outline:"none",background:"#fff",color:"#1e293b",width:"100%"};
 const card={background:"#fff",borderRadius:14,border:"1.5px solid #e5e7eb",padding:18};
 const btn=(bg="#4f46e5")=>({background:bg,color:"#fff",border:"none",borderRadius:9,padding:"9px 18px",cursor:"pointer",fontWeight:700,fontSize:13});
 
-/* ═══════════════════════ PLANNER ══════════════════════════ */
+/* ═════════ PLANNER ═════════ */
 function PlannerTab(){
   const [done,setDone]=useState({});
   const [prog,setProg]=useState({Physics:0,Chemistry:0,Maths:0});
   const [aiQ,setAiQ]=useState(""); const [aiR,setAiR]=useState(""); const [aiLoad,setAiLoad]=useState(false);
-
   const doneCount=Object.values(done).filter(Boolean).length;
 
   const askCoach=async()=>{
     if(!aiQ.trim())return; setAiLoad(true);
     const doneList=PLAN.filter(d=>done[d.n]).map(d=>d.title).join("; ")||"none yet";
     const pending=PLAN.filter(d=>!done[d.n]&&!d.isRevision).slice(0,5).map(d=>`Day${d.n}:${d.title}`).join("; ");
-    const r=await askClaude([{role:"user",content:`29-day JEE plan. Completed: ${doneList}. Next 5: ${pending}. Progress: ${Object.entries(prog).map(([s,v])=>`${s}:${v}%`).join(", ")}. My question: ${aiQ}`}],
-      "You are an elite JEE Advanced coach. Give sharp, actionable, specific advice based on the student's 29-day schedule. Prioritize Advanced exam strategy. Be direct and motivating.");
+    const r=await askClaude([{role:"user",content:`29-day JEE plan. Completed: ${doneList}. Next 5: ${pending}. Progress: ${Object.entries(prog).map(([s,v])=>`${s}:${v}%`).join(", ")}. Question: ${aiQ}`}],
+      "You are an elite JEE Advanced coach. Give sharp actionable advice based on the 29-day schedule.");
     setAiR(r); setAiLoad(false);
   };
 
   return(
     <div style={{display:"flex",flexDirection:"column",gap:20}}>
-      {/* Stats */}
       <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:12}}>
-        {[{l:"Days Done",v:`${doneCount}/29`,c:"#4f46e5"},{l:"Tests Scheduled",v:"10",c:"#dc2626"},{l:"Total Study Hours",v:"464hr",c:"#059669"},{l:"Days Left",v:`${29-doneCount}`,c:"#d97706"}].map(s=>(
+        {[{l:"Days Done",v:`${doneCount}/29`,c:"#4f46e5"},{l:"Tests",v:"10",c:"#dc2626"},{l:"Total Hours",v:"464hr",c:"#059669"},{l:"Days Left",v:`${29-doneCount}`,c:"#d97706"}].map(s=>(
           <div key={s.l} style={{...card,textAlign:"center",padding:16}}>
             <div style={{fontSize:22,fontWeight:800,color:s.c}}>{s.v}</div>
             <div style={{fontSize:11,color:"#64748b",marginTop:3}}>{s.l}</div>
           </div>
         ))}
       </div>
-
-      {/* Progress */}
       <div style={card}>
         <div style={{fontWeight:700,fontSize:14,marginBottom:14,color:"#1e293b"}}>📊 Subject Progress</div>
         {Object.entries(SUBJ).map(([s,info])=>(
@@ -119,21 +144,6 @@ function PlannerTab(){
           </div>
         ))}
       </div>
-
-      {/* Daily Structure */}
-      <div style={{...card,background:"#f8faff",border:"1.5px solid #c7d2fe"}}>
-        <div style={{fontWeight:700,fontSize:14,color:"#4f46e5",marginBottom:12}}>⏰ Fixed Daily Structure — 16 Hours</div>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,fontSize:12}}>
-          {[["5:00–11:00 AM · 6hr","CHEMISTRY","#ecfdf5","#059669"],["11–12:00 · 1hr","CHEM PRACTICE","#f0fdf4","#16a34a"],["12–1:00 · 1hr","LUNCH BREAK","#f8fafc","#94a3b8"],["1:00–7:00 PM · 6hr","PHYSICS or MATHS","#eef2ff","#4f46e5"],["8:00–10:00 · 2hr","PYQ PRACTICE (both chapters)","#f0fdf4","#16a34a"],["10:00–11:00 · 1hr","REVISION (today's 2 chapters)","#e0f2fe","#0284c7"],["11 PM–12 AM · 1hr","OTHER SUBJECT REVISION","#fffbeb","#d97706"],["Physics Day →","1hr Maths Revision","#fdf4ff","#9333ea"],["Maths Day →","1hr Physics Revision","#fdf4ff","#9333ea"]].map(([t,l,bg,col])=>(
-            <div key={l} style={{background:bg,borderRadius:8,padding:"8px 12px",borderLeft:`3px solid ${col}`}}>
-              <div style={{fontSize:10,color:col,fontWeight:700,fontFamily:"monospace"}}>{t}</div>
-              <div style={{fontSize:12,fontWeight:700,color:"#1e293b"}}>{l}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Weekly Plan */}
       {[1,2,3,4,5].map(w=>(
         <div key={w}>
           <div style={{display:"flex",alignItems:"center",gap:12,margin:"4px 0 10px"}}>
@@ -141,9 +151,9 @@ function PlannerTab(){
             <div style={{fontSize:11,fontWeight:700,color:"#64748b",background:"#f8fafc",padding:"4px 14px",borderRadius:99,border:"1px solid #e5e7eb",whiteSpace:"nowrap"}}>{WEEK_NAMES[w-1]}</div>
             <div style={{flex:1,height:1,background:"#e5e7eb"}}/>
           </div>
-          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(330px,1fr))",gap:12}}>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(300px,1fr))",gap:12}}>
             {PLAN.filter(d=>d.week===w).map(d=>(
-              <div key={d.n} style={{...card,padding:0,overflow:"hidden",borderColor:done[d.n]?"#bbf7d0":d.isTest?"#fde68a":d.isRevision?"#c7d2fe":"#e5e7eb",opacity:done[d.n]?0.7:1}}>
+              <div key={d.n} style={{...card,padding:0,overflow:"hidden",borderColor:done[d.n]?"#bbf7d0":d.isTest?"#fde68a":d.isRevision?"#c7d2fe":"#e5e7eb",opacity:done[d.n]?0.65:1}}>
                 <div style={{padding:"12px 16px",borderBottom:"1px solid #f1f5f9",display:"flex",justifyContent:"space-between",alignItems:"flex-start",background:done[d.n]?"#f0fdf4":d.isTest?"#fffbeb":d.isRevision?"#eef2ff":"#f8fafc"}}>
                   <div style={{flex:1}}>
                     <div style={{fontSize:10,fontFamily:"monospace",color:d.isTest?"#d97706":d.isRevision?"#4f46e5":"#94a3b8",fontWeight:700,letterSpacing:1,marginBottom:3}}>{d.date} · {d.dow} · Day {d.n}</div>
@@ -153,10 +163,9 @@ function PlannerTab(){
                       {d.chem&&<span style={{background:"#ecfdf5",color:"#059669",fontSize:10,fontWeight:700,padding:"2px 8px",borderRadius:4}}>CHEM</span>}
                       {d.phys&&<span style={{background:"#eef2ff",color:"#4f46e5",fontSize:10,fontWeight:700,padding:"2px 8px",borderRadius:4}}>PHY</span>}
                       {d.math&&<span style={{background:"#fffbeb",color:"#d97706",fontSize:10,fontWeight:700,padding:"2px 8px",borderRadius:4}}>MATH</span>}
-                      {d.isRevision&&<span style={{background:"#eef2ff",color:"#4f46e5",fontSize:10,fontWeight:700,padding:"2px 8px",borderRadius:4}}>📚 REVISION ONLY</span>}
                     </div>
                   </div>
-                  <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:8,flexShrink:0,marginLeft:8}}>
+                  <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:8,marginLeft:8,flexShrink:0}}>
                     <div style={{fontSize:26,fontWeight:900,color:"#f1f5f9",lineHeight:1}}>{String(d.n).padStart(2,"0")}</div>
                     <input type="checkbox" checked={!!done[d.n]} onChange={()=>setDone(v=>({...v,[d.n]:!v[d.n]}))} style={{width:16,height:16,cursor:"pointer"}}/>
                   </div>
@@ -168,27 +177,25 @@ function PlannerTab(){
                     {d.math&&<div><span style={{color:"#d97706",fontWeight:700}}>📐 </span>{d.math}</div>}
                   </div>
                 )}
-                {d.isRevision&&<div style={{padding:"10px 16px",fontSize:12,color:"#4f46e5",fontWeight:600}}>9 PM — Stop. 8hrs sleep. Trust the 29 days. Exam day: Chem 25min → Maths 45min → Physics 40min.</div>}
+                {d.isRevision&&<div style={{padding:"10px 16px",fontSize:12,color:"#4f46e5",fontWeight:600}}>9 PM — Stop. 8hrs sleep. Trust the 29 days. Exam: Chem 25min → Maths 45min → Physics 40min.</div>}
               </div>
             ))}
           </div>
         </div>
       ))}
-
-      {/* AI Coach */}
       <div style={{...card,border:"1.5px solid #c7d2fe"}}>
-        <div style={{fontWeight:700,fontSize:14,marginBottom:12,color:"#1e293b"}}>🤖 AI Study Coach <span style={{fontSize:11,background:"#eef2ff",color:"#4f46e5",borderRadius:99,padding:"2px 8px"}}>Claude Powered</span></div>
+        <div style={{fontWeight:700,fontSize:14,marginBottom:10}}>🤖 AI Study Coach</div>
         <div style={{display:"flex",gap:10}}>
-          <input value={aiQ} onChange={e=>setAiQ(e.target.value)} onKeyDown={e=>e.key==="Enter"&&askCoach()} placeholder="Ask: Which chapter next? Study strategy? How to tackle test days?..." style={{...inp,flex:1}}/>
-          <button onClick={askCoach} disabled={aiLoad} style={{...btn(),padding:"9px 20px",opacity:aiLoad?0.7:1,flexShrink:0}}>{aiLoad?"...":"Ask AI"}</button>
+          <input value={aiQ} onChange={e=>setAiQ(e.target.value)} onKeyDown={e=>e.key==="Enter"&&askCoach()} placeholder="Ask: Study strategy, which chapter next, test day tips..." style={{...inp,flex:1}}/>
+          <button onClick={askCoach} disabled={aiLoad} style={{...btn(),flexShrink:0,opacity:aiLoad?0.7:1}}>{aiLoad?"...":"Ask AI"}</button>
         </div>
-        {aiR&&<div style={{marginTop:12,background:"#f8faff",borderRadius:10,padding:14,fontSize:13,lineHeight:1.7,color:"#1e293b",border:"1px solid #c7d2fe",whiteSpace:"pre-wrap"}}><span style={{fontWeight:700,color:"#4f46e5"}}>Coach: </span>{aiR}</div>}
+        {aiR&&<div style={{marginTop:12,background:"#f8faff",borderRadius:10,padding:14,fontSize:13,lineHeight:1.7,border:"1px solid #c7d2fe",whiteSpace:"pre-wrap"}}><b style={{color:"#4f46e5"}}>Coach: </b>{aiR}</div>}
       </div>
     </div>
   );
 }
 
-/* ═══════════════════════ PYQ PRACTICE ═════════════════════ */
+/* ═════════ PYQ PRACTICE ═════════ */
 function PYQTab({examMode}){
   const [exam,setExam]=useState(examMode==="mains"?"mains":"advanced");
   const [subj,setSubj]=useState("Physics");
@@ -211,18 +218,17 @@ function PYQTab({examMode}){
 
   const years=exam==="advanced"?ADV_YEARS:MAIN_YEARS;
   const qTypes=exam==="advanced"?["SCQ","MCQ (Multi-Correct)","Integer","Paragraph Based","Match the Column"]:["SCQ","Integer","Paragraph Based"];
-  const marks={"SCQ":exam==="advanced"?"+3/−1":"+4/−1","MCQ (Multi-Correct)":"+4/−2 (partial)","Integer":"+4/0","Paragraph Based":"+3/−1","Match the Column":"+3/−1"};
+  const marks={"SCQ":exam==="advanced"?"+3/−1":"+4/−1","MCQ (Multi-Correct)":"+4/−2","Integer":"+4/0","Paragraph Based":"+3/−1","Match the Column":"+3/−1"};
 
   const genQ=async()=>{
     setLoading(true);setQ(null);setSel(null);setIntAns("");setSubmitted(false);setExpl("");setChat([]);setHint(false);
     const t=topic||SUBJ[subj].topics[Math.floor(Math.random()*SUBJ[subj].topics.length)];
-    const conceptNote=concept==="single"?"Single focused concept.":concept==="dual"?"DUAL-CONCEPT: connects two different topics in one problem.":"MULTI-CONCEPT: integrates 3+ topics (JEE Advanced signature style).";
-    const examNote=exam==="advanced"?"JEE Advanced style: multi-step, deep reasoning, non-trivial, elegant.":"JEE Mains style: formula application, clear steps, moderate difficulty.";
-    const prompt=`Generate a ${exam==="advanced"?"JEE Advanced":"JEE Mains"} ${year} style ${diff} ${qType} on ${subj} topic: ${t}.\n${conceptNote}\n${examNote}\nReturn ONLY valid JSON (no markdown):\n{"question":"full text","options":["A) ...","B) ...","C) ...","D) ..."],"correct":"A","topic":"${t}","concepts_tested":["c1","c2"],"difficulty":"${diff}","marks":4,"negative":-1,"hint":"one-line direction (not the answer)"}`;
+    const cNote=concept==="single"?"Single concept.":concept==="dual"?"DUAL-CONCEPT: connects two different topics.":"MULTI-CONCEPT: integrates 3+ topics (JEE Advanced signature).";
+    const prompt=`Generate a ${exam==="advanced"?"JEE Advanced":"JEE Mains"} ${year} style ${diff} ${qType} on ${subj} topic: ${t}.\n${cNote}\nReturn ONLY valid JSON (no markdown):\n{"question":"full text","options":["A) ...","B) ...","C) ...","D) ..."],"correct":"A","topic":"${t}","concepts_tested":["c1"],"difficulty":"${diff}","marks":4,"negative":-1,"hint":"one-line direction"}`;
     try{
-      const res=await askClaude([{role:"user",content:prompt}],"You generate JEE questions. Return ONLY valid JSON, absolutely no markdown fences or extra text.");
+      const res=await askClaude([{role:"user",content:prompt}],"You generate JEE questions. Return ONLY valid JSON, no markdown.");
       setQ(JSON.parse(res.replace(/```json|```/g,"").trim()));
-    }catch{setQ({question:"Generation failed. Please try again.",options:[],correct:"",topic:t,concepts_tested:[],difficulty:diff,marks:4,negative:-1,hint:""});}
+    }catch(e){setQ({question:"Generation failed — check API key. Error: "+e.message,options:[],correct:"",topic:t,concepts_tested:[],difficulty:diff,marks:4,negative:-1,hint:""});}
     setLoading(false);
   };
 
@@ -233,8 +239,8 @@ function PYQTab({examMode}){
     setSubmitted(true);
     setScore(s=>({c:s.c+(isCorrect?1:0),w:s.w+(!isCorrect?1:0),tot:s.tot+1}));
     setExplLoad(true);
-    const e=await askClaude([{role:"user",content:`JEE ${exam==="advanced"?"Advanced":"Mains"} question: ${q.question}\nCorrect: ${q.correct}\nStudent answered: ${ans}\n\nProvide:\n1. CONCEPT: Key concept used\n2. FORMULA: Relevant formula(s)\n3. SOLUTION: Step-by-step solution\n4. COMMON ERROR: Mistake to avoid`}],
-      "You are an expert JEE tutor. Give clear step-by-step solutions. Mark CONCEPT:, FORMULA:, SOLUTION:, ERROR: clearly.");
+    const e=await askClaude([{role:"user",content:`JEE ${exam==="advanced"?"Advanced":"Mains"} question: ${q.question}\nCorrect: ${q.correct}\nStudent answered: ${ans}\n\nProvide:\nCONCEPT: Key concept\nFORMULA: Relevant formulas\nSOLUTION: Step-by-step\nERROR: Common mistake`}],
+      "You are an expert JEE tutor. Give clear step-by-step solutions.");
     setExpl(e);setExplLoad(false);
   };
 
@@ -242,8 +248,7 @@ function PYQTab({examMode}){
     if(!chatMsg.trim()||!q)return;
     const msgs=[...chat,{role:"user",content:chatMsg}];
     setChat(msgs);setChatMsg("");setChatLoad(true);
-    const firstUserIdx=msgs.findIndex(m=>m.role==="user");
-    const r=await askClaude(msgs.slice(firstUserIdx),`You are a JEE ${exam==="advanced"?"Advanced":"Mains"} expert. Context: question = "${q.question}", correct answer = "${q.correct}". Answer student doubts concisely.`);
+    const r=await askClaude(msgs,`JEE expert. Context: question="${q.question}", correct="${q.correct}". Answer doubts concisely.`);
     setChat(c=>[...c,{role:"assistant",content:r}]);setChatLoad(false);
   };
 
@@ -252,12 +257,13 @@ function PYQTab({examMode}){
     setPdfName(file.name);setPdfLoad(true);setPdfRes("");
     try{
       const b64=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(",")[1]);r.onerror=rej;r.readAsDataURL(file);});
-      const resp=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},
+      const resp=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",
+        headers:{"Content-Type":"application/json","x-api-key":API_KEY,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
         body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,
-          messages:[{role:"user",content:[{type:"document",source:{type:"base64",media_type:"application/pdf",data:b64}},{type:"text",text:"Extract ALL questions from this JEE PYQ paper. For each: Q1, Q2... with full question text, options A/B/C/D, subject, topic, and question type (SCQ/MCQ/Integer). Be thorough and clear."}]}]})});
+          messages:[{role:"user",content:[{type:"document",source:{type:"base64",media_type:"application/pdf",data:b64}},{type:"text",text:"Extract ALL questions from this JEE PYQ paper. For each: Q1, Q2... with full question text, options A/B/C/D, subject, topic, question type."}]}]})});
       const data=await resp.json();
       setPdfRes(data.content?.map(c=>c.text||"").join("")||"Could not extract.");
-    }catch(err){setPdfRes("Error reading PDF: "+err.message);}
+    }catch(err){setPdfRes("Error: "+err.message);}
     setPdfLoad(false);e.target.value="";
   };
 
@@ -265,13 +271,10 @@ function PYQTab({examMode}){
 
   return(
     <div style={{display:"flex",flexDirection:"column",gap:18}}>
-      {/* Exam toggle + Score */}
       <div style={{display:"flex",gap:12,flexWrap:"wrap",alignItems:"stretch"}}>
         <div style={{...card,display:"flex",gap:4,padding:"10px 12px",alignItems:"center"}}>
           {[["advanced","⚡ JEE Advanced"],["mains","📝 JEE Mains"]].map(([v,l])=>(
-            <button key={v} onClick={()=>{setExam(v);setQType("SCQ");}} style={{padding:"8px 16px",borderRadius:8,border:"none",cursor:"pointer",fontWeight:700,fontSize:12,background:exam===v?(v==="advanced"?"#4f46e5":"#059669"):"#f1f5f9",color:exam===v?"#fff":"#64748b"}}>
-              {l}
-            </button>
+            <button key={v} onClick={()=>{setExam(v);setQType("SCQ");}} style={{padding:"8px 16px",borderRadius:8,border:"none",cursor:"pointer",fontWeight:700,fontSize:12,background:exam===v?(v==="advanced"?"#4f46e5":"#059669"):"#f1f5f9",color:exam===v?"#fff":"#64748b"}}>{l}</button>
           ))}
         </div>
         {[{l:"Done",v:score.tot,c:"#4f46e5"},{l:"Correct",v:score.c,c:"#059669"},{l:"Wrong",v:score.w,c:"#dc2626"},{l:"Accuracy",v:`${acc}%`,c:acc>=60?"#059669":"#dc2626"}].map(s=>(
@@ -281,112 +284,68 @@ function PYQTab({examMode}){
           </div>
         ))}
       </div>
-
-      {/* Settings */}
       <div style={card}>
-        <div style={{fontWeight:700,fontSize:14,marginBottom:14,color:"#1e293b"}}>
-          ⚙️ {exam==="advanced"?"JEE Advanced — 48 Years (1978–2025)":"JEE Mains — 24 Years (2002–2025)"}
-        </div>
+        <div style={{fontWeight:700,fontSize:14,marginBottom:14}}>⚙️ {exam==="advanced"?"JEE Advanced — 48 Years (1978–2025)":"JEE Mains — 24 Years (2002–2025)"}</div>
         <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10,marginBottom:12}}>
-          {[["Subject",<select value={subj} onChange={e=>{setSubj(e.target.value);setTopic("");}} style={{...inp}}>{Object.keys(SUBJ).map(s=><option key={s}>{s}</option>)}</select>],
-            ["Topic",<select value={topic} onChange={e=>setTopic(e.target.value)} style={{...inp}}><option value="">🎲 Random</option>{SUBJ[subj].topics.map(t=><option key={t}>{t}</option>)}</select>],
-            ["Year (Style)",<select value={year} onChange={e=>setYear(e.target.value)} style={{...inp}}>{years.map(y=><option key={y}>{y}</option>)}</select>],
-            ["Question Type",<select value={qType} onChange={e=>setQType(e.target.value)} style={{...inp}}>{qTypes.map(t=><option key={t}>{t}</option>)}</select>],
-            ["Difficulty",<select value={diff} onChange={e=>setDiff(e.target.value)} style={{...inp}}>{["Easy","Medium","Hard","Very Hard"].map(d=><option key={d}>{d}</option>)}</select>],
-            ["Concept Level",<select value={concept} onChange={e=>setConcept(e.target.value)} style={{...inp}}><option value="single">Single Concept</option><option value="dual">Dual Concept</option><option value="multi">Multi-Concept (Advanced)</option></select>]
+          {[["Subject",<select value={subj} onChange={e=>{setSubj(e.target.value);setTopic("");}} style={inp}>{Object.keys(SUBJ).map(s=><option key={s}>{s}</option>)}</select>],
+            ["Topic",<select value={topic} onChange={e=>setTopic(e.target.value)} style={inp}><option value="">🎲 Random</option>{SUBJ[subj].topics.map(t=><option key={t}>{t}</option>)}</select>],
+            ["Year",<select value={year} onChange={e=>setYear(e.target.value)} style={inp}>{years.map(y=><option key={y}>{y}</option>)}</select>],
+            ["Type",<select value={qType} onChange={e=>setQType(e.target.value)} style={inp}>{qTypes.map(t=><option key={t}>{t}</option>)}</select>],
+            ["Difficulty",<select value={diff} onChange={e=>setDiff(e.target.value)} style={inp}>{["Easy","Medium","Hard","Very Hard"].map(d=><option key={d}>{d}</option>)}</select>],
+            ["Concept",<select value={concept} onChange={e=>setConcept(e.target.value)} style={inp}><option value="single">Single Concept</option><option value="dual">Dual Concept</option><option value="multi">Multi-Concept (Adv)</option></select>]
           ].map(([label,el])=>(
             <div key={label}><div style={{fontSize:11,fontWeight:600,color:"#64748b",marginBottom:4}}>{label}</div>{el}</div>
           ))}
         </div>
-        <div style={{display:"flex",gap:10,alignItems:"center"}}>
-          <button onClick={genQ} disabled={loading} style={{...btn(),flex:1,padding:12,background:"linear-gradient(135deg,#4f46e5,#7c3aed)",fontSize:14}}>
-            {loading?"⏳ Generating...":"🎯 Generate Question"}
-          </button>
-          <div style={{padding:"10px 14px",background:"#f8fafc",borderRadius:9,border:"1px solid #e5e7eb",fontSize:12,color:"#1e293b",flexShrink:0}}>
-            <span style={{color:"#64748b"}}>Marks: </span><b>{marks[qType]||"+4/−1"}</b>
-          </div>
+        <div style={{display:"flex",gap:10}}>
+          <button onClick={genQ} disabled={loading} style={{...btn(),flex:1,padding:12,background:"linear-gradient(135deg,#4f46e5,#7c3aed)",fontSize:14}}>{loading?"⏳ Generating...":"🎯 Generate Question"}</button>
+          <div style={{padding:"10px 14px",background:"#f8fafc",borderRadius:9,border:"1px solid #e5e7eb",fontSize:12,flexShrink:0,display:"flex",alignItems:"center"}}><b>{marks[qType]||"+4/−1"}</b></div>
         </div>
       </div>
-
-      {/* Question Card */}
       {q&&(
         <div style={card}>
           <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:14}}>
-            {[
-              [subj,SUBJ[subj].light,SUBJ[subj].color],
-              [q.topic,"#f1f5f9","#64748b"],
-              [q.difficulty,"#fef3c7","#d97706"],
-              [exam==="advanced"?`⚡ Adv ${year}`:`📝 Mains ${year}`,exam==="advanced"?"#eef2ff":"#ecfdf5",exam==="advanced"?"#4f46e5":"#059669"],
-              [`${marks[qType]||"+4/−1"}`,"#f0fdf4","#16a34a"],
-              [concept==="single"?"1-Concept":concept==="dual"?"🔗 2-Concept":"🔗🔗 Multi-Concept","#fdf4ff","#9333ea"]
-            ].map(([t,bg,col])=>(
+            {[[subj,SUBJ[subj].light,SUBJ[subj].color],[q.topic,"#f1f5f9","#64748b"],[q.difficulty,"#fef3c7","#d97706"],[exam==="advanced"?`⚡ Adv ${year}`:`📝 Mains ${year}`,exam==="advanced"?"#eef2ff":"#ecfdf5",exam==="advanced"?"#4f46e5":"#059669"],[concept==="single"?"1-Concept":concept==="dual"?"🔗 Dual":"🔗🔗 Multi","#fdf4ff","#9333ea"]].map(([t,bg,col])=>(
               <span key={t} style={{background:bg,color:col,fontSize:11,fontWeight:700,padding:"3px 10px",borderRadius:6}}>{t}</span>
             ))}
           </div>
-          <div style={{fontSize:15,lineHeight:1.85,color:"#1e293b",background:"#f8fafc",padding:"16px 18px",borderRadius:10,marginBottom:16,border:"1px solid #e5e7eb",fontWeight:500}}>
-            {q.question}
-          </div>
-          {!submitted&&q.hint&&hint&&(
-            <div style={{fontSize:12,color:"#64748b",marginBottom:12,padding:"8px 12px",background:"#fffbeb",borderRadius:8,border:"1px solid #fde68a"}}>💡 <b>Hint:</b> {q.hint}</div>
-          )}
-          {!submitted&&q.hint&&!hint&&(
-            <button onClick={()=>setHint(true)} style={{fontSize:12,color:"#d97706",background:"#fffbeb",border:"1px solid #fde68a",borderRadius:8,padding:"6px 14px",cursor:"pointer",marginBottom:12}}>💡 Show Hint</button>
-          )}
+          <div style={{fontSize:15,lineHeight:1.85,color:"#1e293b",background:"#f8fafc",padding:"16px 18px",borderRadius:10,marginBottom:14,border:"1px solid #e5e7eb"}}>{q.question}</div>
+          {!submitted&&q.hint&&!hint&&<button onClick={()=>setHint(true)} style={{fontSize:12,color:"#d97706",background:"#fffbeb",border:"1px solid #fde68a",borderRadius:8,padding:"6px 14px",cursor:"pointer",marginBottom:12}}>💡 Hint</button>}
+          {!submitted&&hint&&q.hint&&<div style={{fontSize:12,color:"#64748b",marginBottom:12,padding:"8px 12px",background:"#fffbeb",borderRadius:8,border:"1px solid #fde68a"}}>💡 <b>Hint:</b> {q.hint}</div>}
           {qType!=="Integer"&&q.options?.length>0&&(
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:16}}>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:14}}>
               {q.options.map((opt,i)=>{
                 const l=["A","B","C","D"][i];
                 const isSel=qType==="MCQ (Multi-Correct)"?sel?.includes(l):sel===l;
                 const isCorr=submitted&&(qType==="MCQ (Multi-Correct)"?q.correct.includes(l):l===q.correct);
                 const isWrong=submitted&&isSel&&!isCorr;
                 return(
-                  <div key={i} onClick={()=>{
-                    if(submitted)return;
-                    if(qType==="MCQ (Multi-Correct)")setSel(s=>s?(s.includes(l)?s.replace(l,""):s+l):l);
-                    else setSel(l);
-                  }} style={{padding:"12px 16px",borderRadius:10,cursor:submitted?"default":"pointer",border:`2px solid ${isCorr?"#059669":isWrong?"#dc2626":isSel?"#4f46e5":"#e5e7eb"}`,background:isCorr?"#f0fdf4":isWrong?"#fef2f2":isSel?"#eef2ff":"#fafafa",fontSize:14,color:"#1e293b",transition:"all 0.15s",fontWeight:(isSel||isCorr)?600:400}}>
-                    <span style={{fontWeight:700,color:"#4f46e5",marginRight:6}}>{l})</span>{opt.replace(/^[A-D]\)\s*/,"")}
-                    {isCorr&&" ✅"}{isWrong&&" ❌"}
+                  <div key={i} onClick={()=>{if(submitted)return;if(qType==="MCQ (Multi-Correct)")setSel(s=>s?(s.includes(l)?s.replace(l,""):s+l):l);else setSel(l);}}
+                    style={{padding:"12px 16px",borderRadius:10,cursor:submitted?"default":"pointer",border:`2px solid ${isCorr?"#059669":isWrong?"#dc2626":isSel?"#4f46e5":"#e5e7eb"}`,background:isCorr?"#f0fdf4":isWrong?"#fef2f2":isSel?"#eef2ff":"#fafafa",fontSize:14,color:"#1e293b",transition:"all 0.15s",fontWeight:(isSel||isCorr)?600:400}}>
+                    <span style={{fontWeight:700,color:"#4f46e5",marginRight:6}}>{l})</span>{opt.replace(/^[A-D]\)\s*/,"")}{isCorr&&" ✅"}{isWrong&&" ❌"}
                   </div>
                 );
               })}
             </div>
           )}
-          {qType==="Integer"&&!submitted&&(
-            <input type="number" value={intAns} onChange={e=>setIntAns(e.target.value)} placeholder="Integer answer (0–99)" style={{...inp,fontSize:15,marginBottom:16}}/>
-          )}
-          {submitted&&qType==="Integer"&&(
-            <div style={{padding:12,background:intAns===q.correct?"#f0fdf4":"#fef2f2",borderRadius:10,marginBottom:12,fontWeight:600,fontSize:14}}>
-              Your: {intAns} | Correct: {q.correct} {intAns===q.correct?"✅":"❌"}
-            </div>
-          )}
-          {!submitted&&(
-            <button onClick={submit} style={{...btn("#059669"),width:"100%",padding:12}}>Submit Answer</button>
-          )}
-          {submitted&&(
-            <div style={{marginTop:12,background:"#f0fdf4",borderRadius:10,padding:16,border:"1px solid #bbf7d0"}}>
-              <div style={{fontWeight:700,color:"#059669",marginBottom:8,fontSize:14}}>✅ Step-by-Step Solution</div>
-              {explLoad?<div style={{color:"#64748b",fontSize:13}}>⏳ Loading solution...</div>:
-                <div style={{fontSize:13,lineHeight:1.75,color:"#1e293b",whiteSpace:"pre-wrap"}}>{expl}</div>}
-            </div>
-          )}
-          {submitted&&(
-            <button onClick={genQ} style={{...btn(),width:"100%",marginTop:10,padding:11,background:"linear-gradient(135deg,#4f46e5,#7c3aed)"}}>⚡ Next Question</button>
-          )}
+          {qType==="Integer"&&!submitted&&<input type="number" value={intAns} onChange={e=>setIntAns(e.target.value)} placeholder="Integer answer (0–99)" style={{...inp,marginBottom:14}}/>}
+          {submitted&&qType==="Integer"&&<div style={{padding:12,background:intAns===q.correct?"#f0fdf4":"#fef2f2",borderRadius:10,marginBottom:12,fontWeight:600}}>Your: {intAns} | Correct: {q.correct} {intAns===q.correct?"✅":"❌"}</div>}
+          {!submitted&&<button onClick={submit} style={{...btn("#059669"),width:"100%",padding:12}}>Submit Answer</button>}
+          {submitted&&<div style={{marginTop:12,background:"#f0fdf4",borderRadius:10,padding:14,border:"1px solid #bbf7d0"}}>
+            <div style={{fontWeight:700,color:"#059669",marginBottom:6}}>✅ Step-by-Step Solution</div>
+            {explLoad?<div style={{color:"#64748b",fontSize:13}}>⏳ Loading...</div>:<div style={{fontSize:13,lineHeight:1.75,whiteSpace:"pre-wrap"}}>{expl}</div>}
+          </div>}
+          {submitted&&<button onClick={genQ} style={{...btn(),width:"100%",marginTop:10,padding:11,background:"linear-gradient(135deg,#4f46e5,#7c3aed)"}}>⚡ Next Question</button>}
         </div>
       )}
-
-      {/* Doubt Chat */}
       {q&&(
         <div style={{...card,border:"1.5px solid #c7d2fe"}}>
-          <div style={{fontWeight:700,fontSize:14,marginBottom:10,color:"#1e293b"}}>💬 Doubt Chat <span style={{fontSize:11,background:"#eef2ff",color:"#4f46e5",borderRadius:99,padding:"2px 8px"}}>Claude AI</span></div>
-          <div style={{maxHeight:200,overflowY:"auto",display:"flex",flexDirection:"column",gap:8,marginBottom:10}}>
+          <div style={{fontWeight:700,fontSize:14,marginBottom:10}}>💬 Doubt Chat</div>
+          <div style={{maxHeight:180,overflowY:"auto",display:"flex",flexDirection:"column",gap:8,marginBottom:10}}>
             {chat.map((m,i)=>(
-              <div key={i} style={{alignSelf:m.role==="user"?"flex-end":"flex-start",maxWidth:"82%",background:m.role==="user"?"#4f46e5":"#f1f5f9",color:m.role==="user"?"#fff":"#1e293b",borderRadius:10,padding:"9px 13px",fontSize:13,lineHeight:1.5}}>
-                {m.content}
-              </div>
+              <div key={i} style={{alignSelf:m.role==="user"?"flex-end":"flex-start",maxWidth:"82%",background:m.role==="user"?"#4f46e5":"#f1f5f9",color:m.role==="user"?"#fff":"#1e293b",borderRadius:10,padding:"9px 13px",fontSize:13}}>{m.content}</div>
             ))}
-            {chatLoad&&<div style={{color:"#64748b",fontSize:13,alignSelf:"flex-start"}}>⏳ Thinking...</div>}
+            {chatLoad&&<div style={{color:"#64748b",fontSize:13}}>⏳ Thinking...</div>}
           </div>
           <div style={{display:"flex",gap:8}}>
             <input value={chatMsg} onChange={e=>setChatMsg(e.target.value)} onKeyDown={e=>e.key==="Enter"&&sendChat()} placeholder="Ask about this question..." style={{...inp,flex:1}}/>
@@ -394,42 +353,33 @@ function PYQTab({examMode}){
           </div>
         </div>
       )}
-
-      {/* PDF Upload */}
       <div style={card}>
-        <div style={{fontWeight:700,fontSize:14,marginBottom:4,color:"#1e293b"}}>📄 Upload JEE PYQ PDF <span style={{fontSize:12,fontWeight:400,color:"#94a3b8"}}>— AI reads & extracts all questions</span></div>
-        <div style={{fontSize:12,color:"#94a3b8",marginBottom:12}}>Upload any official JEE Mains/Advanced paper PDF. Claude will extract every question, topic, and type.</div>
+        <div style={{fontWeight:700,fontSize:14,marginBottom:4}}>📄 Upload JEE PYQ PDF — AI Extraction</div>
+        <div style={{fontSize:12,color:"#94a3b8",marginBottom:12}}>Upload any official JEE paper PDF. Claude reads and extracts every question.</div>
         <div onClick={()=>fileRef.current.click()} style={{border:"2px dashed #e5e7eb",borderRadius:12,padding:20,textAlign:"center",cursor:"pointer",background:"#f8fafc"}}>
           <div style={{fontSize:26}}>📁</div>
           <div style={{fontSize:13,color:"#64748b",marginTop:4}}>{pdfName?`📄 ${pdfName}`:"Click to upload PDF"}</div>
-          <div style={{fontSize:11,color:"#94a3b8",marginTop:2}}>Supports all JEE papers · AI-powered extraction</div>
           <input ref={fileRef} type="file" accept=".pdf" style={{display:"none"}} onChange={handlePDF}/>
         </div>
-        {pdfLoad&&<div style={{marginTop:12,color:"#4f46e5",fontSize:13,textAlign:"center"}}>⏳ AI reading PDF and extracting all questions...</div>}
-        {pdfRes&&(
-          <div style={{marginTop:12,background:"#f8fafc",borderRadius:10,padding:14,fontSize:13,lineHeight:1.7,maxHeight:320,overflowY:"auto",whiteSpace:"pre-wrap",border:"1px solid #e5e7eb"}}>
-            <div style={{fontWeight:700,color:"#4f46e5",marginBottom:8}}>📋 Extracted Questions:</div>{pdfRes}
-          </div>
-        )}
+        {pdfLoad&&<div style={{marginTop:12,color:"#4f46e5",fontSize:13,textAlign:"center"}}>⏳ AI reading PDF...</div>}
+        {pdfRes&&<div style={{marginTop:12,background:"#f8fafc",borderRadius:10,padding:14,fontSize:13,lineHeight:1.7,maxHeight:280,overflowY:"auto",whiteSpace:"pre-wrap",border:"1px solid #e5e7eb"}}><b style={{color:"#4f46e5"}}>📋 Extracted Questions:</b><br/>{pdfRes}</div>}
       </div>
     </div>
   );
 }
 
-/* ═══════════════════════ WEIGHTAGE ════════════════════════ */
+/* ═════════ WEIGHTAGE ═════════ */
 function WeightageTab(){
   const [selSubj,setSelSubj]=useState("Physics");
   const [mode,setMode]=useState("both");
   const [aiQ,setAiQ]=useState(""); const [aiR,setAiR]=useState(""); const [aiLoad,setAiLoad]=useState(false);
-
   const info=SUBJ[selSubj];
   const gMax=Math.max(...info.advW,...info.mainW);
 
-  const askWeightage=async()=>{
+  const askW=async()=>{
     if(!aiQ.trim())return;setAiLoad(true);
     const wData=info.topics.map((t,i)=>`${t}: Adv=${info.advW[i]}, Mains=${info.mainW[i]}`).join("; ");
-    const r=await askClaude([{role:"user",content:`JEE ${selSubj} chapter weightage data: ${wData}. Question: ${aiQ}`}],
-      "You are a JEE strategy expert. Give specific advice on chapter prioritization based on actual JEE weightage data. Be direct and data-driven.");
+    const r=await askClaude([{role:"user",content:`${selSubj} weightage: ${wData}. Question: ${aiQ}`}],"You are a JEE strategy expert. Give direct data-driven advice on chapter prioritization.");
     setAiR(r);setAiLoad(false);
   };
 
@@ -438,90 +388,75 @@ function WeightageTab(){
       <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:12}}>
         {Object.entries(SUBJ).map(([s,info])=>{
           const topAdv=info.topics[info.advW.indexOf(Math.max(...info.advW))];
-          const topMain=info.topics[info.mainW.indexOf(Math.max(...info.mainW))];
           return(
             <div key={s} onClick={()=>setSelSubj(s)} style={{...card,borderLeft:`4px solid ${info.color}`,cursor:"pointer",background:selSubj===s?info.light:"#fff"}}>
-              <div style={{fontWeight:700,fontSize:14,color:info.color,marginBottom:8}}>{info.icon} {s}</div>
-              <div style={{fontSize:12,color:"#374151",marginBottom:2}}>Adv peak: <b style={{color:info.color}}>{topAdv}</b></div>
-              <div style={{fontSize:12,color:"#374151",marginBottom:2}}>Mains peak: <b style={{color:info.color}}>{topMain}</b></div>
-              <div style={{fontSize:11,color:"#64748b",marginTop:4}}>{info.topics.length} chapters tracked</div>
+              <div style={{fontWeight:700,fontSize:14,color:info.color,marginBottom:6}}>{info.icon} {s}</div>
+              <div style={{fontSize:12,color:"#374151"}}>Adv peak: <b style={{color:info.color}}>{topAdv}</b></div>
+              <div style={{fontSize:11,color:"#64748b",marginTop:3}}>{info.topics.length} chapters</div>
             </div>
           );
         })}
       </div>
-
       <div style={{display:"flex",gap:8,flexWrap:"wrap",alignItems:"center"}}>
         {Object.entries(SUBJ).map(([s,info])=>(
-          <button key={s} onClick={()=>setSelSubj(s)} style={{padding:"8px 18px",borderRadius:99,border:"none",cursor:"pointer",fontWeight:700,fontSize:13,background:selSubj===s?info.color:"#f1f5f9",color:selSubj===s?"#fff":"#64748b"}}>
-            {info.icon} {s}
-          </button>
+          <button key={s} onClick={()=>setSelSubj(s)} style={{padding:"8px 18px",borderRadius:99,border:"none",cursor:"pointer",fontWeight:700,fontSize:13,background:selSubj===s?info.color:"#f1f5f9",color:selSubj===s?"#fff":"#64748b"}}>{info.icon} {s}</button>
         ))}
         <div style={{marginLeft:"auto",display:"flex",gap:5}}>
-          {[["both","Both"],["advanced","Adv Only"],["mains","Mains Only"]].map(([v,l])=>(
-            <button key={v} onClick={()=>setMode(v)} style={{padding:"7px 12px",borderRadius:8,border:"none",cursor:"pointer",fontWeight:600,fontSize:12,background:mode===v?"#1e293b":"#f1f5f9",color:mode===v?"#fff":"#64748b"}}>
-              {l}
-            </button>
+          {[["both","Both"],["advanced","Adv"],["mains","Mains"]].map(([v,l])=>(
+            <button key={v} onClick={()=>setMode(v)} style={{padding:"7px 12px",borderRadius:8,border:"none",cursor:"pointer",fontWeight:600,fontSize:12,background:mode===v?"#1e293b":"#f1f5f9",color:mode===v?"#fff":"#64748b"}}>{l}</button>
           ))}
         </div>
       </div>
-
       <div style={card}>
-        <div style={{fontWeight:700,fontSize:15,marginBottom:4,color:"#1e293b"}}>{info.icon} {selSubj} — Chapter-wise Marks Weightage</div>
-        <div style={{fontSize:12,color:"#94a3b8",marginBottom:16}}>Based on PYQ analysis: Advanced 1978–2025 (48 years) · Mains 2002–2025 (24 years)</div>
+        <div style={{fontWeight:700,fontSize:15,marginBottom:4}}>{info.icon} {selSubj} — Chapter Weightage</div>
+        <div style={{fontSize:12,color:"#94a3b8",marginBottom:16}}>Advanced 1978–2025 (48 yrs) · Mains 2002–2025 (24 yrs)</div>
         <div style={{display:"flex",flexDirection:"column",gap:10}}>
           {info.topics.map((t,i)=>(
             <div key={t}>
               <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
                 <span style={{fontSize:12,fontWeight:600,color:"#374151"}}>{t}</span>
-                <span style={{fontSize:11,fontFamily:"monospace",color:"#64748b"}}>
-                  {mode!=="mains"&&`Adv:${info.advW[i]}`}{mode==="both"&&" · "}{mode!=="advanced"&&`Main:${info.mainW[i]}`}
-                </span>
+                <span style={{fontSize:11,fontFamily:"monospace",color:"#64748b"}}>{mode!=="mains"&&`Adv:${info.advW[i]}`}{mode==="both"&&" · "}{mode!=="advanced"&&`Main:${info.mainW[i]}`}</span>
               </div>
               {(mode==="both"||mode==="advanced")&&(
                 <div style={{display:"flex",gap:8,alignItems:"center",marginBottom:3}}>
                   <div style={{width:46,fontSize:9,color:"#4f46e5",fontWeight:700,fontFamily:"monospace"}}>ADV</div>
-                  <div style={{flex:1,background:"#f1f5f9",borderRadius:99,height:9,overflow:"hidden"}}>
-                    <div style={{width:`${(info.advW[i]/gMax)*100}%`,background:info.color,height:"100%",borderRadius:99}}/>
-                  </div>
+                  <div style={{flex:1,background:"#f1f5f9",borderRadius:99,height:8,overflow:"hidden"}}><div style={{width:`${(info.advW[i]/gMax)*100}%`,background:info.color,height:"100%",borderRadius:99}}/></div>
                   <div style={{width:18,fontSize:11,fontWeight:700,color:info.color,textAlign:"right"}}>{info.advW[i]}</div>
                 </div>
               )}
               {(mode==="both"||mode==="mains")&&(
                 <div style={{display:"flex",gap:8,alignItems:"center"}}>
                   <div style={{width:46,fontSize:9,color:"#059669",fontWeight:700,fontFamily:"monospace"}}>MAINS</div>
-                  <div style={{flex:1,background:"#f1f5f9",borderRadius:99,height:9,overflow:"hidden"}}>
-                    <div style={{width:`${(info.mainW[i]/gMax)*100}%`,background:"#059669",height:"100%",borderRadius:99}}/>
-                  </div>
+                  <div style={{flex:1,background:"#f1f5f9",borderRadius:99,height:8,overflow:"hidden"}}><div style={{width:`${(info.mainW[i]/gMax)*100}%`,background:"#059669",height:"100%",borderRadius:99}}/></div>
                   <div style={{width:18,fontSize:11,fontWeight:700,color:"#059669",textAlign:"right"}}>{info.mainW[i]}</div>
                 </div>
               )}
             </div>
           ))}
         </div>
-        <div style={{marginTop:18,padding:14,background:info.light,borderRadius:10,border:`1px solid ${info.border}`}}>
-          <div style={{fontWeight:700,fontSize:13,color:info.color,marginBottom:8}}>🎯 Top 5 Priority Chapters (Advanced+Mains combined)</div>
+        <div style={{marginTop:16,padding:14,background:info.light,borderRadius:10,border:`1px solid ${info.border}`}}>
+          <div style={{fontWeight:700,fontSize:13,color:info.color,marginBottom:8}}>🎯 Top 5 Priority (Adv+Mains combined)</div>
           <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
-            {[...info.topics.map((t,i)=>({t,score:info.advW[i]+info.mainW[i],a:info.advW[i],m:info.mainW[i]}))]
-              .sort((a,b)=>b.score-a.score).slice(0,5).map(({t,a,m})=>(
-              <span key={t} style={{background:"#fff",color:info.color,fontSize:12,fontWeight:700,padding:"5px 12px",borderRadius:99,border:`1.5px solid ${info.border}`}}>{t} <span style={{fontWeight:400,color:"#94a3b8"}}>({a+m})</span></span>
+            {[...info.topics.map((t,i)=>({t,score:info.advW[i]+info.mainW[i]}))]
+              .sort((a,b)=>b.score-a.score).slice(0,5).map(({t,score})=>(
+              <span key={t} style={{background:"#fff",color:info.color,fontSize:12,fontWeight:700,padding:"5px 12px",borderRadius:99,border:`1.5px solid ${info.border}`}}>{t} <span style={{fontWeight:400,color:"#94a3b8"}}>({score})</span></span>
             ))}
           </div>
         </div>
       </div>
-
       <div style={{...card,border:`1.5px solid ${SUBJ[selSubj].border}`}}>
-        <div style={{fontWeight:700,fontSize:14,marginBottom:10,color:"#1e293b"}}>🤖 Ask AI About Weightage Strategy</div>
+        <div style={{fontWeight:700,fontSize:14,marginBottom:10}}>🤖 Weightage Strategy AI</div>
         <div style={{display:"flex",gap:10}}>
-          <input value={aiQ} onChange={e=>setAiQ(e.target.value)} onKeyDown={e=>e.key==="Enter"&&askWeightage()} placeholder={`e.g. Which ${selSubj} chapters give best ROI for Advanced?`} style={{...inp,flex:1}}/>
-          <button onClick={askWeightage} disabled={aiLoad} style={{...btn(SUBJ[selSubj].color),flexShrink:0,opacity:aiLoad?0.7:1}}>{aiLoad?"...":"Ask"}</button>
+          <input value={aiQ} onChange={e=>setAiQ(e.target.value)} onKeyDown={e=>e.key==="Enter"&&askW()} placeholder={`e.g. Best ROI chapters for ${selSubj} Advanced?`} style={{...inp,flex:1}}/>
+          <button onClick={askW} disabled={aiLoad} style={{...btn(SUBJ[selSubj].color),flexShrink:0,opacity:aiLoad?0.7:1}}>{aiLoad?"...":"Ask"}</button>
         </div>
-        {aiR&&<div style={{marginTop:12,background:"#f8fafc",borderRadius:10,padding:14,fontSize:13,lineHeight:1.7,color:"#1e293b",border:"1px solid #e5e7eb",whiteSpace:"pre-wrap"}}><span style={{fontWeight:700,color:SUBJ[selSubj].color}}>Strategy: </span>{aiR}</div>}
+        {aiR&&<div style={{marginTop:12,background:"#f8fafc",borderRadius:10,padding:14,fontSize:13,lineHeight:1.7,border:"1px solid #e5e7eb",whiteSpace:"pre-wrap"}}><b style={{color:SUBJ[selSubj].color}}>Strategy: </b>{aiR}</div>}
       </div>
     </div>
   );
 }
 
-/* ═══════════════════════ BOOK PROBLEMS ═══════════════════ */
+/* ═════════ BOOK PROBLEMS ═════════ */
 function BooksTab(){
   const [subj,setSubj]=useState("Physics");
   const [book,setBook]=useState(BOOKS.Physics[0]);
@@ -536,29 +471,28 @@ function BooksTab(){
   const gen=async()=>{
     setLoading(true);setProb(null);setAns("");setSol("");setShowSol(false);
     const t=topic||SUBJ[subj].topics[Math.floor(Math.random()*SUBJ[subj].topics.length)];
-    const cNote=pType==="single"?"Single focused concept.":pType==="dual"?"DUAL-CONCEPT — combines two related topics.":"MULTI-CONCEPT — integrates 3+ topics (Advanced level).";
-    const prompt=`Generate a ${diff} ${subj} problem in the style and difficulty of "${book}" on topic: ${t}.\n${cNote}\nMatch that book's exact style, notation, and approach.\nReturn ONLY valid JSON:\n{"problem":"full problem with all data","type":"numerical/conceptual","topic":"${t}","concepts":["c1"],"answer":"with units","book_note":"style of this book"}`;
+    const cNote=pType==="single"?"Single concept.":pType==="dual"?"DUAL-CONCEPT.":"MULTI-CONCEPT (3+ topics).";
+    const prompt=`Generate a ${diff} ${subj} problem in the exact style of "${book}" on topic: ${t}.\n${cNote}\nReturn ONLY valid JSON:\n{"problem":"full problem","type":"numerical","topic":"${t}","concepts":["c1"],"answer":"with units","book_note":"style note"}`;
     try{
-      const r=await askClaude([{role:"user",content:prompt}],"You generate JEE textbook-style problems. Mimic the exact style of the specified book. Return only valid JSON.");
+      const r=await askClaude([{role:"user",content:prompt}],"Generate JEE textbook problems. Mimic the book's exact style. Return only valid JSON.");
       setProb(JSON.parse(r.replace(/```json|```/g,"").trim()));
-    }catch{setProb({problem:"Generation failed. Please try again.",type:"numerical",topic:t,concepts:[],answer:"",book_note:""});}
+    }catch(e){setProb({problem:"Generation failed. Check API key.",type:"numerical",topic:t,concepts:[],answer:"",book_note:""});}
     setLoading(false);
   };
 
   const getSol=async()=>{
     if(!prob)return;setShowSol(true);setSolLoad(true);
-    const s=await askClaude([{role:"user",content:`Book style: ${book}. Problem: ${prob.problem}\nProvide complete step-by-step solution matching this book's style. Show all formulas, substitutions, and intermediate steps. Box the final answer.`}],
-      "You are an expert tutor. Give detailed solutions matching the specified textbook's style and notation.");
+    const s=await askClaude([{role:"user",content:`Book: ${book}. Problem: ${prob.problem}\nProvide complete step-by-step solution in this book's style. Show all formulas and steps. Box the final answer.`}],
+      "You are an expert tutor matching the specified textbook's style.");
     setSol(s);setSolLoad(false);
   };
 
   return(
     <div style={{display:"flex",flexDirection:"column",gap:18}}>
       <div style={card}>
-        <div style={{fontWeight:700,fontSize:15,marginBottom:14,color:"#1e293b"}}>📚 Book-Based Problem Generator</div>
+        <div style={{fontWeight:700,fontSize:15,marginBottom:14}}>📚 Book-Based Problem Generator</div>
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:14}}>
-          {[
-            ["Subject",<select value={subj} onChange={e=>{setSubj(e.target.value);setBook(BOOKS[e.target.value][0]);setTopic("");}} style={inp}>{Object.keys(SUBJ).map(s=><option key={s}>{s}</option>)}</select>],
+          {[["Subject",<select value={subj} onChange={e=>{setSubj(e.target.value);setBook(BOOKS[e.target.value][0]);setTopic("");}} style={inp}>{Object.keys(SUBJ).map(s=><option key={s}>{s}</option>)}</select>],
             ["Book",<select value={book} onChange={e=>setBook(e.target.value)} style={inp}>{BOOKS[subj].map(b=><option key={b}>{b}</option>)}</select>],
             ["Topic",<select value={topic} onChange={e=>setTopic(e.target.value)} style={inp}><option value="">🎲 Random</option>{SUBJ[subj].topics.map(t=><option key={t}>{t}</option>)}</select>],
             ["Difficulty",<select value={diff} onChange={e=>setDiff(e.target.value)} style={inp}>{["Easy","Medium","Hard","Very Hard"].map(d=><option key={d}>{d}</option>)}</select>]
@@ -567,42 +501,27 @@ function BooksTab(){
           ))}
         </div>
         <div style={{marginBottom:14}}>
-          <div style={{fontSize:11,fontWeight:600,color:"#64748b",marginBottom:8}}>Problem Complexity</div>
+          <div style={{fontSize:11,fontWeight:600,color:"#64748b",marginBottom:8}}>Problem Type</div>
           <div style={{display:"flex",gap:8}}>
-            {[["single","Single Concept","1 topic"],["dual","Dual Concept","2 topics linked"],["multi","Multi-Concept","3+ topics (JEE Adv)"]].map(([v,l,d])=>(
+            {[["single","Single Concept"],["dual","Dual Concept"],["multi","Multi-Concept (JEE Adv)"]].map(([v,l])=>(
               <div key={v} onClick={()=>setPType(v)} style={{flex:1,padding:"10px 12px",borderRadius:10,border:`2px solid ${pType===v?"#4f46e5":"#e5e7eb"}`,background:pType===v?"#eef2ff":"#fafafa",cursor:"pointer",textAlign:"center"}}>
-                <div style={{fontWeight:700,fontSize:13,color:pType===v?"#4f46e5":"#374151"}}>{l}</div>
-                <div style={{fontSize:11,color:"#94a3b8",marginTop:2}}>{d}</div>
+                <div style={{fontWeight:700,fontSize:12,color:pType===v?"#4f46e5":"#374151"}}>{l}</div>
               </div>
             ))}
           </div>
         </div>
-        <button onClick={gen} disabled={loading} style={{...btn("#059669"),width:"100%",padding:12,fontSize:14}}>
-          {loading?"⏳ Generating...`":"📖 Generate Problem"}
-        </button>
+        <button onClick={gen} disabled={loading} style={{...btn("#059669"),width:"100%",padding:12,fontSize:14}}>{loading?"⏳ Generating...":"📖 Generate Problem"}</button>
       </div>
-
       {prob&&(
         <div style={card}>
           <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:14}}>
-            {[
-              [subj,SUBJ[subj].light,SUBJ[subj].color],
-              [prob.topic,"#f1f5f9","#64748b"],
-              [book.split("—")[0].trim(),"#ecfdf5","#059669"],
-              [diff,"#fef3c7","#d97706"],
-              [pType==="single"?"1-Concept":pType==="dual"?"🔗 2-Concept":"🔗🔗 Multi-Concept","#fdf4ff","#9333ea"]
-            ].map(([t,bg,col])=>(
+            {[[subj,SUBJ[subj].light,SUBJ[subj].color],[prob.topic,"#f1f5f9","#64748b"],[book.slice(0,20),"#ecfdf5","#059669"],[diff,"#fef3c7","#d97706"]].map(([t,bg,col])=>(
               <span key={t} style={{background:bg,color:col,fontSize:11,fontWeight:700,padding:"3px 10px",borderRadius:6}}>{t}</span>
             ))}
           </div>
-          <div style={{fontSize:15,lineHeight:1.85,color:"#1e293b",background:"#f8fafc",padding:"16px 18px",borderRadius:10,border:"1px solid #e5e7eb",marginBottom:14}}>
-            {prob.problem}
-          </div>
-          {prob.book_note&&<div style={{fontSize:12,color:"#64748b",padding:"7px 12px",background:"#fffbeb",borderRadius:8,border:"1px solid #fde68a",marginBottom:14}}>📖 Style note: {prob.book_note}</div>}
-          <div style={{marginBottom:12}}>
-            <div style={{fontSize:11,fontWeight:600,color:"#64748b",marginBottom:5}}>Your Answer:</div>
-            <input value={ans} onChange={e=>setAns(e.target.value)} placeholder="Enter your answer with units..." style={inp}/>
-          </div>
+          <div style={{fontSize:15,lineHeight:1.85,color:"#1e293b",background:"#f8fafc",padding:"16px 18px",borderRadius:10,border:"1px solid #e5e7eb",marginBottom:14}}>{prob.problem}</div>
+          {prob.book_note&&<div style={{fontSize:12,color:"#64748b",padding:"7px 12px",background:"#fffbeb",borderRadius:8,border:"1px solid #fde68a",marginBottom:14}}>📖 {prob.book_note}</div>}
+          <input value={ans} onChange={e=>setAns(e.target.value)} placeholder="Your answer with units..." style={{...inp,marginBottom:12}}/>
           <div style={{display:"flex",gap:10}}>
             <button onClick={getSol} style={{...btn("#4f46e5"),flex:1,padding:11}}>📖 Full Solution</button>
             <button onClick={gen} style={{...btn("#64748b"),flex:1,padding:11}}>🔄 New Problem</button>
@@ -610,8 +529,7 @@ function BooksTab(){
           {showSol&&(
             <div style={{marginTop:14,background:"#f0fdf4",borderRadius:10,padding:14,border:"1px solid #bbf7d0"}}>
               <div style={{fontWeight:700,color:"#059669",marginBottom:6}}>📖 Solution (Answer: {prob.answer})</div>
-              {solLoad?<div style={{color:"#64748b",fontSize:13}}>⏳ Generating solution...</div>:
-                <div style={{fontSize:13,lineHeight:1.75,color:"#1e293b",whiteSpace:"pre-wrap"}}>{sol}</div>}
+              {solLoad?<div style={{color:"#64748b",fontSize:13}}>⏳ Loading...</div>:<div style={{fontSize:13,lineHeight:1.75,whiteSpace:"pre-wrap"}}>{sol}</div>}
             </div>
           )}
         </div>
@@ -620,31 +538,20 @@ function BooksTab(){
   );
 }
 
-/* ═══════════════════════ AI TUTOR ═════════════════════════ */
+/* ═════════ AI TUTOR ═════════ */
 function TutorTab(){
-  const GREETING="Hello! I'm your JEE Advanced AI Tutor (Claude).\n\nI can help with:\n• Deep concept explanations (Physics/Chemistry/Maths)\n• Problem solving step-by-step\n• Formula derivations & proofs\n• Comparing JEE Advanced vs Mains approach\n• Chapter-wise strategy & priorities\n• Error analysis & weak area identification\n\nAsk me anything. Let's crack JEE Advanced! 🎯";
+  const GREETING="Hello! I'm your JEE Advanced AI Tutor.\n\nI can help with:\n• Deep concept explanations\n• Step-by-step problem solving\n• Formula derivations & proofs\n• JEE Advanced vs Mains approach\n• Chapter strategy & prioritization\n\nAsk me anything! 🎯";
   const [chat,setChat]=useState([{role:"assistant",content:GREETING}]);
-  const [msg,setMsg]=useState("");
-  const [loading,setLoading]=useState(false);
-  const [mode,setMode]=useState("advanced");
+  const [msg,setMsg]=useState(""); const [loading,setLoading]=useState(false); const [mode,setMode]=useState("advanced");
   const chatRef=useRef();
-
-  const QUICK=[
-    "Explain Gauss Law with all 3 geometries",
-    "GOC: Complete carbocation stability order",
-    "Rotational: Rolling without slipping derivation",
-    "Definite integration King's property proof",
-    "JEE Advanced vs Mains key strategy difference",
-    "Coordination compounds CFT vs VBT comparison"
-  ];
+  const QUICK=["Explain Gauss Law (all 3 geometries)","GOC: Carbocation stability complete order","Rotational: Rolling without slipping derivation","Definite integration King's property proof","JEE Advanced vs Mains strategy difference","Coordination: CFT vs VBT comparison"];
 
   const send=async(m)=>{
-    const text=m||msg;
-    if(!text.trim())return;
+    const text=m||msg;if(!text.trim())return;
     const newChat=[...chat,{role:"user",content:text}];
     setChat(newChat);setMsg("");setLoading(true);
     const firstUser=newChat.findIndex(x=>x.role==="user");
-    const r=await askClaude(newChat.slice(firstUser),`You are an elite JEE ${mode==="advanced"?"Advanced":"Mains"} tutor with 20 years experience. Give detailed, educational responses. For formulas, write them clearly in text. Use numbered steps for solutions. End with "Doubt cleared? 🎯" or follow-up question to check understanding.`);
+    const r=await askClaude(newChat.slice(firstUser),`You are an elite JEE ${mode==="advanced"?"Advanced":"Mains"} tutor. Give detailed step-by-step answers. End with a follow-up question to check understanding.`);
     setChat(c=>[...c,{role:"assistant",content:r}]);
     setLoading(false);
     setTimeout(()=>chatRef.current?.scrollTo(0,chatRef.current.scrollHeight),100);
@@ -654,48 +561,35 @@ function TutorTab(){
     <div style={{display:"flex",flexDirection:"column",gap:14}}>
       <div style={{display:"flex",gap:10,flexWrap:"wrap",alignItems:"center"}}>
         <div style={{display:"flex",gap:4,background:"#f1f5f9",padding:4,borderRadius:10}}>
-          {[["advanced","⚡ Advanced Mode"],["mains","📝 Mains Mode"]].map(([v,l])=>(
-            <button key={v} onClick={()=>setMode(v)} style={{padding:"7px 14px",borderRadius:8,border:"none",cursor:"pointer",fontWeight:700,fontSize:12,background:mode===v?"#4f46e5":"transparent",color:mode===v?"#fff":"#64748b"}}>
-              {l}
-            </button>
+          {[["advanced","⚡ Advanced"],["mains","📝 Mains"]].map(([v,l])=>(
+            <button key={v} onClick={()=>setMode(v)} style={{padding:"7px 14px",borderRadius:8,border:"none",cursor:"pointer",fontWeight:700,fontSize:12,background:mode===v?"#4f46e5":"transparent",color:mode===v?"#fff":"#64748b"}}>{l}</button>
           ))}
         </div>
-        <div style={{fontSize:12,color:"#94a3b8"}}>Quick:</div>
         {QUICK.slice(0,3).map(p=>(
-          <button key={p} onClick={()=>send(p)} style={{fontSize:11,padding:"5px 10px",borderRadius:99,border:"1px solid #e5e7eb",background:"#f8fafc",cursor:"pointer",color:"#374151"}}>
-            {p.slice(0,32)}{p.length>32?"...":""}
-          </button>
+          <button key={p} onClick={()=>send(p)} style={{fontSize:11,padding:"5px 10px",borderRadius:99,border:"1px solid #e5e7eb",background:"#f8fafc",cursor:"pointer",color:"#374151"}}>{p.slice(0,28)}...</button>
         ))}
       </div>
-
       <div style={{...card,padding:0,overflow:"hidden"}}>
-        <div ref={chatRef} style={{height:430,overflowY:"auto",padding:18,display:"flex",flexDirection:"column",gap:12}}>
+        <div ref={chatRef} style={{height:420,overflowY:"auto",padding:18,display:"flex",flexDirection:"column",gap:12}}>
           {chat.map((m,i)=>(
             <div key={i} style={{display:"flex",justifyContent:m.role==="user"?"flex-end":"flex-start"}}>
               <div style={{maxWidth:"85%",padding:"12px 16px",borderRadius:14,fontSize:13,lineHeight:1.75,background:m.role==="user"?"linear-gradient(135deg,#4f46e5,#7c3aed)":"#f8fafc",color:m.role==="user"?"#fff":"#1e293b",border:m.role==="assistant"?"1px solid #e5e7eb":"none",whiteSpace:"pre-wrap",wordBreak:"break-word"}}>
-                {m.role==="assistant"&&<div style={{fontSize:9,fontWeight:700,color:"#4f46e5",marginBottom:5,letterSpacing:1.5}}>JEE AI TUTOR · CLAUDE</div>}
+                {m.role==="assistant"&&<div style={{fontSize:9,fontWeight:700,color:"#4f46e5",marginBottom:5,letterSpacing:1.5}}>JEE AI TUTOR</div>}
                 {m.content}
               </div>
             </div>
           ))}
-          {loading&&(
-            <div style={{alignSelf:"flex-start",background:"#f8fafc",border:"1px solid #e5e7eb",padding:"12px 16px",borderRadius:14}}>
-              <div style={{fontSize:9,fontWeight:700,color:"#4f46e5",marginBottom:5,letterSpacing:1.5}}>JEE AI TUTOR · CLAUDE</div>
-              <div style={{color:"#64748b",fontSize:13}}>⏳ Thinking...</div>
-            </div>
-          )}
+          {loading&&<div style={{alignSelf:"flex-start",background:"#f8fafc",border:"1px solid #e5e7eb",padding:"12px 16px",borderRadius:14,fontSize:13,color:"#64748b"}}>⏳ Thinking...</div>}
         </div>
         <div style={{borderTop:"1px solid #f1f5f9",padding:14,display:"flex",gap:10}}>
           <textarea value={msg} onChange={e=>setMsg(e.target.value)} onKeyDown={e=>e.key==="Enter"&&!e.shiftKey&&(e.preventDefault(),send())}
-            placeholder="Ask any JEE question... (Enter to send, Shift+Enter for new line)" rows={2}
-            style={{...inp,flex:1,resize:"none",fontFamily:"inherit",lineHeight:1.5,height:52}}/>
-          <button onClick={()=>send()} disabled={loading} style={{...btn(),padding:"0 20px",flexShrink:0,fontSize:14}}>Send</button>
+            placeholder="Ask any JEE question... (Enter to send)" rows={2}
+            style={{...inp,flex:1,resize:"none",height:52,fontFamily:"inherit",lineHeight:1.5}}/>
+          <button onClick={()=>send()} disabled={loading} style={{...btn(),padding:"0 20px",flexShrink:0}}>Send</button>
         </div>
         <div style={{padding:"8px 14px 12px",display:"flex",gap:8,flexWrap:"wrap",borderTop:"1px solid #f8fafc"}}>
           {QUICK.slice(3).map(p=>(
-            <button key={p} onClick={()=>send(p)} style={{fontSize:11,padding:"4px 10px",borderRadius:99,border:"1px solid #e5e7eb",background:"#f8fafc",cursor:"pointer",color:"#374151"}}>
-              {p.slice(0,40)}{p.length>40?"...":""}
-            </button>
+            <button key={p} onClick={()=>send(p)} style={{fontSize:11,padding:"4px 10px",borderRadius:99,border:"1px solid #e5e7eb",background:"#f8fafc",cursor:"pointer",color:"#374151"}}>{p.slice(0,38)}...</button>
           ))}
         </div>
       </div>
@@ -703,49 +597,35 @@ function TutorTab(){
   );
 }
 
-/* ═══════════════════════ MAIN APP ═════════════════════════ */
-export default function App(){
+/* ═════════ MAIN APP ═════════ */
+function App(){
   const [tab,setTab]=useState("planner");
   const [examMode,setExamMode]=useState("advanced");
-
-  const tabs=[
-    {id:"planner",label:"📅 29-Day Plan"},
-    {id:"pyq",label:"🎯 PYQ Practice"},
-    {id:"weightage",label:"📊 Weightage"},
-    {id:"books",label:"📚 Book Problems"},
-    {id:"tutor",label:"🤖 AI Tutor"}
-  ];
+  const tabs=[{id:"planner",label:"📅 29-Day Plan"},{id:"pyq",label:"🎯 PYQ Practice"},{id:"weightage",label:"📊 Weightage"},{id:"books",label:"📚 Book Problems"},{id:"tutor",label:"🤖 AI Tutor"}];
 
   return(
-    <div style={{minHeight:"100vh",background:"#ffffff",fontFamily:"'Inter',-apple-system,sans-serif"}}>
+    <div style={{minHeight:"100vh",background:"#fff",fontFamily:"'Inter',-apple-system,sans-serif"}}>
       <div style={{background:"linear-gradient(135deg,#1e1b4b 0%,#312e81 45%,#4338ca 100%)",padding:"20px 24px 0",boxShadow:"0 4px 24px rgba(79,70,229,0.2)"}}>
         <div style={{maxWidth:1020,margin:"0 auto"}}>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:14}}>
             <div>
-              <div style={{color:"#c7d2fe",fontSize:10,fontFamily:"monospace",letterSpacing:3,marginBottom:6}}>JEE 2026 · 29-DAY PLAN · AI SYSTEM</div>
-              <div style={{color:"#fff",fontSize:20,fontWeight:800,letterSpacing:"-0.5px",lineHeight:1.2}}>
-                JEE Advanced + Mains — Complete AI System
-              </div>
-              <div style={{color:"#c7d2fe",fontSize:12,marginTop:4}}>48 Years PYQ · All Books · Multi-Concept · Claude AI · White Theme</div>
+              <div style={{color:"#c7d2fe",fontSize:10,fontFamily:"monospace",letterSpacing:3,marginBottom:4}}>JEE 2026 · 29-DAY PLAN · AI SYSTEM</div>
+              <div style={{color:"#fff",fontSize:20,fontWeight:800}}>JEE Advanced + Mains — Complete AI System</div>
+              <div style={{color:"#c7d2fe",fontSize:12,marginTop:3}}>48 Years PYQ · All Books · Multi-Concept · Claude AI</div>
             </div>
             <div style={{display:"flex",gap:4,background:"rgba(255,255,255,0.1)",padding:4,borderRadius:10,flexShrink:0,marginLeft:12}}>
-              {[["advanced","⚡ Advanced"],["mains","📝 Mains"],["both","🔄 Both"]].map(([v,l])=>(
-                <button key={v} onClick={()=>setExamMode(v)} style={{padding:"6px 12px",borderRadius:7,border:"none",cursor:"pointer",fontWeight:700,fontSize:11,background:examMode===v?"#fff":"transparent",color:examMode===v?"#4f46e5":"#c7d2fe",transition:"all 0.2s"}}>
-                  {l}
-                </button>
+              {[["advanced","⚡ Adv"],["mains","📝 Mains"],["both","🔄 Both"]].map(([v,l])=>(
+                <button key={v} onClick={()=>setExamMode(v)} style={{padding:"6px 12px",borderRadius:7,border:"none",cursor:"pointer",fontWeight:700,fontSize:11,background:examMode===v?"#fff":"transparent",color:examMode===v?"#4f46e5":"#c7d2fe"}}>{l}</button>
               ))}
             </div>
           </div>
           <div style={{display:"flex",gap:2,overflowX:"auto"}}>
             {tabs.map(t=>(
-              <button key={t.id} onClick={()=>setTab(t.id)} style={{padding:"10px 18px",background:tab===t.id?"#fff":"transparent",color:tab===t.id?"#4f46e5":"#c7d2fe",border:"none",borderRadius:"10px 10px 0 0",cursor:"pointer",fontWeight:700,fontSize:13,transition:"all 0.2s",whiteSpace:"nowrap",flexShrink:0}}>
-                {t.label}
-              </button>
+              <button key={t.id} onClick={()=>setTab(t.id)} style={{padding:"10px 18px",background:tab===t.id?"#fff":"transparent",color:tab===t.id?"#4f46e5":"#c7d2fe",border:"none",borderRadius:"10px 10px 0 0",cursor:"pointer",fontWeight:700,fontSize:13,whiteSpace:"nowrap",flexShrink:0}}>{t.label}</button>
             ))}
           </div>
         </div>
       </div>
-
       <div style={{maxWidth:1020,margin:"0 auto",padding:"24px 16px"}}>
         {tab==="planner"&&<PlannerTab/>}
         {tab==="pyq"&&<PYQTab examMode={examMode}/>}
@@ -756,3 +636,9 @@ export default function App(){
     </div>
   );
 }
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App/>);
+</script>
+</body>
+</html>

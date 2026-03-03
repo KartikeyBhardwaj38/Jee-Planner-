@@ -1,1297 +1,758 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Kartikey Bhardwaj — JEE System</title>
-  <meta name="theme-color" content="#f59e0b"/>
-  <meta name="mobile-web-app-capable" content="yes"/>
-  <meta name="apple-mobile-web-app-capable" content="yes"/>
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-  <meta name="apple-mobile-web-app-title" content="JEE Planner"/>
-  <link rel="manifest" href="manifest.json"/>
-  <link rel="apple-touch-icon" href="icon-192.png"/>
-  <link rel="icon" type="image/png" href="icon-192.png"/>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.development.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
-  <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-    body{background:#09090f;color:#e2e8f0;font-family:'Courier New',monospace;min-height:100vh;font-size:14px;}
-    ::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:#09090f;}::-webkit-scrollbar-thumb{background:#1e293b;}
-    .gbg{position:fixed;inset:0;z-index:0;pointer-events:none;
-      background-image:linear-gradient(rgba(255,255,255,0.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.018) 1px,transparent 1px);
-      background-size:44px 44px;}
-    .tbar{position:fixed;top:0;left:0;right:0;height:3px;z-index:100;}
-    .wrap{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:40px 18px 80px;}
-    button,input,textarea{font-family:'Courier New',monospace;cursor:pointer;font-size:13px;}
-    @media(max-width:640px){.twocol{grid-template-columns:1fr !important;}.sgrid{grid-template-columns:1fr 1fr !important;}.tgrid{grid-template-columns:1fr !important;}}
-    @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
-    @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-    .shake{animation:shake 0.35s ease;}.fadeup{animation:fadeUp 0.3s ease;}
-  </style>
-</head>
-<body>
-<div class="gbg"></div>
-<div class="tbar" id="topBar"></div>
-<div id="root"></div>
-<script type="text/babel">
-const {useState,useEffect,useRef} = React;
+import { useState, useRef } from "react";
 
-/* ═══════════════════════════════════════════════════════
-   DATA
-═══════════════════════════════════════════════════════ */
-const PASSWORD     = "Devasena";
-const ADV_PASSWORD = "JEEADVANCE";
-
-// ── JEE MAINS TESTS (with Online/Offline) ──
-const MAINS_TESTS = [
-  {id:"m1", date:"2026-03-05",label:"Mastery 2.7",    type:"Offline",tags:"12th"},
-  {id:"m2", date:"2026-03-08",label:"Comeback Test",  type:"Online", tags:"11/12 Part"},
-  {id:"m3", date:"2026-03-10",label:"Mastery 2.8",    type:"Offline",tags:"Full"},
-  {id:"m4", date:"2026-03-12",label:"Mastery 2.9",    type:"Offline",tags:"Full"},
-  {id:"m5", date:"2026-03-15",label:"RTS Real Test",  type:"Online", tags:""},
-  {id:"m6", date:"2026-03-19",label:"PYQ 2024 Test",  type:"Offline",tags:""},
-  {id:"m7", date:"2026-03-22",label:"AITS-17",        type:"Offline",tags:""},
-  {id:"m8", date:"2026-03-24",label:"PYQ 2025 Test",  type:"Offline",tags:""},
-  {id:"m9", date:"2026-03-26",label:"Mastery 2.11",   type:"Offline",tags:""},
-  {id:"m10",date:"2026-03-28",label:"Mock Test 1",    type:"Online", tags:""},
-  {id:"m11",date:"2026-03-29",label:"AITS-18",        type:"Offline",tags:""},
-  {id:"m12",date:"2026-03-30",label:"Mock Test 2",    type:"Online", tags:""},
-  {id:"m13",date:"2026-03-31",label:"Final Mock",     type:"Online", tags:""},
-];
-
-// ── JEE ADVANCED TESTS (Offline priority over Online) ──
-const ADV_TESTS = [
-  {id:"a1", date:"2026-04-05",label:"Adv Test 1",  type:"Online" },
-  {id:"a2", date:"2026-04-19",label:"Adv Test 2",  type:"Offline"},
-  {id:"a3", date:"2026-04-22",label:"Adv Test 3",  type:"Offline"},
-  {id:"a4", date:"2026-04-26",label:"Adv Test 4",  type:"Offline"},
-  {id:"a5", date:"2026-04-29",label:"Adv Test 5",  type:"Offline"},
-  {id:"a6", date:"2026-05-03",label:"Adv Test 6",  type:"Offline"},
-  {id:"a7", date:"2026-05-05",label:"Adv Test 7",  type:"Online" },
-  {id:"a8", date:"2026-05-06",label:"Adv Test 8",  type:"Offline"},
-  {id:"a9", date:"2026-05-07",label:"Adv Test 9",  type:"Online" },
-  {id:"a10",date:"2026-05-10",label:"Adv Test 10", type:"Offline"},
-  {id:"a11",date:"2026-05-12",label:"Adv Test 11", type:"Online" },
-  {id:"a12",date:"2026-05-13",label:"Adv Test 12", type:"Online" },
-  {id:"a13",date:"2026-05-14",label:"Final Adv",   type:"Online" },
-];
-
-// ── PHASES ──
-const PHASES = [
-  {id:1,name:"Phase 1 — Foundation Grind",   startDate:"2026-03-02",endDate:"2026-03-11",days:10,
-   color:"#f59e0b",accent:"#fcd34d",
-   schedule:[
-     {subject:"Physics",  hours:6,  icon:"⚡",color:"#60a5fa",detail:"Full concept + problem solving"},
-     {subject:"Maths",    hours:3.5,icon:"∑", color:"#a78bfa",detail:"Core topics + practice"},
-     {subject:"Chemistry",hours:4,  icon:"⚗",color:"#34d399",detail:"3.5hr study + 0.5hr NCERT reading"},
-     {subject:"Revision", hours:2,  icon:"↺",color:"#f87171",detail:"Daily consolidation"},
-   ],total:15.5,
-   tips:["High volume phase — prioritize consistency","6hr Physics = deep concept building","NCERT Chemistry 0.5hr daily"]},
-
-  {id:2,name:"Phase 2 — Mains Sharpening",  startDate:"2026-03-12",endDate:"2026-04-02",days:22,
-   color:"#3b82f6",accent:"#93c5fd",
-   schedule:[
-     {subject:"Physics",  hours:4,icon:"⚡",color:"#60a5fa",detail:"2hr PG Illustration + 2hr Mains revision",   breakdown:["2hr — PG Illustration","2hr — Mains revision"]},
-     {subject:"Maths",    hours:5,icon:"∑", color:"#a78bfa",detail:"2hr Mains lecture + 1hr sheet/DPP + 2hr adv",breakdown:["2hr — Mains lecture","1hr — Must-do sheet + DPP","2hr — Advance created"]},
-     {subject:"Chemistry",hours:5,icon:"⚗",color:"#34d399",detail:"Same as Maths + NCERT questions",            breakdown:["2hr — Mains lecture","1hr — Must-do sheet + DPP","2hr — Advance created","+ NCERT questions"]},
-     {subject:"Revision", hours:2,icon:"↺",color:"#f87171",detail:"1.5hr active revision + 0.5hr NCERT reading",breakdown:["1.5hr — Active revision","0.5hr — NCERT reading"]},
-   ],total:16,
-   tips:["Shift to Mains-focused strategy","Advance prep begins — future-proof your study","NCERT reading is your scoring edge"]},
-
-  {id:3,name:"Phase 3 — Advanced Assault",  startDate:"2026-04-03",endDate:"2026-05-12",days:40,
-   color:"#ec4899",accent:"#f9a8d4",
-   schedule:[
-     {subject:"Question Practice",hours:10,icon:"❓",color:"#f59e0b",detail:"~60 Phy + 60 Math + 60 Chem = 180 Qs"},
-     {subject:"Physics Theory",   hours:2, icon:"⚡",color:"#60a5fa",detail:"Deep concept revision + derivations"},
-     {subject:"Maths Theory",     hours:1, icon:"∑", color:"#a78bfa",detail:"Formulae + key results"},
-     {subject:"Chem Theory",      hours:2, icon:"⚗",color:"#34d399",detail:"Mechanisms + reactions"},
-     {subject:"NCERT Chemistry",  hours:1, icon:"📖",color:"#6ee7b7",detail:"Inorganic NCERT lines"},
-   ],total:16,
-   tips:["Target 280+/306 — Physics 96, Chem 102, Maths 84","~180 questions daily = 60 per subject","NCERT Chemistry is your inorganic edge"],
-   isAdvanced:true},
-];
-
-const MAINS_TASKS_P1  = ["Physics — 6 hours complete","Maths — 3.5 hours complete","Chemistry — 3.5 hours complete","Chemistry NCERT — 0.5 hours","Revision — 2 hours complete","Notes updated","DPP attempted"];
-const MAINS_TASKS_P2  = ["Physics PG Illustration — 2hr","Physics Mains Revision — 2hr","Maths Mains Lecture — 2hr","Maths Sheet + DPP — 1hr","Maths Advance — 2hr","Chemistry Mains Lecture — 2hr","Chemistry Sheet + DPP — 1hr","Chemistry Advance + NCERT — 2hr","Active Revision — 1.5hr","NCERT Reading — 0.5hr"];
-const MAINS_TEST_TASKS= ["Physics — 4 hours complete","Maths — 4 hours complete","Chemistry — 4 hours complete","Revision — 1 hour complete","Test attempted seriously","Mistakes noted down","Weak areas identified"];
-const MAINS_TEST_SCHED= [{subject:"Physics",hours:4,color:"#60a5fa"},{subject:"Maths",hours:4,color:"#a78bfa"},{subject:"Chemistry",hours:4,color:"#34d399"},{subject:"Revision",hours:1,color:"#f87171"}];
-const ADV_TASKS       = ["Question Practice — 180 Qs done","Physics Theory — 2hr done","Maths Theory — 1hr done","Chem Theory — 2hr done","NCERT Chemistry — 1hr done","Mistakes reviewed","Notes updated"];
-const ADV_TEST_TASKS  = ["Test attempted fully","Physics score noted","Chemistry score noted","Maths score noted","All mistakes analysed","Weak topics identified","Revision plan updated"];
-const ADV_TEST_SCHED  = [{subject:"Full Mock",hours:3,color:"#ec4899"},{subject:"Error Analysis",hours:2,color:"#f87171"},{subject:"Concept Rev",hours:2,color:"#f59e0b"},{subject:"Extra Practice",hours:3,color:"#60a5fa"}];
-
-const MAINS_TARGETS   = {Physics:{target:80,max:100,color:"#60a5fa"},Chemistry:{target:90,max:100,color:"#34d399"},Maths:{target:60,max:100,color:"#a78bfa"}};
-const ADV_TARGETS     = {Physics:{target:96,max:102,color:"#60a5fa"},Chemistry:{target:102,max:102,color:"#34d399"},Maths:{target:84,max:102,color:"#a78bfa"},total:280};
-
-const SUBBRANCHES = {
-  Physics:  ["Kinematics","Laws of Motion","Work-Power-Energy","Momentum & COM","Rotation","Gravitation","SHM","Fluid Mechanics","Elasticity","KTG & Thermodynamics","Calorimetry","Waves & Sound","Electrostatics","Capacitors","Current Electricity","Magnetic Force","EMI & AC Circuits","Ray Optics","Wave Optics","Photoelectric & Atomic","Nuclear Physics","Semiconductors"],
-  Chemistry:["Mole Concept","Atomic Structure","Chemical Bonding","States of Matter","Thermodynamics","Chemical Equilibrium","Ionic Equilibrium","Electrochemistry","Chemical Kinetics","Solutions","Surface Chemistry","GOC & Isomerism","Hydrocarbons","Haloalkanes","Alcohols & Ethers","Aldehydes & Ketones","Carboxylic Acids","Amines","Biomolecules","s-block","p-block","d & f-block","Coordination Compounds","NCERT Inorganic","Qualitative Analysis"],
-  Maths:    ["Complex Numbers","Quadratic Equations","Sequences & Series","Matrices & Determinants","Permutations & Combinations","Binomial Theorem","Trigonometric Functions","Inverse Trig","Properties of Triangles","Straight Lines","Circles","Parabola","Ellipse","Hyperbola","Limits & Continuity","Differentiation","Applications of Derivatives","Integration","Area Under Curves","Differential Equations","Vectors","3D Geometry","Probability & Statistics"],
+/* ═══════════════════════════ DATA ═══════════════════════════ */
+const SUBJ = {
+  Physics:{color:"#4f46e5",light:"#eef2ff",border:"#c7d2fe",icon:"⚛️",
+    topics:["Kinematics","Laws of Motion","Work Energy Power","Rotational Motion","Gravitation","SHM","Fluid Mechanics","Thermodynamics","Waves & Sound","Electrostatics","Capacitors","Current Electricity","Magnetism","EMI & AC","Ray Optics","Wave Optics","Modern Physics","Semiconductor"],
+    advW:[8,7,8,10,4,5,4,7,5,9,6,6,8,6,6,5,8,2],mainW:[7,6,7,8,3,4,3,6,4,8,5,7,7,5,6,4,7,3]},
+  Chemistry:{color:"#059669",light:"#ecfdf5",border:"#a7f3d0",icon:"🧪",
+    topics:["Atomic Structure","Periodic Table","Chemical Bonding","Thermodynamics","Chemical Equilibrium","Ionic Equilibrium","Electrochemistry","Chemical Kinetics","Solutions","Solid State","GOC","Hydrocarbons","Halogen Derivatives","Alcohols & Ethers","Aldehydes & Ketones","Carboxylic Acids","Amines","Coordination Compounds","p-Block","d & f Block","Metallurgy","Polymers","Biomolecules"],
+    advW:[5,4,7,8,6,7,7,6,5,4,8,6,5,5,6,5,6,8,7,5,3,2,2],mainW:[5,4,6,7,5,6,6,5,5,3,7,5,5,4,5,4,5,6,7,4,3,2,2]},
+  Maths:{color:"#d97706",light:"#fffbeb",border:"#fde68a",icon:"📐",
+    topics:["Sets & Functions","Quadratic Equations","Sequence & Series","Binomial Theorem","P & C","Probability","Complex Numbers","Matrices","Trigonometry","ITF","Straight Lines","Circles","Parabola","Ellipse","Hyperbola","Vectors","3D Geometry","Limits","Differentiation","Integration","AOD","Area","Differential Equations"],
+    advW:[2,5,5,5,5,7,6,6,6,4,5,5,4,3,3,6,7,5,8,10,6,6,5],mainW:[3,5,5,4,4,7,5,6,5,3,5,5,4,3,3,5,6,5,7,9,5,5,4]}
 };
 
-/* ═══════════════════════════════════════════════════════
-   UTILS
-═══════════════════════════════════════════════════════ */
-function ld(k,fb){try{const v=localStorage.getItem(k);return v?JSON.parse(v):fb;}catch{return fb;}}
-function sv(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch{}}
-function dkey(d){return d.toISOString().split("T")[0];}
-function todayStr(){return dkey(new Date());}
-function dateOfAdvDay(n){const d=new Date("2026-04-03");d.setDate(d.getDate()+n-1);return dkey(d);}
-function advDayNum(){const diff=Math.floor((new Date()-new Date("2026-04-03"))/86400000)+1;return Math.max(1,Math.min(diff,40));}
+const BOOKS = {
+  Physics:["HC Verma Vol 1","HC Verma Vol 2","DC Pandey Mechanics I","DC Pandey Mechanics II","DC Pandey Electricity & Magnetism","DC Pandey Optics & Modern","Irodov Problems","Cengage Physics","Arihant by DC Pandey"],
+  Chemistry:["N Avasthi Physical Chemistry","MS Chauhan Organic","VK Jaiswal Inorganic","NCERT XI & XII","Narendra Awasthi","Himanshu Pandey Organic","JD Lee Inorganic"],
+  Maths:["SL Loney Trigonometry","SL Loney Coordinate","Hall & Knight Algebra","Arihant Differential Calculus","Arihant Integral Calculus","Cengage Maths","ML Khanna IIT","GN Berman Calculus"]
+};
 
-function todayPhaseId(){
-  const now=new Date();
-  for(const p of PHASES){
-    if(p.startDate&&p.endDate&&now>=new Date(p.startDate)&&now<=new Date(p.endDate))return p.id;
-  }
-  if(now<new Date(PHASES[0].startDate))return 1;
-  if(now>new Date(PHASES[1].endDate))return 3;
-  return 2;
+const ADV_YEARS = Array.from({length:48},(_,i)=>2025-i);
+const MAIN_YEARS = Array.from({length:24},(_,i)=>2025-i);
+
+const PLAN = [
+  {n:1,date:"Mar 4",dow:"Mon",title:"Atomic Structure + Kinematics",chem:"Atomic Structure — Bohr, Quantum Numbers, Orbitals",phys:"Kinematics — 1D/2D, Projectile, Relative Motion",isTest:false,week:1},
+  {n:2,date:"Mar 5",dow:"Tue",title:"TEST + Periodic Table + Sets/Functions",chem:"Periodic Table + Periodic Properties",math:"Sets + Functions + Statistics",isTest:true,testName:"Mastery 2.7",week:1},
+  {n:3,date:"Mar 6",dow:"Wed",title:"Chemical Bonding + Modern Physics + Semiconductor",chem:"Chemical Bonding — VSEPR, Hybridisation, MO Theory",phys:"Modern Physics + Semiconductor (NCERT)",isTest:false,week:1},
+  {n:4,date:"Mar 7",dow:"Thu",title:"Chem Thermo + Trigonometry + Matrices + ITF",chem:"Thermodynamics — ΔH, Hess's Law, ΔG, Entropy",math:"Trigonometry + Matrices + Determinants + ITF",isTest:false,week:1},
+  {n:5,date:"Mar 8",dow:"Fri",title:"TEST + Chemical Equilibrium + Laws of Motion",chem:"Chemical Equilibrium — Kc, Kp, Le Chatelier",phys:"Laws of Motion + Friction — FBD mastery",isTest:true,testName:"Online Comeback",week:1},
+  {n:6,date:"Mar 9",dow:"Sat",title:"Ionic Equilibrium + Quadratic Equations",chem:"Ionic Equilibrium — pH, Buffer, Henderson, Ksp",math:"Quadratic Equations — Wavy Curve, Inequalities",isTest:false,week:2},
+  {n:7,date:"Mar 10",dow:"Sun",title:"TEST + Electrochemistry + Work Energy Power",chem:"Electrochemistry — Galvanic Cell, Nernst, Faraday",phys:"Work Energy Power — Variable Force, Conservation",isTest:true,testName:"Mastery 2.8",week:2},
+  {n:8,date:"Mar 11",dow:"Mon",title:"Chemical Kinetics + Sequence+Series + Binomial",chem:"Chemical Kinetics — Rate Laws, Arrhenius, Half-Life",math:"Sequence & Series + Binomial Theorem",isTest:false,week:2},
+  {n:9,date:"Mar 12",dow:"Tue",title:"TEST + Solutions+Solid State + COM+Collisions",chem:"Solutions (Raoult's) + Solid State (packing, voids)",phys:"Centre of Mass + Collisions (elastic/inelastic)",isTest:true,testName:"Mastery 2.9",week:2},
+  {n:10,date:"Mar 13",dow:"Wed",title:"p-Block Gr 13–16 + P&C + Probability",chem:"p-Block Groups 13–16 (NCERT complete)",math:"P & C + Probability + Bayes Theorem",isTest:false,week:2},
+  {n:11,date:"Mar 14",dow:"Thu",title:"p-Block Gr 17–18 + Rotational Motion Part 1",chem:"Halogens + Noble Gases + full p-Block PYQ sweep",phys:"Rotational — MOI, Torque, Parallel/Perp Axes",isTest:false,week:3},
+  {n:12,date:"Mar 15",dow:"Fri",title:"TEST + d & f Block + Complex Numbers",chem:"d-Block + f-Block — Colors, Oxidation States, Alloys",math:"Complex Numbers — Polar, De Moivre, Roots of Unity",isTest:true,testName:"RTS Benchmark",week:3},
+  {n:13,date:"Mar 16",dow:"Sat",title:"Coordination Part 1 + Rotational Part 2",chem:"Coordination — Nomenclature, Ligands, Isomerism",phys:"Rotational — Rolling, Angular Momentum, Conservation",isTest:false,week:3},
+  {n:14,date:"Mar 17",dow:"Sun",title:"Coordination Part 2 + Straight Lines + Circles",chem:"Coordination — CFT, CFSE, Color, Magnetic Properties",math:"Straight Lines + Circles (full coordinate geometry)",isTest:false,week:3},
+  {n:15,date:"Mar 18",dow:"Mon",title:"Metallurgy + GOC Intro + Gravitation+SHM+Fluid",chem:"Metallurgy (1.5hr) + GOC — Inductive, Resonance, Hyperconj",phys:"Gravitation + SHM + Fluid Mechanics (3 chapters)",isTest:false,week:3},
+  {n:16,date:"Mar 19",dow:"Tue",title:"TEST + GOC Complete + Conics",chem:"GOC Part 2 — SN1, SN2, E1, E2 mechanisms",math:"Parabola + Ellipse + Hyperbola",isTest:true,testName:"PYQ 2024",week:4},
+  {n:17,date:"Mar 20",dow:"Wed",title:"Hydrocarbons+Halogens + Thermo+KTG+Waves",chem:"Hydrocarbons + Halogen Derivatives (GOC applied)",phys:"Thermodynamics (Phys) + KTG + Waves & Sound",isTest:false,week:4},
+  {n:18,date:"Mar 21",dow:"Thu",title:"Alcohols+Phenols+Ethers + Vectors+3D Geometry",chem:"Alcohols + Phenols + Ethers (Williamson synthesis)",math:"Vectors + 3D Geometry (always together)",isTest:false,week:4},
+  {n:19,date:"Mar 22",dow:"Fri",title:"TEST + Aldehydes+Ketones + Electrostatics",chem:"Aldehydes + Ketones — Aldol, Cannizzaro, Named reactions",phys:"Electrostatics — Coulomb, Gauss Law, Potential, Dipole",isTest:true,testName:"AITS-17",week:4},
+  {n:20,date:"Mar 23",dow:"Sat",title:"Carboxylic Acids+Amines + Limits+Differentiation",chem:"Carboxylic Acids + Amines + Diazonium Salts",math:"Limits + Continuity + Differentiation (all rules)",isTest:false,week:4},
+  {n:21,date:"Mar 24",dow:"Sun",title:"TEST ★ KEY + Polymers+Biomolecules + Capacitors",chem:"Polymers + Biomolecules (NCERT — free marks)",phys:"Capacitors — Series/Parallel, Energy, Dielectric",isTest:true,testName:"PYQ 2025 ★ KEY",week:4},
+  {n:22,date:"Mar 25",dow:"Mon",title:"NCERT Inorganic Revision + Integration + AOD",chem:"NCERT Inorganic Full Revision (p-Block to Coord)",math:"Indefinite Integration (full) + AOD",isTest:false,week:5},
+  {n:23,date:"Mar 26",dow:"Tue",title:"TEST + NCERT Organic Revision + Current Electricity",chem:"NCERT Organic — All Named Reactions consolidated",phys:"Current Electricity — Kirchhoff, Wheatstone, Potentiometer",isTest:true,testName:"Mastery 2.11",week:5},
+  {n:24,date:"Mar 27",dow:"Wed",title:"Physical Chem PYQ Deep + Definite Integration",chem:"Physical Chemistry Full PYQ + N Avasthi Problems",math:"Definite Integration — King's property + Advanced",isTest:false,week:5},
+  {n:25,date:"Mar 28",dow:"Thu",title:"TEST + Organic PYQ + Magnetism",chem:"Organic Full PYQ Sweep (GOC to Amines)",phys:"Magnetism — Biot-Savart, Ampere, Force on current",isTest:true,testName:"Mock 1 Online",week:5},
+  {n:26,date:"Mar 29",dow:"Fri",title:"TEST + Inorganic PYQ + Area+Differential Equations",chem:"Inorganic Full PYQ Sweep",math:"Area Under Curves + Differential Equations",isTest:true,testName:"AITS-18",week:5},
+  {n:27,date:"Mar 30",dow:"Sat",title:"TEST + NCERT Final Scan + EMI+AC Circuits",chem:"NCERT Final Complete Scan (cover to cover)",phys:"EMI + Alternating Current (LC oscillations)",isTest:true,testName:"Mock 2 Online",week:5},
+  {n:28,date:"Mar 31",dow:"Sun",title:"TEST ★★ + NCERT Organic Final + Ray+Wave Optics",chem:"NCERT Organic Named Reactions — Final read",phys:"Ray Optics + Wave Optics (YDSE, diffraction, polarization)",isTest:true,testName:"Final Mock ★★",week:5},
+  {n:29,date:"Apr 1",dow:"Tue",title:"FINAL REVISION DAY — ZERO NEW CONTENT",isRevision:true,week:5},
+];
+
+const WEEK_NAMES = ["Week 1: Independents — Mechanics Chain Starts","Week 2: Ionic Eq + Algebra + Full Mechanics","Week 3: Inorganic + Rotation + Coord Geometry","Week 4: Organic Chain + Electrostatics + Calculus","Week 5: Test Storm + Final Revision"];
+
+/* ═══════════════════════ API HELPER ═══════════════════════ */
+async function askClaude(messages, sys="") {
+  const r = await fetch("https://api.anthropic.com/v1/messages",{
+    method:"POST", headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,
+      system:sys||"You are an expert JEE Advanced tutor. Be precise, step-by-step, and educational.",messages})
+  });
+  const d = await r.json();
+  return d.content?.map(c=>c.text||"").join("")||"Error";
 }
 
-function mainsRank(t){
-  if(t>=250)return{label:"EXCELLENT",color:"#34d399"};
-  if(t>=200)return{label:"GOOD",     color:"#60a5fa"};
-  if(t>=150)return{label:"AVERAGE",  color:"#f59e0b"};
-  return          {label:"NEEDS WORK",color:"#f87171"};
-}
-function advRank(t){
-  if(t>=280)return{label:"TARGET 🎯",color:"#f59e0b"};
-  if(t>=250)return{label:"EXCELLENT",color:"#34d399"};
-  if(t>=200)return{label:"GOOD",     color:"#60a5fa"};
-  return          {label:"NEEDS WORK",color:"#f87171"};
-}
+/* ═══════════════════════ SHARED STYLES ═══════════════════ */
+const inp={border:"1.5px solid #e5e7eb",borderRadius:8,padding:"8px 12px",fontSize:13,outline:"none",background:"#fff",color:"#1e293b",width:"100%"};
+const card={background:"#fff",borderRadius:14,border:"1.5px solid #e5e7eb",padding:18};
+const btn=(bg="#4f46e5")=>({background:bg,color:"#fff",border:"none",borderRadius:9,padding:"9px 18px",cursor:"pointer",fontWeight:700,fontSize:13});
 
-/* ═══════════════════════════════════════════════════════
-   ATOMS
-═══════════════════════════════════════════════════════ */
-function Card(p){return <div style={{background:"#0d1117",border:"1px solid #1e293b",padding:"16px",...(p.style||{})}}>{p.children}</div>;}
-function Lbl(p){return <div style={{fontSize:"14px",letterSpacing:"3px",color:"#475569",marginBottom:"12px",fontWeight:700,...(p.style||{})}}>{p.children}</div>;}
-function Tag({children,color}){
-  return <span style={{fontSize:"15px",padding:"2px 8px",background:`${color}18`,color,border:`1px solid ${color}44`,letterSpacing:"1px",whiteSpace:"nowrap"}}>{children}</span>;
-}
+/* ═══════════════════════ PLANNER ══════════════════════════ */
+function PlannerTab(){
+  const [done,setDone]=useState({});
+  const [prog,setProg]=useState({Physics:0,Chemistry:0,Maths:0});
+  const [aiQ,setAiQ]=useState(""); const [aiR,setAiR]=useState(""); const [aiLoad,setAiLoad]=useState(false);
 
-/* ═══════════════════════════════════════════════════════
-   PASSWORD SCREEN
-═══════════════════════════════════════════════════════ */
-function PasswordScreen({onUnlock}){
-  const [val,setVal]=useState(""); const [err,setErr]=useState(false);
-  const [shake,setShake]=useState(false); const [tries,setTries]=useState(0);
-  const ref=useRef(null);
-  useEffect(()=>{if(ref.current)ref.current.focus();},[]);
-  function attempt(){
-    if(val===PASSWORD){onUnlock();}
-    else{setErr(true);setShake(true);setTries(t=>t+1);setVal("");setTimeout(()=>setShake(false),400);}
-  }
+  const doneCount=Object.values(done).filter(Boolean).length;
+
+  const askCoach=async()=>{
+    if(!aiQ.trim())return; setAiLoad(true);
+    const doneList=PLAN.filter(d=>done[d.n]).map(d=>d.title).join("; ")||"none yet";
+    const pending=PLAN.filter(d=>!done[d.n]&&!d.isRevision).slice(0,5).map(d=>`Day${d.n}:${d.title}`).join("; ");
+    const r=await askClaude([{role:"user",content:`29-day JEE plan. Completed: ${doneList}. Next 5: ${pending}. Progress: ${Object.entries(prog).map(([s,v])=>`${s}:${v}%`).join(", ")}. My question: ${aiQ}`}],
+      "You are an elite JEE Advanced coach. Give sharp, actionable, specific advice based on the student's 29-day schedule. Prioritize Advanced exam strategy. Be direct and motivating.");
+    setAiR(r); setAiLoad(false);
+  };
+
   return(
-    <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",padding:"20px"}}>
-      <div className="fadeup" style={{width:"100%",maxWidth:"380px"}}>
-        <div style={{textAlign:"center",marginBottom:"40px"}}>
-          <div style={{fontSize:"15px",letterSpacing:"5px",color:"#334155",marginBottom:"10px"}}>◈ PRIVATE ACCESS</div>
-          <div style={{fontSize:"clamp(24px,6vw,38px)",fontWeight:900,letterSpacing:"-2px",lineHeight:1}}>KARTIKEY</div>
-          <div style={{fontSize:"clamp(24px,6vw,38px)",fontWeight:900,letterSpacing:"-2px",color:"#f59e0b",lineHeight:1}}>BHARDWAJ</div>
-          <div style={{fontSize:"15px",color:"#1e293b",marginTop:"10px",letterSpacing:"3px"}}>JEE MAINS + ADVANCED SYSTEM</div>
-        </div>
-        <div className={shake?"shake":""}>
-          <div style={{fontSize:"15px",letterSpacing:"3px",color:"#475569",marginBottom:"8px"}}>ACCESS CODE</div>
-          <input ref={ref} type="password" value={val}
-            onChange={e=>{setVal(e.target.value);setErr(false);}}
-            onKeyDown={e=>{if(e.key==="Enter")attempt();}}
-            placeholder="••••••••"
-            style={{width:"100%",padding:"14px 16px",background:"#0d1117",
-              border:`1px solid ${err?"#ef4444":"#1e293b"}`,color:"#e2e8f0",
-              fontSize:"18px",letterSpacing:"6px",textAlign:"center",outline:"none",transition:"border-color 0.2s"}}/>
-        </div>
-        {err&&<div className="fadeup" style={{margin:"10px 0",padding:"10px",background:"#ef444412",border:"1px solid #ef444433",fontSize:"14px",color:"#f87171",textAlign:"center"}}>
-          ✕ WRONG CODE{tries>=3&&<span style={{color:"#7f1d1d"}}> — hint: your warrior's name</span>}
-        </div>}
-        <button onClick={attempt}
-          onMouseOver={e=>{e.currentTarget.style.background="#f59e0b";e.currentTarget.style.color="#000";}}
-          onMouseOut={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.color="#f59e0b";}}
-          style={{width:"100%",marginTop:"6px",padding:"13px",background:"transparent",border:"1px solid #f59e0b",color:"#f59e0b",fontSize:"15px",letterSpacing:"3px",fontWeight:700,transition:"all 0.2s"}}>
-          ◈ UNLOCK PLANNER
-        </button>
-        <div style={{textAlign:"center",marginTop:"16px",fontSize:"15px",color:"#111827",letterSpacing:"2px"}}>PRIVATE · DO NOT SHARE</div>
-      </div>
-    </div>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════
-   GUIDE TAB
-═══════════════════════════════════════════════════════ */
-function GuideTab(){
-  const [open,setOpen]=useState(0);
-  const steps=[
-    {icon:"🔐",title:"Two Passwords",           desc:"Main planner opens with 'Devasena'. Phase 3 (JEE Advanced) has a separate code — 'JEEADVANCE' (all caps). This keeps your advanced plan separate."},
-    {icon:"📅",title:"3 Phases",                desc:"Phase 1 (Mar 2-11): Foundation 15.5hrs. Phase 2 (Mar 12 - Apr 2): Mains 16hrs. Phase 3 (Apr 3 - May 12): Advanced 16hrs with 180 questions/day."},
-    {icon:"✅",title:"Daily Checklist",          desc:"Each day has a task list. Tick off as you go. Hit 'Mark Day Complete' to record it. Test days auto-show a special schedule."},
-    {icon:"📝",title:"Test Tracker",             desc:"Mains tests and Advanced tests tracked separately. Both show Online/Offline type. Enter scores per subject and see your rating vs target."},
-    {icon:"📖",title:"Topic Logger & Sub-branches",desc:"In TOPICS tab: log what you studied each day. Phase 3 also shows 70 sub-branches (click to mark Revising/Done)."},
-    {icon:"📊",title:"Progress Tracker",         desc:"PROGRESS tab combines day completion + test scores into one score 0-100. Subject avg vs target shown with marker lines."},
-    {icon:"🎯",title:"JEE Advanced Target",      desc:"280+ out of 306. Physics 96+, Chemistry 102+, Maths 84+. Attempt ~80 questions in the paper. Accuracy beats quantity."},
-  ];
-  return(
-    <div className="fadeup">
-      <Card style={{marginBottom:"16px",borderColor:"#f59e0b44",background:"#f59e0b08"}}>
-        <div style={{fontSize:"14px",color:"#f59e0b",fontWeight:700,letterSpacing:"2px",marginBottom:"6px"}}>👋 KARTIKEY BHARDWAJ — JEE MAINS + ADVANCED</div>
-        <div style={{fontSize:"15px",color:"#94a3b8",lineHeight:1.7}}>Full preparation system from Mar 2 to May 12, 2026. 72 total days. Two exams. One goal.</div>
-      </Card>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:"8px",marginBottom:"16px"}} className="sgrid">
-        {[{l:"TOTAL DAYS",v:"72",c:"#f59e0b"},{l:"MAINS TESTS",v:"13",c:"#3b82f6"},{l:"ADV TESTS",v:"13",c:"#ec4899"},{l:"PHASE 1 HRS",v:"15.5",c:"#f59e0b"},{l:"PHASE 2 HRS",v:"16",c:"#3b82f6"},{l:"PHASE 3 HRS",v:"16",c:"#ec4899"}].map(s=>(
-          <Card key={s.l}><div style={{fontSize:"15px",letterSpacing:"2px",color:"#475569",marginBottom:"3px"}}>{s.l}</div><div style={{fontSize:"18px",fontWeight:900,color:s.c}}>{s.v}</div></Card>
+    <div style={{display:"flex",flexDirection:"column",gap:20}}>
+      {/* Stats */}
+      <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:12}}>
+        {[{l:"Days Done",v:`${doneCount}/29`,c:"#4f46e5"},{l:"Tests Scheduled",v:"10",c:"#dc2626"},{l:"Total Study Hours",v:"464hr",c:"#059669"},{l:"Days Left",v:`${29-doneCount}`,c:"#d97706"}].map(s=>(
+          <div key={s.l} style={{...card,textAlign:"center",padding:16}}>
+            <div style={{fontSize:22,fontWeight:800,color:s.c}}>{s.v}</div>
+            <div style={{fontSize:11,color:"#64748b",marginTop:3}}>{s.l}</div>
+          </div>
         ))}
       </div>
-      <Lbl>HOW TO USE</Lbl>
-      {steps.map((s,i)=>(
-        <div key={i} onClick={()=>setOpen(open===i?-1:i)} style={{background:"#0d1117",border:`1px solid ${open===i?"#f59e0b":"#1e293b"}`,padding:"12px",marginBottom:"7px",cursor:"pointer",transition:"border-color 0.2s"}}>
-          <div style={{display:"flex",alignItems:"center",gap:"12px"}}>
-            <div style={{width:"28px",height:"28px",minWidth:"28px",background:"#0a0a0f",border:"1px solid #1e293b",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"15px"}}>{s.icon}</div>
-            <div style={{flex:1}}>
-              <div style={{fontSize:"15px",fontWeight:700,color:open===i?"#f59e0b":"#e2e8f0"}}>{s.title}</div>
-              {open===i&&<div style={{fontSize:"14px",color:"#94a3b8",marginTop:"6px",lineHeight:1.6}}>{s.desc}</div>}
+
+      {/* Progress */}
+      <div style={card}>
+        <div style={{fontWeight:700,fontSize:14,marginBottom:14,color:"#1e293b"}}>📊 Subject Progress</div>
+        {Object.entries(SUBJ).map(([s,info])=>(
+          <div key={s} style={{marginBottom:14}}>
+            <div style={{display:"flex",justifyContent:"space-between",marginBottom:5}}>
+              <span style={{fontWeight:700,fontSize:13,color:info.color}}>{info.icon} {s}</span>
+              <span style={{fontSize:12,color:"#64748b"}}>{prog[s]}%</span>
             </div>
-            <div style={{color:"#334155",fontSize:"14px"}}>{open===i?"▲":"▼"}</div>
+            <div style={{display:"flex",gap:10,alignItems:"center"}}>
+              <div style={{flex:1,background:"#f1f5f9",borderRadius:99,height:9,overflow:"hidden"}}>
+                <div style={{width:`${prog[s]}%`,background:info.color,height:"100%",borderRadius:99,transition:"width 0.4s"}}/>
+              </div>
+              <input type="range" min={0} max={100} value={prog[s]} onChange={e=>setProg(p=>({...p,[s]:+e.target.value}))} style={{width:70}}/>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Daily Structure */}
+      <div style={{...card,background:"#f8faff",border:"1.5px solid #c7d2fe"}}>
+        <div style={{fontWeight:700,fontSize:14,color:"#4f46e5",marginBottom:12}}>⏰ Fixed Daily Structure — 16 Hours</div>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,fontSize:12}}>
+          {[["5:00–11:00 AM · 6hr","CHEMISTRY","#ecfdf5","#059669"],["11–12:00 · 1hr","CHEM PRACTICE","#f0fdf4","#16a34a"],["12–1:00 · 1hr","LUNCH BREAK","#f8fafc","#94a3b8"],["1:00–7:00 PM · 6hr","PHYSICS or MATHS","#eef2ff","#4f46e5"],["8:00–10:00 · 2hr","PYQ PRACTICE (both chapters)","#f0fdf4","#16a34a"],["10:00–11:00 · 1hr","REVISION (today's 2 chapters)","#e0f2fe","#0284c7"],["11 PM–12 AM · 1hr","OTHER SUBJECT REVISION","#fffbeb","#d97706"],["Physics Day →","1hr Maths Revision","#fdf4ff","#9333ea"],["Maths Day →","1hr Physics Revision","#fdf4ff","#9333ea"]].map(([t,l,bg,col])=>(
+            <div key={l} style={{background:bg,borderRadius:8,padding:"8px 12px",borderLeft:`3px solid ${col}`}}>
+              <div style={{fontSize:10,color:col,fontWeight:700,fontFamily:"monospace"}}>{t}</div>
+              <div style={{fontSize:12,fontWeight:700,color:"#1e293b"}}>{l}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Weekly Plan */}
+      {[1,2,3,4,5].map(w=>(
+        <div key={w}>
+          <div style={{display:"flex",alignItems:"center",gap:12,margin:"4px 0 10px"}}>
+            <div style={{flex:1,height:1,background:"#e5e7eb"}}/>
+            <div style={{fontSize:11,fontWeight:700,color:"#64748b",background:"#f8fafc",padding:"4px 14px",borderRadius:99,border:"1px solid #e5e7eb",whiteSpace:"nowrap"}}>{WEEK_NAMES[w-1]}</div>
+            <div style={{flex:1,height:1,background:"#e5e7eb"}}/>
+          </div>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(330px,1fr))",gap:12}}>
+            {PLAN.filter(d=>d.week===w).map(d=>(
+              <div key={d.n} style={{...card,padding:0,overflow:"hidden",borderColor:done[d.n]?"#bbf7d0":d.isTest?"#fde68a":d.isRevision?"#c7d2fe":"#e5e7eb",opacity:done[d.n]?0.7:1}}>
+                <div style={{padding:"12px 16px",borderBottom:"1px solid #f1f5f9",display:"flex",justifyContent:"space-between",alignItems:"flex-start",background:done[d.n]?"#f0fdf4":d.isTest?"#fffbeb":d.isRevision?"#eef2ff":"#f8fafc"}}>
+                  <div style={{flex:1}}>
+                    <div style={{fontSize:10,fontFamily:"monospace",color:d.isTest?"#d97706":d.isRevision?"#4f46e5":"#94a3b8",fontWeight:700,letterSpacing:1,marginBottom:3}}>{d.date} · {d.dow} · Day {d.n}</div>
+                    <div style={{fontSize:13,fontWeight:700,color:"#1e293b",lineHeight:1.3,marginBottom:6}}>{d.title}</div>
+                    <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
+                      {d.isTest&&<span style={{background:"#fef3c7",color:"#d97706",fontSize:10,fontWeight:700,padding:"2px 8px",borderRadius:4}}>🎯 {d.testName}</span>}
+                      {d.chem&&<span style={{background:"#ecfdf5",color:"#059669",fontSize:10,fontWeight:700,padding:"2px 8px",borderRadius:4}}>CHEM</span>}
+                      {d.phys&&<span style={{background:"#eef2ff",color:"#4f46e5",fontSize:10,fontWeight:700,padding:"2px 8px",borderRadius:4}}>PHY</span>}
+                      {d.math&&<span style={{background:"#fffbeb",color:"#d97706",fontSize:10,fontWeight:700,padding:"2px 8px",borderRadius:4}}>MATH</span>}
+                      {d.isRevision&&<span style={{background:"#eef2ff",color:"#4f46e5",fontSize:10,fontWeight:700,padding:"2px 8px",borderRadius:4}}>📚 REVISION ONLY</span>}
+                    </div>
+                  </div>
+                  <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:8,flexShrink:0,marginLeft:8}}>
+                    <div style={{fontSize:26,fontWeight:900,color:"#f1f5f9",lineHeight:1}}>{String(d.n).padStart(2,"0")}</div>
+                    <input type="checkbox" checked={!!done[d.n]} onChange={()=>setDone(v=>({...v,[d.n]:!v[d.n]}))} style={{width:16,height:16,cursor:"pointer"}}/>
+                  </div>
+                </div>
+                {!d.isRevision&&(
+                  <div style={{padding:"10px 16px",fontSize:12,color:"#374151",lineHeight:1.6}}>
+                    {d.chem&&<div style={{marginBottom:3}}><span style={{color:"#059669",fontWeight:700}}>🧪 </span>{d.chem}</div>}
+                    {d.phys&&<div style={{marginBottom:3}}><span style={{color:"#4f46e5",fontWeight:700}}>⚛️ </span>{d.phys}</div>}
+                    {d.math&&<div><span style={{color:"#d97706",fontWeight:700}}>📐 </span>{d.math}</div>}
+                  </div>
+                )}
+                {d.isRevision&&<div style={{padding:"10px 16px",fontSize:12,color:"#4f46e5",fontWeight:600}}>9 PM — Stop. 8hrs sleep. Trust the 29 days. Exam day: Chem 25min → Maths 45min → Physics 40min.</div>}
+              </div>
+            ))}
           </div>
         </div>
       ))}
+
+      {/* AI Coach */}
+      <div style={{...card,border:"1.5px solid #c7d2fe"}}>
+        <div style={{fontWeight:700,fontSize:14,marginBottom:12,color:"#1e293b"}}>🤖 AI Study Coach <span style={{fontSize:11,background:"#eef2ff",color:"#4f46e5",borderRadius:99,padding:"2px 8px"}}>Claude Powered</span></div>
+        <div style={{display:"flex",gap:10}}>
+          <input value={aiQ} onChange={e=>setAiQ(e.target.value)} onKeyDown={e=>e.key==="Enter"&&askCoach()} placeholder="Ask: Which chapter next? Study strategy? How to tackle test days?..." style={{...inp,flex:1}}/>
+          <button onClick={askCoach} disabled={aiLoad} style={{...btn(),padding:"9px 20px",opacity:aiLoad?0.7:1,flexShrink:0}}>{aiLoad?"...":"Ask AI"}</button>
+        </div>
+        {aiR&&<div style={{marginTop:12,background:"#f8faff",borderRadius:10,padding:14,fontSize:13,lineHeight:1.7,color:"#1e293b",border:"1px solid #c7d2fe",whiteSpace:"pre-wrap"}}><span style={{fontWeight:700,color:"#4f46e5"}}>Coach: </span>{aiR}</div>}
+      </div>
     </div>
   );
 }
 
-/* ═══════════════════════════════════════════════════════
-   PHASE 3 PASSWORD GATE
-═══════════════════════════════════════════════════════ */
-function AdvPasswordGate({onUnlock,mainsDate,onSetMainsDate}){
-  const [val,setVal]=useState(""); const [err,setErr]=useState(false);
-  const [shake,setShake]=useState(false); const [tries,setTries]=useState(0);
-  const [editingDate,setEditingDate]=useState(false);
-  const [dateInput,setDateInput]=useState(mainsDate||"");
-  const ref=useRef(null);
+/* ═══════════════════════ PYQ PRACTICE ═════════════════════ */
+function PYQTab({examMode}){
+  const [exam,setExam]=useState(examMode==="mains"?"mains":"advanced");
+  const [subj,setSubj]=useState("Physics");
+  const [topic,setTopic]=useState("");
+  const [year,setYear]=useState("2024");
+  const [qType,setQType]=useState("SCQ");
+  const [diff,setDiff]=useState("Medium");
+  const [concept,setConcept]=useState("single");
+  const [q,setQ]=useState(null);
+  const [loading,setLoading]=useState(false);
+  const [sel,setSel]=useState(null);
+  const [intAns,setIntAns]=useState("");
+  const [submitted,setSubmitted]=useState(false);
+  const [expl,setExpl]=useState(""); const [explLoad,setExplLoad]=useState(false);
+  const [chat,setChat]=useState([]); const [chatMsg,setChatMsg]=useState(""); const [chatLoad,setChatLoad]=useState(false);
+  const [score,setScore]=useState({c:0,w:0,tot:0});
+  const [hint,setHint]=useState(false);
+  const fileRef=useRef();
+  const [pdfLoad,setPdfLoad]=useState(false); const [pdfRes,setPdfRes]=useState(""); const [pdfName,setPdfName]=useState("");
 
-  const today=new Date(); today.setHours(0,0,0,0);
-  const examDate=mainsDate?new Date(mainsDate):null;
-  if(examDate)examDate.setHours(0,0,0,0);
-  const isUnlockable=!examDate||today>examDate;
-  const daysUntil=examDate&&today<=examDate?Math.ceil((examDate-today)/86400000):0;
+  const years=exam==="advanced"?ADV_YEARS:MAIN_YEARS;
+  const qTypes=exam==="advanced"?["SCQ","MCQ (Multi-Correct)","Integer","Paragraph Based","Match the Column"]:["SCQ","Integer","Paragraph Based"];
+  const marks={"SCQ":exam==="advanced"?"+3/−1":"+4/−1","MCQ (Multi-Correct)":"+4/−2 (partial)","Integer":"+4/0","Paragraph Based":"+3/−1","Match the Column":"+3/−1"};
 
-  useEffect(()=>{ if(ref.current&&isUnlockable)ref.current.focus(); },[isUnlockable]);
+  const genQ=async()=>{
+    setLoading(true);setQ(null);setSel(null);setIntAns("");setSubmitted(false);setExpl("");setChat([]);setHint(false);
+    const t=topic||SUBJ[subj].topics[Math.floor(Math.random()*SUBJ[subj].topics.length)];
+    const conceptNote=concept==="single"?"Single focused concept.":concept==="dual"?"DUAL-CONCEPT: connects two different topics in one problem.":"MULTI-CONCEPT: integrates 3+ topics (JEE Advanced signature style).";
+    const examNote=exam==="advanced"?"JEE Advanced style: multi-step, deep reasoning, non-trivial, elegant.":"JEE Mains style: formula application, clear steps, moderate difficulty.";
+    const prompt=`Generate a ${exam==="advanced"?"JEE Advanced":"JEE Mains"} ${year} style ${diff} ${qType} on ${subj} topic: ${t}.\n${conceptNote}\n${examNote}\nReturn ONLY valid JSON (no markdown):\n{"question":"full text","options":["A) ...","B) ...","C) ...","D) ..."],"correct":"A","topic":"${t}","concepts_tested":["c1","c2"],"difficulty":"${diff}","marks":4,"negative":-1,"hint":"one-line direction (not the answer)"}`;
+    try{
+      const res=await askClaude([{role:"user",content:prompt}],"You generate JEE questions. Return ONLY valid JSON, absolutely no markdown fences or extra text.");
+      setQ(JSON.parse(res.replace(/```json|```/g,"").trim()));
+    }catch{setQ({question:"Generation failed. Please try again.",options:[],correct:"",topic:t,concepts_tested:[],difficulty:diff,marks:4,negative:-1,hint:""});}
+    setLoading(false);
+  };
 
-  function attempt(){
-    if(val===ADV_PASSWORD){onUnlock();}
-    else{setErr(true);setShake(true);setTries(t=>t+1);setVal("");setTimeout(()=>setShake(false),400);}
-  }
-  function saveDate(){if(dateInput){onSetMainsDate(dateInput);setEditingDate(false);}}
+  const submit=async()=>{
+    const ans=qType==="Integer"?intAns:sel;
+    if(!ans)return;
+    const isCorrect=qType==="MCQ (Multi-Correct)"?q.correct.split("").every(l=>ans.includes(l))&&ans.split("").every(l=>q.correct.includes(l)):ans===q.correct;
+    setSubmitted(true);
+    setScore(s=>({c:s.c+(isCorrect?1:0),w:s.w+(!isCorrect?1:0),tot:s.tot+1}));
+    setExplLoad(true);
+    const e=await askClaude([{role:"user",content:`JEE ${exam==="advanced"?"Advanced":"Mains"} question: ${q.question}\nCorrect: ${q.correct}\nStudent answered: ${ans}\n\nProvide:\n1. CONCEPT: Key concept used\n2. FORMULA: Relevant formula(s)\n3. SOLUTION: Step-by-step solution\n4. COMMON ERROR: Mistake to avoid`}],
+      "You are an expert JEE tutor. Give clear step-by-step solutions. Mark CONCEPT:, FORMULA:, SOLUTION:, ERROR: clearly.");
+    setExpl(e);setExplLoad(false);
+  };
+
+  const sendChat=async()=>{
+    if(!chatMsg.trim()||!q)return;
+    const msgs=[...chat,{role:"user",content:chatMsg}];
+    setChat(msgs);setChatMsg("");setChatLoad(true);
+    const firstUserIdx=msgs.findIndex(m=>m.role==="user");
+    const r=await askClaude(msgs.slice(firstUserIdx),`You are a JEE ${exam==="advanced"?"Advanced":"Mains"} expert. Context: question = "${q.question}", correct answer = "${q.correct}". Answer student doubts concisely.`);
+    setChat(c=>[...c,{role:"assistant",content:r}]);setChatLoad(false);
+  };
+
+  const handlePDF=async(e)=>{
+    const file=e.target.files[0];if(!file)return;
+    setPdfName(file.name);setPdfLoad(true);setPdfRes("");
+    try{
+      const b64=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(",")[1]);r.onerror=rej;r.readAsDataURL(file);});
+      const resp=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,
+          messages:[{role:"user",content:[{type:"document",source:{type:"base64",media_type:"application/pdf",data:b64}},{type:"text",text:"Extract ALL questions from this JEE PYQ paper. For each: Q1, Q2... with full question text, options A/B/C/D, subject, topic, and question type (SCQ/MCQ/Integer). Be thorough and clear."}]}]})});
+      const data=await resp.json();
+      setPdfRes(data.content?.map(c=>c.text||"").join("")||"Could not extract.");
+    }catch(err){setPdfRes("Error reading PDF: "+err.message);}
+    setPdfLoad(false);e.target.value="";
+  };
+
+  const acc=score.tot>0?Math.round((score.c/score.tot)*100):0;
 
   return(
-    <div style={{maxWidth:"440px",margin:"0 auto",padding:"32px 0"}}>
-      <div style={{textAlign:"center",marginBottom:"24px"}}>
-        <div style={{fontSize:"48px",marginBottom:"12px"}}>🔒</div>
-        <div style={{fontSize:"16px",fontWeight:900,color:"#ec4899",marginBottom:"6px"}}>PHASE 3 — JEE ADVANCED</div>
-        <div style={{marginTop:"10px",display:"flex",gap:"8px",justifyContent:"center",flexWrap:"wrap"}}>
-          <Tag color="#60a5fa">Physics 96+</Tag><Tag color="#34d399">Chemistry 102+</Tag>
-          <Tag color="#a78bfa">Maths 84+</Tag><Tag color="#f59e0b">Total 280+</Tag>
+    <div style={{display:"flex",flexDirection:"column",gap:18}}>
+      {/* Exam toggle + Score */}
+      <div style={{display:"flex",gap:12,flexWrap:"wrap",alignItems:"stretch"}}>
+        <div style={{...card,display:"flex",gap:4,padding:"10px 12px",alignItems:"center"}}>
+          {[["advanced","⚡ JEE Advanced"],["mains","📝 JEE Mains"]].map(([v,l])=>(
+            <button key={v} onClick={()=>{setExam(v);setQType("SCQ");}} style={{padding:"8px 16px",borderRadius:8,border:"none",cursor:"pointer",fontWeight:700,fontSize:12,background:exam===v?(v==="advanced"?"#4f46e5":"#059669"):"#f1f5f9",color:exam===v?"#fff":"#64748b"}}>
+              {l}
+            </button>
+          ))}
+        </div>
+        {[{l:"Done",v:score.tot,c:"#4f46e5"},{l:"Correct",v:score.c,c:"#059669"},{l:"Wrong",v:score.w,c:"#dc2626"},{l:"Accuracy",v:`${acc}%`,c:acc>=60?"#059669":"#dc2626"}].map(s=>(
+          <div key={s.l} style={{...card,padding:"10px 16px",textAlign:"center",flex:1,minWidth:70}}>
+            <div style={{fontSize:20,fontWeight:800,color:s.c}}>{s.v}</div>
+            <div style={{fontSize:11,color:"#64748b"}}>{s.l}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Settings */}
+      <div style={card}>
+        <div style={{fontWeight:700,fontSize:14,marginBottom:14,color:"#1e293b"}}>
+          ⚙️ {exam==="advanced"?"JEE Advanced — 48 Years (1978–2025)":"JEE Mains — 24 Years (2002–2025)"}
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10,marginBottom:12}}>
+          {[["Subject",<select value={subj} onChange={e=>{setSubj(e.target.value);setTopic("");}} style={{...inp}}>{Object.keys(SUBJ).map(s=><option key={s}>{s}</option>)}</select>],
+            ["Topic",<select value={topic} onChange={e=>setTopic(e.target.value)} style={{...inp}}><option value="">🎲 Random</option>{SUBJ[subj].topics.map(t=><option key={t}>{t}</option>)}</select>],
+            ["Year (Style)",<select value={year} onChange={e=>setYear(e.target.value)} style={{...inp}}>{years.map(y=><option key={y}>{y}</option>)}</select>],
+            ["Question Type",<select value={qType} onChange={e=>setQType(e.target.value)} style={{...inp}}>{qTypes.map(t=><option key={t}>{t}</option>)}</select>],
+            ["Difficulty",<select value={diff} onChange={e=>setDiff(e.target.value)} style={{...inp}}>{["Easy","Medium","Hard","Very Hard"].map(d=><option key={d}>{d}</option>)}</select>],
+            ["Concept Level",<select value={concept} onChange={e=>setConcept(e.target.value)} style={{...inp}}><option value="single">Single Concept</option><option value="dual">Dual Concept</option><option value="multi">Multi-Concept (Advanced)</option></select>]
+          ].map(([label,el])=>(
+            <div key={label}><div style={{fontSize:11,fontWeight:600,color:"#64748b",marginBottom:4}}>{label}</div>{el}</div>
+          ))}
+        </div>
+        <div style={{display:"flex",gap:10,alignItems:"center"}}>
+          <button onClick={genQ} disabled={loading} style={{...btn(),flex:1,padding:12,background:"linear-gradient(135deg,#4f46e5,#7c3aed)",fontSize:14}}>
+            {loading?"⏳ Generating...":"🎯 Generate Question"}
+          </button>
+          <div style={{padding:"10px 14px",background:"#f8fafc",borderRadius:9,border:"1px solid #e5e7eb",fontSize:12,color:"#1e293b",flexShrink:0}}>
+            <span style={{color:"#64748b"}}>Marks: </span><b>{marks[qType]||"+4/−1"}</b>
+          </div>
         </div>
       </div>
 
-      {/* Date setter */}
-      <Card style={{marginBottom:"16px",borderColor:"#f59e0b33",background:"#f59e0b06"}}>
-        <Lbl>SET YOUR JEE MAINS EXAM DATE</Lbl>
-        {!editingDate?(
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-            <div style={{fontSize:"15px",fontWeight:700,color:examDate?"#f59e0b":"#475569"}}>
-              {examDate?examDate.toLocaleDateString("en-IN",{weekday:"short",day:"numeric",month:"long",year:"numeric"}):"Not set — tap to set"}
-            </div>
-            <button onClick={()=>{setDateInput(mainsDate||"");setEditingDate(true);}}
-              style={{padding:"5px 10px",background:"transparent",border:"1px solid #f59e0b",color:"#f59e0b",fontSize:"15px",letterSpacing:"2px"}}>
-              {examDate?"CHANGE":"SET DATE"}
-            </button>
+      {/* Question Card */}
+      {q&&(
+        <div style={card}>
+          <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:14}}>
+            {[
+              [subj,SUBJ[subj].light,SUBJ[subj].color],
+              [q.topic,"#f1f5f9","#64748b"],
+              [q.difficulty,"#fef3c7","#d97706"],
+              [exam==="advanced"?`⚡ Adv ${year}`:`📝 Mains ${year}`,exam==="advanced"?"#eef2ff":"#ecfdf5",exam==="advanced"?"#4f46e5":"#059669"],
+              [`${marks[qType]||"+4/−1"}`,"#f0fdf4","#16a34a"],
+              [concept==="single"?"1-Concept":concept==="dual"?"🔗 2-Concept":"🔗🔗 Multi-Concept","#fdf4ff","#9333ea"]
+            ].map(([t,bg,col])=>(
+              <span key={t} style={{background:bg,color:col,fontSize:11,fontWeight:700,padding:"3px 10px",borderRadius:6}}>{t}</span>
+            ))}
           </div>
-        ):(
-          <div>
-            <div style={{fontSize:"15px",color:"#475569",marginBottom:"6px"}}>Pick Apr 3, 4, or 5 (whenever your exam is)</div>
-            <input type="date" value={dateInput} onChange={e=>setDateInput(e.target.value)}
-              style={{width:"100%",background:"#0a0a0f",border:"1px solid #f59e0b",color:"#f59e0b",padding:"8px 10px",fontSize:"15px",outline:"none",marginBottom:"8px"}}/>
-            <div style={{display:"flex",gap:"8px"}}>
-              <button onClick={saveDate} style={{flex:1,padding:"8px",background:"transparent",border:"1px solid #f59e0b",color:"#f59e0b",fontSize:"15px",letterSpacing:"2px",fontWeight:700}}>✓ SAVE</button>
-              <button onClick={()=>setEditingDate(false)} style={{padding:"8px 12px",background:"transparent",border:"1px solid #1e293b",color:"#475569",fontSize:"15px"}}>CANCEL</button>
+          <div style={{fontSize:15,lineHeight:1.85,color:"#1e293b",background:"#f8fafc",padding:"16px 18px",borderRadius:10,marginBottom:16,border:"1px solid #e5e7eb",fontWeight:500}}>
+            {q.question}
+          </div>
+          {!submitted&&q.hint&&hint&&(
+            <div style={{fontSize:12,color:"#64748b",marginBottom:12,padding:"8px 12px",background:"#fffbeb",borderRadius:8,border:"1px solid #fde68a"}}>💡 <b>Hint:</b> {q.hint}</div>
+          )}
+          {!submitted&&q.hint&&!hint&&(
+            <button onClick={()=>setHint(true)} style={{fontSize:12,color:"#d97706",background:"#fffbeb",border:"1px solid #fde68a",borderRadius:8,padding:"6px 14px",cursor:"pointer",marginBottom:12}}>💡 Show Hint</button>
+          )}
+          {qType!=="Integer"&&q.options?.length>0&&(
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:16}}>
+              {q.options.map((opt,i)=>{
+                const l=["A","B","C","D"][i];
+                const isSel=qType==="MCQ (Multi-Correct)"?sel?.includes(l):sel===l;
+                const isCorr=submitted&&(qType==="MCQ (Multi-Correct)"?q.correct.includes(l):l===q.correct);
+                const isWrong=submitted&&isSel&&!isCorr;
+                return(
+                  <div key={i} onClick={()=>{
+                    if(submitted)return;
+                    if(qType==="MCQ (Multi-Correct)")setSel(s=>s?(s.includes(l)?s.replace(l,""):s+l):l);
+                    else setSel(l);
+                  }} style={{padding:"12px 16px",borderRadius:10,cursor:submitted?"default":"pointer",border:`2px solid ${isCorr?"#059669":isWrong?"#dc2626":isSel?"#4f46e5":"#e5e7eb"}`,background:isCorr?"#f0fdf4":isWrong?"#fef2f2":isSel?"#eef2ff":"#fafafa",fontSize:14,color:"#1e293b",transition:"all 0.15s",fontWeight:(isSel||isCorr)?600:400}}>
+                    <span style={{fontWeight:700,color:"#4f46e5",marginRight:6}}>{l})</span>{opt.replace(/^[A-D]\)\s*/,"")}
+                    {isCorr&&" ✅"}{isWrong&&" ❌"}
+                  </div>
+                );
+              })}
             </div>
+          )}
+          {qType==="Integer"&&!submitted&&(
+            <input type="number" value={intAns} onChange={e=>setIntAns(e.target.value)} placeholder="Integer answer (0–99)" style={{...inp,fontSize:15,marginBottom:16}}/>
+          )}
+          {submitted&&qType==="Integer"&&(
+            <div style={{padding:12,background:intAns===q.correct?"#f0fdf4":"#fef2f2",borderRadius:10,marginBottom:12,fontWeight:600,fontSize:14}}>
+              Your: {intAns} | Correct: {q.correct} {intAns===q.correct?"✅":"❌"}
+            </div>
+          )}
+          {!submitted&&(
+            <button onClick={submit} style={{...btn("#059669"),width:"100%",padding:12}}>Submit Answer</button>
+          )}
+          {submitted&&(
+            <div style={{marginTop:12,background:"#f0fdf4",borderRadius:10,padding:16,border:"1px solid #bbf7d0"}}>
+              <div style={{fontWeight:700,color:"#059669",marginBottom:8,fontSize:14}}>✅ Step-by-Step Solution</div>
+              {explLoad?<div style={{color:"#64748b",fontSize:13}}>⏳ Loading solution...</div>:
+                <div style={{fontSize:13,lineHeight:1.75,color:"#1e293b",whiteSpace:"pre-wrap"}}>{expl}</div>}
+            </div>
+          )}
+          {submitted&&(
+            <button onClick={genQ} style={{...btn(),width:"100%",marginTop:10,padding:11,background:"linear-gradient(135deg,#4f46e5,#7c3aed)"}}>⚡ Next Question</button>
+          )}
+        </div>
+      )}
+
+      {/* Doubt Chat */}
+      {q&&(
+        <div style={{...card,border:"1.5px solid #c7d2fe"}}>
+          <div style={{fontWeight:700,fontSize:14,marginBottom:10,color:"#1e293b"}}>💬 Doubt Chat <span style={{fontSize:11,background:"#eef2ff",color:"#4f46e5",borderRadius:99,padding:"2px 8px"}}>Claude AI</span></div>
+          <div style={{maxHeight:200,overflowY:"auto",display:"flex",flexDirection:"column",gap:8,marginBottom:10}}>
+            {chat.map((m,i)=>(
+              <div key={i} style={{alignSelf:m.role==="user"?"flex-end":"flex-start",maxWidth:"82%",background:m.role==="user"?"#4f46e5":"#f1f5f9",color:m.role==="user"?"#fff":"#1e293b",borderRadius:10,padding:"9px 13px",fontSize:13,lineHeight:1.5}}>
+                {m.content}
+              </div>
+            ))}
+            {chatLoad&&<div style={{color:"#64748b",fontSize:13,alignSelf:"flex-start"}}>⏳ Thinking...</div>}
+          </div>
+          <div style={{display:"flex",gap:8}}>
+            <input value={chatMsg} onChange={e=>setChatMsg(e.target.value)} onKeyDown={e=>e.key==="Enter"&&sendChat()} placeholder="Ask about this question..." style={{...inp,flex:1}}/>
+            <button onClick={sendChat} disabled={chatLoad} style={{...btn(),flexShrink:0}}>Send</button>
+          </div>
+        </div>
+      )}
+
+      {/* PDF Upload */}
+      <div style={card}>
+        <div style={{fontWeight:700,fontSize:14,marginBottom:4,color:"#1e293b"}}>📄 Upload JEE PYQ PDF <span style={{fontSize:12,fontWeight:400,color:"#94a3b8"}}>— AI reads & extracts all questions</span></div>
+        <div style={{fontSize:12,color:"#94a3b8",marginBottom:12}}>Upload any official JEE Mains/Advanced paper PDF. Claude will extract every question, topic, and type.</div>
+        <div onClick={()=>fileRef.current.click()} style={{border:"2px dashed #e5e7eb",borderRadius:12,padding:20,textAlign:"center",cursor:"pointer",background:"#f8fafc"}}>
+          <div style={{fontSize:26}}>📁</div>
+          <div style={{fontSize:13,color:"#64748b",marginTop:4}}>{pdfName?`📄 ${pdfName}`:"Click to upload PDF"}</div>
+          <div style={{fontSize:11,color:"#94a3b8",marginTop:2}}>Supports all JEE papers · AI-powered extraction</div>
+          <input ref={fileRef} type="file" accept=".pdf" style={{display:"none"}} onChange={handlePDF}/>
+        </div>
+        {pdfLoad&&<div style={{marginTop:12,color:"#4f46e5",fontSize:13,textAlign:"center"}}>⏳ AI reading PDF and extracting all questions...</div>}
+        {pdfRes&&(
+          <div style={{marginTop:12,background:"#f8fafc",borderRadius:10,padding:14,fontSize:13,lineHeight:1.7,maxHeight:320,overflowY:"auto",whiteSpace:"pre-wrap",border:"1px solid #e5e7eb"}}>
+            <div style={{fontWeight:700,color:"#4f46e5",marginBottom:8}}>📋 Extracted Questions:</div>{pdfRes}
           </div>
         )}
-      </Card>
-
-      {/* Countdown or unlock */}
-      {!isUnlockable?(
-        <div style={{textAlign:"center",padding:"28px",background:"#0d1117",border:"1px solid #1e293b"}}>
-          <div style={{fontSize:"15px",letterSpacing:"3px",color:"#475569",marginBottom:"10px"}}>PHASE 3 UNLOCKS AFTER YOUR MAINS</div>
-          <div style={{fontSize:"60px",fontWeight:900,color:"#ec4899",lineHeight:1}}>{daysUntil}</div>
-          <div style={{fontSize:"14px",color:"#475569",marginTop:"6px"}}>day{daysUntil!==1?"s":""} until your exam</div>
-          <div style={{fontSize:"15px",color:"#334155",marginTop:"14px"}}>Come back the day after your exam — Phase 3 password will be available then</div>
-        </div>
-      ):(
-        <>
-          <div style={{fontSize:"15px",letterSpacing:"3px",color:"#34d399",marginBottom:"14px",textAlign:"center"}}>
-            {examDate?"✓ MAINS DONE — ENTER PHASE 3 CODE":"◈ ENTER PHASE 3 CODE"}
-          </div>
-          <div className={shake?"shake":""}>
-            <div style={{fontSize:"15px",letterSpacing:"3px",color:"#475569",marginBottom:"8px"}}>PHASE 3 ACCESS CODE</div>
-            <input ref={ref} type="password" value={val}
-              onChange={e=>{setVal(e.target.value);setErr(false);}}
-              onKeyDown={e=>{if(e.key==="Enter")attempt();}}
-              placeholder="••••••••••"
-              style={{width:"100%",padding:"13px 16px",background:"#0d1117",border:`1px solid ${err?"#ef4444":"#1e293b"}`,color:"#e2e8f0",fontSize:"16px",letterSpacing:"5px",textAlign:"center",outline:"none"}}/>
-          </div>
-          {err&&<div style={{margin:"10px 0",padding:"10px",background:"#ef444412",border:"1px solid #ef444433",fontSize:"14px",color:"#f87171",textAlign:"center"}}>
-            ✕ WRONG CODE{tries>=2&&<span style={{color:"#7f1d1d"}}> — hint: JEEADVANCE (all caps)</span>}
-          </div>}
-          <button onClick={attempt}
-            onMouseOver={e=>{e.currentTarget.style.background="#ec4899";e.currentTarget.style.color="#000";}}
-            onMouseOut={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.color="#ec4899";}}
-            style={{width:"100%",marginTop:"8px",padding:"12px",background:"transparent",border:"1px solid #ec4899",color:"#ec4899",fontSize:"14px",letterSpacing:"3px",fontWeight:700,transition:"all 0.2s"}}>
-            ◈ UNLOCK PHASE 3
-          </button>
-        </>
-      )}
+      </div>
     </div>
   );
 }
 
-/* ═══════════════════════════════════════════════════════
-   PLANNER TAB
-═══════════════════════════════════════════════════════ */
-function PlannerTab({advUnlocked,onAdvUnlock,mainsDate,onSetMainsDate}){
-  const [activePhase,setActivePhase]=useState(todayPhaseId);
-  const [viewDay,setViewDay]=useState(1);
-  const [expanded,setExpanded]=useState(null);
-  const [checks,setChecks]=useState(()=>ld("jee_checks",{}));
-  const [doneDays,setDoneDays]=useState(()=>ld("jee_done",{}));
+/* ═══════════════════════ WEIGHTAGE ════════════════════════ */
+function WeightageTab(){
+  const [selSubj,setSelSubj]=useState("Physics");
+  const [mode,setMode]=useState("both");
+  const [aiQ,setAiQ]=useState(""); const [aiR,setAiR]=useState(""); const [aiLoad,setAiLoad]=useState(false);
 
-  useEffect(()=>{
-    const pid=activePhase;
-    const p=PHASES[pid-1];
-    if(!p.startDate){setViewDay(1);return;}
-    const diff=Math.floor((new Date()-new Date(p.startDate))/86400000)+1;
-    setViewDay(Math.max(1,Math.min(diff,p.days)));
-  },[activePhase]);
+  const info=SUBJ[selSubj];
+  const gMax=Math.max(...info.advW,...info.mainW);
 
-  const phase=PHASES[activePhase-1];
-  const isAdv=phase.isAdvanced;
-
-  // figure out day string for selected day
-  function getDayStr(pid,day){
-    const p=PHASES[pid-1];
-    if(!p.startDate)return null;
-    const d=new Date(p.startDate);d.setDate(d.getDate()+day-1);return dkey(d);
-  }
-  const viewDayStr=getDayStr(activePhase,viewDay);
-  const testForDay=isAdv
-    ? ADV_TESTS.find(t=>t.date===viewDayStr)
-    : MAINS_TESTS.find(t=>t.date===viewDayStr);
-
-  const taskKey=`p${activePhase}_d${viewDay}`;
-  const completedN=Object.keys(doneDays).filter(k=>k.startsWith(`p${activePhase}`)).length;
-
-  let tasks;
-  if(isAdv) tasks=testForDay?ADV_TEST_TASKS:ADV_TASKS;
-  else if(activePhase===1) tasks=testForDay?MAINS_TEST_TASKS:MAINS_TASKS_P1;
-  else tasks=testForDay?MAINS_TEST_TASKS:MAINS_TASKS_P2;
-
-  const sched=testForDay?(isAdv?ADV_TEST_SCHED:MAINS_TEST_SCHED):phase.schedule;
-
-  function togCheck(i){const n={...checks,[`${taskKey}_${i}`]:!checks[`${taskKey}_${i}`]};setChecks(n);sv("jee_checks",n);}
-  function markDone(){const n={...doneDays,[taskKey]:true};setDoneDays(n);sv("jee_done",n);}
-  function switchPhase(id){setActivePhase(id);setExpanded(null);}
-
-  const phaseColor=phase.color;
+  const askWeightage=async()=>{
+    if(!aiQ.trim())return;setAiLoad(true);
+    const wData=info.topics.map((t,i)=>`${t}: Adv=${info.advW[i]}, Mains=${info.mainW[i]}`).join("; ");
+    const r=await askClaude([{role:"user",content:`JEE ${selSubj} chapter weightage data: ${wData}. Question: ${aiQ}`}],
+      "You are a JEE strategy expert. Give specific advice on chapter prioritization based on actual JEE weightage data. Be direct and data-driven.");
+    setAiR(r);setAiLoad(false);
+  };
 
   return(
-    <div className="fadeup">
-      {/* Phase tabs */}
-      <div style={{display:"flex",gap:"8px",marginBottom:"20px",flexWrap:"wrap"}}>
-        {PHASES.map(p=>{
-          const active=activePhase===p.id; const isNow=p.id===todayPhaseId();
+    <div style={{display:"flex",flexDirection:"column",gap:18}}>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:12}}>
+        {Object.entries(SUBJ).map(([s,info])=>{
+          const topAdv=info.topics[info.advW.indexOf(Math.max(...info.advW))];
+          const topMain=info.topics[info.mainW.indexOf(Math.max(...info.mainW))];
           return(
-            <button key={p.id} onClick={()=>switchPhase(p.id)}
-              style={{padding:"8px 14px",border:`1px solid ${active?p.color:"#1e293b"}`,
-                background:active?`${p.color}18`:"transparent",color:active?p.color:"#475569",
-                fontSize:"14px",letterSpacing:"2px",fontWeight:active?700:400,transition:"all 0.2s"}}>
-              {p.id===3&&!advUnlocked?"🔒 ":""}PHASE {p.id}
-              {isNow&&<span style={{marginLeft:"6px",fontSize:"11px",background:p.color,color:"#000",padding:"1px 5px"}}>NOW</span>}
-            </button>
+            <div key={s} onClick={()=>setSelSubj(s)} style={{...card,borderLeft:`4px solid ${info.color}`,cursor:"pointer",background:selSubj===s?info.light:"#fff"}}>
+              <div style={{fontWeight:700,fontSize:14,color:info.color,marginBottom:8}}>{info.icon} {s}</div>
+              <div style={{fontSize:12,color:"#374151",marginBottom:2}}>Adv peak: <b style={{color:info.color}}>{topAdv}</b></div>
+              <div style={{fontSize:12,color:"#374151",marginBottom:2}}>Mains peak: <b style={{color:info.color}}>{topMain}</b></div>
+              <div style={{fontSize:11,color:"#64748b",marginTop:4}}>{info.topics.length} chapters tracked</div>
+            </div>
           );
         })}
       </div>
 
-      {/* Phase 3 locked gate */}
-      {activePhase===3&&!advUnlocked&&<AdvPasswordGate onUnlock={onAdvUnlock} mainsDate={mainsDate} onSetMainsDate={onSetMainsDate}/>}
-
-      {/* Content */}
-      {(activePhase!==3||advUnlocked)&&(
-        <>
-          {/* Stats */}
-          <div className="sgrid" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"10px",marginBottom:"18px"}}>
-            {[
-              {l:"HRS / DAY",v:`${sched.reduce((a,s)=>a+s.hours,0)}h`,    c:phaseColor},
-              {l:"DAYS DONE",v:`${completedN}/${phase.days}`,             c:"#34d399"},
-              {l:"SUBJECTS", v:isAdv?"3 + 180 Qs":phase.schedule.length, c:"#a78bfa"},
-              {l:"PROGRESS", v:`${Math.round((completedN/phase.days)*100)}%`,c:"#f59e0b"},
-            ].map(s=>(
-              <Card key={s.l}><div style={{fontSize:"15px",letterSpacing:"2px",color:"#475569",marginBottom:"4px"}}>{s.l}</div><div style={{fontSize:"20px",fontWeight:900,color:s.c}}>{s.v}</div></Card>
-            ))}
-          </div>
-          <div style={{height:"3px",background:"#1e293b",marginBottom:"22px"}}>
-            <div style={{height:"100%",width:`${(completedN/phase.days)*100}%`,background:`linear-gradient(90deg,${phaseColor},${phase.accent})`,transition:"width 0.5s"}}/>
-          </div>
-
-          <div className="twocol" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"20px"}}>
-            {/* LEFT — schedule */}
-            <div>
-              <Lbl>DAY {viewDay} SCHEDULE {testForDay?`— ${testForDay.label}`:""}</Lbl>
-              {testForDay&&(
-                <div style={{marginBottom:"12px",padding:"10px 14px",background:`${phaseColor}0a`,border:`1px solid ${phaseColor}44`}}>
-                  <div style={{fontSize:"15px",color:phaseColor,fontWeight:700,letterSpacing:"2px",display:"flex",alignItems:"center",gap:"8px"}}>
-                    ⚡ TEST DAY — {testForDay.label}
-                    <Tag color={testForDay.type==="Offline"?"#f59e0b":"#60a5fa"}>{testForDay.type}</Tag>
-                  </div>
-                  <div style={{fontSize:"15px",color:"#475569",marginTop:"3px"}}>Log score in TESTS tab after</div>
-                </div>
-              )}
-              {sched.map((s,i)=>(
-                <div key={i} onClick={()=>!testForDay&&setExpanded(expanded===s.subject?null:s.subject)}
-                  style={{marginBottom:"10px",padding:"13px",background:"#0d1117",
-                    border:`1px solid ${expanded===s.subject?s.color:"#1e293b"}`,
-                    cursor:testForDay?"default":"pointer",transition:"border-color 0.2s"}}>
-                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                    <div style={{display:"flex",alignItems:"center",gap:"10px"}}>
-                      <span style={{fontSize:"18px"}}>{s.icon||"◈"}</span>
-                      <div>
-                        <div style={{fontWeight:700,fontSize:"15px",color:s.color}}>{s.subject}</div>
-                        {s.detail&&<div style={{fontSize:"15px",color:"#475569",marginTop:"1px"}}>{s.detail}</div>}
-                      </div>
-                    </div>
-                    <div style={{fontSize:"20px",fontWeight:900,color:s.color}}>{s.hours}h</div>
-                  </div>
-                  <div style={{marginTop:"8px",height:"3px",background:"#1e293b"}}>
-                    <div style={{height:"100%",width:`${(s.hours/10)*100}%`,background:s.color}}/>
-                  </div>
-                  {expanded===s.subject&&s.breakdown&&(
-                    <div style={{marginTop:"10px",paddingTop:"10px",borderTop:"1px solid #1e293b"}}>
-                      {s.breakdown.map((b,j)=>(
-                        <div key={j} style={{fontSize:"14px",color:"#94a3b8",padding:"3px 0",display:"flex",gap:"8px"}}>
-                          <span style={{color:s.color}}>→</span>{b}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
-              <Card>
-                <Lbl>PHASE NOTES</Lbl>
-                {phase.tips.map((t,i)=>(
-                  <div key={i} style={{fontSize:"14px",color:"#64748b",padding:"4px 0",display:"flex",gap:"8px"}}>
-                    <span style={{color:phaseColor}}>◈</span>{t}
-                  </div>
-                ))}
-              </Card>
-            </div>
-
-            {/* RIGHT — tracker */}
-            <div>
-              <Lbl>DAY TRACKER ({phase.days} DAYS)</Lbl>
-              <div style={{display:"grid",gridTemplateColumns:`repeat(${Math.min(10,phase.days)},1fr)`,gap:"3px",marginBottom:"8px"}}>
-                {Array.from({length:phase.days}).map((_,i)=>{
-                  const d=i+1; const done=doneDays[`p${activePhase}_d${d}`];
-                  const isV=viewDay===d;
-                  const dStr=getDayStr(activePhase,d);
-                  const tests=isAdv?ADV_TESTS:MAINS_TESTS;
-                  const hasT=dStr?tests.some(t=>t.date===dStr):false;
-                  const isToday=dStr===todayStr();
-                  return(
-                    <button key={d} onClick={()=>setViewDay(d)}
-                      style={{aspectRatio:"1",fontSize:"11px",fontWeight:isV?900:400,
-                        display:"flex",alignItems:"center",justifyContent:"center",
-                        border:`1px solid ${isV?phaseColor:done?"#1a3a2a":hasT?`${phaseColor}55`:isToday?`${phaseColor}33`:"#1e293b"}`,
-                        background:done?"#0d2a1a":hasT?`${phaseColor}0a`:isV?`${phaseColor}18`:isToday?`${phaseColor}06`:"#0d1117",
-                        color:done?"#34d399":isV?phaseColor:hasT?phaseColor:isToday?phaseColor:"#475569"}}>
-                      {done?"✓":hasT?"T":d}
-                    </button>
-                  );
-                })}
-              </div>
-              <div style={{fontSize:"15px",color:"#475569",marginBottom:"12px"}}>
-                <span style={{color:phaseColor}}>T</span> = test &nbsp;·&nbsp; <span style={{color:"#34d399"}}>✓</span> = done
-              </div>
-
-              <Card style={{marginBottom:"12px"}}>
-                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"12px"}}>
-                  <div style={{fontSize:"14px",letterSpacing:"2px",color:phaseColor,fontWeight:700}}>DAY {viewDay}{testForDay?" (TEST)":""}</div>
-                  {doneDays[taskKey]&&<Tag color="#34d399">✓ DONE</Tag>}
-                </div>
-                {tasks.map((task,i)=>{
-                  const chk=checks[`${taskKey}_${i}`];
-                  return(
-                    <div key={i} onClick={()=>togCheck(i)} style={{display:"flex",gap:"10px",alignItems:"flex-start",padding:"7px 0",borderBottom:i<tasks.length-1?"1px solid #0f172a":"none",cursor:"pointer"}}>
-                      <div style={{width:"14px",height:"14px",minWidth:"14px",marginTop:"1px",border:`1px solid ${chk?"#34d399":"#334155"}`,background:chk?"#0d2a1a":"transparent",display:"flex",alignItems:"center",justifyContent:"center"}}>
-                        {chk&&<span style={{color:"#34d399",fontSize:"15px"}}>✓</span>}
-                      </div>
-                      <span style={{fontSize:"14px",color:chk?"#475569":"#94a3b8",textDecoration:chk?"line-through":"none",lineHeight:1.5}}>{task}</span>
-                    </div>
-                  );
-                })}
-                {!doneDays[taskKey]&&(
-                  <button onClick={markDone}
-                    onMouseOver={e=>e.currentTarget.style.background=`${phaseColor}22`}
-                    onMouseOut={e=>e.currentTarget.style.background="transparent"}
-                    style={{width:"100%",marginTop:"14px",padding:"12px",background:"transparent",border:`1px solid ${phaseColor}`,color:phaseColor,fontSize:"15px",letterSpacing:"2px",fontWeight:700,transition:"background 0.2s"}}>
-                    ◈ MARK DAY {viewDay} COMPLETE
-                  </button>
-                )}
-              </Card>
-
-              {/* Topics for this day */}
-              {(()=>{
-                const dayTopics=ld("jee_topics",{})[viewDayStr]||{};
-                const hasTopics=dayTopics.Physics||dayTopics.Maths||dayTopics.Chemistry;
-                const TSUBJ=[{name:"Physics",color:"#60a5fa",icon:"⚡"},{name:"Maths",color:"#a78bfa",icon:"∑"},{name:"Chemistry",color:"#34d399",icon:"⚗"}];
-                return(
-                  <Card style={{marginBottom:"12px",borderColor:hasTopics?`${phaseColor}33`:"#1e293b",background:hasTopics?`${phaseColor}05`:"#0d1117"}}>
-                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:hasTopics?"12px":"0"}}>
-                      <Lbl style={{marginBottom:0}}>📝 DAY {viewDay} TOPICS STUDIED</Lbl>
-                      {!hasTopics&&<span style={{fontSize:"14px",color:"#334155"}}>not logged yet — go to TOPICS tab</span>}
-                    </div>
-                    {hasTopics&&TSUBJ.map(s=>dayTopics[s.name]&&(
-                      <div key={s.name} style={{marginBottom:"10px",paddingBottom:"10px",borderBottom:"1px solid #0f172a"}}>
-                        <div style={{fontSize:"14px",color:s.color,fontWeight:700,letterSpacing:"2px",marginBottom:"4px",display:"flex",alignItems:"center",gap:"6px"}}>
-                          {s.icon} {s.name.toUpperCase()}
-                        </div>
-                        <div style={{fontSize:"15px",color:"#94a3b8",lineHeight:1.6}}>{dayTopics[s.name]}</div>
-                      </div>
-                    ))}
-                  </Card>
-                );
-              })()}
-
-              {/* Hours breakdown */}
-              <Card>
-                <Lbl>HOURS TODAY</Lbl>
-                {sched.map(s=>(
-                  <div key={s.subject} style={{display:"flex",alignItems:"center",gap:"8px",marginBottom:"8px"}}>
-                    <div style={{width:"72px",fontSize:"15px",color:s.color}}>{s.subject}</div>
-                    <div style={{flex:1,height:"5px",background:"#1e293b"}}>
-                      <div style={{height:"100%",width:`${(s.hours/10)*100}%`,background:s.color}}/>
-                    </div>
-                    <div style={{fontSize:"14px",color:s.color,width:"28px",textAlign:"right"}}>{s.hours}h</div>
-                  </div>
-                ))}
-                <div style={{marginTop:"10px",paddingTop:"10px",borderTop:"1px solid #1e293b",display:"flex",justifyContent:"space-between",fontSize:"15px"}}>
-                  <span style={{color:"#475569",letterSpacing:"2px"}}>TOTAL</span>
-                  <span style={{color:phaseColor,fontWeight:900}}>{sched.reduce((a,s)=>a+s.hours,0)} hrs</span>
-                </div>
-              </Card>
-            </div>
-          </div>
-        </>
-      )}
-    </div>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════
-   TESTS TAB  (Mains + Advanced, both with Online/Offline)
-═══════════════════════════════════════════════════════ */
-function TestsTab({advUnlocked}){
-  const [section,setSection]=useState("mains");
-  const [scores,setScores]=useState(()=>ld("jee_scores",{}));
-  const [advScores,setAdvScores]=useState(()=>ld("adv_scores",{}));
-  const [checks,setChecks]=useState(()=>ld("jee_tc",{}));
-  const [sel,setSel]=useState(null);
-
-  const MAINS_SUBJ=["Physics","Maths","Chemistry"];
-  const ADV_SUBJ  =["Physics","Chemistry","Maths"];
-
-  // ── Mains helpers ──
-  function mainsTotal(id){
-    const vals=MAINS_SUBJ.map(s=>scores[`${id}_${s}`]).filter(v=>v!==null&&v!==undefined);
-    return vals.length?vals.reduce((a,b)=>a+b,0):null;
-  }
-  function setMainsScore(id,s,v){const n={...scores,[`${id}_${s}`]:v};setScores(n);sv("jee_scores",n);}
-
-  // ── Adv helpers ──
-  function advTotal(id){
-    const vals=ADV_SUBJ.map(s=>advScores[`${id}_${s}`]).filter(v=>v!==null&&v!==undefined);
-    return vals.length===3?vals.reduce((a,b)=>a+b,0):null;
-  }
-  function setAdvScore(id,s,v){const n={...advScores,[`${id}_${s}`]:v};setAdvScores(n);sv("adv_scores",n);}
-
-  function togCheck(id,i,prefix){const k=`${prefix}_${id}_${i}`;const n={...checks,[k]:!checks[k]};setChecks(n);sv("jee_tc",n);}
-  function getChk(id,i,prefix){return checks[`${prefix}_${id}_${i}`];}
-
-  const today=todayStr();
-  const mainsDone=MAINS_TESTS.filter(t=>mainsTotal(t.id)!==null);
-  const advDone  =ADV_TESTS.filter(t=>advTotal(t.id)!==null);
-
-  function TestCard({test,getTotal,setScore,scoreKey,subjList,maxPer,rankFn,taskList,prefix,targets}){
-    const tDate=new Date(test.date);
-    const isPast=tDate<new Date()&&test.date!==today;
-    const isToday=test.date===today;
-    const tot=getTotal(test.id); const r=tot!==null?rankFn(tot):null;
-    const isOpen=sel===`${prefix}_${test.id}`;
-    return(
-      <div onClick={()=>setSel(isOpen?null:`${prefix}_${test.id}`)}
-        style={{background:"#0d1117",padding:"12px",cursor:"pointer",transition:"border-color 0.2s",
-          border:`1px solid ${isOpen?(prefix==="m"?"#3b82f6":"#ec4899"):isToday?(prefix==="m"?"#3b82f655":"#ec489955"):tot!==null?"#1a3a2a":"#1e293b"}`}}>
-        <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
-          <div style={{flex:1,marginRight:"8px"}}>
-            <div style={{fontSize:"14px",fontWeight:700,marginBottom:"3px",
-              color:isToday?(prefix==="m"?"#3b82f6":"#ec4899"):tot!==null?"#e2e8f0":isPast?"#475569":"#94a3b8",
-              display:"flex",alignItems:"center",gap:"6px",flexWrap:"wrap"}}>
-              {test.label}
-              {isToday&&<Tag color={prefix==="m"?"#3b82f6":"#ec4899"}>TODAY</Tag>}
-            </div>
-            <div style={{display:"flex",gap:"6px",alignItems:"center",flexWrap:"wrap"}}>
-              <span style={{fontSize:"15px",color:"#475569"}}>
-                {tDate.toLocaleDateString("en-IN",{day:"numeric",month:"short"})}
-              </span>
-              <Tag color={test.type==="Offline"?"#f59e0b":"#60a5fa"}>{test.type}</Tag>
-              {test.tags&&<Tag color="#475569">{test.tags}</Tag>}
-            </div>
-          </div>
-          <div style={{textAlign:"right",minWidth:"56px"}}>
-            {tot!==null
-              ?<><div style={{fontSize:"18px",fontWeight:900,color:r.color}}>{tot}</div><div style={{fontSize:"11px",color:r.color,letterSpacing:"1px"}}>{r.label}</div></>
-              :<div style={{fontSize:"15px",color:"#334155"}}>{isPast?"NO SCORE":"UPCOMING"}</div>}
-          </div>
-        </div>
-        {tot!==null&&<div style={{marginTop:"8px",height:"2px",background:"#1e293b"}}><div style={{height:"100%",width:`${(tot/(maxPer*3))*100}%`,background:r.color}}/></div>}
-
-        {isOpen&&(
-          <div onClick={e=>e.stopPropagation()} style={{marginTop:"12px",paddingTop:"12px",borderTop:"1px solid #1e293b"}}>
-            <div style={{fontSize:"15px",letterSpacing:"2px",color:"#475569",marginBottom:"10px"}}>
-              SCORES {targets?`(Phy ${targets.Physics.target}+ · Chem ${targets.Chemistry.target}+ · Math ${targets.Maths.target}+)`:"(out of 100 each)"}
-            </div>
-            <div style={{display:"flex",gap:"10px",flexWrap:"wrap",alignItems:"flex-end",marginBottom:"14px"}}>
-              {subjList.map(s=>{
-                const tgt=targets?targets[s]:null;
-                const c=s==="Physics"?"#60a5fa":s==="Maths"?"#a78bfa":"#34d399";
-                const val=scoreKey(test.id,s);
-                const hit=tgt&&val!==null&&val!==undefined&&val>=tgt.target;
-                return(
-                  <div key={s} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:"3px"}}>
-                    <div style={{fontSize:"15px",color:c,letterSpacing:"1px"}}>{s.slice(0,4).toUpperCase()}</div>
-                    {tgt&&<div style={{fontSize:"11px",color:"#334155"}}>/{tgt.max}</div>}
-                    <input type="number" min="0" max={tgt?tgt.max:100} placeholder="—"
-                      value={val!==null&&val!==undefined?val:""}
-                      onChange={e=>setScore(test.id,s,e.target.value===""?null:Number(e.target.value))}
-                      style={{width:"58px",background:"transparent",border:`1px solid ${val?c:"#1e293b"}`,color:val?c:"#475569",fontSize:"15px",fontWeight:700,padding:"4px 6px",textAlign:"center",outline:"none"}}/>
-                    {tgt&&val!==null&&val!==undefined&&(
-                      <Tag color={hit?"#34d399":"#f87171"}>{hit?"✓":`-${tgt.target-val}`}</Tag>
-                    )}
-                  </div>
-                );
-              })}
-              {tot!==null&&<div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:"3px"}}>
-                <div style={{fontSize:"15px",color:"#f59e0b",letterSpacing:"1px"}}>TOTAL</div>
-                <div style={{fontSize:"22px",fontWeight:900,color:r.color}}>{tot}</div>
-                <Tag color={r.color}>{r.label}</Tag>
-              </div>}
-            </div>
-            <div style={{fontSize:"15px",letterSpacing:"2px",color:"#475569",marginBottom:"8px"}}>POST-TEST TASKS</div>
-            {taskList.map((task,i)=>{
-              const chk=getChk(test.id,i,prefix);
-              return(
-                <div key={i} onClick={()=>togCheck(test.id,i,prefix)} style={{display:"flex",gap:"8px",alignItems:"flex-start",padding:"5px 0",borderBottom:i<taskList.length-1?"1px solid #0f172a":"none",cursor:"pointer"}}>
-                  <div style={{width:"12px",height:"12px",minWidth:"12px",marginTop:"1px",border:`1px solid ${chk?"#34d399":"#334155"}`,background:chk?"#0d2a1a":"transparent",display:"flex",alignItems:"center",justifyContent:"center"}}>
-                    {chk&&<span style={{color:"#34d399",fontSize:"11px"}}>✓</span>}
-                  </div>
-                  <span style={{fontSize:"15px",color:chk?"#475569":"#94a3b8",textDecoration:chk?"line-through":"none"}}>{task}</span>
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </div>
-    );
-  }
-
-  return(
-    <div className="fadeup">
-      {/* Section switcher */}
-      <div style={{display:"flex",gap:"8px",marginBottom:"20px"}}>
-        <button onClick={()=>setSection("mains")}
-          style={{padding:"8px 16px",border:`1px solid ${section==="mains"?"#3b82f6":"#1e293b"}`,background:section==="mains"?"#3b82f618":"transparent",color:section==="mains"?"#3b82f6":"#475569",fontSize:"14px",letterSpacing:"2px",fontWeight:section==="mains"?700:400,transition:"all 0.2s"}}>
-          ◈ MAINS TESTS
-        </button>
-        <button onClick={()=>setSection("adv")}
-          style={{padding:"8px 16px",border:`1px solid ${section==="adv"?"#ec4899":"#1e293b"}`,background:section==="adv"?"#ec489918":"transparent",color:section==="adv"?"#ec4899":"#475569",fontSize:"14px",letterSpacing:"2px",fontWeight:section==="adv"?700:400,transition:"all 0.2s"}}>
-          ◈ ADVANCED TESTS
-        </button>
-      </div>
-
-      {/* ── MAINS section ── */}
-      {section==="mains"&&(
-        <>
-          {mainsDone.length>0&&(
-            <Card style={{marginBottom:"16px"}}>
-              <Lbl>MAINS SCORE TREND (target: 200+)</Lbl>
-              <div style={{display:"flex",alignItems:"flex-end",gap:"6px",height:"80px",overflowX:"auto",paddingBottom:"4px"}}>
-                {mainsDone.map(t=>{const tot=mainsTotal(t.id);const r=mainsRank(tot);return(
-                  <div key={t.id} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:"3px",minWidth:"48px"}}>
-                    <div style={{fontSize:"15px",color:r.color,fontWeight:900}}>{tot}</div>
-                    <div style={{width:"36px",height:`${Math.max((tot/300)*65,3)}px`,background:r.color,opacity:0.85}}/>
-                    <div style={{fontSize:"10px",color:"#475569",textAlign:"center",lineHeight:1.2}}>{t.label.split(" ")[0]}</div>
-                  </div>
-                );})}
-              </div>
-            </Card>
-          )}
-          <div className="tgrid" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"10px"}}>
-            {MAINS_TESTS.map(t=>(
-              <TestCard key={t.id} test={t}
-                getTotal={mainsTotal} setScore={setMainsScore}
-                scoreKey={(id,s)=>scores[`${id}_${s}`]}
-                subjList={MAINS_SUBJ} maxPer={100} rankFn={mainsRank}
-                taskList={MAINS_TEST_TASKS} prefix="m" targets={MAINS_TARGETS}/>
-            ))}
-          </div>
-          {mainsDone.length>0&&(
-            <Card style={{marginTop:"14px"}}>
-              <Lbl>MAINS SUMMARY</Lbl>
-              <div style={{display:"flex",gap:"24px",flexWrap:"wrap"}}>
-                {[{l:"DONE",v:mainsDone.length},{l:"BEST",v:`${Math.max(...mainsDone.map(t=>mainsTotal(t.id)))}`,c:"#34d399"},{l:"AVG",v:`${Math.round(mainsDone.map(t=>mainsTotal(t.id)).reduce((a,b)=>a+b,0)/mainsDone.length)}`,c:"#60a5fa"},{l:"LEFT",v:MAINS_TESTS.length-mainsDone.length}].map(s=>(
-                  <div key={s.l}><div style={{fontSize:"15px",color:"#475569",letterSpacing:"2px",marginBottom:"3px"}}>{s.l}</div><div style={{fontSize:"22px",fontWeight:900,color:s.c||"#e2e8f0"}}>{s.v}</div></div>
-                ))}
-              </div>
-            </Card>
-          )}
-        </>
-      )}
-
-      {/* ── ADVANCED section ── */}
-      {section==="adv"&&(
-        <>
-          {!advUnlocked&&(
-            <Card style={{textAlign:"center",padding:"32px"}}>
-              <div style={{fontSize:"32px",marginBottom:"12px"}}>🔒</div>
-              <div style={{fontSize:"14px",fontWeight:700,color:"#ec4899",marginBottom:"6px"}}>Phase 3 Locked</div>
-              <div style={{fontSize:"14px",color:"#475569"}}>Unlock Phase 3 in the PLANNER tab with code JEEADVANCE to access Advanced tests.</div>
-            </Card>
-          )}
-          {advUnlocked&&(
-            <>
-              {advDone.length>0&&(
-                <Card style={{marginBottom:"16px"}}>
-                  <Lbl>ADVANCED SCORE TREND (target: 280+)</Lbl>
-                  <div style={{display:"flex",alignItems:"flex-end",gap:"6px",height:"90px",overflowX:"auto",position:"relative"}}>
-                    <div style={{position:"absolute",bottom:`${(280/306)*90}px`,left:0,right:0,height:"1px",background:"#f59e0b",opacity:0.5}}/>
-                    {advDone.map(t=>{const tot=advTotal(t.id);const r=advRank(tot);return(
-                      <div key={t.id} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:"3px",minWidth:"52px",zIndex:2}}>
-                        <div style={{fontSize:"15px",color:r.color,fontWeight:900}}>{tot}</div>
-                        <div style={{width:"40px",height:`${Math.max((tot/306)*75,3)}px`,background:r.color,opacity:0.85}}/>
-                        <div style={{fontSize:"10px",color:"#475569",textAlign:"center",lineHeight:1.2}}>{t.label.split(" ")[1]||t.label}</div>
-                      </div>
-                    );})}
-                  </div>
-                  <div style={{fontSize:"15px",color:"#f59e0b",marginTop:"4px",opacity:0.6}}>— 280 target line</div>
-                </Card>
-              )}
-              <div className="tgrid" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"10px"}}>
-                {ADV_TESTS.map(t=>(
-                  <TestCard key={t.id} test={t}
-                    getTotal={advTotal} setScore={setAdvScore}
-                    scoreKey={(id,s)=>advScores[`${id}_${s}`]}
-                    subjList={ADV_SUBJ} maxPer={102} rankFn={advRank}
-                    taskList={ADV_TEST_TASKS} prefix="a" targets={ADV_TARGETS}/>
-                ))}
-              </div>
-              {advDone.length>0&&(
-                <Card style={{marginTop:"14px"}}>
-                  <Lbl>ADVANCED SUMMARY</Lbl>
-                  <div style={{display:"flex",gap:"24px",flexWrap:"wrap"}}>
-                    {[{l:"DONE",v:advDone.length},{l:"BEST",v:`${Math.max(...advDone.map(t=>advTotal(t.id)))}/306`,c:"#34d399"},{l:"AVG",v:`${Math.round(advDone.map(t=>advTotal(t.id)).reduce((a,b)=>a+b,0)/advDone.length)}/306`,c:"#60a5fa"},{l:"VS 280",v:Math.max(...advDone.map(t=>advTotal(t.id)))>=280?"✓":"-"+Math.max(0,280-Math.max(...advDone.map(t=>advTotal(t.id)))),c:Math.max(...advDone.map(t=>advTotal(t.id)))>=280?"#34d399":"#f87171"}].map(s=>(
-                      <div key={s.l}><div style={{fontSize:"15px",color:"#475569",letterSpacing:"2px",marginBottom:"3px"}}>{s.l}</div><div style={{fontSize:"22px",fontWeight:900,color:s.c||"#e2e8f0"}}>{s.v}</div></div>
-                    ))}
-                  </div>
-                </Card>
-              )}
-            </>
-          )}
-        </>
-      )}
-    </div>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════
-   TOPICS TAB
-═══════════════════════════════════════════════════════ */
-function TopicsTab({advUnlocked}){
-  const [section,setSection]=useState("log");
-  const [topics,setTopics]=useState(()=>ld("jee_topics",{}));
-  const [selDate,setSelDate]=useState(todayStr());
-  const [draft,setDraft]=useState({Physics:"",Maths:"",Chemistry:""});
-  const [saved,setSaved]=useState(false);
-  const [branchStatus,setBranchStatus]=useState(()=>ld("adv_topics",{}));
-  const [activeSubj,setActiveSubj]=useState("Physics");
-
-  const SUBJ=[{name:"Physics",color:"#60a5fa",icon:"⚡"},{name:"Maths",color:"#a78bfa",icon:"∑"},{name:"Chemistry",color:"#34d399",icon:"⚗"}];
-  const sColors={Physics:"#60a5fa",Chemistry:"#34d399",Maths:"#a78bfa"};
-
-  useEffect(()=>{
-    const ex=topics[selDate]||{};
-    setDraft({Physics:ex.Physics||"",Maths:ex.Maths||"",Chemistry:ex.Chemistry||""});
-    setSaved(false);
-  },[selDate]);
-
-  function saveDraft(){
-    if(!draft.Physics&&!draft.Maths&&!draft.Chemistry)return;
-    const n={...topics,[selDate]:draft};setTopics(n);sv("jee_topics",n);setSaved(true);
-    setTimeout(()=>setSaved(false),2000);
-  }
-  function cycleBranch(key){const cur=branchStatus[key]||0;const n={...branchStatus,[key]:(cur+1)%3};setBranchStatus(n);sv("adv_topics",n);}
-
-  const entries=Object.keys(topics).sort((a,b)=>b.localeCompare(a));
-  const statusCfg=[{label:"UNTOUCHED",bg:"#0d1117",border:"#1e293b",text:"#334155"},{label:"REVISING",bg:"#451a0308",border:"#f59e0b55",text:"#f59e0b"},{label:"DONE ✓",bg:"#0d2a1a",border:"#34d39955",text:"#34d399"}];
-
-  return(
-    <div className="fadeup">
-      <div style={{display:"flex",gap:"8px",marginBottom:"18px"}}>
-        <button onClick={()=>setSection("log")} style={{padding:"7px 14px",border:`1px solid ${section==="log"?"#a78bfa":"#1e293b"}`,background:section==="log"?"#a78bfa18":"transparent",color:section==="log"?"#a78bfa":"#475569",fontSize:"15px",letterSpacing:"2px",fontWeight:section==="log"?700:400}}>◈ DAILY LOG</button>
-        {advUnlocked&&<button onClick={()=>setSection("branches")} style={{padding:"7px 14px",border:`1px solid ${section==="branches"?"#ec4899":"#1e293b"}`,background:section==="branches"?"#ec489918":"transparent",color:section==="branches"?"#ec4899":"#475569",fontSize:"15px",letterSpacing:"2px",fontWeight:section==="branches"?700:400}}>◈ SUB-BRANCHES (ADV)</button>}
-      </div>
-
-      {section==="log"&&(
-        <div className="twocol" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"20px"}}>
-          <div>
-            <Lbl>LOG TOPICS STUDIED</Lbl>
-            <Card style={{marginBottom:"12px"}}>
-              <div style={{fontSize:"15px",color:"#f59e0b",fontWeight:700,letterSpacing:"2px",marginBottom:"8px"}}>
-                📅 {new Date(selDate+"T00:00:00").toLocaleDateString("en-IN",{weekday:"long",day:"numeric",month:"long"})}
-              </div>
-              <input type="date" value={selDate} onChange={e=>setSelDate(e.target.value)}
-                style={{width:"100%",background:"#0a0a0f",border:"1px solid #1e293b",color:"#64748b",padding:"7px 10px",fontSize:"14px",outline:"none"}}/>
-            </Card>
-            {SUBJ.map(s=>(
-              <div key={s.name} style={{marginBottom:"12px"}}>
-                <div style={{fontSize:"15px",color:s.color,fontWeight:700,letterSpacing:"2px",marginBottom:"5px"}}>{s.icon} {s.name.toUpperCase()}</div>
-                <textarea value={draft[s.name]} onChange={e=>setDraft({...draft,[s.name]:e.target.value})}
-                  placeholder={`e.g. Electrostatics — Coulomb's law, Gauss theorem...`} rows={3}
-                  style={{width:"100%",background:"#0d1117",resize:"vertical",border:`1px solid ${draft[s.name]?s.color:"#1e293b"}`,color:"#e2e8f0",padding:"10px",fontSize:"14px",outline:"none",lineHeight:1.5,transition:"border-color 0.2s"}}/>
-              </div>
-            ))}
-            <button onClick={saveDraft}
-              onMouseOver={e=>e.currentTarget.style.background="#f59e0b22"} onMouseOut={e=>e.currentTarget.style.background="transparent"}
-              style={{width:"100%",padding:"10px",background:"transparent",border:`1px solid ${saved?"#34d399":"#f59e0b"}`,color:saved?"#34d399":"#f59e0b",fontSize:"14px",letterSpacing:"2px",fontWeight:700,transition:"all 0.2s"}}>
-              {saved?"✓ SAVED!":"◈ SAVE TOPICS"}
+      <div style={{display:"flex",gap:8,flexWrap:"wrap",alignItems:"center"}}>
+        {Object.entries(SUBJ).map(([s,info])=>(
+          <button key={s} onClick={()=>setSelSubj(s)} style={{padding:"8px 18px",borderRadius:99,border:"none",cursor:"pointer",fontWeight:700,fontSize:13,background:selSubj===s?info.color:"#f1f5f9",color:selSubj===s?"#fff":"#64748b"}}>
+            {info.icon} {s}
+          </button>
+        ))}
+        <div style={{marginLeft:"auto",display:"flex",gap:5}}>
+          {[["both","Both"],["advanced","Adv Only"],["mains","Mains Only"]].map(([v,l])=>(
+            <button key={v} onClick={()=>setMode(v)} style={{padding:"7px 12px",borderRadius:8,border:"none",cursor:"pointer",fontWeight:600,fontSize:12,background:mode===v?"#1e293b":"#f1f5f9",color:mode===v?"#fff":"#64748b"}}>
+              {l}
             </button>
-          </div>
-          <div>
-            <Lbl>HISTORY</Lbl>
-            {entries.length===0?<Card><div style={{textAlign:"center",color:"#334155",fontSize:"15px",padding:"20px 0"}}>No topics logged yet.</div></Card>
-            :entries.slice(0,15).map(d=>{
-              const e=topics[d]; if(!e||(!e.Physics&&!e.Maths&&!e.Chemistry))return null;
-              return(
-                <Card key={d} style={{marginBottom:"10px"}}>
-                  <div style={{fontSize:"15px",color:"#f59e0b",fontWeight:700,letterSpacing:"2px",marginBottom:"8px"}}>
-                    {new Date(d+"T00:00:00").toLocaleDateString("en-IN",{weekday:"short",day:"numeric",month:"short"})}
+          ))}
+        </div>
+      </div>
+
+      <div style={card}>
+        <div style={{fontWeight:700,fontSize:15,marginBottom:4,color:"#1e293b"}}>{info.icon} {selSubj} — Chapter-wise Marks Weightage</div>
+        <div style={{fontSize:12,color:"#94a3b8",marginBottom:16}}>Based on PYQ analysis: Advanced 1978–2025 (48 years) · Mains 2002–2025 (24 years)</div>
+        <div style={{display:"flex",flexDirection:"column",gap:10}}>
+          {info.topics.map((t,i)=>(
+            <div key={t}>
+              <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
+                <span style={{fontSize:12,fontWeight:600,color:"#374151"}}>{t}</span>
+                <span style={{fontSize:11,fontFamily:"monospace",color:"#64748b"}}>
+                  {mode!=="mains"&&`Adv:${info.advW[i]}`}{mode==="both"&&" · "}{mode!=="advanced"&&`Main:${info.mainW[i]}`}
+                </span>
+              </div>
+              {(mode==="both"||mode==="advanced")&&(
+                <div style={{display:"flex",gap:8,alignItems:"center",marginBottom:3}}>
+                  <div style={{width:46,fontSize:9,color:"#4f46e5",fontWeight:700,fontFamily:"monospace"}}>ADV</div>
+                  <div style={{flex:1,background:"#f1f5f9",borderRadius:99,height:9,overflow:"hidden"}}>
+                    <div style={{width:`${(info.advW[i]/gMax)*100}%`,background:info.color,height:"100%",borderRadius:99}}/>
                   </div>
-                  {SUBJ.map(s=>e[s.name]&&(
-                    <div key={s.name} style={{marginBottom:"6px"}}>
-                      <div style={{fontSize:"15px",color:s.color,letterSpacing:"2px",marginBottom:"2px"}}>{s.icon} {s.name.toUpperCase()}</div>
-                      <div style={{fontSize:"14px",color:"#94a3b8",lineHeight:1.5}}>{e[s.name]}</div>
-                    </div>
-                  ))}
-                </Card>
-              );
-            })}
+                  <div style={{width:18,fontSize:11,fontWeight:700,color:info.color,textAlign:"right"}}>{info.advW[i]}</div>
+                </div>
+              )}
+              {(mode==="both"||mode==="mains")&&(
+                <div style={{display:"flex",gap:8,alignItems:"center"}}>
+                  <div style={{width:46,fontSize:9,color:"#059669",fontWeight:700,fontFamily:"monospace"}}>MAINS</div>
+                  <div style={{flex:1,background:"#f1f5f9",borderRadius:99,height:9,overflow:"hidden"}}>
+                    <div style={{width:`${(info.mainW[i]/gMax)*100}%`,background:"#059669",height:"100%",borderRadius:99}}/>
+                  </div>
+                  <div style={{width:18,fontSize:11,fontWeight:700,color:"#059669",textAlign:"right"}}>{info.mainW[i]}</div>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+        <div style={{marginTop:18,padding:14,background:info.light,borderRadius:10,border:`1px solid ${info.border}`}}>
+          <div style={{fontWeight:700,fontSize:13,color:info.color,marginBottom:8}}>🎯 Top 5 Priority Chapters (Advanced+Mains combined)</div>
+          <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+            {[...info.topics.map((t,i)=>({t,score:info.advW[i]+info.mainW[i],a:info.advW[i],m:info.mainW[i]}))]
+              .sort((a,b)=>b.score-a.score).slice(0,5).map(({t,a,m})=>(
+              <span key={t} style={{background:"#fff",color:info.color,fontSize:12,fontWeight:700,padding:"5px 12px",borderRadius:99,border:`1.5px solid ${info.border}`}}>{t} <span style={{fontWeight:400,color:"#94a3b8"}}>({a+m})</span></span>
+            ))}
           </div>
         </div>
-      )}
+      </div>
 
-      {section==="branches"&&advUnlocked&&(
-        <div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:"8px",marginBottom:"16px"}}>
-            {["Physics","Chemistry","Maths"].map(s=>{
-              const br=SUBBRANCHES[s];const c=sColors[s];
-              const done=br.filter(b=>branchStatus[`${s}_${b}`]===2).length;
-              const wip=br.filter(b=>branchStatus[`${s}_${b}`]===1).length;
-              return(
-                <button key={s} onClick={()=>setActiveSubj(s)}
-                  style={{padding:"12px",background:activeSubj===s?`${c}15`:"#0d1117",border:`1px solid ${activeSubj===s?c:"#1e293b"}`,textAlign:"left",transition:"all 0.2s"}}>
-                  <div style={{fontSize:"15px",color:c,fontWeight:700,marginBottom:"5px"}}>{s}</div>
-                  <div style={{fontSize:"18px",fontWeight:900,color:c,marginBottom:"4px"}}>{done}/{br.length}</div>
-                  <div style={{height:"3px",background:"#1e293b",marginBottom:"4px"}}><div style={{height:"100%",width:`${(done/br.length)*100}%`,background:c}}/></div>
-                  <div style={{fontSize:"15px",color:"#475569"}}>{wip} revising</div>
-                </button>
-              );
-            })}
-          </div>
-          <div style={{display:"flex",gap:"10px",marginBottom:"12px",flexWrap:"wrap"}}>
-            {statusCfg.map((s,i)=>(
-              <div key={i} style={{display:"flex",alignItems:"center",gap:"6px",fontSize:"15px",color:s.text}}>
-                <div style={{width:"10px",height:"10px",background:s.bg,border:`1px solid ${s.border}`}}/>
-                {s.label}
+      <div style={{...card,border:`1.5px solid ${SUBJ[selSubj].border}`}}>
+        <div style={{fontWeight:700,fontSize:14,marginBottom:10,color:"#1e293b"}}>🤖 Ask AI About Weightage Strategy</div>
+        <div style={{display:"flex",gap:10}}>
+          <input value={aiQ} onChange={e=>setAiQ(e.target.value)} onKeyDown={e=>e.key==="Enter"&&askWeightage()} placeholder={`e.g. Which ${selSubj} chapters give best ROI for Advanced?`} style={{...inp,flex:1}}/>
+          <button onClick={askWeightage} disabled={aiLoad} style={{...btn(SUBJ[selSubj].color),flexShrink:0,opacity:aiLoad?0.7:1}}>{aiLoad?"...":"Ask"}</button>
+        </div>
+        {aiR&&<div style={{marginTop:12,background:"#f8fafc",borderRadius:10,padding:14,fontSize:13,lineHeight:1.7,color:"#1e293b",border:"1px solid #e5e7eb",whiteSpace:"pre-wrap"}}><span style={{fontWeight:700,color:SUBJ[selSubj].color}}>Strategy: </span>{aiR}</div>}
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════ BOOK PROBLEMS ═══════════════════ */
+function BooksTab(){
+  const [subj,setSubj]=useState("Physics");
+  const [book,setBook]=useState(BOOKS.Physics[0]);
+  const [topic,setTopic]=useState("");
+  const [pType,setPType]=useState("single");
+  const [diff,setDiff]=useState("Medium");
+  const [prob,setProb]=useState(null);
+  const [loading,setLoading]=useState(false);
+  const [ans,setAns]=useState("");
+  const [sol,setSol]=useState(""); const [solLoad,setSolLoad]=useState(false); const [showSol,setShowSol]=useState(false);
+
+  const gen=async()=>{
+    setLoading(true);setProb(null);setAns("");setSol("");setShowSol(false);
+    const t=topic||SUBJ[subj].topics[Math.floor(Math.random()*SUBJ[subj].topics.length)];
+    const cNote=pType==="single"?"Single focused concept.":pType==="dual"?"DUAL-CONCEPT — combines two related topics.":"MULTI-CONCEPT — integrates 3+ topics (Advanced level).";
+    const prompt=`Generate a ${diff} ${subj} problem in the style and difficulty of "${book}" on topic: ${t}.\n${cNote}\nMatch that book's exact style, notation, and approach.\nReturn ONLY valid JSON:\n{"problem":"full problem with all data","type":"numerical/conceptual","topic":"${t}","concepts":["c1"],"answer":"with units","book_note":"style of this book"}`;
+    try{
+      const r=await askClaude([{role:"user",content:prompt}],"You generate JEE textbook-style problems. Mimic the exact style of the specified book. Return only valid JSON.");
+      setProb(JSON.parse(r.replace(/```json|```/g,"").trim()));
+    }catch{setProb({problem:"Generation failed. Please try again.",type:"numerical",topic:t,concepts:[],answer:"",book_note:""});}
+    setLoading(false);
+  };
+
+  const getSol=async()=>{
+    if(!prob)return;setShowSol(true);setSolLoad(true);
+    const s=await askClaude([{role:"user",content:`Book style: ${book}. Problem: ${prob.problem}\nProvide complete step-by-step solution matching this book's style. Show all formulas, substitutions, and intermediate steps. Box the final answer.`}],
+      "You are an expert tutor. Give detailed solutions matching the specified textbook's style and notation.");
+    setSol(s);setSolLoad(false);
+  };
+
+  return(
+    <div style={{display:"flex",flexDirection:"column",gap:18}}>
+      <div style={card}>
+        <div style={{fontWeight:700,fontSize:15,marginBottom:14,color:"#1e293b"}}>📚 Book-Based Problem Generator</div>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:14}}>
+          {[
+            ["Subject",<select value={subj} onChange={e=>{setSubj(e.target.value);setBook(BOOKS[e.target.value][0]);setTopic("");}} style={inp}>{Object.keys(SUBJ).map(s=><option key={s}>{s}</option>)}</select>],
+            ["Book",<select value={book} onChange={e=>setBook(e.target.value)} style={inp}>{BOOKS[subj].map(b=><option key={b}>{b}</option>)}</select>],
+            ["Topic",<select value={topic} onChange={e=>setTopic(e.target.value)} style={inp}><option value="">🎲 Random</option>{SUBJ[subj].topics.map(t=><option key={t}>{t}</option>)}</select>],
+            ["Difficulty",<select value={diff} onChange={e=>setDiff(e.target.value)} style={inp}>{["Easy","Medium","Hard","Very Hard"].map(d=><option key={d}>{d}</option>)}</select>]
+          ].map(([l,el])=>(
+            <div key={l}><div style={{fontSize:11,fontWeight:600,color:"#64748b",marginBottom:4}}>{l}</div>{el}</div>
+          ))}
+        </div>
+        <div style={{marginBottom:14}}>
+          <div style={{fontSize:11,fontWeight:600,color:"#64748b",marginBottom:8}}>Problem Complexity</div>
+          <div style={{display:"flex",gap:8}}>
+            {[["single","Single Concept","1 topic"],["dual","Dual Concept","2 topics linked"],["multi","Multi-Concept","3+ topics (JEE Adv)"]].map(([v,l,d])=>(
+              <div key={v} onClick={()=>setPType(v)} style={{flex:1,padding:"10px 12px",borderRadius:10,border:`2px solid ${pType===v?"#4f46e5":"#e5e7eb"}`,background:pType===v?"#eef2ff":"#fafafa",cursor:"pointer",textAlign:"center"}}>
+                <div style={{fontWeight:700,fontSize:13,color:pType===v?"#4f46e5":"#374151"}}>{l}</div>
+                <div style={{fontSize:11,color:"#94a3b8",marginTop:2}}>{d}</div>
               </div>
             ))}
-            <span style={{fontSize:"15px",color:"#334155"}}>— click to cycle</span>
           </div>
-          <Card>
-            <Lbl style={{color:sColors[activeSubj]}}>{activeSubj.toUpperCase()} — {SUBBRANCHES[activeSubj].length} TOPICS</Lbl>
-            <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(175px,1fr))",gap:"6px"}}>
-              {SUBBRANCHES[activeSubj].map(b=>{
-                const key=`${activeSubj}_${b}`;const st=branchStatus[key]||0;const cfg=statusCfg[st];
-                return(
-                  <button key={b} onClick={()=>cycleBranch(key)}
-                    style={{padding:"9px 12px",background:cfg.bg,border:`1px solid ${cfg.border}`,color:cfg.text,fontSize:"15px",textAlign:"left",transition:"all 0.15s",lineHeight:1.4}}>
-                    <div style={{fontWeight:st===2?700:400}}>{b}</div>
-                    <div style={{fontSize:"11px",opacity:0.7,marginTop:"2px",letterSpacing:"1px"}}>{cfg.label}</div>
-                  </button>
-                );
-              })}
+        </div>
+        <button onClick={gen} disabled={loading} style={{...btn("#059669"),width:"100%",padding:12,fontSize:14}}>
+          {loading?"⏳ Generating...`":"📖 Generate Problem"}
+        </button>
+      </div>
+
+      {prob&&(
+        <div style={card}>
+          <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:14}}>
+            {[
+              [subj,SUBJ[subj].light,SUBJ[subj].color],
+              [prob.topic,"#f1f5f9","#64748b"],
+              [book.split("—")[0].trim(),"#ecfdf5","#059669"],
+              [diff,"#fef3c7","#d97706"],
+              [pType==="single"?"1-Concept":pType==="dual"?"🔗 2-Concept":"🔗🔗 Multi-Concept","#fdf4ff","#9333ea"]
+            ].map(([t,bg,col])=>(
+              <span key={t} style={{background:bg,color:col,fontSize:11,fontWeight:700,padding:"3px 10px",borderRadius:6}}>{t}</span>
+            ))}
+          </div>
+          <div style={{fontSize:15,lineHeight:1.85,color:"#1e293b",background:"#f8fafc",padding:"16px 18px",borderRadius:10,border:"1px solid #e5e7eb",marginBottom:14}}>
+            {prob.problem}
+          </div>
+          {prob.book_note&&<div style={{fontSize:12,color:"#64748b",padding:"7px 12px",background:"#fffbeb",borderRadius:8,border:"1px solid #fde68a",marginBottom:14}}>📖 Style note: {prob.book_note}</div>}
+          <div style={{marginBottom:12}}>
+            <div style={{fontSize:11,fontWeight:600,color:"#64748b",marginBottom:5}}>Your Answer:</div>
+            <input value={ans} onChange={e=>setAns(e.target.value)} placeholder="Enter your answer with units..." style={inp}/>
+          </div>
+          <div style={{display:"flex",gap:10}}>
+            <button onClick={getSol} style={{...btn("#4f46e5"),flex:1,padding:11}}>📖 Full Solution</button>
+            <button onClick={gen} style={{...btn("#64748b"),flex:1,padding:11}}>🔄 New Problem</button>
+          </div>
+          {showSol&&(
+            <div style={{marginTop:14,background:"#f0fdf4",borderRadius:10,padding:14,border:"1px solid #bbf7d0"}}>
+              <div style={{fontWeight:700,color:"#059669",marginBottom:6}}>📖 Solution (Answer: {prob.answer})</div>
+              {solLoad?<div style={{color:"#64748b",fontSize:13}}>⏳ Generating solution...</div>:
+                <div style={{fontSize:13,lineHeight:1.75,color:"#1e293b",whiteSpace:"pre-wrap"}}>{sol}</div>}
             </div>
-          </Card>
+          )}
         </div>
       )}
     </div>
   );
 }
 
-/* ═══════════════════════════════════════════════════════
-   PROGRESS TAB
-═══════════════════════════════════════════════════════ */
-function ProgressTab({advUnlocked}){
-  const doneDays=ld("jee_done",{});
-  const scores=ld("jee_scores",{});
-  const advScores=ld("adv_scores",{});
-  const MSUBJ=["Physics","Maths","Chemistry"];
-  const ASUBJ=["Physics","Chemistry","Maths"];
+/* ═══════════════════════ AI TUTOR ═════════════════════════ */
+function TutorTab(){
+  const GREETING="Hello! I'm your JEE Advanced AI Tutor (Claude).\n\nI can help with:\n• Deep concept explanations (Physics/Chemistry/Maths)\n• Problem solving step-by-step\n• Formula derivations & proofs\n• Comparing JEE Advanced vs Mains approach\n• Chapter-wise strategy & priorities\n• Error analysis & weak area identification\n\nAsk me anything. Let's crack JEE Advanced! 🎯";
+  const [chat,setChat]=useState([{role:"assistant",content:GREETING}]);
+  const [msg,setMsg]=useState("");
+  const [loading,setLoading]=useState(false);
+  const [mode,setMode]=useState("advanced");
+  const chatRef=useRef();
 
-  function mainsTotal(id){const v=MSUBJ.map(s=>scores[`${id}_${s}`]).filter(v=>v!==null&&v!==undefined);return v.length?v.reduce((a,b)=>a+b,0):null;}
-  function advTotal(id){const v=ASUBJ.map(s=>advScores[`${id}_${s}`]).filter(v=>v!==null&&v!==undefined);return v.length===3?v.reduce((a,b)=>a+b,0):null;}
+  const QUICK=[
+    "Explain Gauss Law with all 3 geometries",
+    "GOC: Complete carbocation stability order",
+    "Rotational: Rolling without slipping derivation",
+    "Definite integration King's property proof",
+    "JEE Advanced vs Mains key strategy difference",
+    "Coordination compounds CFT vs VBT comparison"
+  ];
 
-  // Overall score 0-100
-  function calcScore(){
-    let pts=0,total=0;
-    for(const p of PHASES){
-      for(let d=1;d<=p.days;d++){total+=2;if(doneDays[`p${p.id}_d${d}`])pts+=2;}
-    }
-    for(const t of MAINS_TESTS){const v=mainsTotal(t.id);if(v!==null){total+=2;pts+=Math.min(2,(v/300)*2);}}
-    for(const t of ADV_TESTS){const v=advTotal(t.id);if(v!==null){total+=3;pts+=Math.min(3,(v/306)*3);}}
-    if(!total)return 0;
-    return Math.min(100,Math.round((pts/total)*100));
-  }
-  const overall=calcScore();
-  function level(s){
-    if(s>=80)return{name:"ELITE",       color:"#f59e0b"};
-    if(s>=60)return{name:"ADVANCED",    color:"#34d399"};
-    if(s>=40)return{name:"PROGRESSING", color:"#60a5fa"};
-    if(s>=20)return{name:"BUILDING",    color:"#a78bfa"};
-    return          {name:"STARTING",   color:"#475569"};
-  }
-  const lv=level(overall);
-
-  const mainsDone=MAINS_TESTS.filter(t=>mainsTotal(t.id)!==null);
-  const advDone  =ADV_TESTS.filter(t=>advTotal(t.id)!==null);
-  const mTotals  =mainsDone.map(t=>mainsTotal(t.id));
-  const aTotals  =advDone.map(t=>advTotal(t.id));
-  const mBest    =mTotals.length?Math.max(...mTotals):null;
-  const aBest    =aTotals.length?Math.max(...aTotals):null;
-
-  function phaseProgress(pid){const done=Object.keys(doneDays).filter(k=>k.startsWith(`p${pid}`)).length;return Math.round((done/PHASES[pid-1].days)*100);}
-
-  // activity grid
-  const activity=Array.from({length:72}).map((_,i)=>{
-    let phase,day,color;
-    if(i<10){phase=1;day=i+1;color="#f59e0b";}
-    else if(i<32){phase=2;day=i-9;color="#3b82f6";}
-    else{phase=3;day=i-31;color="#ec4899";}
-    const done=doneDays[`p${phase}_d${day}`];
-    return{phase,day,done,color};
-  });
+  const send=async(m)=>{
+    const text=m||msg;
+    if(!text.trim())return;
+    const newChat=[...chat,{role:"user",content:text}];
+    setChat(newChat);setMsg("");setLoading(true);
+    const firstUser=newChat.findIndex(x=>x.role==="user");
+    const r=await askClaude(newChat.slice(firstUser),`You are an elite JEE ${mode==="advanced"?"Advanced":"Mains"} tutor with 20 years experience. Give detailed, educational responses. For formulas, write them clearly in text. Use numbered steps for solutions. End with "Doubt cleared? 🎯" or follow-up question to check understanding.`);
+    setChat(c=>[...c,{role:"assistant",content:r}]);
+    setLoading(false);
+    setTimeout(()=>chatRef.current?.scrollTo(0,chatRef.current.scrollHeight),100);
+  };
 
   return(
-    <div className="fadeup">
-      <Card style={{textAlign:"center",padding:"32px 20px",marginBottom:"20px",borderColor:`${lv.color}44`,background:`${lv.color}06`}}>
-        <div style={{fontSize:"15px",letterSpacing:"4px",color:"#475569",marginBottom:"8px"}}>KARTIKEY'S OVERALL SCORE</div>
-        <div style={{fontSize:"76px",fontWeight:900,color:lv.color,lineHeight:1}}>{overall}</div>
-        <div style={{fontSize:"15px",letterSpacing:"5px",color:lv.color,marginBottom:"16px"}}>{lv.name}</div>
-        <div style={{height:"8px",background:"#1e293b",overflow:"hidden",maxWidth:"300px",margin:"0 auto"}}>
-          <div style={{height:"100%",width:`${overall}%`,background:`linear-gradient(90deg,${lv.color},#fcd34d)`,transition:"width 1s ease"}}/>
+    <div style={{display:"flex",flexDirection:"column",gap:14}}>
+      <div style={{display:"flex",gap:10,flexWrap:"wrap",alignItems:"center"}}>
+        <div style={{display:"flex",gap:4,background:"#f1f5f9",padding:4,borderRadius:10}}>
+          {[["advanced","⚡ Advanced Mode"],["mains","📝 Mains Mode"]].map(([v,l])=>(
+            <button key={v} onClick={()=>setMode(v)} style={{padding:"7px 14px",borderRadius:8,border:"none",cursor:"pointer",fontWeight:700,fontSize:12,background:mode===v?"#4f46e5":"transparent",color:mode===v?"#fff":"#64748b"}}>
+              {l}
+            </button>
+          ))}
         </div>
-        <div style={{fontSize:"15px",color:"#334155",marginTop:"8px"}}>starts at 0 — rises with every day done + test score</div>
-      </Card>
-
-      <div className="sgrid" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"10px",marginBottom:"20px"}}>
-        {[
-          {l:"MAINS BEST",  v:mBest?`${mBest}/300`:"—",  c:"#3b82f6"},
-          {l:"ADV BEST",    v:aBest?`${aBest}/306`:"—",  c:"#ec4899"},
-          {l:"DAYS DONE",   v:Object.keys(doneDays).filter(k=>doneDays[k]).length,c:"#34d399"},
-          {l:"LEVEL",       v:lv.name.slice(0,4),         c:lv.color},
-        ].map(s=>(
-          <Card key={s.l}><div style={{fontSize:"15px",letterSpacing:"2px",color:"#475569",marginBottom:"4px"}}>{s.l}</div><div style={{fontSize:"18px",fontWeight:900,color:s.c}}>{s.v}</div></Card>
+        <div style={{fontSize:12,color:"#94a3b8"}}>Quick:</div>
+        {QUICK.slice(0,3).map(p=>(
+          <button key={p} onClick={()=>send(p)} style={{fontSize:11,padding:"5px 10px",borderRadius:99,border:"1px solid #e5e7eb",background:"#f8fafc",cursor:"pointer",color:"#374151"}}>
+            {p.slice(0,32)}{p.length>32?"...":""}
+          </button>
         ))}
       </div>
 
-      <div className="twocol" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"20px"}}>
-        <div>
-          {/* Phase progress */}
-          <Card style={{marginBottom:"14px"}}>
-            <Lbl>PHASE COMPLETION</Lbl>
-            {PHASES.map(p=>{
-              const pct=phaseProgress(p.id);const done=Object.keys(doneDays).filter(k=>k.startsWith(`p${p.id}`)).length;
-              return(
-                <div key={p.id} style={{marginBottom:"12px"}}>
-                  <div style={{display:"flex",justifyContent:"space-between",marginBottom:"5px"}}>
-                    <div style={{fontSize:"14px",fontWeight:700,color:p.color}}>PHASE {p.id} {p.isAdvanced?"(ADV)":""}</div>
-                    <div style={{fontSize:"15px",fontWeight:900,color:p.color}}>{pct}%</div>
-                  </div>
-                  <div style={{height:"5px",background:"#1e293b"}}><div style={{height:"100%",width:`${pct}%`,background:p.color,transition:"width 0.5s"}}/></div>
-                  <div style={{fontSize:"15px",color:"#475569",marginTop:"4px"}}>{done}/{p.days} days</div>
-                </div>
-              );
-            })}
-          </Card>
-
-          {/* Mains subject targets */}
-          <Card style={{marginBottom:"14px"}}>
-            <Lbl>MAINS — SUBJECT VS TARGET</Lbl>
-            {[{s:"Physics",t:80,max:100,c:"#60a5fa"},{s:"Chemistry",t:90,max:100,c:"#34d399"},{s:"Maths",t:60,max:100,c:"#a78bfa"}].map(({s,t,max,c})=>{
-              const arr=MAINS_TESTS.map(x=>scores[`${x.id}_${s}`]).filter(v=>v!==null&&v!==undefined);
-              const avg=arr.length?Math.round(arr.reduce((a,b)=>a+b,0)/arr.length):null;
-              const hit=avg!==null&&avg>=t;
-              return(
-                <div key={s} style={{marginBottom:"13px"}}>
-                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"4px"}}>
-                    <div style={{display:"flex",gap:"6px",alignItems:"center"}}><span style={{fontSize:"15px",color:c,fontWeight:700}}>{s}</span><Tag color={c}>target {t}+</Tag></div>
-                    <div style={{display:"flex",gap:"5px",alignItems:"center"}}>
-                      <span style={{fontSize:"15px",fontWeight:900,color:avg!==null?(hit?"#34d399":"#f87171"):"#334155"}}>{avg!==null?`${avg}/${max}`:"—"}</span>
-                      {avg!==null&&<Tag color={hit?"#34d399":"#f87171"}>{hit?"✓":`-${t-avg}`}</Tag>}
-                    </div>
-                  </div>
-                  <div style={{position:"relative",height:"6px",background:"#1e293b"}}>
-                    <div style={{height:"100%",width:`${avg?((avg/max)*100):0}%`,background:avg?(hit?c:"#f87171"):"#1e293b",transition:"width 0.5s"}}/>
-                    <div style={{position:"absolute",top:"-4px",left:`${(t/max)*100}%`,width:"2px",height:"14px",background:c,opacity:0.8}}/>
-                  </div>
-                </div>
-              );
-            })}
-            {mainsDone.length===0&&<div style={{fontSize:"15px",color:"#334155",textAlign:"center",paddingTop:"6px"}}>Enter mains test scores to see averages</div>}
-          </Card>
-
-          {/* Advanced subject targets */}
-          {advUnlocked&&(
-            <Card>
-              <Lbl>ADVANCED — SUBJECT VS TARGET</Lbl>
-              {[{s:"Physics",t:96,max:102,c:"#60a5fa"},{s:"Chemistry",t:102,max:102,c:"#34d399"},{s:"Maths",t:84,max:102,c:"#a78bfa"}].map(({s,t,max,c})=>{
-                const arr=ADV_TESTS.map(x=>advScores[`${x.id}_${s}`]).filter(v=>v!==null&&v!==undefined);
-                const avg=arr.length?Math.round(arr.reduce((a,b)=>a+b,0)/arr.length):null;
-                const hit=avg!==null&&avg>=t;
-                return(
-                  <div key={s} style={{marginBottom:"13px"}}>
-                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"4px"}}>
-                      <div style={{display:"flex",gap:"6px",alignItems:"center"}}><span style={{fontSize:"15px",color:c,fontWeight:700}}>{s}</span><Tag color={c}>target {t}+/{max}</Tag></div>
-                      <div style={{display:"flex",gap:"5px",alignItems:"center"}}>
-                        <span style={{fontSize:"15px",fontWeight:900,color:avg!==null?(hit?"#34d399":"#f87171"):"#334155"}}>{avg!==null?`${avg}/${max}`:"—"}</span>
-                        {avg!==null&&<Tag color={hit?"#34d399":"#f87171"}>{hit?"✓":`-${t-avg}`}</Tag>}
-                      </div>
-                    </div>
-                    <div style={{position:"relative",height:"6px",background:"#1e293b"}}>
-                      <div style={{height:"100%",width:`${avg?((avg/max)*100):0}%`,background:avg?(hit?c:"#f87171"):"#1e293b",transition:"width 0.5s"}}/>
-                      <div style={{position:"absolute",top:"-4px",left:`${(t/max)*100}%`,width:"2px",height:"14px",background:c,opacity:0.8}}/>
-                    </div>
-                  </div>
-                );
-              })}
-              {advDone.length===0&&<div style={{fontSize:"15px",color:"#334155",textAlign:"center",paddingTop:"6px"}}>Enter advanced test scores to see averages</div>}
-            </Card>
+      <div style={{...card,padding:0,overflow:"hidden"}}>
+        <div ref={chatRef} style={{height:430,overflowY:"auto",padding:18,display:"flex",flexDirection:"column",gap:12}}>
+          {chat.map((m,i)=>(
+            <div key={i} style={{display:"flex",justifyContent:m.role==="user"?"flex-end":"flex-start"}}>
+              <div style={{maxWidth:"85%",padding:"12px 16px",borderRadius:14,fontSize:13,lineHeight:1.75,background:m.role==="user"?"linear-gradient(135deg,#4f46e5,#7c3aed)":"#f8fafc",color:m.role==="user"?"#fff":"#1e293b",border:m.role==="assistant"?"1px solid #e5e7eb":"none",whiteSpace:"pre-wrap",wordBreak:"break-word"}}>
+                {m.role==="assistant"&&<div style={{fontSize:9,fontWeight:700,color:"#4f46e5",marginBottom:5,letterSpacing:1.5}}>JEE AI TUTOR · CLAUDE</div>}
+                {m.content}
+              </div>
+            </div>
+          ))}
+          {loading&&(
+            <div style={{alignSelf:"flex-start",background:"#f8fafc",border:"1px solid #e5e7eb",padding:"12px 16px",borderRadius:14}}>
+              <div style={{fontSize:9,fontWeight:700,color:"#4f46e5",marginBottom:5,letterSpacing:1.5}}>JEE AI TUTOR · CLAUDE</div>
+              <div style={{color:"#64748b",fontSize:13}}>⏳ Thinking...</div>
+            </div>
           )}
         </div>
+        <div style={{borderTop:"1px solid #f1f5f9",padding:14,display:"flex",gap:10}}>
+          <textarea value={msg} onChange={e=>setMsg(e.target.value)} onKeyDown={e=>e.key==="Enter"&&!e.shiftKey&&(e.preventDefault(),send())}
+            placeholder="Ask any JEE question... (Enter to send, Shift+Enter for new line)" rows={2}
+            style={{...inp,flex:1,resize:"none",fontFamily:"inherit",lineHeight:1.5,height:52}}/>
+          <button onClick={()=>send()} disabled={loading} style={{...btn(),padding:"0 20px",flexShrink:0,fontSize:14}}>Send</button>
+        </div>
+        <div style={{padding:"8px 14px 12px",display:"flex",gap:8,flexWrap:"wrap",borderTop:"1px solid #f8fafc"}}>
+          {QUICK.slice(3).map(p=>(
+            <button key={p} onClick={()=>send(p)} style={{fontSize:11,padding:"4px 10px",borderRadius:99,border:"1px solid #e5e7eb",background:"#f8fafc",cursor:"pointer",color:"#374151"}}>
+              {p.slice(0,40)}{p.length>40?"...":""}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
 
-        <div>
-          {/* 72-day activity */}
-          <Card style={{marginBottom:"14px"}}>
-            <Lbl>72-DAY ACTIVITY (ALL PHASES)</Lbl>
-            <div style={{display:"grid",gridTemplateColumns:"repeat(12,1fr)",gap:"3px",marginBottom:"8px"}}>
-              {activity.map((a,i)=>(
-                <div key={i} style={{aspectRatio:"1",background:a.done?"#0d2a1a":"#0d1117",border:`1px solid ${a.done?"#34d399":a.color+"22"}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:"9px",color:a.done?"#34d399":a.color+"55"}}>
-                  {a.done?"✓":a.day}
-                </div>
+/* ═══════════════════════ MAIN APP ═════════════════════════ */
+export default function App(){
+  const [tab,setTab]=useState("planner");
+  const [examMode,setExamMode]=useState("advanced");
+
+  const tabs=[
+    {id:"planner",label:"📅 29-Day Plan"},
+    {id:"pyq",label:"🎯 PYQ Practice"},
+    {id:"weightage",label:"📊 Weightage"},
+    {id:"books",label:"📚 Book Problems"},
+    {id:"tutor",label:"🤖 AI Tutor"}
+  ];
+
+  return(
+    <div style={{minHeight:"100vh",background:"#ffffff",fontFamily:"'Inter',-apple-system,sans-serif"}}>
+      <div style={{background:"linear-gradient(135deg,#1e1b4b 0%,#312e81 45%,#4338ca 100%)",padding:"20px 24px 0",boxShadow:"0 4px 24px rgba(79,70,229,0.2)"}}>
+        <div style={{maxWidth:1020,margin:"0 auto"}}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:14}}>
+            <div>
+              <div style={{color:"#c7d2fe",fontSize:10,fontFamily:"monospace",letterSpacing:3,marginBottom:6}}>JEE 2026 · 29-DAY PLAN · AI SYSTEM</div>
+              <div style={{color:"#fff",fontSize:20,fontWeight:800,letterSpacing:"-0.5px",lineHeight:1.2}}>
+                JEE Advanced + Mains — Complete AI System
+              </div>
+              <div style={{color:"#c7d2fe",fontSize:12,marginTop:4}}>48 Years PYQ · All Books · Multi-Concept · Claude AI · White Theme</div>
+            </div>
+            <div style={{display:"flex",gap:4,background:"rgba(255,255,255,0.1)",padding:4,borderRadius:10,flexShrink:0,marginLeft:12}}>
+              {[["advanced","⚡ Advanced"],["mains","📝 Mains"],["both","🔄 Both"]].map(([v,l])=>(
+                <button key={v} onClick={()=>setExamMode(v)} style={{padding:"6px 12px",borderRadius:7,border:"none",cursor:"pointer",fontWeight:700,fontSize:11,background:examMode===v?"#fff":"transparent",color:examMode===v?"#4f46e5":"#c7d2fe",transition:"all 0.2s"}}>
+                  {l}
+                </button>
               ))}
             </div>
-            <div style={{display:"flex",gap:"12px",flexWrap:"wrap",fontSize:"15px"}}>
-              {PHASES.map(p=><span key={p.id} style={{color:p.color}}>■ P{p.id}</span>)}
-              <span style={{color:"#34d399"}}>✓ done</span>
-            </div>
-          </Card>
-
-          {/* Motivation */}
-          <Card style={{borderColor:"#f59e0b44",background:"#f59e0b06"}}>
-            <div style={{fontSize:"15px",color:"#f59e0b",letterSpacing:"3px",marginBottom:"10px"}}>◈ KARTIKEY'S MISSION</div>
-            <div style={{lineHeight:1.7}}>
-              <div style={{fontSize:"15px",fontWeight:700,color:"#e2e8f0",marginBottom:"8px"}}>JEE Mains → JEE Advanced</div>
-              <div style={{fontSize:"14px",color:"#64748b",marginBottom:"4px"}}>Mains: <span style={{color:"#60a5fa"}}>Phy 80+</span> · <span style={{color:"#34d399"}}>Chem 90+</span> · <span style={{color:"#a78bfa"}}>Math 60+</span></div>
-              <div style={{fontSize:"14px",color:"#64748b",marginBottom:"12px"}}>Advanced: <span style={{color:"#60a5fa"}}>Phy 96+</span> · <span style={{color:"#34d399"}}>Chem 102+</span> · <span style={{color:"#a78bfa"}}>Math 84+</span> = <span style={{color:"#f59e0b"}}>280+/306</span></div>
-            </div>
-            <div style={{display:"flex",justifyContent:"space-between",paddingTop:"10px",borderTop:"1px solid #1e293b"}}>
-              <div><div style={{fontSize:"15px",color:"#475569",marginBottom:"2px"}}>OVERALL SCORE</div><div style={{fontSize:"22px",fontWeight:900,color:lv.color}}>{overall}/100</div></div>
-              <div style={{textAlign:"right"}}><div style={{fontSize:"15px",color:"#475569",marginBottom:"2px"}}>LEVEL</div><div style={{fontSize:"14px",fontWeight:900,color:lv.color}}>{lv.name}</div></div>
-            </div>
-          </Card>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════
-   MAINS DATE BAR  (always visible in header)
-═══════════════════════════════════════════════════════ */
-function MainsDateBar({mainsDate,onSetMainsDate}){
-  const [editing,setEditing]=useState(false);
-  const [val,setVal]=useState(mainsDate||"");
-
-  const today=new Date(); today.setHours(0,0,0,0);
-  const examDate=mainsDate?new Date(mainsDate):null;
-  if(examDate)examDate.setHours(0,0,0,0);
-  const daysLeft=examDate&&today<=examDate?Math.ceil((examDate-today)/86400000):null;
-  const mainsDone=examDate&&today>examDate;
-
-  function save(){if(val){onSetMainsDate(val);setEditing(false);}}
-
-  return(
-    <div style={{marginBottom:"16px",padding:"10px 14px",background:"#0d1117",border:"1px solid #1e293b",display:"flex",alignItems:"center",gap:"12px",flexWrap:"wrap"}}>
-      <div style={{fontSize:"15px",letterSpacing:"3px",color:"#475569",minWidth:"max-content"}}>JEE MAINS DATE</div>
-
-      {!editing?(
-        <>
-          <div style={{flex:1,fontSize:"15px",fontWeight:700,color:mainsDone?"#34d399":examDate?"#f59e0b":"#334155"}}>
-            {examDate
-              ? examDate.toLocaleDateString("en-IN",{day:"numeric",month:"long",year:"numeric"})
-              : "Not set yet — tap to set"}
           </div>
-          {daysLeft!==null&&(
-            <div style={{fontSize:"15px",color:"#f59e0b",background:"#f59e0b15",border:"1px solid #f59e0b33",padding:"3px 8px",whiteSpace:"nowrap"}}>
-              {daysLeft} day{daysLeft!==1?"s":""} left
-            </div>
-          )}
-          {mainsDone&&<Tag color="#34d399">✓ MAINS DONE</Tag>}
-          <button onClick={()=>{setVal(mainsDate||"");setEditing(true);}}
-            style={{padding:"4px 10px",background:"transparent",border:"1px solid #f59e0b",color:"#f59e0b",fontSize:"15px",letterSpacing:"2px",whiteSpace:"nowrap"}}>
-            {examDate?"CHANGE":"SET DATE"}
-          </button>
-        </>
-      ):(
-        <>
-          <div style={{fontSize:"15px",color:"#475569"}}>Pick your exam date (Apr 3 / 4 / 5):</div>
-          <input type="date" value={val} onChange={e=>setVal(e.target.value)}
-            min="2026-04-01" max="2026-04-10"
-            style={{background:"#0a0a0f",border:"1px solid #f59e0b",color:"#f59e0b",padding:"5px 8px",fontSize:"14px",outline:"none"}}/>
-          <button onClick={save}
-            style={{padding:"5px 12px",background:"transparent",border:"1px solid #34d399",color:"#34d399",fontSize:"15px",letterSpacing:"2px",fontWeight:700}}>
-            ✓ SAVE
-          </button>
-          <button onClick={()=>setEditing(false)}
-            style={{padding:"5px 10px",background:"transparent",border:"1px solid #1e293b",color:"#475569",fontSize:"15px"}}>
-            ✕
-          </button>
-        </>
-      )}
-    </div>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════
-   ROOT APP
-═══════════════════════════════════════════════════════ */
-function App(){
-  const [unlocked,setUnlocked]=useState(()=>ld("jee_auth",false));
-  const [advUnlocked,setAdvUnlocked]=useState(()=>ld("adv_auth",false));
-  const [mainsDate,setMainsDate]=useState(()=>ld("jee_mains_date",null));
-  const [tab,setTab]=useState("guide");
-
-  function handleSetMainsDate(d){setMainsDate(d);sv("jee_mains_date",d);}
-
-  // ── 5-minute auto-lock on inactivity ──
-  useEffect(()=>{
-    if(!unlocked)return;
-    let timer=null;
-    function reset(){
-      clearTimeout(timer);
-      timer=setTimeout(()=>{setUnlocked(false);sv("jee_auth",false);},5*60*1000);
-    }
-    const events=["mousemove","mousedown","keydown","touchstart","scroll","click"];
-    events.forEach(e=>window.addEventListener(e,reset,{passive:true}));
-    reset();
-    return()=>{clearTimeout(timer);events.forEach(e=>window.removeEventListener(e,reset));};
-  },[unlocked]);
-
-  const TABS=[
-    {id:"guide",   label:"◈ GUIDE",    c:"#f59e0b"},
-    {id:"planner", label:"◈ PLANNER",  c:"#f59e0b"},
-    {id:"tests",   label:"◈ TESTS",    c:"#3b82f6"},
-    {id:"topics",  label:"◈ TOPICS",   c:"#a78bfa"},
-    {id:"progress",label:"◈ PROGRESS", c:"#34d399"},
-  ];
-  const topC=TABS.find(t=>t.id===tab)?.c||"#f59e0b";
-
-  useEffect(()=>{
-    const b=document.getElementById("topBar");
-    if(b)b.style.background=`linear-gradient(90deg,${topC},#fcd34d,${topC})`;
-  },[tab]);
-
-  function handleUnlock(){setUnlocked(true);sv("jee_auth",true);}
-  function handleAdvUnlock(){setAdvUnlocked(true);sv("adv_auth",true);}
-  function handleLock(){setUnlocked(false);sv("jee_auth",false);}
-
-  if(!unlocked)return React.createElement(PasswordScreen,{onUnlock:handleUnlock});
-
-  return(
-    <div className="wrap">
-      <div style={{marginBottom:"22px"}}>
-        <div style={{fontSize:"14px",letterSpacing:"4px",color:topC,marginBottom:"4px",fontWeight:700}}>◈ JEE MAINS + ADVANCED 2026</div>
-        <h1 style={{fontSize:"clamp(26px,5vw,40px)",fontWeight:900,letterSpacing:"-1px",lineHeight:1.1}}>
-          KARTIKEY <span style={{color:topC}}>BHARDWAJ</span>
-        </h1>
-        <div style={{fontSize:"15px",color:"#334155",marginTop:"5px",letterSpacing:"3px"}}>
-          MAR 2 → MAY 12 · 72 DAYS · 3 PHASES
+          <div style={{display:"flex",gap:2,overflowX:"auto"}}>
+            {tabs.map(t=>(
+              <button key={t.id} onClick={()=>setTab(t.id)} style={{padding:"10px 18px",background:tab===t.id?"#fff":"transparent",color:tab===t.id?"#4f46e5":"#c7d2fe",border:"none",borderRadius:"10px 10px 0 0",cursor:"pointer",fontWeight:700,fontSize:13,transition:"all 0.2s",whiteSpace:"nowrap",flexShrink:0}}>
+                {t.label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Mains date bar */}
-      <MainsDateBar mainsDate={mainsDate} onSetMainsDate={handleSetMainsDate}/>
-
-      <div style={{display:"flex",gap:"6px",marginBottom:"24px",flexWrap:"wrap",alignItems:"center"}}>
-        {TABS.map(t=>(
-          <button key={t.id} onClick={()=>setTab(t.id)}
-            style={{padding:"9px 15px",border:`1px solid ${tab===t.id?t.c:"#1e293b"}`,
-              background:tab===t.id?`${t.c}15`:"transparent",color:tab===t.id?t.c:"#475569",
-              fontSize:"15px",letterSpacing:"2px",fontWeight:tab===t.id?700:400,transition:"all 0.2s"}}>
-            {t.label}
-          </button>
-        ))}
-        <button onClick={handleLock} style={{marginLeft:"auto",padding:"9px 14px",border:"1px solid #1e293b",background:"transparent",color:"#334155",fontSize:"14px",letterSpacing:"2px"}}>LOCK</button>
+      <div style={{maxWidth:1020,margin:"0 auto",padding:"24px 16px"}}>
+        {tab==="planner"&&<PlannerTab/>}
+        {tab==="pyq"&&<PYQTab examMode={examMode}/>}
+        {tab==="weightage"&&<WeightageTab/>}
+        {tab==="books"&&<BooksTab/>}
+        {tab==="tutor"&&<TutorTab/>}
       </div>
-
-      {tab==="guide"    && React.createElement(GuideTab)}
-      {tab==="planner"  && React.createElement(PlannerTab,{advUnlocked,onAdvUnlock:handleAdvUnlock,mainsDate,onSetMainsDate:handleSetMainsDate})}
-      {tab==="tests"    && React.createElement(TestsTab,{advUnlocked})}
-      {tab==="topics"   && React.createElement(TopicsTab,{advUnlocked})}
-      {tab==="progress" && React.createElement(ProgressTab,{advUnlocked})}
     </div>
   );
 }
-
-ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(App));
-</script>
-
-<script>
-if("serviceWorker" in navigator){
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("/jee-planner/sw.js")
-      .then(() => console.log("JEE Planner: offline ready ✓"))
-      .catch(e => console.log("SW error:", e));
-  });
-}
-</script>
-</body>
-</html>

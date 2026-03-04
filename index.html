@@ -4,745 +4,1000 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>JEE 2026 — Ultimate Study System</title>
-<meta name="description" content="JEE Mains + Advanced 70-Day Study Plan, Chapter Tracker, AI Practice, Exam Mode — Powered by Gemini AI"/>
 <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <style>
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,sans-serif;background:#f8fafc;color:#1e293b}
-  ::-webkit-scrollbar{width:6px;height:6px}
-  ::-webkit-scrollbar-track{background:#f1f5f9}
-  ::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:99px}
-  select,input,textarea,button{font-family:inherit}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f8fafc;color:#1e293b}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:9px}
 </style>
 </head>
 <body>
 <div id="root"></div>
 <script type="text/babel">
-const {useState,useRef,useEffect}=React;
-
-const BG="#ffffff",BG2="#f8fafc",BG3="#f1f5f9",BORDER="#e2e8f0",TEXT="#1e293b",MUTED="#64748b";
+const {useState,useRef,useEffect} = React;
+const BG="#fff",BG2="#f8fafc",BORDER="#e2e8f0",TEXT="#1e293b",MUTED="#64748b";
 const card={background:BG,borderRadius:14,border:`1.5px solid ${BORDER}`,padding:18,boxShadow:"0 1px 6px rgba(0,0,0,0.06)"};
-const btn=(bg="#4f46e5",col="#fff")=>({background:bg,color:col,border:"none",borderRadius:9,padding:"9px 18px",cursor:"pointer",fontWeight:700,fontSize:13,transition:"all 0.15s"});
+const btn=(bg="#4f46e5",col="#fff")=>({background:bg,color:col,border:"none",borderRadius:9,padding:"9px 18px",cursor:"pointer",fontWeight:700,fontSize:13});
 const inp={border:`1.5px solid ${BORDER}`,borderRadius:8,padding:"8px 12px",fontSize:13,outline:"none",background:BG,color:TEXT,width:"100%"};
-const pill=(col)=>({fontSize:10,fontWeight:800,padding:"2px 9px",borderRadius:99,background:col+"18",color:col,letterSpacing:0.5,display:"inline-block"});
+const pill=(col)=>({fontSize:10,fontWeight:800,padding:"2px 9px",borderRadius:99,background:col+"18",color:col,display:"inline-block"});
 
-const GEMINI_MODEL = "gemini-1.5-flash";
-
-function parseGeminiError(d){
-  if(!d.error) return null;
-  const msg = (d.error.message||"").toLowerCase();
-  const code = d.error.code||0;
-  if(code===429||msg.includes("quota")||msg.includes("rate")||msg.includes("limit")||msg.includes("exceeded")){
-    return "RATE_LIMIT";
-  }
-  if((code===400||code===401||code===403)&&(msg.includes("api key")||msg.includes("invalid")||msg.includes("apikey"))){
-    return "BAD_KEY";
-  }
-  return "ERR:"+d.error.message;
+/* ════════════════════════════════════════
+   GEMINI API  — 1 call per question
+════════════════════════════════════════ */
+const MODEL="gemini-1.5-flash";
+function parseErr(d){
+  if(!d||!d.error)return null;
+  const m=(d.error.message||"").toLowerCase();
+  if(d.error.code===429||m.includes("quota")||m.includes("rate")||m.includes("limit")||m.includes("exceed"))return"RATE_LIMIT";
+  if(m.includes("api key")||m.includes("invalid")||d.error.code===401||d.error.code===403)return"BAD_KEY";
+  return"ERR:"+d.error.message;
 }
-
-async function callGemini(apiKey, messages, sys, maxTokens){
-  sys = sys||"You are an expert JEE tutor.";
-  maxTokens = maxTokens||1000;
-  if(!apiKey||!apiKey.trim()) return "❌ NO_API_KEY";
-  const key = apiKey.trim();
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${key}`;
-
-  const raw = messages.map(m=>({
-    role: m.role==="assistant"?"model":"user",
-    parts:[{text: typeof m.content==="string"?m.content:JSON.stringify(m.content)}]
-  }));
+async function callAI(key,messages,sys,tokens){
+  if(!key||!key.trim())return"NO_KEY";
+  const url=`https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${key.trim()}`;
+  const raw=messages.map(m=>({role:m.role==="assistant"?"model":"user",parts:[{text:String(m.content||"")}]}));
   const contents=[];
   for(const m of raw){
-    if(contents.length&&contents[contents.length-1].role===m.role){
-      contents[contents.length-1].parts[0].text+="\n"+m.parts[0].text;
-    } else { contents.push(m); }
+    if(contents.length&&contents[contents.length-1].role===m.role)contents[contents.length-1].parts[0].text+="\n"+m.parts[0].text;
+    else contents.push({...m});
   }
-  if(contents.length&&contents[0].role==="model") contents.shift();
-  if(!contents.length) contents.push({role:"user",parts:[{text:"Hello"}]});
-  const body={systemInstruction:{parts:[{text:sys}]},contents,generationConfig:{maxOutputTokens:maxTokens,temperature:0.7}};
+  if(!contents.length||contents[0].role==="model")contents.unshift({role:"user",parts:[{text:"Hello"}]});
   try{
-    const r=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+    const r=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({systemInstruction:{parts:[{text:sys||"You are a JEE expert."}]},contents,generationConfig:{maxOutputTokens:tokens||1000,temperature:0.7}})});
     const d=await r.json();
-    const err=parseGeminiError(d);
-    if(err) return "❌ "+err;
-    const text=d.candidates?.[0]?.content?.parts?.map(p=>p.text||"").join("")||"";
-    if(!text) return "❌ Empty response. Try again.";
-    return text;
-  }catch(e){return "❌ Network:"+e.message;}
+    const e=parseErr(d);if(e)return e;
+    return d.candidates?.[0]?.content?.parts?.map(p=>p.text||"").join("")||"EMPTY";
+  }catch(e){return"NET:"+e.message;}
 }
-
-async function callGeminiWithPDF(apiKey, b64, mimeType, prompt){
-  if(!apiKey||!apiKey.trim()) return "❌ NO_API_KEY";
-  const key=apiKey.trim();
-  const url=`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${key}`;
-  const body={contents:[{parts:[{inline_data:{mime_type:mimeType,data:b64}},{text:prompt}]}]};
+async function callAIFile(key,b64,mime,prompt){
+  if(!key||!key.trim())return"NO_KEY";
+  const url=`https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${key.trim()}`;
   try{
-    const r=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
-    const d=await r.json();
-    const err=parseGeminiError(d);
-    if(err) return "❌ "+err;
-    return d.candidates?.[0]?.content?.parts?.map(p=>p.text||"").join("")||"No content extracted.";
-  }catch(e){return "❌ "+e.message;}
+    const r=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({contents:[{parts:[{inline_data:{mime_type:mime,data:b64}},{text:prompt}]}]})});
+    const d=await r.json();const e=parseErr(d);if(e)return e;
+    return d.candidates?.[0]?.content?.parts?.map(p=>p.text||"").join("")||"Nothing extracted.";
+  }catch(e){return"NET:"+e.message;}
+}
+const ERR_MSGS={NO_KEY:{bg:"#fef3c7",bc:"#fde68a",col:"#92400e",msg:<span><b>⚠️ No API Key</b> — go to <b>⚙️ Settings</b> and save your Gemini key.</span>},RATE_LIMIT:{bg:"#fef3c7",bc:"#fde68a",col:"#92400e",msg:<span><b>⏳ Rate Limit Hit</b> — free tier: 15 req/min. <b>Wait 60 seconds</b> then try again.</span>},BAD_KEY:{bg:"#fef2f2",bc:"#fecaca",col:"#991b1b",msg:<span><b>❌ Invalid API Key</b> — copy fresh key from <a href="https://aistudio.google.com/apikey" target="_blank" style={{color:"#4f46e5"}}>aistudio.google.com/apikey</a></span>}};
+function AIError({r}){
+  const key=r==="NO_KEY"?"NO_KEY":r==="RATE_LIMIT"?"RATE_LIMIT":r==="BAD_KEY"?"BAD_KEY":null;
+  const cfg=key?ERR_MSGS[key]:{bg:"#fef2f2",bc:"#fecaca",col:"#991b1b",msg:<span><b>❌ Error:</b> {r}</span>};
+  return<div style={{background:cfg.bg,border:`1.5px solid ${cfg.bc}`,borderRadius:10,padding:13,fontSize:13,color:cfg.col}}>{cfg.msg}</div>;
 }
 
-function GeminiError({msg}){
-  const isRateLimit=msg.includes("RATE_LIMIT");
-  const isBadKey=msg.includes("BAD_KEY");
-  const isNoKey=msg.includes("NO_API_KEY");
-  if(isNoKey) return(
-    <div style={{background:"#fef3c7",border:"1.5px solid #fde68a",borderRadius:10,padding:14,fontSize:13,color:"#92400e"}}>
-      <b>⚠️ No API Key</b><br/>Go to <b>⚙️ Settings</b> tab → paste your Gemini API key → Save.
-    </div>
-  );
-  if(isRateLimit) return(
-    <div style={{background:"#fef3c7",border:"1.5px solid #fde68a",borderRadius:10,padding:14,fontSize:13,color:"#92400e"}}>
-      <b>⏳ Rate Limit Hit</b> — Free tier: 15 requests/minute<br/>
-      <b>Wait 60 seconds</b> then try again. This is a Gemini free tier restriction, not an app error.
-    </div>
-  );
-  if(isBadKey) return(
-    <div style={{background:"#fef2f2",border:"1.5px solid #fecaca",borderRadius:10,padding:14,fontSize:13,color:"#991b1b"}}>
-      <b>❌ Invalid API Key</b><br/>
-      • Make sure you copied the <b>full key</b> from <a href="https://aistudio.google.com/apikey" target="_blank" style={{color:"#4f46e5"}}>aistudio.google.com/apikey</a><br/>
-      • The key should start with <b>AIza</b><br/>
-      • Go to ⚙️ Settings → paste fresh key → Save → Test Key
-    </div>
-  );
-  return(
-    <div style={{background:"#fef2f2",border:"1.5px solid #fecaca",borderRadius:10,padding:14,fontSize:13,color:"#991b1b"}}>
-      <b>❌ Error:</b> {msg}
-    </div>
-  );
-}
-
+/* ════════════════════════════════════════
+   DATA
+════════════════════════════════════════ */
 const DATA={
-  Physics:{color:"#4f46e5",light:"#eef2ff",icon:"⚛️",
+  Physics:{color:"#4f46e5",icon:"⚛️",
     mains:[
       {ch:"Modern Physics — Dual Nature & Photoelectric",wt:9,tag:"★★★"},
-      {ch:"Atoms & Nuclei",wt:8,tag:"★★★"},
-      {ch:"Ray Optics & Optical Instruments",wt:8,tag:"★★★"},
-      {ch:"Units, Dimensions & Measurement",wt:4,tag:"★"},
-      {ch:"Kinematics — 1D, 2D & Projectile",wt:7,tag:"★★"},
-      {ch:"Laws of Motion & Friction",wt:8,tag:"★★★"},
-      {ch:"Work, Energy & Power",wt:6,tag:"★★"},
-      {ch:"Centre of Mass & Collisions",wt:6,tag:"★★"},
-      {ch:"Rotational Motion & MOI",wt:8,tag:"★★★"},
       {ch:"Electrostatics",wt:9,tag:"★★★"},
       {ch:"Current Electricity",wt:9,tag:"★★★"},
-      {ch:"Magnetic Effects of Current",wt:7,tag:"★★"},
+      {ch:"Atoms & Nuclei",wt:8,tag:"★★★"},
+      {ch:"Ray Optics & Optical Instruments",wt:8,tag:"★★★"},
+      {ch:"Rotational Motion & MOI",wt:8,tag:"★★★"},
+      {ch:"Laws of Motion & Friction",wt:8,tag:"★★★"},
       {ch:"EMI & AC Circuits",wt:8,tag:"★★★"},
       {ch:"Wave Optics",wt:8,tag:"★★★"},
+      {ch:"Kinematics — 1D, 2D & Projectile",wt:7,tag:"★★"},
+      {ch:"Magnetic Effects of Current",wt:7,tag:"★★"},
+      {ch:"Work, Energy & Power",wt:6,tag:"★★"},
+      {ch:"Centre of Mass & Collisions",wt:6,tag:"★★"},
       {ch:"Oscillations & SHM",wt:6,tag:"★★"},
-      {ch:"Semiconductors & Communication Systems",wt:6,tag:"★★",mo:true},
+      {ch:"Semiconductors & Communication",wt:6,tag:"★★",mo:true},
+      {ch:"Units, Dimensions & Measurement",wt:4,tag:"★"},
     ],
     advanced:[
       {ch:"Modern Physics",wt:9,tag:"★★★"},
-      {ch:"Atoms, Nuclei & Radioactivity",wt:8,tag:"★★★"},
-      {ch:"Kinematics — Full",wt:7,tag:"★★"},
-      {ch:"Laws of Motion & Friction",wt:8,tag:"★★★"},
-      {ch:"Work, Energy & Power",wt:6,tag:"★★"},
-      {ch:"Centre of Mass & Collisions",wt:7,tag:"★★"},
-      {ch:"Rotational Motion",wt:9,tag:"★★★"},
-      {ch:"Gravitation",wt:7,tag:"★★★"},
-      {ch:"Fluid Mechanics & Surface Tension",wt:7,tag:"★★★"},
-      {ch:"Thermal Properties & Calorimetry",wt:5,tag:"★★"},
-      {ch:"Kinetic Theory of Gases",wt:6,tag:"★★"},
-      {ch:"Thermodynamics",wt:8,tag:"★★★"},
-      {ch:"Waves & Sound",wt:6,tag:"★★"},
       {ch:"Electrostatics",wt:9,tag:"★★★"},
-      {ch:"Current Electricity",wt:7,tag:"★★"},
-      {ch:"Magnetic Effects of Current",wt:7,tag:"★★"},
+      {ch:"Rotational Motion",wt:9,tag:"★★★"},
+      {ch:"Atoms, Nuclei & Radioactivity",wt:8,tag:"★★★"},
+      {ch:"Thermodynamics",wt:8,tag:"★★★"},
       {ch:"EMI & AC Circuits",wt:8,tag:"★★★"},
       {ch:"Ray & Wave Optics",wt:8,tag:"★★★"},
+      {ch:"Laws of Motion & Friction",wt:8,tag:"★★★"},
+      {ch:"Gravitation",wt:7,tag:"★★★"},
+      {ch:"Fluid Mechanics & Surface Tension",wt:7,tag:"★★★"},
+      {ch:"Kinematics — Full",wt:7,tag:"★★"},
+      {ch:"Centre of Mass & Collisions",wt:7,tag:"★★"},
+      {ch:"Current Electricity",wt:7,tag:"★★"},
+      {ch:"Magnetic Effects of Current",wt:7,tag:"★★"},
+      {ch:"Work, Energy & Power",wt:6,tag:"★★"},
       {ch:"Oscillations & SHM",wt:6,tag:"★★"},
+      {ch:"Kinetic Theory of Gases",wt:6,tag:"★★"},
+      {ch:"Waves & Sound",wt:6,tag:"★★"},
+      {ch:"Thermal Properties & Calorimetry",wt:5,tag:"★★"},
     ]
   },
-  Chemistry:{color:"#059669",light:"#ecfdf5",icon:"🧪",
+  Chemistry:{color:"#059669",icon:"🧪",
     mains:[
-      {ch:"Mole Concept & Stoichiometry",wt:7,tag:"★★"},
-      {ch:"Atomic Structure",wt:6,tag:"★★"},
-      {ch:"Chemical Bonding & Molecular Structure",wt:7,tag:"★★"},
-      {ch:"Thermodynamics & Thermochemistry",wt:7,tag:"★★"},
-      {ch:"Chemical Equilibrium",wt:6,tag:"★★"},
-      {ch:"Ionic Equilibrium",wt:6,tag:"★★"},
-      {ch:"Redox Reactions",wt:5,tag:"★★"},
       {ch:"Electrochemistry",wt:8,tag:"★★★"},
       {ch:"Chemical Kinetics",wt:8,tag:"★★★"},
-      {ch:"Solutions & Colligative Properties",wt:6,tag:"★★"},
-      {ch:"States of Matter",wt:5,tag:"★★"},
-      {ch:"Solid State",wt:7,tag:"★★"},
-      {ch:"Surface Chemistry",wt:4,tag:"★"},
-      {ch:"Periodic Table & Periodicity",wt:5,tag:"★★"},
-      {ch:"Hydrogen & s-Block Elements",wt:5,tag:"★★"},
-      {ch:"p-Block Pt.1 — Gr 13, 14, 15",wt:7,tag:"★★★"},
-      {ch:"p-Block Pt.2 — Gr 16, 17, 18",wt:7,tag:"★★★"},
-      {ch:"d & f Block Elements",wt:7,tag:"★★★"},
       {ch:"Coordination Compounds",wt:8,tag:"★★★"},
-      {ch:"Metallurgy",wt:4,tag:"★"},
-      {ch:"Environmental Chemistry",wt:3,tag:"★"},
       {ch:"GOC & Isomerism",wt:8,tag:"★★★"},
+      {ch:"Aldehydes, Ketones & Carboxylic Acids",wt:8,tag:"★★★"},
+      {ch:"Mole Concept & Stoichiometry",wt:7,tag:"★★"},
+      {ch:"Chemical Bonding",wt:7,tag:"★★"},
+      {ch:"Thermodynamics & Thermochemistry",wt:7,tag:"★★"},
+      {ch:"p-Block Pt.1 — Gr 13,14,15",wt:7,tag:"★★★"},
+      {ch:"p-Block Pt.2 — Gr 16,17,18",wt:7,tag:"★★★"},
+      {ch:"d & f Block Elements",wt:7,tag:"★★★"},
       {ch:"Hydrocarbons & Aromatics",wt:7,tag:"★★"},
+      {ch:"Solutions & Colligative Properties",wt:6,tag:"★★"},
+      {ch:"Chemical Equilibrium",wt:6,tag:"★★"},
+      {ch:"Ionic Equilibrium",wt:6,tag:"★★"},
       {ch:"Haloalkanes & Haloarenes",wt:6,tag:"★★"},
       {ch:"Alcohols, Phenols & Ethers",wt:6,tag:"★★"},
-      {ch:"Aldehydes, Ketones & Carboxylic Acids",wt:8,tag:"★★★"},
       {ch:"Amines",wt:6,tag:"★★"},
+      {ch:"Solid State",wt:5,tag:"★★"},
+      {ch:"Atomic Structure",wt:5,tag:"★★"},
       {ch:"Biomolecules & Polymers",wt:5,tag:"★★"},
+      {ch:"Hydrogen & s-Block Elements",wt:5,tag:"★★"},
+      {ch:"Redox Reactions",wt:5,tag:"★★"},
+      {ch:"States of Matter",wt:4,tag:"★"},
+      {ch:"Periodic Table & Periodicity",wt:4,tag:"★"},
+      {ch:"Metallurgy",wt:4,tag:"★"},
+      {ch:"Surface Chemistry",wt:4,tag:"★"},
+      {ch:"Environmental Chemistry",wt:3,tag:"★"},
       {ch:"Chemistry in Everyday Life",wt:3,tag:"★"},
     ],
     advanced:[
+      {ch:"GOC & Stereochemistry — Advanced",wt:9,tag:"★★★"},
       {ch:"Mole Concept & Stoichiometry",wt:8,tag:"★★★"},
-      {ch:"Atomic Structure",wt:7,tag:"★★"},
-      {ch:"Chemical Bonding — VBT, VSEPR, MO Theory",wt:8,tag:"★★★"},
+      {ch:"Chemical Bonding — VBT,VSEPR,MO Theory",wt:8,tag:"★★★"},
       {ch:"Thermodynamics — Advanced",wt:8,tag:"★★★"},
+      {ch:"Coordination: VBT,CFT & Isomerism",wt:8,tag:"★★★",ao:true},
+      {ch:"Carbonyl Compounds & Carboxylic Acids",wt:8,tag:"★★★"},
+      {ch:"Organic Synthesis & Mechanisms",wt:8,tag:"★★★",ao:true},
+      {ch:"p-Block — Advanced Reactions",wt:8,tag:"★★★"},
+      {ch:"Atomic Structure",wt:7,tag:"★★"},
       {ch:"Chemical Equilibrium — Advanced",wt:7,tag:"★★"},
       {ch:"Ionic Equilibrium",wt:7,tag:"★★"},
       {ch:"Electrochemistry — Advanced",wt:7,tag:"★★"},
       {ch:"Chemical Kinetics — Advanced",wt:7,tag:"★★"},
-      {ch:"Qualitative Salt Analysis",wt:6,tag:"★★",ao:true},
-      {ch:"Nuclear Chemistry",wt:5,tag:"★★",ao:true},
-      {ch:"p-Block — Advanced Reactions & Mechanisms",wt:8,tag:"★★★"},
       {ch:"d & f Block — Advanced",wt:7,tag:"★★"},
-      {ch:"Coordination: VBT, CFT & Isomerism",wt:8,tag:"★★★",ao:true},
-      {ch:"GOC & Stereochemistry — Advanced",wt:9,tag:"★★★"},
       {ch:"Hydrocarbons & Named Reactions",wt:7,tag:"★★"},
       {ch:"Organic Halogen Compounds",wt:6,tag:"★★"},
       {ch:"Alcohols, Phenols & Ethers",wt:6,tag:"★★"},
-      {ch:"Carbonyl Compounds & Carboxylic Acids",wt:8,tag:"★★★"},
       {ch:"Amines & Nitrogen Compounds",wt:6,tag:"★★"},
-      {ch:"Organic Synthesis & Mechanisms",wt:8,tag:"★★★",ao:true},
+      {ch:"Qualitative Salt Analysis",wt:6,tag:"★★",ao:true},
+      {ch:"Nuclear Chemistry",wt:5,tag:"★★",ao:true},
     ]
   },
-  Maths:{color:"#d97706",light:"#fffbeb",icon:"📐",
+  Maths:{color:"#d97706",icon:"📐",
     mains:[
-      {ch:"Trigonometry & Inverse Trig Functions",wt:8,tag:"★★★"},
+      {ch:"Definite Integration & Properties",wt:8,tag:"★★★"},
+      {ch:"Differentiation & Application of Derivatives",wt:8,tag:"★★★"},
+      {ch:"3D Geometry — Lines & Planes",wt:8,tag:"★★★"},
+      {ch:"Probability & Statistics",wt:8,tag:"★★★"},
       {ch:"Matrices & Determinants",wt:8,tag:"★★★"},
+      {ch:"Trigonometry & Inverse Trig",wt:8,tag:"★★★"},
       {ch:"Complex Numbers",wt:8,tag:"★★★"},
-      {ch:"Quadratic Equations & Inequalities",wt:6,tag:"★★"},
-      {ch:"Sequences & Series — AP, GP, HP",wt:7,tag:"★★★"},
+      {ch:"Differential Equations",wt:7,tag:"★★★"},
+      {ch:"Sequences & Series",wt:7,tag:"★★★"},
       {ch:"Permutation, Combination & Binomial",wt:7,tag:"★★★"},
       {ch:"Straight Lines & Pair of Lines",wt:7,tag:"★★★"},
       {ch:"Circles",wt:7,tag:"★★★"},
-      {ch:"Parabola",wt:6,tag:"★★"},
       {ch:"Vectors",wt:7,tag:"★★★"},
-      {ch:"3D Geometry — Lines & Planes",wt:8,tag:"★★★"},
       {ch:"Limits & Continuity",wt:7,tag:"★★★"},
-      {ch:"Differentiation & Application of Derivatives",wt:8,tag:"★★★"},
-      {ch:"Probability & Statistics",wt:8,tag:"★★★"},
+      {ch:"Indefinite Integration",wt:7,tag:"★★★"},
+      {ch:"Quadratic Equations & Inequalities",wt:6,tag:"★★"},
+      {ch:"Parabola",wt:6,tag:"★★"},
+      {ch:"Area Under Curves",wt:6,tag:"★★"},
       {ch:"Ellipse",wt:5,tag:"★★"},
       {ch:"Hyperbola",wt:5,tag:"★★"},
-      {ch:"Indefinite Integration",wt:7,tag:"★★★"},
-      {ch:"Definite Integration & Properties",wt:8,tag:"★★★"},
-      {ch:"Area Under Curves",wt:6,tag:"★★"},
-      {ch:"Differential Equations",wt:7,tag:"★★★"},
-      {ch:"Mathematical Reasoning & Induction",wt:4,tag:"★"},
+      {ch:"Mathematical Reasoning",wt:4,tag:"★"},
       {ch:"Sets, Relations & Functions",wt:4,tag:"★"},
     ],
     advanced:[
-      {ch:"Trigonometry & Inverse Trig",wt:7,tag:"★★"},
-      {ch:"Complex Numbers",wt:8,tag:"★★★"},
-      {ch:"Quadratic Equations & Theory of Equations",wt:8,tag:"★★★"},
-      {ch:"Sequences & Series",wt:7,tag:"★★"},
-      {ch:"Permutation & Combination",wt:8,tag:"★★★"},
-      {ch:"Binomial Theorem",wt:7,tag:"★★"},
-      {ch:"Matrices & Determinants",wt:7,tag:"★★"},
+      {ch:"Integration — Advanced",wt:10,tag:"★★★"},
+      {ch:"Differentiation & AOD — Advanced",wt:9,tag:"★★★"},
       {ch:"Probability — Advanced",wt:9,tag:"★★★"},
+      {ch:"Complex Numbers",wt:8,tag:"★★★"},
+      {ch:"Quadratic Equations & Theory",wt:8,tag:"★★★"},
+      {ch:"Permutation & Combination",wt:8,tag:"★★★"},
       {ch:"Straight Lines & Circles — Advanced",wt:8,tag:"★★★"},
-      {ch:"Parabola",wt:7,tag:"★★"},
-      {ch:"Ellipse",wt:7,tag:"★★"},
-      {ch:"Hyperbola",wt:7,tag:"★★"},
       {ch:"Vectors & 3D — Advanced",wt:8,tag:"★★★"},
       {ch:"Functions — Advanced",wt:8,tag:"★★★",ao:true},
       {ch:"Limits, Continuity & Differentiability",wt:8,tag:"★★★"},
-      {ch:"Differentiation & AOD — Advanced",wt:9,tag:"★★★"},
-      {ch:"Integration — Advanced",wt:10,tag:"★★★"},
-      {ch:"Area Under Curves",wt:7,tag:"★★"},
       {ch:"Differential Equations",wt:8,tag:"★★★"},
+      {ch:"Parabola",wt:7,tag:"★★"},
+      {ch:"Ellipse",wt:7,tag:"★★"},
+      {ch:"Hyperbola",wt:7,tag:"★★"},
+      {ch:"Sequences & Series",wt:7,tag:"★★"},
+      {ch:"Binomial Theorem",wt:7,tag:"★★"},
+      {ch:"Matrices & Determinants",wt:7,tag:"★★"},
+      {ch:"Area Under Curves",wt:7,tag:"★★"},
+      {ch:"Trigonometry & Inverse Trig",wt:7,tag:"★★"},
     ]
   }
 };
 
-const CHEM29=["Mole Concept & Stoichiometry","Atomic Structure","Chemical Bonding & Molecular Structure","Thermodynamics & Thermochemistry","Chemical Equilibrium","Ionic Equilibrium","Redox Reactions","Electrochemistry","Chemical Kinetics","Solutions & Colligative Properties","States of Matter","Solid State","Surface Chemistry","Periodic Table & Periodicity","Hydrogen & s-Block Elements","p-Block Pt.1 — Gr 13, 14, 15","p-Block Pt.2 — Gr 16, 17, 18","d & f Block Elements","Coordination Compounds","Metallurgy","Environmental Chemistry","GOC & Isomerism","Hydrocarbons & Aromatics","Haloalkanes & Haloarenes","Alcohols, Phenols & Ethers","Aldehydes, Ketones & Carboxylic Acids","Amines","Biomolecules & Polymers","Chemistry in Everyday Life"];
-const CHEM_ADV=["Qualitative Salt Analysis","Nuclear Chemistry","Stereochemistry (R/S, E/Z)","Organic Synthesis & Named Reactions","Advanced Mechanisms & Rearrangements","Thermodynamics — Advanced Problems","Electrochemistry — Advanced","Coordination: VBT, CFT & Isomerism","p-Block Advanced Industrial Processes","Full Chemistry Revision"];
-const PHY_ALL=[{n:"Modern Physics — Dual Nature & Photoelectric",adv:false},{n:"Atoms & Nuclei",adv:false},{n:"Ray Optics & Optical Instruments",adv:false},{n:"Units, Dimensions & Measurement",adv:false},{n:"Kinematics — 1D, 2D & Projectile",adv:false},{n:"Laws of Motion & Friction",adv:false},{n:"Work, Energy & Power",adv:false},{n:"Centre of Mass & Collisions",adv:false},{n:"Rotational Motion & MOI",adv:false},{n:"Electrostatics",adv:false},{n:"Current Electricity",adv:false},{n:"Magnetic Effects of Current",adv:false},{n:"EMI & AC Circuits",adv:false},{n:"Wave Optics",adv:false},{n:"Oscillations & SHM",adv:false},{n:"Semiconductors & Communication Systems",adv:false,mo:true},{n:"Gravitation",adv:true},{n:"Fluid Mechanics",adv:true},{n:"Thermal Properties & Calorimetry",adv:true},{n:"Kinetic Theory of Gases",adv:true},{n:"Thermodynamics (Physics)",adv:true},{n:"Waves & Sound",adv:true},{n:"Electromagnetic Waves",adv:true}];
-const MATH_ALL=[{n:"Trigonometry & Inverse Trig",adv:false},{n:"Matrices & Determinants",adv:false},{n:"Complex Numbers",adv:false},{n:"Quadratic Equations & Inequalities",adv:false},{n:"Sequences & Series",adv:false},{n:"Permutation, Combination & Binomial",adv:false},{n:"Straight Lines & Pair of Lines",adv:false},{n:"Circles",adv:false},{n:"Parabola",adv:false},{n:"Vectors",adv:false},{n:"3D Geometry — Lines & Planes",adv:false},{n:"Limits & Continuity",adv:false},{n:"Differentiation & AOD",adv:false},{n:"Probability & Statistics",adv:false},{n:"Ellipse",adv:true},{n:"Hyperbola",adv:true},{n:"Indefinite Integration",adv:true},{n:"Definite Integration & Properties",adv:true},{n:"Area Under Curves",adv:true},{n:"Differential Equations",adv:true},{n:"Mathematical Reasoning & Induction",adv:true},{n:"Sets, Relations & Functions",adv:true}];
-
-const build70=()=>{
-  const days=[];let pi=0,mi=0,cai=0;
-  for(let d=1;d<=29;d++){const odd=d%2===1;days.push({d,phase:1,chem:CHEM29[d-1],sec:odd?"P":"M",secCh:odd?PHY_ALL[pi]:MATH_ALL[mi],secHrs:"6h",chemHrs:"6h"});if(odd)pi++;else mi++;}
-  for(let d=30;d<=39;d++){const odd=d%2===1;days.push({d,phase:2,chem:CHEM_ADV[cai++],sec:odd?"P":"M",secCh:odd?PHY_ALL[pi]:MATH_ALL[mi],secHrs:"6h",chemHrs:"6h",advchem:true});if(odd)pi++;else mi++;}
-  for(let d=40;d<=47;d++){const odd=d%2===1;const ch=odd?PHY_ALL[pi]:MATH_ALL[mi];days.push({d,phase:2,chem:null,sec:odd?"P":"M",secCh:ch||null,secHrs:"12h"});if(ch){if(odd)pi++;else mi++;}}
-  [{d:48,label:"Chemistry Full Revision",col:"#059669",icon:"🧪",tag:"REV"},{d:49,label:"Physics Full Revision",col:"#4f46e5",icon:"⚛️",tag:"REV"},{d:50,label:"Maths Full Revision",col:"#d97706",icon:"📐",tag:"REV"},{d:51,label:"Full Mock Test #1 — JEE Mains",col:"#dc2626",icon:"📝",tag:"MOCK"},{d:52,label:"Mock #1 Analysis + Weak Topic Drill",col:"#7c3aed",icon:"🔍",tag:"DRILL"},{d:53,label:"Full Mock Test #2 — JEE Mains",col:"#dc2626",icon:"📝",tag:"MOCK"},{d:54,label:"Mock #2 Analysis + Physics Weak",col:"#7c3aed",icon:"🔍",tag:"DRILL"},{d:55,label:"Full Mock Test #3 — JEE Advanced",col:"#dc2626",icon:"📝",tag:"MOCK"},{d:56,label:"Mock #3 Analysis + Chemistry Weak",col:"#7c3aed",icon:"🔍",tag:"DRILL"},{d:57,label:"Physical Chemistry Rapid Revision",col:"#059669",icon:"🧪",tag:"REV"},{d:58,label:"Organic + Inorganic Rapid Revision",col:"#059669",icon:"🧪",tag:"REV"},{d:59,label:"Mechanics + Electrostatics Revision",col:"#4f46e5",icon:"⚛️",tag:"REV"},{d:60,label:"Modern Physics + Optics Revision",col:"#4f46e5",icon:"⚛️",tag:"REV"},{d:61,label:"Algebra + Coordinate Geometry Revision",col:"#d97706",icon:"📐",tag:"REV"},{d:62,label:"Calculus + Vectors + 3D Revision",col:"#d97706",icon:"📐",tag:"REV"},{d:63,label:"Full Mock Test #4 — JEE Mains",col:"#dc2626",icon:"📝",tag:"MOCK"},{d:64,label:"Full Mock Test #5 — JEE Advanced",col:"#dc2626",icon:"📝",tag:"MOCK"},{d:65,label:"Final Analysis + Weak Spot Drilling",col:"#7c3aed",icon:"🔍",tag:"DRILL"},{d:66,label:"Formula Sheets + High-Yield Shortcuts",col:"#64748b",icon:"📋",tag:"PREP"},{d:67,label:"Full Mock Test #6 — Final Mains Sim",col:"#dc2626",icon:"📝",tag:"MOCK"},{d:68,label:"Full Mock Test #7 — Final Adv Sim",col:"#dc2626",icon:"📝",tag:"MOCK"},{d:69,label:"Light Revision + Confidence Building",col:"#64748b",icon:"🌟",tag:"FINAL"},{d:70,label:"Final Revision + Exam Day Strategy",col:"#64748b",icon:"🏁",tag:"FINAL"}].forEach(r=>days.push({...r,phase:2,type:"revmock"}));
+/* ════════════════════════════════════════
+   70-DAY PLAN
+════════════════════════════════════════ */
+const PLAN=(()=>{
+  const days=[];
+  const C29=["Mole Concept","Atomic Structure","Chemical Bonding","Thermodynamics","Chemical Equilibrium","Ionic Equilibrium","Redox Reactions","Electrochemistry","Chemical Kinetics","Solutions","States of Matter","Solid State","Surface Chemistry","Periodic Table","s-Block Elements","p-Block Pt.1","p-Block Pt.2","d & f Block","Coordination Compounds","Metallurgy","Environmental Chemistry","GOC & Isomerism","Hydrocarbons","Haloalkanes","Alcohols & Phenols","Aldehydes & Ketones","Amines","Biomolecules","Everyday Life"];
+  const CADV=["Salt Analysis","Nuclear Chemistry","Stereochemistry","Organic Synthesis","Advanced Mechanisms","Thermodynamics Adv","Electrochemistry Adv","CFT & VBT Coordination","p-Block Advanced","Chem Full Revision"];
+  const PHY=["Modern Physics","Atoms & Nuclei","Ray Optics","Units & Dimensions","Kinematics","Laws of Motion","Work & Energy","Centre of Mass","Rotational Motion","Electrostatics","Current Electricity","Magnetic Effects","EMI & AC Circuits","Wave Optics","SHM","Semiconductors","Gravitation","Fluid Mechanics","Calorimetry","Kinetic Theory","Thermodynamics","Waves & Sound","EM Waves"];
+  const MTH=["Trigonometry","Matrices","Complex Numbers","Quadratic Equations","Sequences & Series","P,C & Binomial","Straight Lines","Circles","Parabola","Vectors","3D Geometry","Limits","Differentiation","Probability","Ellipse","Hyperbola","Integration","Definite Integration","Area","Diff Equations","Reasoning","Sets & Functions"];
+  let pi=0,mi=0,ci=0;
+  for(let d=1;d<=29;d++){const odd=d%2;days.push({d,phase:1,chem:C29[d-1],sec:odd?"P":"M",sCh:odd?PHY[pi]:MTH[mi]});if(odd)pi++;else mi++;}
+  for(let d=30;d<=39;d++){const odd=d%2;days.push({d,phase:2,chem:CADV[ci++],sec:odd?"P":"M",sCh:odd?PHY[pi]:MTH[mi],adv:true});if(odd)pi++;else mi++;}
+  for(let d=40;d<=47;d++){const odd=d%2;const ch=odd?PHY[pi]:MTH[mi];days.push({d,phase:2,sec:odd?"P":"M",sCh:ch||null,big:true});if(ch){if(odd)pi++;else mi++;}}
+  [{d:48,l:"Chemistry Full Revision",c:"#059669",t:"REV"},{d:49,l:"Physics Full Revision",c:"#4f46e5",t:"REV"},{d:50,l:"Maths Full Revision",c:"#d97706",t:"REV"},{d:51,l:"Mock Test #1 — JEE Mains",c:"#dc2626",t:"MOCK"},{d:52,l:"Mock #1 Analysis + Drill",c:"#7c3aed",t:"DRILL"},{d:53,l:"Mock Test #2 — JEE Mains",c:"#dc2626",t:"MOCK"},{d:54,l:"Mock #2 Analysis + Drill",c:"#7c3aed",t:"DRILL"},{d:55,l:"Mock Test #3 — JEE Advanced",c:"#dc2626",t:"MOCK"},{d:56,l:"Mock #3 Analysis + Drill",c:"#7c3aed",t:"DRILL"},{d:57,l:"Physical Chemistry Revision",c:"#059669",t:"REV"},{d:58,l:"Organic + Inorganic Revision",c:"#059669",t:"REV"},{d:59,l:"Mechanics + Electrostatics Rev",c:"#4f46e5",t:"REV"},{d:60,l:"Modern Physics + Optics Rev",c:"#4f46e5",t:"REV"},{d:61,l:"Algebra + Coordinate Geo Rev",c:"#d97706",t:"REV"},{d:62,l:"Calculus + Vectors + 3D Rev",c:"#d97706",t:"REV"},{d:63,l:"Mock Test #4 — JEE Mains",c:"#dc2626",t:"MOCK"},{d:64,l:"Mock Test #5 — JEE Advanced",c:"#dc2626",t:"MOCK"},{d:65,l:"Final Analysis + Weak Spots",c:"#7c3aed",t:"DRILL"},{d:66,l:"Formula Sheets + Shortcuts",c:"#64748b",t:"PREP"},{d:67,l:"Mock Test #6 — Final Mains",c:"#dc2626",t:"MOCK"},{d:68,l:"Mock Test #7 — Final Advanced",c:"#dc2626",t:"MOCK"},{d:69,l:"Light Revision + Confidence",c:"#64748b",t:"FINAL"},{d:70,l:"Exam Day Strategy",c:"#64748b",t:"FINAL"}].forEach(x=>days.push({...x,phase:2,rm:true}));
   return days;
-};
-const PLAN=build70();
+})();
 
+/* ════════════════════════════════════════
+   TIMER HOOK
+════════════════════════════════════════ */
 function useTimer(total,onEnd){
-  const[left,setLeft]=useState(total);
-  const[running,setRunning]=useState(false);
-  const ref=useRef();
-  useEffect(()=>{if(running&&left>0){ref.current=setInterval(()=>setLeft(l=>{if(l<=1){clearInterval(ref.current);setRunning(false);onEnd?.();return 0;}return l-1;}),1000);}return()=>clearInterval(ref.current);},[running]);
+  const[left,setLeft]=useState(total);const[running,setRunning]=useState(false);const ref=useRef();
+  useEffect(()=>{
+    if(running&&left>0){ref.current=setInterval(()=>setLeft(l=>{if(l<=1){clearInterval(ref.current);setRunning(false);onEnd&&onEnd();return 0;}return l-1;}),1000);}
+    return()=>clearInterval(ref.current);
+  },[running]);
   const fmt=s=>`${String(Math.floor(s/3600)).padStart(2,"0")}:${String(Math.floor((s%3600)/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`;
-  return{left,fmt:fmt(left),pct:left/total,start:()=>setRunning(true),pause:()=>setRunning(false)};
+  return{left,fmt:fmt(left),pct:left/total,start:()=>setRunning(true)};
 }
 
-function QPalette({count,current,setCurrent,answers,marked,visited}){
-  const getCol=i=>{if(marked?.has(i)&&answers[i]!=null)return"#7c3aed";if(marked?.has(i))return"#f59e0b";if(answers[i]!=null)return"#16a34a";if(visited?.has(i))return"#dc2626";return"#e2e8f0";};
-  return(<div style={{display:"flex",flexWrap:"wrap",gap:4}}>
-    {Array(count).fill(0).map((_,i)=>(
-      <div key={i} onClick={()=>setCurrent(i)} style={{width:32,height:32,borderRadius:"50%",background:getCol(i),color:getCol(i)==="#e2e8f0"?"#64748b":"#fff",display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:700,cursor:"pointer",border:current===i?"3px solid #1e293b":"3px solid transparent"}}>
-        {i+1}
+/* ════════════════════════════════════════
+   PLANNER TAB
+════════════════════════════════════════ */
+function PlannerTab(){
+  const[view,setView]=useState("p1");
+  const[done,setDone]=useState({});
+  const shown=PLAN.filter(d=>view==="all"||(view==="p1"&&d.phase===1)||(view==="p2"&&d.phase===2));
+  const dc=Object.values(done).filter(Boolean).length;
+  const pct=Math.round(dc/70*100);
+  const SC={P:"#4f46e5",M:"#d97706"};
+  return(
+    <div style={{display:"flex",flexDirection:"column",gap:12}}>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8}}>
+        {[["Days Done",`${dc}/70`,"#4f46e5"],["Progress",`${pct}%`,"#059669"],["Phase 1","Days 1-39","#7c3aed"],["Phase 2","Days 40-70","#dc2626"]].map(([l,v,c])=>(
+          <div key={l} style={{...card,textAlign:"center",padding:12}}>
+            <div style={{fontSize:20,fontWeight:800,color:c}}>{v}</div>
+            <div style={{fontSize:10,color:MUTED}}>{l}</div>
+          </div>
+        ))}
       </div>
-    ))}
-  </div>);
+      <div style={{...card,padding:10}}>
+        <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
+          <span style={{fontSize:11,color:MUTED}}>Overall Progress</span>
+          <span style={{fontSize:11,color:"#059669",fontWeight:700}}>{pct}%</span>
+        </div>
+        <div style={{background:"#f1f5f9",borderRadius:99,height:10,overflow:"hidden"}}>
+          <div style={{width:`${pct}%`,height:"100%",background:"linear-gradient(90deg,#059669,#4f46e5,#d97706)",borderRadius:99,transition:"width 0.3s"}}/>
+        </div>
+      </div>
+      <div style={{display:"flex",gap:4,flexWrap:"wrap"}}>
+        {[["p1","📅 Phase 1","#4f46e5"],["p2","🚀 Phase 2","#7c3aed"],["all","🗓 All 70 Days","#64748b"]].map(([v,l,c])=>(
+          <button key={v} onClick={()=>setView(v)} style={{...btn(view===v?c:"#f1f5f9",view===v?"#fff":MUTED),fontSize:11,padding:"5px 12px",borderRadius:20}}>{l}</button>
+        ))}
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(255px,1fr))",gap:8}}>
+        {shown.map(day=>{
+          if(day.rm){
+            return(
+              <div key={day.d} style={{...card,borderLeft:`3px solid ${day.c}`,padding:"11px 13px",opacity:done[day.d]?0.5:1}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:5}}>
+                  <div style={{display:"flex",gap:6,alignItems:"center"}}>
+                    <div style={{width:24,height:24,borderRadius:6,background:day.c+"15",display:"flex",alignItems:"center",justifyContent:"center",fontWeight:800,fontSize:10,color:day.c}}>{day.d}</div>
+                    <span style={{fontSize:9,color:MUTED}}>Day {day.d}</span>
+                  </div>
+                  <div style={{display:"flex",gap:5,alignItems:"center"}}>
+                    <span style={{...pill(day.c)}}>{day.t}</span>
+                    <input type="checkbox" checked={!!done[day.d]} onChange={()=>setDone(v=>({...v,[day.d]:!v[day.d]}))} style={{cursor:"pointer"}}/>
+                  </div>
+                </div>
+                <div style={{fontSize:12,color:TEXT}}>{day.l}</div>
+              </div>
+            );
+          }
+          const sc=SC[day.sec]||"#7c3aed";
+          return(
+            <div key={day.d} style={{...card,borderTop:`3px solid ${sc}`,padding:"11px 13px",opacity:done[day.d]?0.5:1}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
+                <div style={{display:"flex",gap:6,alignItems:"center"}}>
+                  <div style={{width:24,height:24,borderRadius:6,background:sc+"15",border:`1.5px solid ${sc}`,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:800,fontSize:10,color:sc}}>{day.d}</div>
+                  <span style={{fontSize:9,color:MUTED}}>Day {day.d} · P{day.phase}</span>
+                </div>
+                <div style={{display:"flex",gap:5,alignItems:"center"}}>
+                  <span style={{...pill(sc),fontSize:8}}>{day.sec==="P"?"PHY":"MATH"}</span>
+                  <input type="checkbox" checked={!!done[day.d]} onChange={()=>setDone(v=>({...v,[day.d]:!v[day.d]}))} style={{cursor:"pointer"}}/>
+                </div>
+              </div>
+              {day.chem&&(
+                <div style={{display:"flex",gap:6,marginBottom:6}}>
+                  <div style={{width:3,background:"#059669",borderRadius:2,flexShrink:0}}/>
+                  <div>
+                    <div style={{fontSize:8,color:"#059669",fontWeight:800}}>{day.adv?"CHEM ADV":"CHEM"} · 6h</div>
+                    <div style={{fontSize:11,color:TEXT,lineHeight:1.3,marginTop:1}}>{day.chem}</div>
+                  </div>
+                </div>
+              )}
+              {day.sCh&&(
+                <div style={{display:"flex",gap:6}}>
+                  <div style={{width:3,background:sc,borderRadius:2,flexShrink:0}}/>
+                  <div>
+                    <div style={{fontSize:8,color:sc,fontWeight:800}}>{day.sec==="P"?"PHYSICS":"MATHS"} · {day.big?"12h":"6h"}</div>
+                    <div style={{fontSize:11,color:TEXT,lineHeight:1.3,marginTop:1}}>{day.sCh}</div>
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
 }
 
-function MainsExam({questions,duration=10800,title,onExit}){
-  const[cur,setCur]=useState(0);const[ans,setAns]=useState({});const[marked,setMarked]=useState(new Set());const[visited,setVisited]=useState(new Set([0]));const[subTab,setSubTab]=useState(0);const[done,setDone]=useState(false);const[intV,setIntV]=useState("");
-  const timer=useTimer(duration,()=>setDone(true));
-  useEffect(()=>{timer.start();},[]);
-  useEffect(()=>{setIntV(ans[cur]||"");setVisited(v=>new Set([...v,cur]));},[cur]);
-  const subjs=["Physics","Chemistry","Maths"];const sCol={Physics:"#4f46e5",Chemistry:"#059669",Maths:"#d97706"};
-  const q=questions[cur]||{};const isInt=q.type==="integer";const tCol=timer.left<300?"#dc2626":timer.left<900?"#d97706":"#059669";
-  if(done){let sc=0,cor=0,wr=0,sk=0;questions.forEach((q,i)=>{const a=ans[i];if(a==null){sk++;return;}if(q.type==="integer"){if(String(a)===String(q.correct)){sc+=4;cor++;}else wr++;}else{if(a===q.correct){sc+=4;cor++;}else{sc-=1;wr++;}}});
-    return(<div style={{minHeight:"100vh",background:BG2,display:"flex",flexDirection:"column",alignItems:"center",padding:"32px 16px"}}><div style={{maxWidth:660,width:"100%"}}>
-      <div style={{background:"linear-gradient(135deg,#4f46e5,#7c3aed)",borderRadius:16,padding:28,color:"#fff",textAlign:"center",marginBottom:20}}><div style={{fontSize:13,opacity:0.85,marginBottom:4}}>{title}</div><div style={{fontSize:52,fontWeight:900}}>{sc}</div><div style={{opacity:0.85}}>out of {questions.length*4} marks</div></div>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10,marginBottom:20}}>{[{l:"Correct",v:cor,c:"#059669"},{l:"Wrong",v:wr,c:"#dc2626"},{l:"Skipped",v:sk,c:"#94a3b8"},{l:"Accuracy",v:`${questions.length?Math.round(cor/questions.length*100):0}%`,c:"#4f46e5"}].map(s=><div key={s.l} style={{...card,textAlign:"center",padding:14}}><div style={{fontSize:24,fontWeight:800,color:s.c}}>{s.v}</div><div style={{fontSize:11,color:MUTED}}>{s.l}</div></div>)}</div>
-      <button onClick={onExit} style={{...btn(),width:"100%",padding:14,fontSize:15}}>← Back</button>
-    </div></div>);}
-  return(<div style={{minHeight:"100vh",background:BG2,display:"flex",flexDirection:"column"}}>
-    <div style={{background:"linear-gradient(135deg,#1e1b4b,#312e81)",padding:"10px 20px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-      <div><div style={{color:"#c7d2fe",fontSize:9,letterSpacing:3}}>JEE MAIN · COMPUTER BASED TEST</div><div style={{color:"#fff",fontWeight:700,fontSize:14}}>{title}</div></div>
-      <div style={{color:tCol,fontFamily:"monospace",fontSize:22,fontWeight:900,background:"#000",padding:"6px 16px",borderRadius:8}}>{timer.fmt}</div>
-      <button onClick={()=>{if(window.confirm("Submit test?"))setDone(true);}} style={{...btn("#dc2626")}}>Submit</button>
-    </div>
-    <div style={{background:BG,borderBottom:`1px solid ${BORDER}`,display:"flex",padding:"0 20px"}}>
-      {subjs.map((s,si)=>{const d=Object.keys(ans).filter(k=>k>=si*30&&k<(si+1)*30).length;return(<div key={s} onClick={()=>{setSubTab(si);setCur(si*30);}} style={{padding:"10px 16px",cursor:"pointer",borderBottom:`3px solid ${subTab===si?sCol[s]:"transparent"}`,fontWeight:700,fontSize:12,color:subTab===si?sCol[s]:MUTED}}>{s} <span style={{background:subTab===si?sCol[s]+"15":"#f1f5f9",color:subTab===si?sCol[s]:MUTED,borderRadius:99,padding:"1px 7px",fontSize:10}}>{d}/30</span></div>);})}
-    </div>
-    <div style={{display:"flex",flex:1}}>
-      <div style={{flex:1,padding:18,overflowY:"auto"}}>
-        <div style={{...card,marginBottom:12}}>
-          <div style={{display:"flex",justifyContent:"space-between",marginBottom:12}}><span style={{fontSize:12,color:MUTED}}>Q{cur+1}/{questions.length}</span><span style={{...pill(isInt?"#7c3aed":"#4f46e5")}}>{isInt?"Integer +4/0":"SCQ +4/−1"}</span></div>
-          <div style={{fontSize:15,lineHeight:1.85,color:TEXT,padding:14,background:BG2,borderRadius:10,marginBottom:14,border:`1px solid ${BORDER}`,minHeight:90}}>{q.question||"No question"}</div>
-          {!isInt&&q.options?.map((opt,i)=>{const l=["A","B","C","D"][i],isSel=ans[cur]===l;return(<div key={i} onClick={()=>setAns(a=>({...a,[cur]:l}))} style={{padding:"11px 16px",borderRadius:10,marginBottom:8,cursor:"pointer",border:`2px solid ${isSel?"#4f46e5":BORDER}`,background:isSel?"#eef2ff":BG,fontSize:14,color:TEXT,fontWeight:isSel?600:400}}><span style={{fontWeight:700,color:"#4f46e5",marginRight:8}}>{l}.</span>{opt}</div>);})}
-          {isInt&&<input type="number" value={intV} onChange={e=>{setIntV(e.target.value);setAns(a=>({...a,[cur]:e.target.value}));}} style={{...inp,fontSize:18,textAlign:"center",maxWidth:160}} placeholder="Integer"/>}
-        </div>
-        <div style={{display:"flex",gap:8}}>
-          <button onClick={()=>setMarked(m=>{const n=new Set(m);n.has(cur)?n.delete(cur):n.add(cur);return n;})} style={{...btn(marked.has(cur)?"#f59e0b":"#94a3b8"),flex:1}}>{marked.has(cur)?"🔖 Unmark":"🔖 Mark"}</button>
-          <button onClick={()=>{setAns(a=>{const n={...a};delete n[cur];return n;});setIntV("");}} style={{...btn("#6b7280"),flex:1}}>Clear</button>
-          <button onClick={()=>cur>0&&setCur(c=>c-1)} disabled={cur===0} style={{...btn("#6b7280"),flex:1,opacity:cur===0?0.4:1}}>◀ Prev</button>
-          <button onClick={()=>cur<questions.length-1&&setCur(c=>c+1)} disabled={cur===questions.length-1} style={{...btn("#4f46e5"),flex:1,opacity:cur===questions.length-1?0.4:1}}>Next ▶</button>
-        </div>
-      </div>
-      <div style={{width:220,background:BG,borderLeft:`1px solid ${BORDER}`,padding:14,overflowY:"auto"}}>
-        <div style={{fontWeight:700,fontSize:12,color:TEXT,marginBottom:8}}>Question Palette</div>
-        {[["#16a34a","Answered"],["#dc2626","Visited"],["#f59e0b","Marked"],["#7c3aed","Marked+Ans"]].map(([c,l])=><div key={l} style={{display:"flex",gap:5,alignItems:"center",marginBottom:4}}><div style={{width:12,height:12,background:c,borderRadius:3}}/><span style={{fontSize:10,color:MUTED}}>{l}</span></div>)}
-        {subjs.map((s,si)=><div key={s} style={{marginTop:10}}><div style={{fontSize:10,fontWeight:700,color:sCol[s],marginBottom:5}}>{s.toUpperCase()}</div><QPalette count={30} current={cur-si*30} setCurrent={i=>setCur(i+si*30)} answers={Object.fromEntries(Object.entries(ans).filter(([k])=>k>=si*30&&k<(si+1)*30).map(([k,v])=>[k-si*30,v]))} marked={new Set([...marked].filter(k=>k>=si*30&&k<(si+1)*30).map(k=>k-si*30))} visited={new Set([...visited].filter(k=>k>=si*30&&k<(si+1)*30).map(k=>k-si*30))}/></div>)}
-      </div>
-    </div>
-  </div>);
-}
-
-function AdvancedExam({questions,duration=10800,title,paper=1,onExit}){
-  const SECS=[{name:"Sec A",type:"SCQ",marks:"+3/−1",qs:[0,1,2,3,4,5],sub:"Physics"},{name:"Sec B",type:"MCQ",marks:"+4/−2",qs:[6,7,8,9,10,11],sub:"Physics"},{name:"Sec C",type:"Integer",marks:"+4/0",qs:[12,13,14,15],sub:"Physics"},{name:"Sec A",type:"SCQ",marks:"+3/−1",qs:[16,17,18,19,20,21],sub:"Chemistry"},{name:"Sec B",type:"MCQ",marks:"+4/−2",qs:[22,23,24,25,26,27],sub:"Chemistry"},{name:"Sec C",type:"Integer",marks:"+4/0",qs:[28,29,30,31],sub:"Chemistry"},{name:"Sec A",type:"SCQ",marks:"+3/−1",qs:[32,33,34,35,36,37],sub:"Maths"},{name:"Sec B",type:"MCQ",marks:"+4/−2",qs:[38,39,40,41,42,43],sub:"Maths"},{name:"Sec C",type:"Integer",marks:"+4/0",qs:[44,45,46,47],sub:"Maths"}];
-  const getSec=i=>SECS.find(s=>s.qs.includes(i));
-  const[cur,setCur]=useState(0);const[ans,setAns]=useState({});const[marked,setMarked]=useState(new Set());const[visited,setVisited]=useState(new Set([0]));const[done,setDone]=useState(false);const[intV,setIntV]=useState("");
-  const timer=useTimer(duration,()=>setDone(true));
-  useEffect(()=>{timer.start();},[]);
-  useEffect(()=>{setIntV(typeof ans[cur]==="string"?ans[cur]:"");setVisited(v=>new Set([...v,cur]));},[cur]);
-  const sec=getSec(cur)||SECS[0];const q=questions[cur]||{question:"Q"+(cur+1),options:["A","B","C","D"],correct:"A"};
-  const isInt=sec.type==="Integer",isMCQ=sec.type==="MCQ";
-  const tCol=timer.left<300?"#dc2626":timer.left<900?"#d97706":"#059669";
-  const sCol={Physics:"#4f46e5",Chemistry:"#059669",Maths:"#d97706"};
-  const handleAns=opt=>{if(isInt)return;if(isMCQ){setAns(a=>{const c=Array.isArray(a[cur])?a[cur]:[];const n=c.includes(opt)?c.filter(x=>x!==opt):[...c,opt];return{...a,[cur]:n};});}else setAns(a=>({...a,[cur]:opt}));};
-  const calcScore=()=>{let sc=0;questions.forEach((q,i)=>{const a=ans[i];const s=getSec(i);if(a==null||(Array.isArray(a)&&!a.length))return;if(s?.type==="Integer"){if(String(a)===String(q.correct))sc+=4;}else if(s?.type==="MCQ"){const corr=(q.correct||"").split("").sort().join(""),given=(Array.isArray(a)?a:[]).sort().join("");if(given===corr)sc+=4;else if(given&&corr.split("").some(l=>given.includes(l)))sc+=1;else sc-=2;}else{if(a===q.correct)sc+=3;else sc-=1;}});return sc;};
-  if(done){const sc=calcScore();return(<div style={{minHeight:"100vh",background:BG2,padding:"32px 16px",display:"flex",flexDirection:"column",alignItems:"center"}}><div style={{maxWidth:660,width:"100%"}}><div style={{background:"linear-gradient(135deg,#4f46e5,#7c3aed)",borderRadius:16,padding:28,color:"#fff",textAlign:"center",marginBottom:20}}><div style={{fontSize:13,opacity:0.85}}>{title}</div><div style={{fontSize:52,fontWeight:900}}>{sc}</div><div style={{opacity:0.85}}>Advanced Pattern Score</div></div><button onClick={onExit} style={{...btn(),width:"100%",padding:14}}>← Back</button></div></div>);}
-  return(<div style={{minHeight:"100vh",background:BG2,display:"flex",flexDirection:"column"}}>
-    <div style={{background:"linear-gradient(135deg,#1e1b4b,#312e81)",padding:"10px 20px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-      <div><div style={{color:"#c7d2fe",fontSize:9,letterSpacing:3}}>JEE ADVANCED · PAPER {paper}</div><div style={{color:"#fff",fontWeight:700}}>{sec.sub} · {sec.name} ({sec.type}) {sec.marks}</div></div>
-      <div style={{color:tCol,fontFamily:"monospace",fontSize:22,fontWeight:900,background:"#000",padding:"6px 16px",borderRadius:8}}>{timer.fmt}</div>
-      <button onClick={()=>{if(window.confirm("Submit?"))setDone(true);}} style={{...btn("#dc2626")}}>Submit</button>
-    </div>
-    <div style={{display:"flex",flex:1}}>
-      <div style={{flex:1,padding:18,overflowY:"auto"}}>
-        <div style={{...card,marginBottom:12}}>
-          <div style={{display:"flex",justifyContent:"space-between",marginBottom:10}}><span style={{fontSize:12,color:MUTED}}>Q{cur+1}/{questions.length} · {sec.sub}</span><div style={{display:"flex",gap:5}}><span style={{...pill(sCol[sec.sub])}}>{sec.type}</span><span style={{...pill("#059669")}}>{sec.marks}</span></div></div>
-          {isMCQ&&<div style={{fontSize:11,color:"#d97706",marginBottom:8,fontWeight:600,padding:"6px 10px",background:"#fffbeb",borderRadius:6}}>⚠️ Multi-correct — select ALL correct options</div>}
-          <div style={{fontSize:15,lineHeight:1.85,color:TEXT,padding:14,background:BG2,borderRadius:10,marginBottom:14,border:`1px solid ${BORDER}`,minHeight:90}}>{q.question}</div>
-          {!isInt&&q.options?.map((opt,i)=>{const l=["A","B","C","D"][i];const isSel=isMCQ?Array.isArray(ans[cur])&&ans[cur].includes(l):ans[cur]===l;return(<div key={i} onClick={()=>handleAns(l)} style={{padding:"11px 16px",borderRadius:10,marginBottom:8,cursor:"pointer",border:`2px solid ${isSel?"#4f46e5":BORDER}`,background:isSel?"#eef2ff":BG,fontSize:14,color:TEXT,fontWeight:isSel?600:400}}><span style={{fontWeight:700,color:"#4f46e5",marginRight:8}}>{l}.</span>{opt}</div>);})}
-          {isInt&&<input type="number" value={intV} onChange={e=>{setIntV(e.target.value);setAns(a=>({...a,[cur]:e.target.value}));}} style={{...inp,fontSize:18,textAlign:"center",maxWidth:160}} placeholder="0"/>}
-        </div>
-        <div style={{display:"flex",gap:8}}>
-          <button onClick={()=>setMarked(m=>{const n=new Set(m);n.has(cur)?n.delete(cur):n.add(cur);return n;})} style={{...btn(marked.has(cur)?"#f59e0b":"#94a3b8"),flex:1}}>🔖 {marked.has(cur)?"Unmark":"Mark"}</button>
-          <button onClick={()=>{setAns(a=>{const n={...a};delete n[cur];return n;});setIntV("");}} style={{...btn("#6b7280"),flex:1}}>Clear</button>
-          <button onClick={()=>cur>0&&setCur(c=>c-1)} disabled={cur===0} style={{...btn("#6b7280"),flex:1,opacity:cur===0?0.4:1}}>◀</button>
-          <button onClick={()=>cur<questions.length-1&&setCur(c=>c+1)} disabled={cur===questions.length-1} style={{...btn("#4f46e5"),flex:1,opacity:cur===questions.length-1?0.4:1}}>▶</button>
-        </div>
-      </div>
-      <div style={{width:200,background:BG,borderLeft:`1px solid ${BORDER}`,padding:12,overflowY:"auto"}}>
-        {["Physics","Chemistry","Maths"].map(sub=><div key={sub} style={{marginBottom:10}}><div style={{fontSize:10,fontWeight:700,color:sCol[sub],marginBottom:5}}>{sub.toUpperCase()}</div>{SECS.filter(s=>s.sub===sub).map(sc=><div key={sc.name+sub} style={{marginBottom:6}}><div style={{fontSize:8,color:MUTED,marginBottom:3}}>{sc.name} · {sc.type}</div><div style={{display:"flex",flexWrap:"wrap",gap:3}}>{sc.qs.map(qi=>{const a=ans[qi],isA=a!=null&&!(Array.isArray(a)&&!a.length),isMk=marked.has(qi),isV=visited.has(qi);const bg=isMk&&isA?"#7c3aed":isMk?"#f59e0b":isA?"#16a34a":isV?"#dc2626":"#e2e8f0";return(<div key={qi} onClick={()=>setCur(qi)} style={{width:24,height:24,borderRadius:4,background:bg,color:bg==="#e2e8f0"?"#64748b":"#fff",display:"flex",alignItems:"center",justifyContent:"center",fontSize:9,fontWeight:700,cursor:"pointer",border:cur===qi?"2px solid #1e293b":"2px solid transparent"}}>{qi+1}</div>);})}</div></div>)}</div>)}
-      </div>
-    </div>
-  </div>);
-}
-
+/* ════════════════════════════════════════
+   TRACKER TAB
+════════════════════════════════════════ */
 function TrackerTab(){
-  const[mode,setMode]=useState("mains");const[subj,setSubj]=useState("Physics");const[done,setDone]=useState({mains:{},advanced:{}});
+  const[mode,setMode]=useState("mains");
+  const[subj,setSubj]=useState("Physics");
+  const[done,setDone]=useState({mains:{},advanced:{}});
   const toggle=ch=>setDone(d=>({...d,[mode]:{...d[mode],[ch]:!d[mode][ch]}}));
-  const chapters=[...DATA[subj][mode]].sort((a,b)=>b.wt-a.wt);
-  const tmC=Object.values(DATA).reduce((a,d)=>a+d.mains.length,0);const taC=Object.values(DATA).reduce((a,d)=>a+d.advanced.length,0);
-  const dmC=Object.values(DATA).reduce((a,d)=>a+d.mains.filter(c=>done.mains[c.ch]).length,0);const daC=Object.values(DATA).reduce((a,d)=>a+d.advanced.filter(c=>done.advanced[c.ch]).length,0);
-  return(<div style={{display:"flex",flexDirection:"column",gap:16}}>
-    <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8}}>
-      {[{l:"Mains Done",v:`${dmC}/${tmC}`,c:"#059669",pct:Math.round(dmC/tmC*100)},{l:"Adv Done",v:`${daC}/${taC}`,c:"#4f46e5",pct:Math.round(daC/taC*100)},{l:"Overall %",v:`${Math.round((dmC+daC)/(tmC+taC)*100)}%`,c:"#d97706"},{l:"Chapters Left",v:tmC+taC-dmC-daC,c:"#dc2626"}].map(s=>(
-        <div key={s.l} style={{...card,textAlign:"center",padding:14}}>
-          <div style={{fontSize:22,fontWeight:900,color:s.c}}>{s.v}</div>
-          <div style={{fontSize:10,color:MUTED,marginBottom:s.pct!=null?4:0}}>{s.l}</div>
-          {s.pct!=null&&<div style={{background:"#f1f5f9",borderRadius:99,height:5,overflow:"hidden"}}><div style={{width:`${s.pct}%`,height:"100%",background:s.c,borderRadius:99}}/></div>}
+  const chs=[...DATA[subj][mode]].sort((a,b)=>b.wt-a.wt);
+  const tm=Object.values(DATA).reduce((a,d)=>a+d.mains.length,0);
+  const ta=Object.values(DATA).reduce((a,d)=>a+d.advanced.length,0);
+  const dm=Object.values(DATA).reduce((a,d)=>a+d.mains.filter(c=>done.mains[c.ch]).length,0);
+  const da=Object.values(DATA).reduce((a,d)=>a+d.advanced.filter(c=>done.advanced[c.ch]).length,0);
+  const pct=Math.round(chs.filter(c=>done[mode][c.ch]).length/chs.length*100)||0;
+  return(
+    <div style={{display:"flex",flexDirection:"column",gap:12}}>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8}}>
+        {[["Mains Done",`${dm}/${tm}`,"#059669",Math.round(dm/tm*100)],["Adv Done",`${da}/${ta}`,"#4f46e5",Math.round(da/ta*100)],["Overall",`${Math.round((dm+da)/(tm+ta)*100)}%`,"#d97706",null],["Left",tm+ta-dm-da,"#dc2626",null]].map(([l,v,c,p])=>(
+          <div key={l} style={{...card,textAlign:"center",padding:12}}>
+            <div style={{fontSize:20,fontWeight:800,color:c}}>{v}</div>
+            <div style={{fontSize:10,color:MUTED,marginBottom:p!=null?4:0}}>{l}</div>
+            {p!=null&&<div style={{background:"#f1f5f9",borderRadius:99,height:5,overflow:"hidden"}}><div style={{width:`${p}%`,height:"100%",background:c,borderRadius:99}}/></div>}
+          </div>
+        ))}
+      </div>
+      <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
+        <div style={{display:"flex",gap:3,background:"#f1f5f9",padding:3,borderRadius:10}}>
+          {[["mains","📝 JEE Mains","#059669"],["advanced","⚡ JEE Advanced","#4f46e5"]].map(([v,l,c])=>(
+            <button key={v} onClick={()=>setMode(v)} style={{...btn(mode===v?c:"transparent",mode===v?"#fff":MUTED),borderRadius:8,padding:"6px 14px",fontSize:12}}>{l}</button>
+          ))}
         </div>
+        {Object.entries(DATA).map(([s,d])=>(
+          <button key={s} onClick={()=>setSubj(s)} style={{...btn(subj===s?d.color:"#f1f5f9",subj===s?"#fff":MUTED),fontSize:12,padding:"6px 12px",border:`1px solid ${subj===s?d.color:BORDER}`}}>{d.icon} {s}</button>
+        ))}
+      </div>
+      <div style={{...card}}>
+        <div style={{display:"flex",justifyContent:"space-between",marginBottom:8}}>
+          <span style={{fontWeight:800,color:DATA[subj].color}}>{DATA[subj].icon} {subj} — {chs.length} chapters</span>
+          <span style={{fontSize:12,fontWeight:700,color:DATA[subj].color}}>{chs.filter(c=>done[mode][c.ch]).length}/{chs.length} ({pct}%)</span>
+        </div>
+        <div style={{background:"#f1f5f9",borderRadius:99,height:8,marginBottom:12,overflow:"hidden"}}>
+          <div style={{width:`${pct}%`,height:"100%",background:DATA[subj].color,borderRadius:99,transition:"width 0.3s"}}/>
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(275px,1fr))",gap:7}}>
+          {chs.map((c,i)=>{
+            const isDone=done[mode][c.ch];
+            return(
+              <div key={i} onClick={()=>toggle(c.ch)} style={{display:"flex",gap:9,alignItems:"center",padding:"9px 11px",borderRadius:10,background:isDone?DATA[subj].color+"10":"#f8fafc",border:`1.5px solid ${isDone?DATA[subj].color:BORDER}`,cursor:"pointer"}}>
+                <div style={{width:20,height:20,borderRadius:5,border:`2px solid ${isDone?DATA[subj].color:"#cbd5e1"}`,background:isDone?DATA[subj].color:"transparent",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                  {isDone&&<span style={{color:"#fff",fontSize:11,fontWeight:900}}>✓</span>}
+                </div>
+                <div style={{flex:1}}>
+                  <div style={{fontSize:12,color:isDone?DATA[subj].color:TEXT,fontWeight:isDone?700:400,lineHeight:1.3}}>{c.ch}</div>
+                  <div style={{fontSize:9,color:MUTED}}>{c.tag}{c.mo?" · Mains Only":""}{c.ao?" · Adv Only":""}</div>
+                </div>
+                <div style={{textAlign:"right",flexShrink:0}}>
+                  <div style={{fontSize:11,fontWeight:800,color:isDone?DATA[subj].color:MUTED}}>{c.wt}/10</div>
+                  <div style={{width:32,height:4,background:"#e2e8f0",borderRadius:99,marginTop:2,overflow:"hidden"}}>
+                    <div style={{width:`${c.wt*10}%`,height:"100%",background:isDone?DATA[subj].color:"#cbd5e1",borderRadius:99}}/>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ════════════════════════════════════════
+   EXAM COMPONENTS
+════════════════════════════════════════ */
+function QPalette({count,cur,setCur,ans,marked,visited}){
+  const gc=i=>marked&&marked.has(i)&&ans[i]!=null?"#7c3aed":marked&&marked.has(i)?"#f59e0b":ans[i]!=null?"#16a34a":visited&&visited.has(i)?"#dc2626":"#e2e8f0";
+  return(
+    <div style={{display:"flex",flexWrap:"wrap",gap:4}}>
+      {Array(count).fill(0).map((_,i)=>(
+        <div key={i} onClick={()=>setCur(i)} style={{width:30,height:30,borderRadius:"50%",background:gc(i),color:gc(i)==="#e2e8f0"?"#94a3b8":"#fff",display:"flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:700,cursor:"pointer",border:cur===i?"3px solid #1e293b":"3px solid transparent"}}>{i+1}</div>
       ))}
     </div>
-    <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
-      <div style={{display:"flex",gap:3,background:"#f1f5f9",padding:3,borderRadius:10}}>
-        {[["mains","📝 JEE Mains","#059669"],["advanced","⚡ JEE Advanced","#4f46e5"]].map(([v,l,c])=><button key={v} onClick={()=>setMode(v)} style={{...btn(mode===v?c:"transparent",mode===v?"#fff":MUTED),borderRadius:8,padding:"7px 16px",fontSize:12}}>{l}</button>)}
-      </div>
-      {Object.entries(DATA).map(([s,d])=><button key={s} onClick={()=>setSubj(s)} style={{...btn(subj===s?d.color:"#f1f5f9",subj===s?"#fff":MUTED),padding:"7px 14px",fontSize:12,border:`1px solid ${subj===s?d.color:BORDER}`}}>{d.icon} {s}</button>)}
-    </div>
-    <div style={{...card}}>
-      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
-        <div><span style={{fontWeight:800,fontSize:15,color:DATA[subj].color}}>{DATA[subj].icon} {subj}</span><span style={{marginLeft:8,fontSize:11,color:MUTED}}>{mode==="mains"?"JEE Mains":"JEE Advanced"} — {chapters.length} chapters (sorted by weightage)</span></div>
-        <div style={{fontSize:12,color:DATA[subj].color,fontWeight:700}}>{chapters.filter(c=>done[mode][c.ch]).length}/{chapters.length} done</div>
-      </div>
-      <div style={{background:"#f1f5f9",borderRadius:99,height:8,marginBottom:14,overflow:"hidden"}}><div style={{width:`${chapters.filter(c=>done[mode][c.ch]).length/chapters.length*100}%`,height:"100%",background:DATA[subj].color,borderRadius:99,transition:"width 0.3s"}}/></div>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(285px,1fr))",gap:8}}>
-        {chapters.map((c,i)=>{const isDone=done[mode][c.ch];return(
-          <div key={i} onClick={()=>toggle(c.ch)} style={{display:"flex",gap:10,alignItems:"center",padding:"10px 12px",borderRadius:10,background:isDone?DATA[subj].color+"10":"#f8fafc",border:`1.5px solid ${isDone?DATA[subj].color:BORDER}`,cursor:"pointer",transition:"all 0.15s"}}>
-            <div style={{width:22,height:22,borderRadius:6,border:`2px solid ${isDone?DATA[subj].color:"#cbd5e1"}`,background:isDone?DATA[subj].color:"transparent",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{isDone&&<span style={{color:"#fff",fontSize:12,fontWeight:900}}>✓</span>}</div>
-            <div style={{flex:1}}>
-              <div style={{fontSize:12,color:isDone?DATA[subj].color:TEXT,fontWeight:isDone?700:400,lineHeight:1.3}}>{c.ch}</div>
-              <div style={{fontSize:9,color:MUTED,marginTop:1}}>{c.tag}{c.mo?" · Mains Only":""}{c.ao?" · Adv Only":""}</div>
-            </div>
-            <div style={{textAlign:"right",flexShrink:0}}>
-              <div style={{fontSize:11,fontWeight:800,color:isDone?DATA[subj].color:MUTED}}>{c.wt}/10</div>
-              <div style={{width:36,height:5,borderRadius:99,background:"#e2e8f0",overflow:"hidden",marginTop:2}}><div style={{width:`${c.wt*10}%`,height:"100%",background:isDone?DATA[subj].color:"#cbd5e1",borderRadius:99}}/></div>
-            </div>
-          </div>
-        );})}
-      </div>
-    </div>
-  </div>);
+  );
 }
 
-function PlannerTab(){
-  const[view,setView]=useState("p1");const[filt,setFilt]=useState("all");const[done,setDone]=useState({});
-  const shown=(()=>{let ds=PLAN;if(view==="p1")ds=ds.filter(d=>d.phase===1);else if(view==="p2")ds=ds.filter(d=>d.phase===2);if(filt==="P")ds=ds.filter(d=>d.type==="revmock"||d.sec==="P");if(filt==="M")ds=ds.filter(d=>d.type==="revmock"||d.sec==="M");return ds;})();
-  const dc=Object.values(done).filter(Boolean).length;const pct=Math.round(dc/70*100);
-  const sCol={P:"#4f46e5",M:"#d97706"};
-  return(<div style={{display:"flex",flexDirection:"column",gap:14}}>
-    <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8}}>
-      {[{l:"Days Done",v:`${dc}/70`,c:"#4f46e5"},{l:"Progress",v:`${pct}%`,c:"#059669"},{l:"Phase 1",v:"Days 1–39",c:"#7c3aed"},{l:"Phase 2",v:"Days 40–70",c:"#dc2626"}].map(s=><div key={s.l} style={{...card,textAlign:"center",padding:12}}><div style={{fontSize:20,fontWeight:800,color:s.c}}>{s.v}</div><div style={{fontSize:10,color:MUTED}}>{s.l}</div></div>)}
-    </div>
-    <div style={{...card,padding:12}}>
-      <div style={{display:"flex",justifyContent:"space-between",marginBottom:5}}><span style={{fontSize:12,color:MUTED}}>Overall 70-Day Progress</span><span style={{fontSize:12,color:"#059669",fontWeight:700}}>{pct}%</span></div>
-      <div style={{background:"#f1f5f9",borderRadius:99,height:10,overflow:"hidden"}}><div style={{width:`${pct}%`,height:"100%",background:"linear-gradient(90deg,#059669,#4f46e5,#d97706)",borderRadius:99,transition:"width 0.3s"}}/></div>
-    </div>
-    <div style={{display:"flex",gap:3,borderRadius:10,overflow:"hidden",border:`1px solid ${BORDER}`}}>
-      {[{l:"Days 1–29",s:"Mains Study",c:"#4f46e5"},{l:"Days 30–39",s:"Adv Chem+",c:"#7c3aed"},{l:"Days 40–47",s:"12h Phy/Math",c:"#059669"},{l:"Days 48–70",s:"Rev + 7 Mocks",c:"#dc2626"}].map(x=><div key={x.l} style={{flex:1,background:x.c+"10",borderTop:`3px solid ${x.c}`,padding:"6px 4px",textAlign:"center"}}><div style={{fontSize:10,color:x.c,fontWeight:800}}>{x.l}</div><div style={{fontSize:8,color:MUTED}}>{x.s}</div></div>)}
-    </div>
-    <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
-      {[["p1","📅 Phase 1","#4f46e5"],["p2","🚀 Phase 2","#7c3aed"],["all","🗓 All 70 Days","#64748b"]].map(([v,l,c])=><button key={v} onClick={()=>setView(v)} style={{...btn(view===v?c:"#f1f5f9",view===v?"#fff":MUTED),fontSize:11,padding:"5px 12px",borderRadius:20}}>{l}</button>)}
-      <div style={{flex:1}}/>
-      {[["all","All"],["P","Physics Days"],["M","Maths Days"]].map(([f,l])=><button key={f} onClick={()=>setFilt(f)} style={{...btn(filt===f?"#1e293b":"#f1f5f9",filt===f?"#fff":MUTED),fontSize:11,padding:"5px 10px",borderRadius:20}}>{l}</button>)}
-    </div>
-    <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(265px,1fr))",gap:8}}>
-      {shown.map(day=>{
-        if(day.type==="revmock"){const{d,label,col,icon,tag:t}=day;return(<div key={d} style={{...card,borderLeft:`3px solid ${col}`,padding:"12px 13px",opacity:done[d]?0.55:1}}>
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
-            <div style={{display:"flex",alignItems:"center",gap:7}}><div style={{width:26,height:26,borderRadius:7,background:col+"15",display:"flex",alignItems:"center",justifyContent:"center",fontWeight:800,fontSize:11,color:col}}>{d}</div><span style={{fontSize:9,color:MUTED}}>Day {d}</span></div>
-            <div style={{display:"flex",gap:5,alignItems:"center"}}><span style={{...pill(col)}}>{t}</span><input type="checkbox" checked={!!done[d]} onChange={()=>setDone(v=>({...v,[d]:!v[d]}))} style={{width:14,height:14,cursor:"pointer"}}/></div>
+function MainsExam({onExit}){
+  const Q=Array(90).fill(0).map((_,i)=>({q:`JEE Mains Sample Q${i+1} — use 🎯 Practice tab for AI questions`,opts:["Option A","Option B","Option C","Option D"],ans:"A",type:i%10===9?"int":"scq"}));
+  const[cur,setCur]=useState(0);const[ans,setAns]=useState({});const[marked,setMarked]=useState(new Set());const[vis,setVis]=useState(new Set([0]));const[sub,setSub]=useState(0);const[done,setDone]=useState(false);const[intV,setIntV]=useState("");
+  const timer=useTimer(10800,()=>setDone(true));
+  useEffect(()=>{timer.start();},[]);
+  useEffect(()=>{setIntV(ans[cur]||"");setVis(v=>new Set([...v,cur]));},[cur]);
+  const q=Q[cur];const isInt=q.type==="int";const tCol=timer.left<300?"#dc2626":timer.left<900?"#d97706":"#059669";
+  const SC={Physics:"#4f46e5",Chemistry:"#059669",Maths:"#d97706"};
+  if(done){
+    let sc=0,co=0,wr=0,sk=0;
+    Q.forEach((qq,i)=>{const a=ans[i];if(!a){sk++;return;}a===qq.ans?(sc+=4,co++):(sc-=1,wr++);});
+    return(
+      <div style={{minHeight:"100vh",background:BG2,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
+        <div style={{maxWidth:500,width:"100%"}}>
+          <div style={{background:"linear-gradient(135deg,#4f46e5,#7c3aed)",borderRadius:16,padding:28,color:"#fff",textAlign:"center",marginBottom:16}}>
+            <div style={{fontSize:48,fontWeight:900}}>{sc}</div>
+            <div style={{opacity:0.85}}>JEE Mains Score (out of {Q.length*4})</div>
           </div>
-          <div style={{fontSize:12,color:TEXT}}>{icon} {label}</div>
-        </div>);}
-        const{d,phase,chem,sec,secCh,secHrs,chemHrs,advchem}=day;const chemDone=!chem;const sc=sCol[sec]||"#7c3aed";
-        return(<div key={d} style={{...card,borderTop:`3px solid ${sc}`,padding:"12px 13px",opacity:done[d]?0.5:1,position:"relative"}}>
-          {chemDone&&<div style={{position:"absolute",top:8,right:36,fontSize:7,color:"#059669",fontWeight:800,background:"#ecfdf5",padding:"2px 6px",borderRadius:6,border:"1px solid #a7f3d0"}}>CHEM ✓ {secHrs}</div>}
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:9}}>
-            <div style={{display:"flex",alignItems:"center",gap:7}}><div style={{width:26,height:26,borderRadius:7,background:sc+"15",border:`1.5px solid ${sc}`,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:800,fontSize:11,color:sc}}>{d}</div><span style={{fontSize:9,color:MUTED}}>Day {d} · P{phase}</span></div>
-            <div style={{display:"flex",gap:5,alignItems:"center"}}><span style={{...pill(sc),fontSize:8}}>{sec==="P"?"PHY DAY":"MATH DAY"}</span><input type="checkbox" checked={!!done[d]} onChange={()=>setDone(v=>({...v,[d]:!v[d]}))} style={{width:14,height:14,cursor:"pointer"}}/></div>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:14}}>
+            {[["Correct",co,"#059669"],["Wrong",wr,"#dc2626"],["Skipped",sk,"#94a3b8"]].map(([l,v,c])=>(
+              <div key={l} style={{...card,textAlign:"center",padding:12}}><div style={{fontSize:22,fontWeight:800,color:c}}>{v}</div><div style={{fontSize:11,color:MUTED}}>{l}</div></div>
+            ))}
           </div>
-          {!chemDone&&chem&&<div style={{display:"flex",gap:7,marginBottom:7}}><div style={{width:3,borderRadius:2,background:"#059669",flexShrink:0}}/><div><div style={{fontSize:8,color:"#059669",fontWeight:800,textTransform:"uppercase",letterSpacing:1}}>{advchem?"CHEM ADV ⚗️":"CHEM"} · {chemHrs}</div><div style={{fontSize:11,color:TEXT,marginTop:1,lineHeight:1.3}}>{chem}</div></div></div>}
-          {secCh&&<div style={{display:"flex",gap:7,marginBottom:8}}><div style={{width:3,borderRadius:2,background:sc,flexShrink:0}}/><div style={{flex:1}}><div style={{display:"flex",gap:4,alignItems:"center"}}><span style={{fontSize:8,color:sc,fontWeight:800,textTransform:"uppercase",letterSpacing:1}}>{sec==="P"?"Physics":"Maths"} · {secHrs}</span>{secCh.mo&&<span style={{...pill("#d97706"),fontSize:7,padding:"1px 4px"}}>MAINS</span>}{secCh.adv&&<span style={{...pill("#7c3aed"),fontSize:7,padding:"1px 4px"}}>ADV+</span>}</div><div style={{fontSize:11,color:TEXT,marginTop:1,lineHeight:1.3}}>{secCh.n}</div></div></div>}
-          <div style={{display:"flex",gap:4}}>{[["Practice","2h","#7c3aed"],["Revision","1h","#64748b"],["Alt Rev","1h","#94a3b8"]].map(([l,h,c])=><div key={l} style={{flex:1,background:c+"12",borderRadius:6,padding:"3px 2px",textAlign:"center",border:`1px solid ${c}25`}}><span style={{fontSize:7,color:c,fontWeight:600}}>{l} {h}</span></div>)}</div>
-        </div>);
-      })}
+          <button onClick={onExit} style={{...btn(),width:"100%",padding:12}}>← Back to Exam Mode</button>
+        </div>
+      </div>
+    );
+  }
+  return(
+    <div style={{minHeight:"100vh",background:BG2,display:"flex",flexDirection:"column"}}>
+      <div style={{background:"linear-gradient(135deg,#1e1b4b,#312e81)",padding:"10px 18px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+        <div>
+          <div style={{color:"#c7d2fe",fontSize:9,letterSpacing:3}}>JEE MAINS · CBT</div>
+          <div style={{color:"#fff",fontWeight:700}}>Full Mock Test</div>
+        </div>
+        <div style={{color:tCol,fontFamily:"monospace",fontSize:20,fontWeight:900,background:"#000",padding:"5px 14px",borderRadius:7}}>{timer.fmt}</div>
+        <button onClick={()=>{if(window.confirm("Submit test?"))setDone(true);}} style={{...btn("#dc2626"),padding:"6px 14px"}}>Submit</button>
+      </div>
+      <div style={{background:BG,borderBottom:`1px solid ${BORDER}`,display:"flex",padding:"0 16px"}}>
+        {["Physics","Chemistry","Maths"].map((s,si)=>{
+          const d=Object.keys(ans).filter(k=>+k>=si*30&&+k<(si+1)*30).length;
+          return(
+            <div key={s} onClick={()=>{setSub(si);setCur(si*30);}} style={{padding:"9px 14px",cursor:"pointer",borderBottom:`3px solid ${sub===si?SC[s]:"transparent"}`,fontWeight:700,fontSize:12,color:sub===si?SC[s]:MUTED}}>
+              {s} <span style={{background:sub===si?SC[s]+"15":"#f1f5f9",color:sub===si?SC[s]:MUTED,borderRadius:99,padding:"1px 6px",fontSize:10}}>{d}/30</span>
+            </div>
+          );
+        })}
+      </div>
+      <div style={{display:"flex",flex:1,overflow:"hidden"}}>
+        <div style={{flex:1,padding:16,overflowY:"auto"}}>
+          <div style={{...card,marginBottom:10}}>
+            <div style={{display:"flex",justifyContent:"space-between",marginBottom:10}}>
+              <span style={{fontSize:11,color:MUTED}}>Q{cur+1} / 90</span>
+              <span style={{...pill(isInt?"#7c3aed":"#4f46e5")}}>{isInt?"Integer +4/0":"SCQ +4/−1"}</span>
+            </div>
+            <div style={{fontSize:14,lineHeight:1.8,padding:12,background:BG2,borderRadius:9,marginBottom:12,border:`1px solid ${BORDER}`}}>{q.q}</div>
+            {!isInt&&q.opts.map((o,i)=>{
+              const l=["A","B","C","D"][i],sel=ans[cur]===l;
+              return(<div key={i} onClick={()=>setAns(a=>({...a,[cur]:l}))} style={{padding:"10px 14px",borderRadius:9,marginBottom:6,cursor:"pointer",border:`2px solid ${sel?"#4f46e5":BORDER}`,background:sel?"#eef2ff":BG,fontSize:13,fontWeight:sel?600:400}}><span style={{fontWeight:700,color:"#4f46e5",marginRight:7}}>{l}.</span>{o}</div>);
+            })}
+            {isInt&&<input type="number" value={intV} onChange={e=>{setIntV(e.target.value);setAns(a=>({...a,[cur]:e.target.value}));}} style={{...inp,maxWidth:150,fontSize:16,textAlign:"center"}} placeholder="Integer answer"/>}
+          </div>
+          <div style={{display:"flex",gap:6}}>
+            <button onClick={()=>setMarked(m=>{const n=new Set(m);n.has(cur)?n.delete(cur):n.add(cur);return n;})} style={{...btn(marked.has(cur)?"#f59e0b":"#94a3b8"),flex:1}}>🔖 {marked.has(cur)?"Unmark":"Mark"}</button>
+            <button onClick={()=>{setAns(a=>{const n={...a};delete n[cur];return n;});setIntV("");}} style={{...btn("#6b7280"),flex:1}}>Clear</button>
+            <button onClick={()=>cur>0&&setCur(c=>c-1)} disabled={cur===0} style={{...btn("#6b7280"),flex:1,opacity:cur===0?0.4:1}}>◀ Prev</button>
+            <button onClick={()=>cur<89&&setCur(c=>c+1)} disabled={cur===89} style={{...btn("#4f46e5"),flex:1,opacity:cur===89?0.4:1}}>Next ▶</button>
+          </div>
+        </div>
+        <div style={{width:200,background:BG,borderLeft:`1px solid ${BORDER}`,padding:12,overflowY:"auto"}}>
+          {[["#16a34a","Answered"],["#dc2626","Visited"],["#f59e0b","Marked"],["#7c3aed","Marked+Ans"]].map(([c,l])=>(
+            <div key={l} style={{display:"flex",gap:4,alignItems:"center",marginBottom:3}}><div style={{width:10,height:10,background:c,borderRadius:2}}/><span style={{fontSize:9,color:MUTED}}>{l}</span></div>
+          ))}
+          {["Physics","Chemistry","Maths"].map((s,si)=>(
+            <div key={s} style={{marginTop:8}}>
+              <div style={{fontSize:9,fontWeight:700,color:SC[s],marginBottom:4}}>{s.toUpperCase()}</div>
+              <QPalette count={30} cur={cur-si*30} setCur={i=>setCur(i+si*30)} ans={Object.fromEntries(Object.entries(ans).filter(([k])=>+k>=si*30&&+k<si*30+30).map(([k,v])=>[+k-si*30,v]))} marked={new Set([...marked].filter(k=>k>=si*30&&k<si*30+30).map(k=>k-si*30))} visited={new Set([...vis].filter(k=>k>=si*30&&k<si*30+30).map(k=>k-si*30))}/>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
-  </div>);
+  );
 }
 
+function AdvancedExam({paper,onExit}){
+  const SECS=[{n:"Sec A",t:"SCQ",m:"+3/−1",qs:[0,1,2,3,4,5],s:"Physics"},{n:"Sec B",t:"MCQ",m:"+4/−2",qs:[6,7,8,9,10,11],s:"Physics"},{n:"Sec C",t:"Int",m:"+4/0",qs:[12,13,14,15],s:"Physics"},{n:"Sec A",t:"SCQ",m:"+3/−1",qs:[16,17,18,19,20,21],s:"Chemistry"},{n:"Sec B",t:"MCQ",m:"+4/−2",qs:[22,23,24,25,26,27],s:"Chemistry"},{n:"Sec C",t:"Int",m:"+4/0",qs:[28,29,30,31],s:"Chemistry"},{n:"Sec A",t:"SCQ",m:"+3/−1",qs:[32,33,34,35,36,37],s:"Maths"},{n:"Sec B",t:"MCQ",m:"+4/−2",qs:[38,39,40,41,42,43],s:"Maths"},{n:"Sec C",t:"Int",m:"+4/0",qs:[44,45,46,47],s:"Maths"}];
+  const getSec=i=>SECS.find(s=>s.qs.includes(i))||SECS[0];
+  const Q=Array(48).fill(0).map((_,i)=>{const s=getSec(i);return{q:`JEE Advanced P${paper} Sample Q${i+1} (${s.t})`,opts:["Option A","Option B","Option C","Option D"],ans:s.t==="MCQ"?"AC":"A"};});
+  const[cur,setCur]=useState(0);const[ans,setAns]=useState({});const[marked,setMarked]=useState(new Set());const[vis,setVis]=useState(new Set([0]));const[done,setDone]=useState(false);const[intV,setIntV]=useState("");
+  const timer=useTimer(10800,()=>setDone(true));
+  useEffect(()=>{timer.start();},[]);
+  useEffect(()=>{setIntV(typeof ans[cur]==="string"?ans[cur]:"");setVis(v=>new Set([...v,cur]));},[cur]);
+  const sec=getSec(cur);const q=Q[cur];const isInt=sec.t==="Int";const isMCQ=sec.t==="MCQ";
+  const tCol=timer.left<300?"#dc2626":timer.left<900?"#d97706":"#059669";
+  const SC={Physics:"#4f46e5",Chemistry:"#059669",Maths:"#d97706"};
+  const handleAns=l=>{if(isMCQ)setAns(a=>{const c=Array.isArray(a[cur])?a[cur]:[];return{...a,[cur]:c.includes(l)?c.filter(x=>x!==l):[...c,l]};});else setAns(a=>({...a,[cur]:l}));};
+  const calcScore=()=>{let sc=0;Q.forEach((qq,i)=>{const a=ans[i];const s=getSec(i);if(!a||(Array.isArray(a)&&!a.length))return;if(s.t==="Int"){if(String(a)===String(qq.ans))sc+=4;}else if(s.t==="MCQ"){const cv=qq.ans.split("").sort().join(""),gv=(Array.isArray(a)?a:[]).sort().join("");if(gv===cv)sc+=4;else if(gv&&cv.split("").some(l=>gv.includes(l)))sc+=1;else sc-=2;}else{if(a===qq.ans)sc+=3;else sc-=1;}});return sc;};
+  if(done){
+    const sc=calcScore();
+    return(
+      <div style={{minHeight:"100vh",background:BG2,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
+        <div style={{maxWidth:400,width:"100%"}}>
+          <div style={{background:"linear-gradient(135deg,#4f46e5,#7c3aed)",borderRadius:16,padding:28,color:"#fff",textAlign:"center",marginBottom:16}}>
+            <div style={{fontSize:48,fontWeight:900}}>{sc}</div>
+            <div>JEE Advanced Paper {paper} Score</div>
+          </div>
+          <button onClick={onExit} style={{...btn(),width:"100%",padding:12}}>← Back</button>
+        </div>
+      </div>
+    );
+  }
+  return(
+    <div style={{minHeight:"100vh",background:BG2,display:"flex",flexDirection:"column"}}>
+      <div style={{background:"linear-gradient(135deg,#1e1b4b,#312e81)",padding:"10px 18px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+        <div>
+          <div style={{color:"#c7d2fe",fontSize:9,letterSpacing:3}}>JEE ADVANCED · PAPER {paper}</div>
+          <div style={{color:"#fff",fontWeight:700}}>{sec.s} · {sec.n} ({sec.t}) {sec.m}</div>
+        </div>
+        <div style={{color:tCol,fontFamily:"monospace",fontSize:20,fontWeight:900,background:"#000",padding:"5px 14px",borderRadius:7}}>{timer.fmt}</div>
+        <button onClick={()=>{if(window.confirm("Submit?"))setDone(true);}} style={{...btn("#dc2626"),padding:"6px 14px"}}>Submit</button>
+      </div>
+      <div style={{display:"flex",flex:1,overflow:"hidden"}}>
+        <div style={{flex:1,padding:16,overflowY:"auto"}}>
+          <div style={{...card,marginBottom:10}}>
+            <div style={{display:"flex",justifyContent:"space-between",marginBottom:8}}>
+              <span style={{fontSize:11,color:MUTED}}>Q{cur+1}/48 · {sec.s}</span>
+              <div style={{display:"flex",gap:4}}><span style={{...pill(SC[sec.s])}}>{sec.t}</span><span style={{...pill("#059669")}}>{sec.m}</span></div>
+            </div>
+            {isMCQ&&<div style={{fontSize:11,color:"#d97706",background:"#fffbeb",padding:"5px 9px",borderRadius:6,marginBottom:8}}>⚠️ Multi-correct — select ALL correct options</div>}
+            <div style={{fontSize:14,lineHeight:1.8,padding:12,background:BG2,borderRadius:9,marginBottom:12,border:`1px solid ${BORDER}`}}>{q.q}</div>
+            {!isInt&&q.opts.map((o,i)=>{
+              const l=["A","B","C","D"][i];const sel=isMCQ?Array.isArray(ans[cur])&&ans[cur].includes(l):ans[cur]===l;
+              return(<div key={i} onClick={()=>handleAns(l)} style={{padding:"10px 14px",borderRadius:9,marginBottom:6,cursor:"pointer",border:`2px solid ${sel?"#4f46e5":BORDER}`,background:sel?"#eef2ff":BG,fontSize:13,fontWeight:sel?600:400}}><span style={{fontWeight:700,color:"#4f46e5",marginRight:7}}>{l}.</span>{o}</div>);
+            })}
+            {isInt&&<input type="number" value={intV} onChange={e=>{setIntV(e.target.value);setAns(a=>({...a,[cur]:e.target.value}));}} style={{...inp,maxWidth:150,fontSize:16,textAlign:"center"}} placeholder="0"/>}
+          </div>
+          <div style={{display:"flex",gap:6}}>
+            <button onClick={()=>setMarked(m=>{const n=new Set(m);n.has(cur)?n.delete(cur):n.add(cur);return n;})} style={{...btn(marked.has(cur)?"#f59e0b":"#94a3b8"),flex:1}}>🔖</button>
+            <button onClick={()=>{setAns(a=>{const n={...a};delete n[cur];return n;});setIntV("");}} style={{...btn("#6b7280"),flex:1}}>Clear</button>
+            <button onClick={()=>cur>0&&setCur(c=>c-1)} disabled={cur===0} style={{...btn("#6b7280"),flex:1,opacity:cur===0?0.4:1}}>◀</button>
+            <button onClick={()=>cur<47&&setCur(c=>c+1)} disabled={cur===47} style={{...btn("#4f46e5"),flex:1,opacity:cur===47?0.4:1}}>▶</button>
+          </div>
+        </div>
+        <div style={{width:190,background:BG,borderLeft:`1px solid ${BORDER}`,padding:11,overflowY:"auto"}}>
+          {["Physics","Chemistry","Maths"].map(s=>(
+            <div key={s} style={{marginBottom:10}}>
+              <div style={{fontSize:9,fontWeight:700,color:SC[s],marginBottom:4}}>{s.toUpperCase()}</div>
+              {SECS.filter(x=>x.s===s).map(sc=>(
+                <div key={sc.n+s} style={{marginBottom:5}}>
+                  <div style={{fontSize:8,color:MUTED,marginBottom:2}}>{sc.n} · {sc.t}</div>
+                  <div style={{display:"flex",flexWrap:"wrap",gap:2}}>
+                    {sc.qs.map(qi=>{
+                      const a=ans[qi],hasA=a!=null&&!(Array.isArray(a)&&!a.length),mk=marked.has(qi),vi=vis.has(qi);
+                      const bg=mk&&hasA?"#7c3aed":mk?"#f59e0b":hasA?"#16a34a":vi?"#dc2626":"#e2e8f0";
+                      return(<div key={qi} onClick={()=>setCur(qi)} style={{width:22,height:22,borderRadius:4,background:bg,color:bg==="#e2e8f0"?"#94a3b8":"#fff",display:"flex",alignItems:"center",justifyContent:"center",fontSize:8,fontWeight:700,cursor:"pointer",border:cur===qi?"2px solid #1e293b":"2px solid transparent"}}>{qi+1}</div>);
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ════════════════════════════════════════
+   PRACTICE TAB — 1 API call per question
+════════════════════════════════════════ */
 function PracticeTab({apiKey}){
-  const[exam,setExam]=useState("mains");const[subj,setSubj]=useState("Physics");const[topic,setTopic]=useState("");const[year,setYear]=useState("2024");const[qType,setQType]=useState("SCQ");const[diff,setDiff]=useState("Medium");const[concept,setConcept]=useState("single");
-  const[q,setQ]=useState(null);const[load,setLoad]=useState(false);const[sel,setSel]=useState(null);const[intA,setIntA]=useState("");const[submitted,setSubmitted]=useState(false);const[expl,setExpl]=useState("");
-  const[chat,setChat]=useState([]);const[chatMsg,setChatMsg]=useState("");const[chatLoad,setChatLoad]=useState(false);
+  const[exam,setExam]=useState("mains");
+  const[subj,setSubj]=useState("Physics");
+  const[topic,setTopic]=useState("");
+  const[year,setYear]=useState("2024");
+  const[qType,setQType]=useState("SCQ");
+  const[diff,setDiff]=useState("Medium");
+  const[q,setQ]=useState(null);
+  const[load,setLoad]=useState(false);
+  const[sel,setSel]=useState(null);
+  const[intA,setIntA]=useState("");
+  const[submitted,setSubmitted]=useState(false);
+  const[chat,setChat]=useState([]);
+  const[chatMsg,setChatMsg]=useState("");
+  const[chatLoad,setChatLoad]=useState(false);
   const[score,setScore]=useState({c:0,w:0,tot:0});
-  const fileRef=useRef();const[pdfRes,setPdfRes]=useState("");const[pdfLoad,setPdfLoad]=useState(false);
-  const advYrs=Array.from({length:48},(_,i)=>2025-i);const mainYrs=Array.from({length:24},(_,i)=>2025-i);
-  const qTypes=exam==="advanced"?["SCQ","MCQ (Multi-Correct)","Integer","Paragraph Based"]:["SCQ","Integer","Paragraph Based"];
-  const chapters=DATA[subj][exam];const acc=score.tot>0?Math.round(score.c/score.tot*100):0;
+  const fileRef=useRef();
+  const[pdfRes,setPdfRes]=useState("");
+  const[pdfLoad,setPdfLoad]=useState(false);
+  const chs=DATA[subj][exam];
+  const acc=score.tot?Math.round(score.c/score.tot*100):0;
+  const qTypes=exam==="advanced"?["SCQ","MCQ","Integer"]:["SCQ","Integer"];
+  const yrs=Array.from({length:exam==="advanced"?48:24},(_,i)=>2025-i);
 
   const genQ=async()=>{
-    if(!apiKey){alert("Add your Gemini API key in ⚙️ Settings!");return;}
-    setLoad(true);setQ(null);setSel(null);setIntA("");setSubmitted(false);setExpl("");setChat([]);
-    const t=topic||chapters[Math.floor(Math.random()*chapters.length)].ch;
-    const cNote=concept==="dual"?"Use TWO linked concepts.":concept==="multi"?"Use 3+ concepts.":"Single concept.";
-    const prompt=`Generate a ${exam==="advanced"?"JEE Advanced":"JEE Mains"} ${year}-style ${diff} ${qType} question. Subject: ${subj}, Topic: "${t}". ${cNote}\nReturn ONLY one valid JSON object, no markdown, no extra text:\n{"question":"full question text","options":["A) ...","B) ...","C) ...","D) ..."],"correct":"A","topic":"${t}","hint":"one-line hint","solution":"CONCEPT: ...\\nFORMULA: ...\\nSOLUTION: step by step...\\nCOMMON ERROR: ..."}`;
-    const r=await callGemini(apiKey,[{role:"user",content:prompt}],"JEE expert. Return ONLY valid JSON, no markdown, no text before or after the JSON object.",1400);
-    if(r.startsWith("❌")){
-      setQ({question:r,options:[],correct:"",topic:t,hint:"",solution:"",isError:true});
-    } else {
+    if(!apiKey){setQ({err:"NO_KEY"});return;}
+    setLoad(true);setQ(null);setSel(null);setIntA("");setSubmitted(false);setChat([]);
+    const t=topic||chs[Math.floor(Math.random()*chs.length)].ch;
+    const prompt=`Generate a ${exam==="advanced"?"JEE Advanced":"JEE Mains"} ${year} ${diff} ${qType} question.\nSubject: ${subj}, Topic: "${t}".\nIMPORTANT: Return ONLY a JSON object. No markdown. No text before or after. Just the raw JSON:\n{"question":"full question text","options":["A) text","B) text","C) text","D) text"],"correct":"A","hint":"one line hint","solution":"CONCEPT: ...\\nFORMULA: ...\\nSOLUTION: step 1...\\nstep 2...\\nANSWER: ...\\nCOMMON ERROR: ..."}`;
+    const r=await callAI(apiKey,[{role:"user",content:prompt}],"You are a JEE expert. Respond with ONLY a valid JSON object. Do not include any markdown formatting, backticks, or text outside the JSON.",1400);
+    const isApiErr=r==="NO_KEY"||r==="RATE_LIMIT"||r==="BAD_KEY"||r==="EMPTY"||r.startsWith("NET:")||r.startsWith("ERR:");
+    if(isApiErr){setQ({err:r});}
+    else{
       try{
         const clean=r.replace(/```json|```/g,"").replace(/^[^{]*/,"").replace(/[^}]*$/,"").trim();
         setQ(JSON.parse(clean));
       }catch(e){
-        setQ({question:"Parse error. Try again.\n\n"+r.slice(0,300),options:[],correct:"",topic:t,hint:"",solution:"",isError:true});
+        setQ({err:"PARSE",raw:r.slice(0,200)});
       }
     }
     setLoad(false);
   };
 
   const submit=()=>{
-    const a=qType==="Integer"?intA:sel;if(!a)return;
-    const ok=qType==="MCQ (Multi-Correct)"
-      ?q.correct.split("").every(l=>a.includes(l))&&a.split("").every(l=>q.correct.includes(l))
-      :a===q.correct;
+    if(!q||q.err)return;
+    const a=qType==="Integer"?intA:sel;
+    if(!a)return;
+    const ok=qType==="MCQ"?q.correct.split("").every(l=>a.includes(l))&&a.split("").every(l=>q.correct.includes(l)):a===q.correct;
     setSubmitted(true);
     setScore(s=>({c:s.c+(ok?1:0),w:s.w+(!ok?1:0),tot:s.tot+1}));
-    setExpl(q.solution||"Solution included with question. Try regenerating if empty.");
   };
 
   const sendChat=async()=>{
-    if(!chatMsg.trim()||!q)return;
-    const msgs=[...chat,{role:"user",content:chatMsg}];setChat(msgs);setChatMsg("");setChatLoad(true);
-    const r=await callGemini(apiKey,msgs,`JEE expert tutor. The question being discussed: "${q.question}". Correct answer: "${q.correct}". Answer student doubts concisely and clearly.`);
-    setChat(c=>[...c,{role:"assistant",content:r}]);setChatLoad(false);
+    if(!chatMsg.trim()||!q||q.err)return;
+    if(!apiKey){setChat(c=>[...c,{role:"user",content:chatMsg},{role:"assistant",content:"NO_KEY"}]);setChatMsg("");return;}
+    const msgs=[...chat,{role:"user",content:chatMsg}];
+    setChat(msgs);setChatMsg("");setChatLoad(true);
+    const r=await callAI(apiKey,msgs,`JEE tutor. Q: "${q.question}". Correct: "${q.correct}". Be concise.`,600);
+    setChat(c=>[...c,{role:"assistant",content:r}]);
+    setChatLoad(false);
   };
 
   const handlePDF=async(e)=>{
     const file=e.target.files[0];if(!file)return;
-    if(!apiKey){alert("Add Gemini API key in ⚙️ Settings first!");return;}
+    if(!apiKey){setPdfRes("NO_KEY");return;}
     setPdfLoad(true);setPdfRes("");
-    try{
-      const b64=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(",")[1]);r.onerror=rej;r.readAsDataURL(file);});
-      const r=await callGeminiWithPDF(apiKey,b64,"application/pdf","Extract ALL questions from this JEE PDF. For each question list: number, full question text, options A/B/C/D, correct answer if visible, subject, topic, and type (SCQ/MCQ/Integer).");
-      setPdfRes(r);
-    }catch(err){setPdfRes("Error: "+err.message);}
-    setPdfLoad(false);e.target.value="";
+    const b64=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(",")[1]);r.onerror=rej;r.readAsDataURL(file);});
+    const r=await callAIFile(apiKey,b64,file.type||"application/pdf","Extract all JEE questions from this file. For each: question number, full text, options A-D, correct answer, subject, topic, type.");
+    setPdfRes(r);setPdfLoad(false);e.target.value="";
   };
 
-  return(<div style={{display:"flex",flexDirection:"column",gap:14}}>
-    <div style={{display:"flex",gap:8,flexWrap:"wrap",alignItems:"center"}}>
-      <div style={{display:"flex",gap:3,background:"#f1f5f9",padding:3,borderRadius:10}}>
-        {[["mains","📝 JEE Mains","#059669"],["advanced","⚡ JEE Advanced","#4f46e5"]].map(([v,l,c])=><button key={v} onClick={()=>{setExam(v);setQType("SCQ");setTopic("");setQ(null);}} style={{...btn(exam===v?c:"transparent",exam===v?"#fff":MUTED),borderRadius:8,padding:"7px 14px",fontSize:12}}>{l}</button>)}
-      </div>
-      {[{l:"Done",v:score.tot,c:"#4f46e5"},{l:"✓",v:score.c,c:"#059669"},{l:"✗",v:score.w,c:"#dc2626"},{l:"Acc",v:`${acc}%`,c:acc>=60?"#059669":"#dc2626"}].map(s=><div key={s.l} style={{...card,padding:"6px 12px",textAlign:"center",minWidth:50}}><div style={{fontSize:18,fontWeight:800,color:s.c}}>{s.v}</div><div style={{fontSize:9,color:MUTED}}>{s.l}</div></div>)}
-    </div>
-    <div style={{...card}}>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10,marginBottom:12}}>
-        {[["Subject",<select value={subj} onChange={e=>{setSubj(e.target.value);setTopic("");}} style={inp}>{Object.keys(DATA).map(s=><option key={s}>{s}</option>)}</select>],
-          ["Topic",<select value={topic} onChange={e=>setTopic(e.target.value)} style={inp}><option value="">🎲 Random</option>{chapters.map(c=><option key={c.ch}>{c.ch}</option>)}</select>],
-          ["Year",<select value={year} onChange={e=>setYear(e.target.value)} style={inp}>{(exam==="advanced"?advYrs:mainYrs).map(y=><option key={y}>{y}</option>)}</select>],
-          ["Type",<select value={qType} onChange={e=>setQType(e.target.value)} style={inp}>{qTypes.map(t=><option key={t}>{t}</option>)}</select>],
-          ["Difficulty",<select value={diff} onChange={e=>setDiff(e.target.value)} style={inp}>{["Easy","Medium","Hard","Very Hard"].map(d=><option key={d}>{d}</option>)}</select>],
-          ["Concept",<select value={concept} onChange={e=>setConcept(e.target.value)} style={inp}><option value="single">Single Concept</option><option value="dual">Dual Concept</option><option value="multi">Multi-Concept</option></select>]
-        ].map(([l,el])=><div key={l}><div style={{fontSize:10,fontWeight:600,color:MUTED,marginBottom:3}}>{l}</div>{el}</div>)}
-      </div>
-      <button onClick={genQ} disabled={load} style={{...btn("linear-gradient(135deg,#4f46e5,#7c3aed)"),width:"100%",padding:12,fontSize:14,opacity:load?0.7:1}}>{load?"⏳ Generating with Gemini AI...":"🎯 Generate Question"}</button>
-    </div>
-    {q&&q.isError&&<GeminiError msg={q.question}/>}
-    {q&&!q.isError&&(<div style={{...card}}>
-      <div style={{display:"flex",flexWrap:"wrap",gap:5,marginBottom:12}}>
-        {[[subj,DATA[subj].color],[q.topic||"",MUTED],[diff,"#d97706"],[`${exam==="advanced"?"⚡ Adv":"📝 Mains"} ${year}`,exam==="advanced"?"#4f46e5":"#059669"],["Gemini AI","#1a73e8"]].filter(x=>x[0]).map(([t,c])=><span key={t} style={{...pill(c)}}>{t}</span>)}
-      </div>
-      <div style={{fontSize:15,lineHeight:1.85,color:TEXT,padding:14,background:BG2,borderRadius:10,marginBottom:14,border:`1px solid ${BORDER}`,minHeight:80,whiteSpace:"pre-wrap"}}>{q.question}</div>
-      {qType!=="Integer"&&q.options?.map((opt,i)=>{
-        const l=["A","B","C","D"][i];const isSel=qType==="MCQ (Multi-Correct)"?sel?.includes(l):sel===l;
-        const isCorr=submitted&&(qType==="MCQ (Multi-Correct)"?q.correct?.includes(l):l===q.correct);const isWrong=submitted&&isSel&&!isCorr;
-        return(<div key={i} onClick={()=>{if(submitted)return;if(qType==="MCQ (Multi-Correct)")setSel(s=>s?(s.includes(l)?s.replace(l,""):s+l):l);else setSel(l);}} style={{padding:"11px 14px",borderRadius:9,marginBottom:7,cursor:submitted?"default":"pointer",border:`2px solid ${isCorr?"#059669":isWrong?"#dc2626":isSel?"#4f46e5":BORDER}`,background:isCorr?"#ecfdf5":isWrong?"#fef2f2":isSel?"#eef2ff":BG,fontSize:14,color:TEXT,fontWeight:isSel||isCorr?600:400}}><span style={{fontWeight:700,color:"#4f46e5",marginRight:8}}>{l})</span>{opt.replace(/^[A-D]\)\s*/,"")}{isCorr&&" ✅"}{isWrong&&" ❌"}</div>);
-      })}
-      {qType==="Integer"&&!submitted&&<input type="number" value={intA} onChange={e=>setIntA(e.target.value)} placeholder="Enter integer answer" style={{...inp,fontSize:16,maxWidth:200,marginBottom:12}}/>}
-      {submitted&&qType==="Integer"&&<div style={{padding:10,background:intA===q.correct?"#ecfdf5":"#fef2f2",borderRadius:9,marginBottom:10,fontWeight:600,border:`1px solid ${intA===q.correct?"#059669":"#dc2626"}`}}>Your: {intA} | Correct: {q.correct} {intA===q.correct?"✅":"❌"}</div>}
-      {!submitted&&q.options?.length>0&&<button onClick={submit} style={{...btn("#059669"),width:"100%",padding:11}}>Submit Answer</button>}
-      {submitted&&<div style={{marginTop:10,background:"#ecfdf5",borderRadius:10,padding:14,border:"1px solid #a7f3d0"}}><div style={{fontWeight:700,color:"#059669",marginBottom:6}}>✅ Solution</div><div style={{fontSize:13,lineHeight:1.75,color:TEXT,whiteSpace:"pre-wrap"}}>{expl}</div></div>}
-      {submitted&&<button onClick={genQ} style={{...btn("linear-gradient(135deg,#4f46e5,#7c3aed)"),width:"100%",marginTop:10}}>⚡ Next Question</button>}
-      {q.hint&&!submitted&&<div style={{marginTop:8,background:"#fffbeb",borderRadius:8,padding:10,fontSize:12,color:"#d97706",border:"1px solid #fde68a"}}>💡 Hint: {q.hint}</div>}
-    </div>)}
-    {q&&!q.isError&&(<div style={{...card,border:`1.5px solid #c7d2fe`}}>
-      <div style={{fontWeight:700,fontSize:13,color:TEXT,marginBottom:8}}>💬 Ask a Doubt (Gemini AI)</div>
-      <div style={{maxHeight:150,overflowY:"auto",display:"flex",flexDirection:"column",gap:6,marginBottom:8}}>
-        {chat.map((m,i)=><div key={i} style={{alignSelf:m.role==="user"?"flex-end":"flex-start",maxWidth:"80%",background:m.role==="user"?"linear-gradient(135deg,#4f46e5,#7c3aed)":"#f8fafc",color:m.role==="user"?"#fff":TEXT,borderRadius:9,padding:"8px 12px",fontSize:12,border:m.role==="assistant"?`1px solid ${BORDER}`:"none"}}>{m.content}</div>)}
-        {chatLoad&&<div style={{color:MUTED,fontSize:12}}>⏳ Gemini is thinking...</div>}
-      </div>
-      <div style={{display:"flex",gap:8}}><input value={chatMsg} onChange={e=>setChatMsg(e.target.value)} onKeyDown={e=>e.key==="Enter"&&sendChat()} placeholder="Ask about this question..." style={{...inp,flex:1}}/><button onClick={sendChat} disabled={chatLoad} style={{...btn(),flexShrink:0}}>Send</button></div>
-    </div>)}
-    <div style={{...card}}>
-      <div style={{fontWeight:700,fontSize:13,color:TEXT,marginBottom:6}}>📄 Upload JEE PDF — Gemini AI Extraction</div>
-      <div onClick={()=>fileRef.current?.click()} style={{border:`2px dashed ${BORDER}`,borderRadius:10,padding:16,textAlign:"center",cursor:"pointer",background:BG2,marginBottom:8}}>
-        <div style={{fontSize:24}}>📁</div><div style={{fontSize:12,color:MUTED,marginTop:3}}>{pdfLoad?"⏳ Gemini reading PDF...":"Click to upload JEE PYQ or Coaching PDF"}</div>
-        <input ref={fileRef} type="file" accept=".pdf,image
-function TutorTab({apiKey}){
-  const[chat,setChat]=useState([{role:"assistant",content:"👋 JEE AI Tutor here — powered by Google Gemini!\n\nI can help with:\n• Concept explanations (Physics, Chemistry, Maths)\n• Step-by-step solutions with formulae\n• JEE Mains vs Advanced strategy\n• Topic prioritization & shortcuts\n\n💡 Add your Gemini API key in ⚙️ Settings to activate."}]);
-  const[msg,setMsg]=useState("");const[load,setLoad]=useState(false);
-  const ref=useRef();
-  const QUICK=["Explain Gauss Law with all 3 geometries","GOC: Carbocation stability order","Rolling without slipping derivation","King's property of integration","JEE Advanced 2026 strategy","CFT vs VBT comparison","Electrochemistry key formulae","Rotational motion formulae sheet"];
-  const send=async(m)=>{
-    if(!apiKey){alert("Add your Gemini API key in ⚙️ Settings!");return;}
-    const t=m||msg;if(!t.trim())return;
-    const nc=[...chat,{role:"user",content:t}];setChat(nc);setMsg("");setLoad(true);
-    const r=await callGemini(apiKey,nc,"You are an elite JEE (Mains + Advanced) tutor. Give detailed, structured responses with clear steps, formulae, and examples. Use clear headings and formatting.",1500);
-    setChat(c=>[...c,{role:"assistant",content:r}]);setLoad(false);
-    setTimeout(()=>ref.current?.scrollTo(0,ref.current.scrollHeight),100);
-  };
-  return(<div style={{display:"flex",flexDirection:"column",gap:12}}>
-    <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
-      {QUICK.map(p=><button key={p} onClick={()=>send(p)} style={{fontSize:11,padding:"5px 10px",borderRadius:99,border:`1px solid ${BORDER}`,background:BG2,cursor:"pointer",color:TEXT}}>{p}</button>)}
-    </div>
-    <div style={{...card,padding:0,overflow:"hidden"}}>
-      <div ref={ref} style={{height:400,overflowY:"auto",padding:16,display:"flex",flexDirection:"column",gap:10}}>
-        {chat.map((m,i)=><div key={i} style={{display:"flex",justifyContent:m.role==="user"?"flex-end":"flex-start"}}><div style={{maxWidth:"85%",padding:"10px 14px",borderRadius:12,fontSize:13,lineHeight:1.7,background:m.role==="user"?"linear-gradient(135deg,#4f46e5,#7c3aed)":"#f8fafc",color:m.role==="user"?"#fff":TEXT,border:m.role==="assistant"?`1px solid ${BORDER}`:"none",whiteSpace:"pre-wrap",wordBreak:"break-word"}}>{m.role==="assistant"&&<div style={{fontSize:8,fontWeight:800,color:"#1a73e8",marginBottom:4,letterSpacing:2}}>GEMINI AI TUTOR</div>}{m.content}</div></div>)}
-        {load&&<div style={{alignSelf:"flex-start",background:"#f8fafc",border:`1px solid ${BORDER}`,padding:"10px 14px",borderRadius:12,fontSize:13,color:MUTED}}>⏳ Gemini is thinking...</div>}
-      </div>
-      <div style={{borderTop:`1px solid ${BORDER}`,padding:12,display:"flex",gap:8}}>
-        <textarea value={msg} onChange={e=>setMsg(e.target.value)} onKeyDown={e=>e.key==="Enter"&&!e.shiftKey&&(e.preventDefault(),send())} placeholder="Ask any JEE question... (Enter to send, Shift+Enter for new line)" rows={2} style={{...inp,flex:1,resize:"none",height:48,fontFamily:"inherit"}}/>
-        <button onClick={()=>send()} disabled={load} style={{...btn(),padding:"0 18px",flexShrink:0}}>Send</button>
-      </div>
-    </div>
-  </div>);
-}
-
-function ExamTab(){
-  const[mode,setMode]=useState(null);const[paper,setPaper]=useState(1);
-  const MQ=Array(90).fill(0).map((_,i)=>({question:`JEE Mains Sample Q${i+1} — Generate real questions in 🎯 Practice tab`,options:["Option A (sample)","Option B (sample)","Option C (sample)","Option D (sample)"],correct:"A",type:i%10===9?"integer":"SCQ"}));
-  const AQ=Array(48).fill(0).map((_,i)=>{const s=i<16?"SCQ":i<32?"MCQ":"Integer";return{question:`JEE Advanced Sample Q${i+1} (${s})`,options:["Option A","Option B","Option C","Option D"],correct:s==="MCQ"?"AC":"A",type:s};});
-  if(mode==="mains")return <MainsExam questions={MQ} duration={10800} title="JEE Mains Full Mock" onExit={()=>setMode(null)}/>;
-  if(mode==="advanced")return <AdvancedExam questions={AQ} duration={10800} title={`JEE Advanced Paper ${paper}`} paper={paper} onExit={()=>setMode(null)}/>;
-  return(<div style={{display:"flex",flexDirection:"column",gap:16}}>
-    <div style={{...card,border:`2px solid #059669`,background:"linear-gradient(135deg,#ecfdf5,#f0fdf4)"}}>
-      <div style={{display:"flex",gap:16,alignItems:"flex-start"}}><div style={{fontSize:44}}>📝</div><div style={{flex:1}}>
-        <div style={{fontWeight:800,fontSize:17,color:"#059669",marginBottom:4}}>JEE Mains — Full Exam Interface</div>
-        <div style={{fontSize:13,color:"#374151",lineHeight:1.6,marginBottom:12}}>Authentic NTA-style · 90 Questions · 3 Hours<br/>Physics+Chemistry+Maths · SCQ: +4/−1 · Integer: +4/0</div>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:6,marginBottom:14}}>{[["90 Questions","30 per subject"],["3 Hours","NTA Pattern"],["SCQ +4/−1","Integer +4/0"],["Question Palette","Color coded"],["Section Tabs","Phy·Chem·Math"],["Auto Submit","On time end"]].map(([t,d])=><div key={t} style={{background:BG,borderRadius:8,padding:"8px 10px",border:"1px solid #a7f3d0"}}><div style={{fontWeight:700,fontSize:11,color:"#059669"}}>{t}</div><div style={{fontSize:9,color:MUTED}}>{d}</div></div>)}</div>
-        <button onClick={()=>setMode("mains")} style={{...btn("#059669"),padding:"11px 28px",fontSize:14}}>🚀 Start JEE Mains Mock</button>
-      </div></div>
-    </div>
-    <div style={{...card,border:`2px solid #4f46e5`,background:"linear-gradient(135deg,#eef2ff,#f5f3ff)"}}>
-      <div style={{display:"flex",gap:16,alignItems:"flex-start"}}><div style={{fontSize:44}}>⚡</div><div style={{flex:1}}>
-        <div style={{fontWeight:800,fontSize:17,color:"#4f46e5",marginBottom:4}}>JEE Advanced — Full Exam Interface</div>
-        <div style={{fontSize:13,color:"#374151",lineHeight:1.6,marginBottom:12}}>IIT JEE Advanced · Paper 1 or 2 · 3 Hours<br/>Sec A (SCQ +3/−1) · Sec B (MCQ +4/−2) · Sec C (Integer +4/0)</div>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:6,marginBottom:14}}>{[["48 Questions","16 per subject"],["3 Hours","Per Paper"],["Sec A SCQ","+3/−1"],["Sec B Multi-Correct","+4/−2"],["Sec C Integer","+4/0"],["Paper 1 or 2","Choose below"]].map(([t,d])=><div key={t} style={{background:BG,borderRadius:8,padding:"8px 10px",border:"1px solid #c7d2fe"}}><div style={{fontWeight:700,fontSize:11,color:"#4f46e5"}}>{t}</div><div style={{fontSize:9,color:MUTED}}>{d}</div></div>)}</div>
-        <div style={{display:"flex",gap:10,alignItems:"center",flexWrap:"wrap"}}>
-          <div style={{display:"flex",gap:3,background:"#eef2ff",padding:3,borderRadius:8}}>{[1,2].map(p=><button key={p} onClick={()=>setPaper(p)} style={{...btn(paper===p?"#4f46e5":"transparent",paper===p?"#fff":MUTED),borderRadius:6,padding:"6px 16px",fontSize:12}}>Paper {p}</button>)}</div>
-          <button onClick={()=>setMode("advanced")} style={{...btn("#4f46e5"),padding:"11px 28px",fontSize:14}}>⚡ Start Paper {paper}</button>
+  return(
+    <div style={{display:"flex",flexDirection:"column",gap:12}}>
+      <div style={{display:"flex",gap:8,flexWrap:"wrap",alignItems:"center"}}>
+        <div style={{display:"flex",gap:3,background:"#f1f5f9",padding:3,borderRadius:10}}>
+          {[["mains","📝 Mains","#059669"],["advanced","⚡ Advanced","#4f46e5"]].map(([v,l,c])=>(
+            <button key={v} onClick={()=>{setExam(v);setQ(null);setQType("SCQ");setTopic("");}} style={{...btn(exam===v?c:"transparent",exam===v?"#fff":MUTED),borderRadius:8,padding:"6px 14px",fontSize:12}}>{l}</button>
+          ))}
         </div>
-      </div></div>
+        {[["Done",score.tot,"#4f46e5"],["✓",score.c,"#059669"],["✗",score.w,"#dc2626"],["Acc",`${acc}%`,acc>=60?"#059669":"#dc2626"]].map(([l,v,c])=>(
+          <div key={l} style={{...card,padding:"5px 10px",textAlign:"center",minWidth:44}}><div style={{fontSize:16,fontWeight:800,color:c}}>{v}</div><div style={{fontSize:9,color:MUTED}}>{l}</div></div>
+        ))}
+      </div>
+      <div style={{...card}}>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10,marginBottom:12}}>
+          {[
+            ["Subject",<select value={subj} onChange={e=>{setSubj(e.target.value);setTopic("");}} style={inp}>{Object.keys(DATA).map(s=><option key={s}>{s}</option>)}</select>],
+            ["Topic",<select value={topic} onChange={e=>setTopic(e.target.value)} style={inp}><option value="">🎲 Random</option>{chs.map(c=><option key={c.ch}>{c.ch}</option>)}</select>],
+            ["Year",<select value={year} onChange={e=>setYear(e.target.value)} style={inp}>{yrs.map(y=><option key={y}>{y}</option>)}</select>],
+            ["Type",<select value={qType} onChange={e=>setQType(e.target.value)} style={inp}>{qTypes.map(t=><option key={t}>{t}</option>)}</select>],
+            ["Difficulty",<select value={diff} onChange={e=>setDiff(e.target.value)} style={inp}>{["Easy","Medium","Hard","Very Hard"].map(d=><option key={d}>{d}</option>)}</select>],
+            ["API calls",<div style={{padding:"8px 0",fontSize:12,color:"#059669",fontWeight:700}}>✅ 1 call per question<br/><span style={{fontSize:10,color:MUTED,fontWeight:400}}>Solution loads instantly on submit</span></div>]
+          ].map(([l,el])=>(
+            <div key={l}><div style={{fontSize:10,fontWeight:600,color:MUTED,marginBottom:3}}>{l}</div>{el}</div>
+          ))}
+        </div>
+        <button onClick={genQ} disabled={load} style={{...btn("linear-gradient(135deg,#4f46e5,#7c3aed)"),width:"100%",padding:12,fontSize:14,opacity:load?0.7:1}}>
+          {load?"⏳ Generating...":"🎯 Generate Question"}
+        </button>
+      </div>
+
+      {q&&q.err==="PARSE"&&(
+        <div style={{background:"#fef2f2",border:"1.5px solid #fecaca",borderRadius:10,padding:13,fontSize:13,color:"#991b1b"}}>
+          <b>❌ Parse Error</b> — AI returned invalid format. <button onClick={genQ} style={{...btn("#dc2626"),padding:"3px 10px",fontSize:11,marginLeft:8}}>Try Again</button>
+          <div style={{fontSize:11,marginTop:6,color:MUTED,fontFamily:"monospace"}}>{q.raw}</div>
+        </div>
+      )}
+      {q&&q.err&&q.err!=="PARSE"&&<AIError r={q.err}/>}
+
+      {q&&!q.err&&(
+        <div style={{...card}}>
+          <div style={{display:"flex",flexWrap:"wrap",gap:5,marginBottom:10}}>
+            {[[subj,DATA[subj].color],[diff,"#d97706"],[`${exam==="advanced"?"⚡":"📝"} ${year}`,exam==="advanced"?"#4f46e5":"#059669"],["Gemini AI","#1a73e8"]].map(([t,c])=>(
+              <span key={t} style={{...pill(c)}}>{t}</span>
+            ))}
+          </div>
+          <div style={{fontSize:14,lineHeight:1.85,padding:13,background:BG2,borderRadius:10,marginBottom:12,border:`1px solid ${BORDER}`,whiteSpace:"pre-wrap",color:TEXT}}>
+            {q.question}
+          </div>
+          {qType!=="Integer"&&(q.options||[]).map((o,i)=>{
+            const l=["A","B","C","D"][i];
+            const isSel=qType==="MCQ"?sel&&sel.includes(l):sel===l;
+            const isCorr=submitted&&(qType==="MCQ"?q.correct&&q.correct.includes(l):l===q.correct);
+            const isWrong=submitted&&isSel&&!isCorr;
+            return(
+              <div key={i} onClick={()=>{if(submitted)return;if(qType==="MCQ")setSel(s=>s?(s.includes(l)?s.replace(l,""):s+l):l);else setSel(l);}} style={{padding:"10px 13px",borderRadius:9,marginBottom:6,cursor:submitted?"default":"pointer",border:`2px solid ${isCorr?"#059669":isWrong?"#dc2626":isSel?"#4f46e5":BORDER}`,background:isCorr?"#ecfdf5":isWrong?"#fef2f2":isSel?"#eef2ff":BG,fontSize:13,fontWeight:isSel||isCorr?600:400}}>
+                <span style={{fontWeight:700,color:"#4f46e5",marginRight:7}}>{l})</span>
+                {o.replace(/^[A-D]\)\s*/,"")}
+                {isCorr&&" ✅"}{isWrong&&" ❌"}
+              </div>
+            );
+          })}
+          {qType==="Integer"&&!submitted&&(
+            <input type="number" value={intA} onChange={e=>setIntA(e.target.value)} placeholder="Enter integer answer" style={{...inp,maxWidth:180,fontSize:15,marginBottom:10}}/>
+          )}
+          {qType==="Integer"&&submitted&&(
+            <div style={{padding:10,borderRadius:9,marginBottom:10,fontWeight:600,background:intA===q.correct?"#ecfdf5":"#fef2f2",border:`1px solid ${intA===q.correct?"#059669":"#dc2626"}`}}>
+              Your answer: {intA} | Correct: {q.correct} {intA===q.correct?"✅":"❌"}
+            </div>
+          )}
+          {!submitted&&<button onClick={submit} style={{...btn("#059669"),width:"100%",padding:10}}>Submit Answer</button>}
+          {q.hint&&!submitted&&(
+            <div style={{marginTop:8,background:"#fffbeb",borderRadius:8,padding:9,fontSize:12,color:"#d97706",border:"1px solid #fde68a"}}>💡 Hint: {q.hint}</div>
+          )}
+          {submitted&&(
+            <div style={{marginTop:10,background:"#ecfdf5",borderRadius:10,padding:13,border:"1px solid #a7f3d0"}}>
+              <div style={{fontWeight:700,color:"#059669",marginBottom:6}}>
+                ✅ Solution <span style={{fontSize:10,color:MUTED,fontWeight:400}}>— instant, no extra API call</span>
+              </div>
+              <div style={{fontSize:13,lineHeight:1.8,color:TEXT,whiteSpace:"pre-wrap"}}>{q.solution||"Solution not available. Try regenerating."}</div>
+            </div>
+          )}
+          {submitted&&(
+            <button onClick={genQ} style={{...btn("linear-gradient(135deg,#4f46e5,#7c3aed)"),width:"100%",marginTop:10}}>⚡ Next Question</button>
+          )}
+        </div>
+      )}
+
+      {q&&!q.err&&(
+        <div style={{...card,border:`1.5px solid #c7d2fe`}}>
+          <div style={{fontWeight:700,fontSize:13,marginBottom:8}}>💬 Doubt Chat</div>
+          <div style={{maxHeight:160,overflowY:"auto",display:"flex",flexDirection:"column",gap:6,marginBottom:8}}>
+            {chat.map((m,i)=>{
+              if(m.role==="assistant"&&(m.content==="NO_KEY"||m.content==="RATE_LIMIT"||m.content==="BAD_KEY"))return<div key={i} style={{alignSelf:"flex-start",maxWidth:"90%"}}><AIError r={m.content}/></div>;
+              return(<div key={i} style={{alignSelf:m.role==="user"?"flex-end":"flex-start",maxWidth:"82%",background:m.role==="user"?"linear-gradient(135deg,#4f46e5,#7c3aed)":"#f8fafc",color:m.role==="user"?"#fff":TEXT,borderRadius:9,padding:"7px 11px",fontSize:12,border:m.role==="assistant"?`1px solid ${BORDER}`:"none"}}>{m.content}</div>);
+            })}
+            {chatLoad&&<div style={{fontSize:12,color:MUTED}}>⏳ Thinking...</div>}
+          </div>
+          <div style={{display:"flex",gap:7}}>
+            <input value={chatMsg} onChange={e=>setChatMsg(e.target.value)} onKeyDown={e=>e.key==="Enter"&&!e.shiftKey&&sendChat()} placeholder="Ask about this question..." style={{...inp,flex:1}}/>
+            <button onClick={sendChat} disabled={chatLoad} style={{...btn(),flexShrink:0}}>Send</button>
+          </div>
+        </div>
+      )}
+
+      <div style={{...card}}>
+        <div style={{fontWeight:700,fontSize:13,marginBottom:6}}>📄 Upload JEE PDF / Image</div>
+        <div onClick={()=>fileRef.current&&fileRef.current.click()} style={{border:`2px dashed ${BORDER}`,borderRadius:10,padding:14,textAlign:"center",cursor:"pointer",background:BG2}}>
+          <div style={{fontSize:28}}>📁</div>
+          <div style={{fontSize:12,color:MUTED,marginTop:3}}>{pdfLoad?"⏳ Gemini reading file...":"Click to upload JEE PYQ PDF or image"}</div>
+          <input ref={fileRef} type="file" accept=".pdf,image/*" style={{display:"none"}} onChange={handlePDF}/>
+        </div>
+        {pdfRes&&(pdfRes==="NO_KEY"?<div style={{marginTop:8}}><AIError r="NO_KEY"/></div>:<div style={{marginTop:8,background:BG2,borderRadius:9,padding:11,fontSize:12,lineHeight:1.7,maxHeight:240,overflowY:"auto",whiteSpace:"pre-wrap",border:`1px solid ${BORDER}`}}>{pdfRes}</div>)}
+      </div>
     </div>
-    <div style={{...card,background:"#fffbeb",border:"1.5px solid #fde68a"}}>
-      <div style={{fontWeight:700,fontSize:13,color:"#d97706",marginBottom:6}}>💡 Tip</div>
-      <div style={{fontSize:13,color:"#374151",lineHeight:1.7}}>Exam mode uses sample placeholder questions. Use the <b>🎯 Practice</b> tab to generate real AI-powered JEE questions with Gemini — customize by topic, year, difficulty, and question type.</div>
-    </div>
-  </div>);
+  );
 }
 
-function SettingsTab({apiKey,setApiKey}){
-  const[input,setInput]=useState(apiKey);const[saved,setSaved]=useState(false);const[testing,setTesting]=useState(false);const[testResult,setTestResult]=useState("");
-  const save=()=>{const k=input.trim();setApiKey(k);try{localStorage.setItem("jee_gemini_key",k);}catch(e){}setSaved(true);setTestResult("");setTimeout(()=>setSaved(false),2000);};
-  const testKey=async()=>{
-    if(!input.trim()){setTestResult("❌ Enter an API key first");return;}
-    setTesting(true);setTestResult("");
-    const r=await callGemini(input.trim(),[{role:"user",content:"Say: WORKING"}],"Say: WORKING",20);
-    setTesting(false);
-    if(!r.startsWith("❌")){setTestResult("✅ API key is working! Gemini is connected.");}
-    else if(r.includes("RATE_LIMIT")){setTestResult("⏳ Key valid but rate limited. Wait 60s and test again.");}
-    else if(r.includes("BAD_KEY")){setTestResult("❌ Invalid key. Copy fresh from aistudio.google.com/apikey");}
-    else setTestResult("❌ "+r);
+/* ════════════════════════════════════════
+   AI TUTOR TAB
+════════════════════════════════════════ */
+function TutorTab({apiKey}){
+  const[chat,setChat]=useState([{role:"assistant",content:"👋 JEE AI Tutor powered by Gemini!\n\nI can help with:\n• Concept explanations with examples\n• Step-by-step solutions with formulae\n• JEE Mains vs Advanced strategy\n• Formula sheets & memory tricks\n\n💡 Add your Gemini key in ⚙️ Settings to start chatting."}]);
+  const[msg,setMsg]=useState("");
+  const[load,setLoad]=useState(false);
+  const ref=useRef();
+  const QUICK=["Gauss Law — all 3 symmetries","GOC carbocation stability order","Rolling without slipping","King's rule of integration","JEE Advanced strategy 2026","CFT vs VBT comparison","Electrochemistry formula sheet","Rotational motion formulas"];
+  const send=async(m)=>{
+    const t=m||msg;if(!t.trim())return;
+    if(!apiKey){setChat(c=>[...c,{role:"user",content:t},{role:"assistant",content:"NO_KEY"}]);setMsg("");return;}
+    const nc=[...chat,{role:"user",content:t}];
+    setChat(nc);setMsg("");setLoad(true);
+    const r=await callAI(apiKey,nc,"You are an elite JEE tutor. Give detailed responses with clear structure, formulae, and examples. Use plain text formatting.",1500);
+    setChat(c=>[...c,{role:"assistant",content:r}]);
+    setLoad(false);
+    setTimeout(()=>{if(ref.current)ref.current.scrollTo(0,ref.current.scrollHeight);},100);
   };
-  return(<div style={{display:"flex",flexDirection:"column",gap:16}}>
-    <div style={{...card,border:`2px solid #1a73e8`,background:"#f0f7ff"}}>
-      <div style={{display:"flex",gap:12,alignItems:"center",marginBottom:12}}>
-        <div style={{fontSize:36}}>🤖</div>
-        <div><div style={{fontWeight:800,fontSize:16,color:"#1a73e8"}}>Google Gemini API Key</div><div style={{fontSize:12,color:MUTED}}>Powered by Gemini 2.0 Flash</div></div>
+  return(
+    <div style={{display:"flex",flexDirection:"column",gap:10}}>
+      <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
+        {QUICK.map(p=>(
+          <button key={p} onClick={()=>send(p)} style={{fontSize:11,padding:"4px 9px",borderRadius:99,border:`1px solid ${BORDER}`,background:BG2,cursor:"pointer",color:TEXT}}>{p}</button>
+        ))}
       </div>
-      <div style={{fontSize:13,color:"#374151",lineHeight:1.7,marginBottom:14}}>
-        <b>How to get a FREE Gemini API key:</b><br/>
-        1. Go to <a href="https://aistudio.google.com/apikey" target="_blank" style={{color:"#1a73e8",fontWeight:700}}>aistudio.google.com/apikey</a><br/>
-        2. Sign in with your Google account<br/>
-        3. Click <b>"Create API Key"</b><br/>
-        4. Copy the key (starts with <b>AIza...</b>)<br/>
-        5. Paste below and click Save<br/>
-        <br/>
-        ✅ <b>Free tier:</b> 15 requests/min, 1 million tokens/day — more than enough for JEE prep!
-      </div>
-      <div style={{display:"flex",gap:10,marginBottom:10,flexWrap:"wrap"}}>
-        <input value={input} onChange={e=>setInput(e.target.value)} type="password" placeholder="AIza... (your Gemini API key)" style={{...inp,flex:1,minWidth:200,fontFamily:"monospace"}}/>
-        <button onClick={save} style={{...btn(saved?"#059669":"#1a73e8"),flexShrink:0}}>{saved?"✓ Saved!":"💾 Save Key"}</button>
-        <button onClick={testKey} disabled={testing} style={{...btn("#d97706"),flexShrink:0}}>{testing?"⏳ Testing...":"🧪 Test Key"}</button>
-        {apiKey&&<button onClick={()=>{setApiKey("");setInput("");setTestResult("");try{localStorage.removeItem("jee_gemini_key");}catch(e){}}} style={{...btn("#dc2626"),flexShrink:0}}>🗑 Clear</button>}
-      </div>
-      {testResult&&<div style={{fontSize:12,borderRadius:8,padding:10,fontWeight:600,background:testResult.startsWith("✅")?"#ecfdf5":"#fef2f2",color:testResult.startsWith("✅")?"#059669":"#dc2626",border:`1px solid ${testResult.startsWith("✅")?"#a7f3d0":"#fecaca"}`,marginBottom:8}}>{testResult}</div>}
-      <div style={{fontSize:12,borderRadius:8,padding:10,fontWeight:600,background:apiKey?"#ecfdf5":"#f1f5f9",color:apiKey?"#059669":"#64748b",border:`1px solid ${apiKey?"#a7f3d0":BORDER}`}}>
-        {apiKey?"✅ Gemini API key saved — all AI features active.":"ℹ️ No API key yet. Add your key above to enable AI features."}
-      </div>
-    </div>
-    <div style={{...card}}>
-      <div style={{fontWeight:700,fontSize:14,color:TEXT,marginBottom:10}}>📋 Feature Status</div>
-      {[["✅","70-Day Study Planner (Mains + Advanced) with progress tracking"],["✅","Chapter Tracker — separate Mains & Advanced with weightage bars"],["✅","JEE Mains Exam Interface — NTA authentic style, question palette"],["✅","JEE Advanced Exam Interface — Sec A/B/C with proper marking"],["🔑","AI Question Generation (Gemini 2.0 Flash) — needs API key"],["🔑","AI Step-by-Step Solutions & Explanations — needs API key"],["🔑","AI Study Tutor (multi-turn chat) — needs API key"],["🔑","PDF/Image Question Extraction — needs API key"]].map(([ic,f])=><div key={f} style={{fontSize:13,padding:"6px 0",borderBottom:`1px solid ${BG3}`,display:"flex",gap:8,alignItems:"flex-start"}}><span style={{flexShrink:0,color:ic==="✅"?"#059669":"#1a73e8"}}>{ic}</span><span style={{color:TEXT}}>{f}</span></div>)}
-    </div>
-    <div style={{...card,background:"#f0f4ff",border:`1.5px solid #c7d2fe`}}>
-      <div style={{fontWeight:700,fontSize:13,color:"#4f46e5",marginBottom:6}}>🚀 Deploy on GitHub Pages</div>
-      <div style={{fontSize:12,color:"#374151",lineHeight:1.8}}>
-        1. Create a new GitHub repository<br/>
-        2. Upload this <b>index.html</b> file to the repo root<br/>
-        3. Go to <b>Settings → Pages → Source → main branch → / (root) → Save</b><br/>
-        4. Your app will be live at <b>https://yourusername.github.io/repo-name</b><br/>
-        5. Add Gemini API key once deployed via ⚙️ Settings tab
+      <div style={{...card,padding:0,overflow:"hidden"}}>
+        <div ref={ref} style={{height:420,overflowY:"auto",padding:14,display:"flex",flexDirection:"column",gap:9}}>
+          {chat.map((m,i)=>{
+            if(m.role==="assistant"&&(m.content==="NO_KEY"||m.content==="RATE_LIMIT"||m.content==="BAD_KEY"||m.content.startsWith("NET:")))return<div key={i} style={{alignSelf:"flex-start",maxWidth:"90%"}}><AIError r={m.content}/></div>;
+            return(
+              <div key={i} style={{display:"flex",justifyContent:m.role==="user"?"flex-end":"flex-start"}}>
+                <div style={{maxWidth:"85%",padding:"9px 13px",borderRadius:11,fontSize:13,lineHeight:1.7,background:m.role==="user"?"linear-gradient(135deg,#4f46e5,#7c3aed)":"#f8fafc",color:m.role==="user"?"#fff":TEXT,border:m.role==="assistant"?`1px solid ${BORDER}`:"none",whiteSpace:"pre-wrap",wordBreak:"break-word"}}>
+                  {m.role==="assistant"&&<div style={{fontSize:8,fontWeight:800,color:"#1a73e8",marginBottom:3,letterSpacing:2}}>GEMINI TUTOR</div>}
+                  {m.content}
+                </div>
+              </div>
+            );
+          })}
+          {load&&<div style={{alignSelf:"flex-start",padding:"9px 13px",borderRadius:11,background:"#f8fafc",border:`1px solid ${BORDER}`,fontSize:13,color:MUTED}}>⏳ Thinking...</div>}
+        </div>
+        <div style={{borderTop:`1px solid ${BORDER}`,padding:10,display:"flex",gap:7}}>
+          <textarea value={msg} onChange={e=>setMsg(e.target.value)} onKeyDown={e=>e.key==="Enter"&&!e.shiftKey&&(e.preventDefault(),send())} placeholder="Ask any JEE question... (Enter to send)" rows={2} style={{...inp,flex:1,resize:"none",height:46}}/>
+          <button onClick={()=>send()} disabled={load} style={{...btn(),padding:"0 16px",flexShrink:0}}>Send</button>
+        </div>
       </div>
     </div>
-  </div>);
+  );
 }
 
+/* ════════════════════════════════════════
+   EXAM MODE TAB
+════════════════════════════════════════ */
+function ExamTab(){
+  const[mode,setMode]=useState(null);
+  const[paper,setPaper]=useState(1);
+  if(mode==="mains")return<MainsExam onExit={()=>setMode(null)}/>;
+  if(mode==="advanced")return<AdvancedExam paper={paper} onExit={()=>setMode(null)}/>;
+  return(
+    <div style={{display:"flex",flexDirection:"column",gap:14}}>
+      <div style={{...card,border:"2px solid #059669",background:"linear-gradient(135deg,#ecfdf5,#f0fdf4)"}}>
+        <div style={{display:"flex",gap:14,alignItems:"flex-start"}}>
+          <div style={{fontSize:42}}>📝</div>
+          <div style={{flex:1}}>
+            <div style={{fontWeight:800,fontSize:16,color:"#059669",marginBottom:4}}>JEE Mains — Full Mock Exam</div>
+            <div style={{fontSize:13,color:"#374151",lineHeight:1.6,marginBottom:12}}>90 Questions · 3 Hours · Physics + Chemistry + Maths<br/>SCQ +4/−1 · Integer +4/0 · NTA-style interface</div>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:6,marginBottom:14}}>
+              {[["90 Questions","30 per subject"],["3 Hours","Real time"],["Question Palette","Color coded"],["Section Tabs","Phy/Chem/Math"],["Mark for Review","Orange badge"],["Auto Submit","On timer end"]].map(([t,d])=>(
+                <div key={t} style={{background:BG,borderRadius:8,padding:"8px 10px",border:"1px solid #a7f3d0"}}><div style={{fontWeight:700,fontSize:11,color:"#059669"}}>{t}</div><div style={{fontSize:9,color:MUTED}}>{d}</div></div>
+              ))}
+            </div>
+            <button onClick={()=>setMode("mains")} style={{...btn("#059669"),padding:"10px 24px",fontSize:14}}>🚀 Start JEE Mains Mock</button>
+          </div>
+        </div>
+      </div>
+      <div style={{...card,border:"2px solid #4f46e5",background:"linear-gradient(135deg,#eef2ff,#f5f3ff)"}}>
+        <div style={{display:"flex",gap:14,alignItems:"flex-start"}}>
+          <div style={{fontSize:42}}>⚡</div>
+          <div style={{flex:1}}>
+            <div style={{fontWeight:800,fontSize:16,color:"#4f46e5",marginBottom:4}}>JEE Advanced — Full Mock Exam</div>
+            <div style={{fontSize:13,color:"#374151",lineHeight:1.6,marginBottom:12}}>48 Questions · 3 Hours · Paper 1 or 2<br/>Sec A: SCQ +3/−1 · Sec B: MCQ +4/−2 · Sec C: Integer +4/0</div>
+            <div style={{display:"flex",gap:8,alignItems:"center",flexWrap:"wrap"}}>
+              <div style={{display:"flex",gap:3,background:"#eef2ff",padding:3,borderRadius:8}}>
+                {[1,2].map(p=>(
+                  <button key={p} onClick={()=>setPaper(p)} style={{...btn(paper===p?"#4f46e5":"transparent",paper===p?"#fff":MUTED),borderRadius:6,padding:"5px 14px",fontSize:12}}>Paper {p}</button>
+                ))}
+              </div>
+              <button onClick={()=>setMode("advanced")} style={{...btn("#4f46e5"),padding:"10px 24px",fontSize:14}}>⚡ Start Paper {paper}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style={{...card,background:"#fffbeb",border:"1px solid #fde68a",fontSize:13,color:"#374151",lineHeight:1.7}}>
+        💡 Exams use <b>sample placeholder questions</b>. For real AI-generated questions, use the <b>🎯 Practice</b> tab.
+      </div>
+    </div>
+  );
+}
+
+/* ════════════════════════════════════════
+   SETTINGS TAB
+════════════════════════════════════════ */
+function SettingsTab({apiKey,setApiKey}){
+  const[input,setInput]=useState(apiKey);
+  const[saved,setSaved]=useState(false);
+  const[testing,setTesting]=useState(false);
+  const[testRes,setTestRes]=useState("");
+  const save=()=>{
+    const k=input.trim();
+    setApiKey(k);
+    try{localStorage.setItem("jee_gemini_key",k);}catch(e){}
+    setSaved(true);setTimeout(()=>setSaved(false),2000);
+  };
+  const test=async()=>{
+    if(!input.trim()){setTestRes("⚠️ Enter a key first.");return;}
+    setTesting(true);setTestRes("");
+    const r=await callAI(input.trim(),[{role:"user",content:"Reply with the word: WORKING"}],"Reply with the word: WORKING",20);
+    setTesting(false);
+    if(r==="RATE_LIMIT")setTestRes("⏳ Key may be valid but rate limited. Wait 60s and test again.");
+    else if(r==="BAD_KEY")setTestRes("❌ Invalid key. Get a fresh one from aistudio.google.com/apikey");
+    else if(r.startsWith("NET:")||r.startsWith("ERR:"))setTestRes("❌ "+r);
+    else setTestRes("✅ Gemini connected and working!");
+  };
+  const ok=testRes.startsWith("✅"),bad=testRes.startsWith("❌");
+  return(
+    <div style={{display:"flex",flexDirection:"column",gap:14}}>
+      <div style={{...card,border:"2px solid #1a73e8",background:"#f0f7ff"}}>
+        <div style={{display:"flex",gap:10,alignItems:"center",marginBottom:12}}>
+          <div style={{fontSize:34}}>🤖</div>
+          <div>
+            <div style={{fontWeight:800,fontSize:16,color:"#1a73e8"}}>Google Gemini API Key</div>
+            <div style={{fontSize:12,color:MUTED}}>gemini-1.5-flash · Free tier · No billing needed</div>
+          </div>
+        </div>
+        <div style={{fontSize:13,color:"#374151",lineHeight:1.85,marginBottom:14,background:"#e8f0fe",padding:13,borderRadius:10}}>
+          <b>Get your FREE key (takes 30 seconds):</b><br/>
+          1. Open <a href="https://aistudio.google.com/apikey" target="_blank" style={{color:"#1a73e8",fontWeight:700}}>aistudio.google.com/apikey</a><br/>
+          2. Sign in with your Google account<br/>
+          3. Click <b>Create API Key</b> → <b>Create API key in new project</b><br/>
+          4. Copy the key — it starts with <b>AIzaSy...</b><br/>
+          5. Paste it below and click <b>Save</b><br/>
+          <br/>
+          <b>Free limits:</b> 15 requests/min · 1,500 requests/day · 1M tokens/day
+        </div>
+        <div style={{display:"flex",gap:8,marginBottom:10,flexWrap:"wrap"}}>
+          <input value={input} onChange={e=>setInput(e.target.value)} type="password" placeholder="AIzaSy... paste your Gemini API key here" style={{...inp,flex:1,minWidth:200,fontFamily:"monospace",fontSize:12}}/>
+          <button onClick={save} style={{...btn(saved?"#059669":"#1a73e8"),flexShrink:0}}>{saved?"✓ Saved!":"💾 Save Key"}</button>
+          <button onClick={test} disabled={testing} style={{...btn("#d97706"),flexShrink:0}}>{testing?"⏳ Testing...":"🧪 Test Key"}</button>
+          {apiKey&&<button onClick={()=>{setApiKey("");setInput("");setTestRes("");try{localStorage.removeItem("jee_gemini_key");}catch(e){}}} style={{...btn("#dc2626"),flexShrink:0}}>🗑 Clear</button>}
+        </div>
+        {testRes&&<div style={{fontSize:12,padding:10,borderRadius:8,fontWeight:600,background:ok?"#ecfdf5":bad?"#fef2f2":"#fffbeb",color:ok?"#059669":bad?"#dc2626":"#d97706",border:`1px solid ${ok?"#a7f3d0":bad?"#fecaca":"#fde68a"}`,marginBottom:8}}>{testRes}</div>}
+        <div style={{fontSize:12,padding:10,borderRadius:8,fontWeight:600,background:apiKey?"#ecfdf5":"#f1f5f9",color:apiKey?"#059669":"#64748b",border:`1px solid ${apiKey?"#a7f3d0":BORDER}`}}>
+          {apiKey?"✅ API key saved — AI features active.":"ℹ️ No key saved. Add your Gemini key above."}
+        </div>
+      </div>
+      <div style={{...card}}>
+        <div style={{fontWeight:700,fontSize:14,marginBottom:10}}>📋 Features</div>
+        {[["✅","70-Day Study Planner — Phase 1 & 2 with progress tracking"],["✅","Chapter Tracker — Mains & Advanced with weightage bars"],["✅","JEE Mains Exam Interface — NTA style, 90Q, question palette"],["✅","JEE Advanced Exam Interface — Sec A/B/C, proper marking"],["🔑","AI Question Generation — 1 Gemini call per question"],["🔑","Solution shown instantly on submit — 0 extra API calls"],["🔑","Doubt Chat — follow-up questions on any question"],["🔑","AI Tutor — multi-turn study conversation"],["🔑","PDF/Image Extraction — upload JEE papers"]].map(([ic,f])=>(
+          <div key={f} style={{fontSize:13,padding:"6px 0",borderBottom:`1px solid #f1f5f9`,display:"flex",gap:8}}>
+            <span>{ic}</span><span style={{color:TEXT}}>{f}</span>
+          </div>
+        ))}
+      </div>
+      <div style={{...card,background:"#f0f4ff",border:"1.5px solid #c7d2fe",fontSize:13,color:"#374151",lineHeight:1.85}}>
+        <b style={{color:"#4f46e5"}}>🚀 Deploy on GitHub Pages</b><br/>
+        1. Create a GitHub repo → upload this <b>index.html</b> as the only file<br/>
+        2. Settings → Pages → Branch: main → Folder: / (root) → Save<br/>
+        3. Your app goes live at <b>https://yourusername.github.io/reponame</b><br/>
+        4. Add your Gemini key via ⚙️ Settings after deploying
+      </div>
+    </div>
+  );
+}
+
+/* ════════════════════════════════════════
+   MAIN APP
+════════════════════════════════════════ */
 function App(){
   const[tab,setTab]=useState("planner");
-  const[apiKey,setApiKey]=useState(()=>{try{return localStorage.getItem("jee_gemini_key")||"";}catch(e){return"";}});
-  const tabs=[{id:"planner",label:"📅 70-Day Plan"},{id:"tracker",label:"📊 Chapter Tracker"},{id:"practice",label:"🎯 Practice"},{id:"exam",label:"🏛️ Exam Mode"},{id:"tutor",label:"🤖 AI Tutor"},{id:"settings",label:"⚙️ Settings"}];
-  return(<div style={{minHeight:"100vh",background:"#f8fafc",fontFamily:"'Segoe UI',-apple-system,sans-serif",color:TEXT}}>
-    <div style={{background:"linear-gradient(135deg,#1e1b4b 0%,#312e81 50%,#1e1b4b 100%)",borderBottom:"1px solid #4338ca",position:"sticky",top:0,zIndex:100,boxShadow:"0 2px 16px rgba(79,70,229,0.2)"}}>
-      <div style={{maxWidth:1100,margin:"0 auto",padding:"12px 16px 0"}}>
-        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
-          <div>
-            <div style={{color:"#c7d2fe",fontSize:9,fontFamily:"monospace",letterSpacing:3,marginBottom:2}}>JEE 2026 · 70-DAY MASTER PLAN · MAINS + ADVANCED</div>
-            <div style={{fontSize:18,fontWeight:900,background:"linear-gradient(120deg,#10b981,#a5b4fc,#fbbf24)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>JEE Ultimate Study System</div>
+  const[apiKey,setApiKey]=useState(()=>{try{return localStorage.getItem("jee_gemini_key")||"";}catch(e){return "";}});
+  const TABS=[["planner","📅 Plan"],["tracker","📊 Tracker"],["practice","🎯 Practice"],["exam","🏛️ Exam"],["tutor","🤖 Tutor"],["settings","⚙️ Settings"]];
+  return(
+    <div style={{minHeight:"100vh",background:"#f8fafc"}}>
+      <div style={{background:"linear-gradient(135deg,#1e1b4b,#312e81)",position:"sticky",top:0,zIndex:100,boxShadow:"0 2px 12px rgba(79,70,229,0.2)"}}>
+        <div style={{maxWidth:1080,margin:"0 auto",padding:"10px 14px 0"}}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
+            <div>
+              <div style={{color:"#c7d2fe",fontSize:8,letterSpacing:3,marginBottom:1}}>JEE 2026 · 70-DAY · MAINS + ADVANCED</div>
+              <div style={{fontSize:17,fontWeight:900,background:"linear-gradient(120deg,#10b981,#a5b4fc,#fbbf24)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>JEE Ultimate Study System</div>
+            </div>
+            <div style={{display:"flex",gap:5,alignItems:"center"}}>
+              <span style={{background:"#1a73e8",color:"#fff",fontSize:9,fontWeight:700,padding:"3px 8px",borderRadius:99}}>Gemini AI</span>
+              {apiKey
+                ?<span style={{background:"#059669",color:"#fff",fontSize:9,fontWeight:700,padding:"3px 8px",borderRadius:99}}>✅ AI Active</span>
+                :<span onClick={()=>setTab("settings")} style={{background:"#fef3c7",color:"#d97706",fontSize:9,fontWeight:700,padding:"3px 8px",borderRadius:99,cursor:"pointer",border:"1px solid #fde68a"}}>🔑 Add Key</span>
+              }
+            </div>
           </div>
-          <div style={{display:"flex",gap:6,alignItems:"center"}}>
-            <span style={{background:"#1a73e8",color:"#fff",fontSize:9,fontWeight:700,padding:"4px 10px",borderRadius:99}}>Gemini AI</span>
-            {apiKey
-              ?<span style={{background:"#059669",color:"#fff",fontSize:9,fontWeight:700,padding:"4px 10px",borderRadius:99}}>✅ AI Active</span>
-              :<span onClick={()=>setTab("settings")} style={{background:"#fef3c7",color:"#d97706",fontSize:9,fontWeight:700,padding:"4px 10px",borderRadius:99,cursor:"pointer",border:"1px solid #fde68a"}}>🔑 Add Gemini Key</span>}
+          <div style={{display:"flex",gap:1,overflowX:"auto"}}>
+            {TABS.map(([id,label])=>(
+              <button key={id} onClick={()=>setTab(id)} style={{padding:"8px 13px",background:tab===id?"#fff":"transparent",color:tab===id?"#1e1b4b":"#c7d2fe",border:"none",borderRadius:"8px 8px 0 0",cursor:"pointer",fontWeight:700,fontSize:12,whiteSpace:"nowrap",flexShrink:0}}>
+                {label}
+              </button>
+            ))}
           </div>
-        </div>
-        <div style={{display:"flex",gap:1,overflowX:"auto"}}>
-          {tabs.map(t=><button key={t.id} onClick={()=>setTab(t.id)} style={{padding:"9px 14px",background:tab===t.id?"#fff":"transparent",color:tab===t.id?"#1e1b4b":"#c7d2fe",border:"none",borderRadius:"9px 9px 0 0",cursor:"pointer",fontWeight:700,fontSize:12,whiteSpace:"nowrap",flexShrink:0,transition:"all 0.15s"}}>{t.label}</button>)}
         </div>
       </div>
+      <div style={{maxWidth:1080,margin:"0 auto",padding:"18px 12px"}}>
+        {tab==="planner"&&<PlannerTab/>}
+        {tab==="tracker"&&<TrackerTab/>}
+        {tab==="practice"&&<PracticeTab apiKey={apiKey}/>}
+        {tab==="exam"&&<ExamTab/>}
+        {tab==="tutor"&&<TutorTab apiKey={apiKey}/>}
+        {tab==="settings"&&<SettingsTab apiKey={apiKey} setApiKey={setApiKey}/>}
+      </div>
     </div>
-    <div style={{maxWidth:1100,margin:"0 auto",padding:"20px 14px"}}>
-      {tab==="planner"&&<PlannerTab/>}
-      {tab==="tracker"&&<TrackerTab/>}
-      {tab==="practice"&&<PracticeTab apiKey={apiKey}/>}
-      {tab==="exam"&&<ExamTab/>}
-      {tab==="tutor"&&<TutorTab apiKey={apiKey}/>}
-      {tab==="settings"&&<SettingsTab apiKey={apiKey} setApiKey={setApiKey}/>}
-    </div>
-  </div>);
+  );
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(<App/>);

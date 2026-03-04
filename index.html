@@ -197,14 +197,19 @@ const PLAN=build70();
 
 /* ── API ── */
 async function callClaude(apiKey,messages,sys="You are an expert JEE tutor.",maxTokens=1000){
-  const headers={"Content-Type":"application/json","anthropic-version":"2023-06-01"};
-  if(apiKey){headers["x-api-key"]=apiKey;headers["anthropic-dangerous-direct-browser-access"]="true";}
+  if(!apiKey) return "❌ NO_API_KEY";
+  const headers={
+    "Content-Type":"application/json",
+    "anthropic-version":"2023-06-01",
+    "x-api-key":apiKey.trim(),
+    "anthropic-dangerous-direct-browser-access":"true"
+  };
   try{
     const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers,body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:maxTokens,system:sys,messages})});
     const d=await r.json();
-    if(d.error)return"❌ "+d.error.message;
+    if(d.error) return "❌ "+d.error.message;
     return d.content?.filter(c=>c.type==="text").map(c=>c.text).join("")||"No response";
-  }catch(e){return"❌ Network error: "+e.message;}
+  }catch(e){return "❌ Network error: "+e.message;}
 }
 
 /* ── TIMER ── */
@@ -471,8 +476,18 @@ function PracticeTab({apiKey}){
     const t=topic||chapters[Math.floor(Math.random()*chapters.length)].ch;
     const cNote=concept==="dual"?"DUAL-CONCEPT: two linked topics.":concept==="multi"?"MULTI-CONCEPT: 3+ topics.":"Single concept.";
     const prompt=`Generate a ${exam==="advanced"?"JEE Advanced":"JEE Mains"} ${year} style ${diff} ${qType} question on ${subj}: ${t}.\n${cNote}\nReturn ONLY valid JSON:\n{"question":"text","options":["A) ...","B) ...","C) ...","D) ..."],"correct":"A","topic":"${t}","difficulty":"${diff}","hint":"one line hint"}`;
-    try{const r=await callClaude(apiKey,[{role:"user",content:prompt}],"Generate JEE questions. Return ONLY valid JSON, no markdown.",1000);setQ(JSON.parse(r.replace(/```json|```/g,"").trim()));}
-    catch(e){setQ({question:"Failed to generate. Check your API key in ⚙️ Settings.\n\n"+e.message,options:[],correct:"",topic:t,difficulty:diff,hint:""});}
+    try{
+      const r=await callClaude(apiKey,[{role:"user",content:prompt}],"Generate JEE questions. Return ONLY valid JSON. No markdown, no explanation, no text before or after the JSON object.",1000);
+      if(!r||r.startsWith("❌")){
+        const isNoKey=r&&r.includes("NO_API_KEY");
+        setQ({question:isNoKey?"⚠️ No API key set.\n\nGo to ⚙️ Settings tab → paste your Anthropic API key → click Save Key.\n\nGet a free key at: console.anthropic.com":"⚠️ API Error: "+r+"\n\nCheck your key in ⚙️ Settings. It should start with 'sk-ant-'",options:[],correct:"",topic:t,difficulty:diff,hint:""});
+      } else {
+        const clean=r.replace(/```json|```/g,"").trim();
+        const parsed=JSON.parse(clean);
+        setQ(parsed);
+      }
+    }
+    catch(e){setQ({question:"Parse error. The AI returned an unexpected format. Try again.\n\n"+e.message,options:[],correct:"",topic:t,difficulty:diff,hint:""});}
     setLoad(false);
   };
 
@@ -497,8 +512,7 @@ function PracticeTab({apiKey}){
     setPdfLoad(true);setPdfRes("");
     try{
       const b64=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(",")[1]);r.onerror=rej;r.readAsDataURL(file);});
-      const headers={"Content-Type":"application/json","anthropic-version":"2023-06-01"};
-      if(apiKey){headers["x-api-key"]=apiKey;headers["anthropic-dangerous-direct-browser-access"]="true";}
+      const headers={"Content-Type":"application/json","anthropic-version":"2023-06-01","x-api-key":apiKey.trim(),"anthropic-dangerous-direct-browser-access":"true"};
       const resp=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers,body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:2000,messages:[{role:"user",content:[{type:"document",source:{type:"base64",media_type:"application/pdf",data:b64}},{type:"text",text:"Extract ALL questions from this JEE PDF. List each question with: number, full text, options A/B/C/D, correct answer if visible, subject, topic, type (SCQ/MCQ/Integer)."}]}]})});
       const data=await resp.json();setPdfRes(data.content?.filter(c=>c.type==="text").map(c=>c.text).join("")||"No content extracted.");
     }catch(err){setPdfRes("Error: "+err.message);}

@@ -34,47 +34,96 @@ const pill=(col)=>({fontSize:10,fontWeight:800,padding:"2px 9px",borderRadius:99
 /* ═══════════════════════════════════
    GEMINI API
 ═══════════════════════════════════ */
-async function callGemini(apiKey, messages, sys="You are an expert JEE tutor.", maxTokens=1000){
-  if(!apiKey || !apiKey.trim()) return "❌ NO_API_KEY";
-  const key = apiKey.trim();
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`;
-  // Convert {role,content} → gemini {role,parts}
-  const contents = messages.map(m=>({
-    role: m.role==="assistant" ? "model" : "user",
-    parts: [{ text: typeof m.content === "string" ? m.content : JSON.stringify(m.content) }]
-  }));
-  const body = {
-    systemInstruction: { parts:[{ text: sys }] },
-    contents,
-    generationConfig: { maxOutputTokens: maxTokens, temperature: 0.7 }
-  };
-  try{
-    const r = await fetch(url, { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(body) });
-    const d = await r.json();
-    if(d.error) return "❌ "+d.error.message;
-    const text = d.candidates?.[0]?.content?.parts?.map(p=>p.text||"").join("") || "";
-    return text || "❌ No response from Gemini";
-  } catch(e){ return "❌ Network error: "+e.message; }
+const GEMINI_MODEL = "gemini-1.5-flash";
+
+function parseGeminiError(d){
+  if(!d.error) return null;
+  const msg = (d.error.message||"").toLowerCase();
+  const code = d.error.code||0;
+  if(code===429||msg.includes("quota")||msg.includes("rate")||msg.includes("limit")||msg.includes("exceeded")){
+    return "RATE_LIMIT";
+  }
+  if((code===400||code===401||code===403)&&(msg.includes("api key")||msg.includes("invalid")||msg.includes("apikey"))){
+    return "BAD_KEY";
+  }
+  return "ERR:"+d.error.message;
 }
 
-// PDF/image with Gemini inline base64
-async function callGeminiWithPDF(apiKey, b64, mimeType, prompt){
-  if(!apiKey || !apiKey.trim()) return "❌ NO_API_KEY";
+async function callGemini(apiKey, messages, sys, maxTokens){
+  sys = sys||"You are an expert JEE tutor.";
+  maxTokens = maxTokens||1000;
+  if(!apiKey||!apiKey.trim()) return "❌ NO_API_KEY";
   const key = apiKey.trim();
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`;
-  const body = {
-    contents:[{ parts:[
-      { inline_data:{ mime_type:mimeType, data:b64 } },
-      { text: prompt }
-    ]}]
-  };
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${key}`;
+  // Convert to Gemini format, deduplicate consecutive same roles
+  const raw = messages.map(m=>({
+    role: m.role==="assistant"?"model":"user",
+    parts:[{text: typeof m.content==="string"?m.content:JSON.stringify(m.content)}]
+  }));
+  const contents=[];
+  for(const m of raw){
+    if(contents.length&&contents[contents.length-1].role===m.role){
+      contents[contents.length-1].parts[0].text+="\n"+m.parts[0].text;
+    } else { contents.push(m); }
+  }
+  if(contents.length&&contents[0].role==="model") contents.shift();
+  if(!contents.length) contents.push({role:"user",parts:[{text:"Hello"}]});
+  const body={systemInstruction:{parts:[{text:sys}]},contents,generationConfig:{maxOutputTokens:maxTokens,temperature:0.7}};
   try{
-    const r = await fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
-    const d = await r.json();
-    if(d.error) return "❌ "+d.error.message;
-    return d.candidates?.[0]?.content?.parts?.map(p=>p.text||"").join("")||"No content extracted.";
-  } catch(e){ return "❌ "+e.message; }
+    const r=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+    const d=await r.json();
+    const err=parseGeminiError(d);
+    if(err) return "❌ "+err;
+    const text=d.candidates?.[0]?.content?.parts?.map(p=>p.text||"").join("")||"";
+    if(!text) return "❌ Empty response. Try again.";
+    return text;
+  }catch(e){return "❌ Network:"+e.message;}
 }
+
+async function callGeminiWithPDF(apiKey, b64, mimeType, prompt){
+  if(!apiKey||!apiKey.trim()) return "❌ NO_API_KEY";
+  const key=apiKey.trim();
+  const url=`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${key}`;
+  const body={contents:[{parts:[{inline_data:{mime_type:mimeType,data:b64}},{text:prompt}]}]};
+  try{
+    const r=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+    const d=await r.json();
+    const err=parseGeminiError(d);
+    if(err) return "❌ "+err;
+    return d.candidates?.[0]?.content?.parts?.map(p=>p.text||"").join("")||"No content extracted.";
+  }catch(e){return "❌ "+e.message;}
+}
+
+function GeminiError({msg}){
+  const isRateLimit=msg.includes("RATE_LIMIT");
+  const isBadKey=msg.includes("BAD_KEY");
+  const isNoKey=msg.includes("NO_API_KEY");
+  if(isNoKey) return(
+    <div style={{background:"#fef3c7",border:"1.5px solid #fde68a",borderRadius:10,padding:14,fontSize:13,color:"#92400e"}}>
+      <b>⚠️ No API Key</b><br/>Go to <b>⚙️ Settings</b> tab → paste your Gemini API key → Save.
+    </div>
+  );
+  if(isRateLimit) return(
+    <div style={{background:"#fef3c7",border:"1.5px solid #fde68a",borderRadius:10,padding:14,fontSize:13,color:"#92400e"}}>
+      <b>⏳ Rate Limit Hit</b> — Free tier: 15 requests/minute<br/>
+      <b>Wait 60 seconds</b> then try again. This is a Gemini free tier restriction, not an app error.
+    </div>
+  );
+  if(isBadKey) return(
+    <div style={{background:"#fef2f2",border:"1.5px solid #fecaca",borderRadius:10,padding:14,fontSize:13,color:"#991b1b"}}>
+      <b>❌ Invalid API Key</b><br/>
+      • Make sure you copied the <b>full key</b> from <a href="https://aistudio.google.com/apikey" target="_blank" style={{color:"#4f46e5"}}>aistudio.google.com/apikey</a><br/>
+      • The key should start with <b>AIza</b><br/>
+      • Go to ⚙️ Settings → paste fresh key → Save → Test Key
+    </div>
+  );
+  return(
+    <div style={{background:"#fef2f2",border:"1.5px solid #fecaca",borderRadius:10,padding:14,fontSize:13,color:"#991b1b"}}>
+      <b>❌ Error:</b> {msg}
+    </div>
+  );
+}
+
 
 /* ═══════════════════════════════════
    CHAPTER DATA
@@ -484,8 +533,7 @@ function PracticeTab({apiKey}){
     const prompt=`Generate a ${exam==="advanced"?"JEE Advanced":"JEE Mains"} ${year} style ${diff} ${qType} question on ${subj} topic: "${t}".\n${cNote}\nReturn ONLY a valid JSON object (no markdown, no explanation, no text outside JSON):\n{"question":"full question text here","options":["A) option1","B) option2","C) option3","D) option4"],"correct":"A","topic":"${t}","difficulty":"${diff}","hint":"one line hint"}`;
     const r=await callGemini(apiKey,[{role:"user",content:prompt}],"You are a JEE expert. Generate accurate JEE questions. Return ONLY valid JSON, nothing else.",1000);
     if(r.startsWith("❌")){
-      const isNoKey=r.includes("NO_API_KEY");
-      setQ({question:isNoKey?"⚠️ No API key set.\n\nGo to ⚙️ Settings → paste your Gemini API key → Save Key.\n\nGet a free key at: aistudio.google.com":"⚠️ "+r,options:[],correct:"",topic:t,difficulty:diff,hint:""});
+      setQ({question:r, options:[], correct:"", topic:t, difficulty:diff, hint:"", isError:true});
     } else {
       try{
         const clean=r.replace(/```json|```/g,"").replace(/^[^{]*/,"").replace(/[^}]*$/,"").trim();
@@ -542,7 +590,8 @@ function PracticeTab({apiKey}){
       </div>
       <button onClick={genQ} disabled={load} style={{...btn("linear-gradient(135deg,#4f46e5,#7c3aed)"),width:"100%",padding:12,fontSize:14,opacity:load?0.7:1}}>{load?"⏳ Generating with Gemini AI...":"🎯 Generate Question"}</button>
     </div>
-    {q&&(<div style={{...card}}>
+    {q&&q.isError&&<GeminiError msg={q.question}/>}
+    {q&&!q.isError&&(<div style={{...card}}>
       <div style={{display:"flex",flexWrap:"wrap",gap:5,marginBottom:12}}>
         {[[subj,DATA[subj].color],[q.topic||"",MUTED],[diff,"#d97706"],[`${exam==="advanced"?"⚡ Adv":"📝 Mains"} ${year}`,exam==="advanced"?"#4f46e5":"#059669"],["Gemini AI","#1a73e8"]].filter(x=>x[0]).map(([t,c])=><span key={t} style={{...pill(c)}}>{t}</span>)}
       </div>
@@ -559,7 +608,7 @@ function PracticeTab({apiKey}){
       {submitted&&<button onClick={genQ} style={{...btn("linear-gradient(135deg,#4f46e5,#7c3aed)"),width:"100%",marginTop:10}}>⚡ Next Question</button>}
       {q.hint&&!submitted&&<div style={{marginTop:8,background:"#fffbeb",borderRadius:8,padding:10,fontSize:12,color:"#d97706",border:"1px solid #fde68a"}}>💡 Hint: {q.hint}</div>}
     </div>)}
-    {q&&(<div style={{...card,border:`1.5px solid #c7d2fe`}}>
+    {q&&!q.isError&&(<div style={{...card,border:`1.5px solid #c7d2fe`}}>
       <div style={{fontWeight:700,fontSize:13,color:TEXT,marginBottom:8}}>💬 Ask a Doubt (Gemini AI)</div>
       <div style={{maxHeight:150,overflowY:"auto",display:"flex",flexDirection:"column",gap:6,marginBottom:8}}>
         {chat.map((m,i)=><div key={i} style={{alignSelf:m.role==="user"?"flex-end":"flex-start",maxWidth:"80%",background:m.role==="user"?"linear-gradient(135deg,#4f46e5,#7c3aed)":"#f8fafc",color:m.role==="user"?"#fff":TEXT,borderRadius:9,padding:"8px 12px",fontSize:12,border:m.role==="assistant"?`1px solid ${BORDER}`:"none"}}>{m.content}</div>)}
@@ -656,9 +705,11 @@ function SettingsTab({apiKey,setApiKey}){
   const testKey=async()=>{
     if(!input.trim()){setTestResult("❌ Enter an API key first");return;}
     setTesting(true);setTestResult("");
-    const r=await callGemini(input.trim(),[{role:"user",content:"Reply with exactly: JEE_OK"}],"Reply with exactly: JEE_OK",50);
+    const r=await callGemini(input.trim(),[{role:"user",content:"Say: WORKING"}],"Say: WORKING",20);
     setTesting(false);
-    if(r.includes("JEE_OK")||!r.startsWith("❌"))setTestResult("✅ API key is working!");
+    if(!r.startsWith("❌")){setTestResult("✅ API key is working! Gemini is connected.");}
+    else if(r.includes("RATE_LIMIT")){setTestResult("⏳ Key valid but rate limited. Wait 60s and test again.");}
+    else if(r.includes("BAD_KEY")){setTestResult("❌ Invalid key. Copy fresh from aistudio.google.com/apikey");}
     else setTestResult("❌ "+r);
   };
   return(<div style={{display:"flex",flexDirection:"column",gap:16}}>

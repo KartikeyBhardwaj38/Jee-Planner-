@@ -584,11 +584,11 @@ function useTimer(total,onEnd){
 ═══════════════════════════════════════════ */
 function LoginPage({onLogin}){
   const[user,setUser]=useState("");const[pass,setPass]=useState("");const[err,setErr]=useState("");const[show,setShow]=useState(false);
-  const DEFAULT_PASS="JEE2026";
+  const DEFAULT_PASS="DEVASENA";
   const doLogin=()=>{
     if(!user.trim()){setErr("Please enter your name.");return;}
     const saved=localStorage.getItem("jee_password")||DEFAULT_PASS;
-    if(pass!==saved){setErr("Wrong password. Default is: JEE2026");return;}
+    if(pass!==saved){setErr("Wrong password. Default is: DEVASENA");return;}
     localStorage.setItem("jee_user",user.trim());
     onLogin(user.trim());
   };
@@ -831,6 +831,22 @@ function PlannerTab(){
   const shown=PLAN.filter(d=>view==="all"||(view==="p1"&&d.phase===1)||(view==="p2"&&d.phase===2));
   const dc=Object.values(done).filter(Boolean).length;const pct=Math.round(dc/70*100);
   const SC={P:"var(--blue)",M:"var(--gold)"};
+
+  // 29-day milestone analysis
+  const day29done=Object.entries(done).filter(([k,v])=>v&&parseInt(k)<=29).length;
+  const day29chemCovered=29;
+  const day29phyCovered=15;
+  const day29mathCovered=14;
+  const totalDay29Chs=day29chemCovered+day29phyCovered+day29mathCovered;
+
+  // Project completion
+  const projections=[
+    {label:"After Day 29",day:29,desc:"Mains Phase complete",chemCh:29,phyCh:15,mathCh:14,total:58,badge:"Mains Ready",color:"var(--green)"},
+    {label:"After Day 39",day:39,desc:"Advanced Chem done",chemCh:39,phyCh:19,mathCh:18,total:76,badge:"Adv Chem+",color:"var(--blue)"},
+    {label:"After Day 47",day:47,desc:"All chapters covered",chemCh:39,phyCh:23,mathCh:22,total:84,badge:"Full Syllabus",color:"var(--gold)"},
+    {label:"After Day 70",day:70,desc:"8 Mocks + Revision",chemCh:39,phyCh:23,mathCh:22,total:84,badge:"Exam Ready 🎯",color:"var(--orange)"},
+  ];
+
   return(
     <div style={{display:"flex",flexDirection:"column",gap:18}}>
       <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10}}>
@@ -850,6 +866,40 @@ function PlannerTab(){
           <div className="prog-fill prog-rainbow" style={{width:`${pct}%`}}/>
         </div>
       </div>
+
+      {/* 29-DAY MILESTONE CARD */}
+      <div style={{background:"linear-gradient(135deg,rgba(74,222,128,0.07),rgba(91,156,246,0.05))",border:"1px solid rgba(74,222,128,0.2)",borderRadius:16,padding:18}}>
+        <div style={{fontFamily:"var(--font-display)",fontSize:16,fontWeight:700,color:"var(--green)",marginBottom:12}}>🎯 Chapter Completion Projections — Day-wise Milestones</div>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:8,marginBottom:14}}>
+          {projections.map((p,i)=>{
+            const isDone=dc>=p.day;
+            return(
+              <div key={i} style={{padding:"12px 14px",borderRadius:12,background:isDone?"rgba(74,222,128,0.08)":"var(--bg2)",border:`1px solid ${isDone?"rgba(74,222,128,0.3)":"var(--border)"}`,transition:"all 0.3s"}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:6}}>
+                  <div>
+                    <div style={{fontSize:13,fontWeight:700,color:isDone?"var(--green)":p.color}}>{p.label}</div>
+                    <div style={{fontSize:11,color:"var(--muted)"}}>{p.desc}</div>
+                  </div>
+                  <span style={{fontSize:10,padding:"3px 8px",borderRadius:99,background:p.color+"15",color:p.color,border:`1px solid ${p.color}30`,fontWeight:700,whiteSpace:"nowrap"}}>{p.badge}</span>
+                </div>
+                <div style={{display:"flex",gap:8,marginTop:4,flexWrap:"wrap"}}>
+                  <span style={{fontSize:11,padding:"2px 7px",borderRadius:99,background:"rgba(74,222,128,0.1)",color:"var(--green)",border:"1px solid rgba(74,222,128,0.2)"}}>🧪 Chem: {p.chemCh}</span>
+                  <span style={{fontSize:11,padding:"2px 7px",borderRadius:99,background:"rgba(91,156,246,0.1)",color:"var(--blue)",border:"1px solid rgba(91,156,246,0.2)"}}>⚛️ Phy: {p.phyCh}</span>
+                  <span style={{fontSize:11,padding:"2px 7px",borderRadius:99,background:"rgba(217,119,6,0.1)",color:"var(--orange)",border:"1px solid rgba(217,119,6,0.2)"}}>📐 Math: {p.mathCh}</span>
+                </div>
+                <div style={{marginTop:8,fontSize:12,fontWeight:700,color:p.color}}>Total: {p.total} chapters covered</div>
+                <div className="prog-track" style={{height:4,marginTop:6}}>
+                  <div className="prog-fill" style={{width:`${Math.min(dc/p.day*100,100)}%`,background:p.color,transition:"width 0.5s"}}/>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        <div style={{background:"rgba(201,168,76,0.07)",border:"1px solid rgba(201,168,76,0.2)",borderRadius:10,padding:"10px 14px",fontSize:13,color:"var(--text)",lineHeight:1.7}}>
+          <b style={{color:"var(--gold)"}}>📌 Phase 1 (Days 1–29) Strategy:</b> Chemistry daily (all 29 chapters, PYQ-ordered) · Physics on Odd days (15 chapters) · Maths on Even days (14 chapters). After Day 29 → <b style={{color:"var(--green)"}}>58 chapters</b> complete, covering ~<b style={{color:"var(--gold)"}}>78% of JEE Mains</b> syllabus weightage. Each day is <b>independent</b> — you can start on any day and adjust the sequence.
+        </div>
+      </div>
+
       <div style={{display:"flex",gap:6}}>
         {[["p1","📅 Phase 1 (Days 1-29)"],["p2","🚀 Phase 2 (Days 30-70)"],["all","🗓 All 70 Days"]].map(([v,l])=>(
           <button key={v} onClick={()=>setView(v)} className={`btn ${view===v?"btn-gold":"btn-glass"}`} style={{fontSize:13}}>{l}</button>
@@ -947,26 +997,39 @@ function TrackerTab(){
         <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(290px,1fr))",gap:8}}>
           {chs.map((ch,i)=>{
             const isDone=done[mode][ch.ch];
+            const noteText=NOTES[subj]&&NOTES[subj][ch.ch];
+            const[showNote,setShowNote]=useState(false);
             return(
-              <div key={i} onClick={()=>toggle(ch.ch)} style={{display:"flex",gap:10,alignItems:"center",padding:"12px 14px",borderRadius:12,background:isDone?C+"0e":"var(--bg2)",border:`1.5px solid ${isDone?C+"40":"var(--border)"}`,cursor:"pointer",transition:"all 0.2s"}}>
-                <div style={{width:22,height:22,borderRadius:6,border:`2px solid ${isDone?C:"var(--border2)"}`,background:isDone?C:"transparent",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"all 0.2s"}}>
-                  {isDone&&<span style={{color:"#000",fontSize:12,fontWeight:900}}>✓</span>}
-                </div>
-                <div style={{flex:1}}>
-                  <div style={{fontSize:14,color:isDone?C:"var(--text)",fontWeight:isDone?600:400,lineHeight:1.35}}>{ch.ch}</div>
-                  <div style={{fontSize:11,color:"var(--muted)",marginTop:2,display:"flex",gap:6,flexWrap:"wrap"}}>
-                    <span>{ch.tag}</span>
-                    {ch.pct&&<span style={{color:C,fontFamily:"var(--font-mono)",fontWeight:600}}>{ch.pct}</span>}
-                    {ch.mo&&<span className="pill pill-muted" style={{fontSize:9}}>Mains Only</span>}
-                    {ch.ao&&<span className="pill pill-purple" style={{fontSize:9}}>Adv Only</span>}
+              <div key={i} style={{display:"flex",flexDirection:"column",borderRadius:12,background:isDone?C+"0e":"var(--bg2)",border:`1.5px solid ${isDone?C+"40":"var(--border)"}`,transition:"all 0.2s"}}>
+                <div onClick={()=>toggle(ch.ch)} style={{display:"flex",gap:10,alignItems:"center",padding:"12px 14px",cursor:"pointer"}}>
+                  <div style={{width:22,height:22,borderRadius:6,border:`2px solid ${isDone?C:"var(--border2)"}`,background:isDone?C:"transparent",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"all 0.2s"}}>
+                    {isDone&&<span style={{color:"#000",fontSize:12,fontWeight:900}}>✓</span>}
+                  </div>
+                  <div style={{flex:1}}>
+                    <div style={{fontSize:14,color:isDone?C:"var(--text)",fontWeight:isDone?600:400,lineHeight:1.35}}>{ch.ch}</div>
+                    <div style={{fontSize:11,color:"var(--muted)",marginTop:2,display:"flex",gap:6,flexWrap:"wrap"}}>
+                      <span>{ch.tag}</span>
+                      {ch.pct&&<span style={{color:C,fontFamily:"var(--font-mono)",fontWeight:600}}>{ch.pct}</span>}
+                      {ch.mo&&<span className="pill pill-muted" style={{fontSize:9}}>Mains Only</span>}
+                      {ch.ao&&<span className="pill pill-purple" style={{fontSize:9}}>Adv Only</span>}
+                    </div>
+                  </div>
+                  <div style={{textAlign:"right",flexShrink:0,display:"flex",flexDirection:"column",alignItems:"flex-end",gap:4}}>
+                    <div style={{fontFamily:"var(--font-mono)",fontSize:13,fontWeight:700,color:isDone?C:"var(--muted)"}}>{ch.wt}/10</div>
+                    <div className="prog-track" style={{width:36,height:4}}>
+                      <div className="prog-fill" style={{width:`${ch.wt*10}%`,background:isDone?C:"var(--border2)"}}/>
+                    </div>
+                    {noteText&&<button onClick={e=>{e.stopPropagation();setShowNote(s=>!s);}} style={{background:"none",border:"none",cursor:"pointer",fontSize:11,color:showNote?"var(--gold)":"var(--muted)",padding:"2px 4px",borderRadius:4}}>📝 Notes</button>}
                   </div>
                 </div>
-                <div style={{textAlign:"right",flexShrink:0}}>
-                  <div style={{fontFamily:"var(--font-mono)",fontSize:13,fontWeight:700,color:isDone?C:"var(--muted)"}}>{ch.wt}/10</div>
-                  <div className="prog-track" style={{width:36,height:4,marginTop:3}}>
-                    <div className="prog-fill" style={{width:`${ch.wt*10}%`,background:isDone?C:"var(--border2)"}}/>
+                {showNote&&noteText&&(
+                  <div style={{padding:"0 14px 12px"}}>
+                    <div style={{padding:"10px 12px",borderRadius:10,background:"rgba(201,168,76,0.06)",border:"1px solid rgba(201,168,76,0.2)",fontSize:12,color:"var(--text)",lineHeight:1.8}}>
+                      <div style={{fontSize:10,color:"var(--gold)",fontWeight:700,marginBottom:4,letterSpacing:1}}>📝 QUICK REVISION NOTES</div>
+                      {noteText}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             );
           })}
@@ -1378,7 +1441,7 @@ function SettingsTab({apiKey,setApiKey,userName}){
         <input value={newPass} onChange={e=>setNewPass(e.target.value)} type="password" placeholder="New password (min 4 chars)" className="inp" style={{flex:1,minWidth:200}}/>
         <button onClick={savePass} className={`btn ${passSaved?"btn-green":"btn-gold"}`}>{passSaved?"✓ Saved!":"💾 Change Password"}</button>
       </div>
-      <div style={{fontSize:12,color:"var(--muted)",marginTop:8}}>Default password is <span style={{fontFamily:"var(--font-mono)",color:"var(--gold)"}}>JEE2026</span></div>
+      <div style={{fontSize:12,color:"var(--muted)",marginTop:8}}>Default password is <span style={{fontFamily:"var(--font-mono)",color:"var(--gold)"}}>DEVASENA</span></div>
     </div>
     <div className="card">
       <div style={{fontFamily:"var(--font-display)",fontSize:17,fontWeight:700,marginBottom:14}}>📋 All Features</div>
@@ -1398,6 +1461,401 @@ function SettingsTab({apiKey,setApiKey,userName}){
       4. Set Gemini key via ⚙️ Settings on any device
     </div>
   </div>);}
+
+/* ═══════════════════════════════════════════
+   SHORT NOTES FOR EACH CHAPTER
+═══════════════════════════════════════════ */
+const NOTES={
+  Physics:{
+    "Current Electricity":"Ohm's Law (V=IR), Kirchhoff's KVL/KCL, Wheatstone Bridge (balanced: P/Q=R/S), Potentiometer > voltmeter, Meter bridge, Power P=V²/R=I²R. Internal resistance: ε=I(R+r). RC charging: q=CV(1-e^(-t/RC)). KEY: 2-3 Qs guaranteed every year!",
+    "Ray Optics & Optical Instruments":"Mirror formula 1/v+1/u=1/f, Lens maker's: 1/f=(n-1)(1/R1-1/R2), Snell's law: n1sinθ1=n2sinθ2, TIR (sinC=1/n), Prism: δmin when r1=r2. Microscope M=L/fo × D/fe. Telescope M=fo/fe.",
+    "Semiconductor Electronics & Logic Gates":"n-type (donor), p-type (acceptor). p-n junction: forward/reverse bias. Half/full wave rectifier. Zener for voltage regulation. BJT (CE config). Logic gates: AND, OR, NOT, NAND (universal), NOR (universal). Boolean laws. Mains Only.",
+    "Rotational Motion & MOI":"τ=Iα, L=Iω, I=Σmr². Parallel axis: I=Icm+Md². Perpendicular axis (lamina): Iz=Ix+Iy. Rolling: KE=½mv²(1+k²/R²). Angular momentum conservation when τext=0. Torque = r×F.",
+    "Gravitation":"F=Gm1m2/r², g=GM/R², g at height h: g'=g(1-2h/R), g at depth d: g'=g(1-d/R). Orbital velocity vo=√(GM/r), Escape velocity ve=√(2GM/R)=√2·vo at surface. Time period T∝r^(3/2) (Kepler III).",
+    "Electrostatic Potential & Capacitance":"V=kq/r, E=-dV/dr. Equipotential surfaces ⊥ field. Capacitor C=Q/V, parallel plate C=ε0A/d. Series: 1/C=Σ1/Ci, Parallel: C=ΣCi. Energy U=½CV²=Q²/2C. Dielectric: C'=kC.",
+    "Dual Nature of Radiation & Matter":"Photoelectric effect: KE=hf-φ (Einstein). Threshold freq f0=φ/h. de Broglie: λ=h/mv=h/p. λelectron=12.3/√V Å. Davisson-Germer experiment. Heisenberg uncertainty: ΔxΔp≥h/4π.",
+    "Alternating Current & EMI":"Faraday's law: ε=-dΦ/dt. Lenz's law (opposition). XL=ωL, XC=1/ωC. Resonance: ω=1/√(LC). Z=√(R²+(XL-XC)²). Power=VrmsIrms·cosφ. Transformer: V1/V2=N1/N2.",
+    "Oscillations & SHM":"x=Asin(ωt+φ), ω=2πf=√(k/m). T=2π√(m/k) for spring, T=2π√(L/g) for pendulum. Energy: KE=½mω²(A²-x²), PE=½mω²x², TE=½mω²A². Resonance when driving freq=natural freq.",
+    "Thermodynamics":"1st Law: ΔU=Q-W. Adiabatic: PVγ=const, TV^(γ-1)=const. Carnot efficiency η=1-T2/T1. Entropy ΔS=Q/T. CP-CV=R. γ=CP/CV (1.4 for diatomic, 1.67 monatomic). Isothermal: W=nRTln(V2/V1).",
+    "Atoms & Nuclei":"Bohr model: En=-13.6/n² eV, rn=0.53n² Å. λ from 1/λ=R(1/n1²-1/n2²). Nucleus: R=R0A^(1/3), R0=1.2 fm. Binding energy per nucleon. Radioactivity: N=N0e^(-λt), t1/2=0.693/λ. α,β,γ decay.",
+    "Electric Charges & Fields (Electrostatics-I)":"Coulomb: F=kq1q2/r². E=kq/r², E=σ/ε0 for infinite sheet. Dipole: p=qd, E on axis=2kp/r³, E on equator=kp/r³. Gauss law: φ=Qenc/ε0. Flux=E·A·cosθ.",
+    "Moving Charges & Magnetism":"Biot-Savart: dB=μ0/4π·Idl×r/r³. Ampere's law: ∮B·dl=μ0I. B at centre of circle=μ0I/2R. Solenoid B=μ0nI. Force: F=qv×B, F=IL×B. Cyclotron: r=mv/qB, T=2πm/qB.",
+    "Fluid Mechanics & Properties of Matter":"Bernoulli: P+½ρv²+ρgh=const. Continuity: A1v1=A2v2. Viscosity: F=ηA(dv/dx). Stokes: F=6πηrv. Surface tension: F=2TL. Pressure at depth: P=P0+ρgh. Torricelli: v=√(2gh).",
+    "Kinetic Theory of Gases":"PV=nRT, P=⅓ρ<v²>. Vrms=√(3RT/M), Vavg=√(8RT/πM), Vmp=√(2RT/M). Mean free path λ=1/√2·nπd². Degrees of freedom f: mono=3, di=5, poly=6. Cv=fR/2, Cp=Cv+R.",
+    "Kinematics — 1D, 2D, Projectile & Relative":"v=u+at, s=ut+½at², v²=u²+2as. Range R=u²sin2θ/g, H=u²sin²θ/2g, T=2usinθ/g. Relative motion: Vab=Va-Vb. River crossing: t=d/v⊥. Circular: ac=v²/r=ω²r.",
+    "Units, Dimensions & Error Analysis":"[M],[L],[T],[A],[K],[mol],[cd]. Dimensional analysis for deriving/checking formulas. Relative error=Δa/a. Max % error in a^n·b^m = n(Δa/a)+m(Δb/b)×100. VERY HIGH WEIGHTAGE in Mains!",
+    "Wave Optics — Interference & Diffraction":"Young's double slit: β=λD/d, maxima y=nλD/d. Path diff for bright: nλ. Diffraction: first minima sinθ=λ/a. Resolving power telescope=D/1.22λ. Polarisation: Malus law I=I0cos²θ.",
+    "Work, Energy, Power & Centre of Mass":"W=F·d·cosθ. KE=½mv², PE=mgh. Work-energy theorem: Wnet=ΔKE. Conservation of energy. Power P=W/t=F·v. Elastic collision: KE conserved. Inelastic: only momentum conserved. CoM: xcm=Σmixi/Σmi.",
+    "Laws of Motion & Friction":"Newton's 1st/2nd/3rd. F=ma, Ffriction=μN. Static μs>kinetic μk. Pseudo force in non-inertial frame. Pulley systems. Spring force F=kx. Constraint motion.",
+    "Electromagnetic Waves":"c=1/√(μ0ε0)=3×10⁸ m/s. E and B in phase, perpendicular to each other and to direction of propagation. Energy: u=ε0E²=B²/μ0. Radiation pressure=Intensity/c. EM spectrum order. Mains only.",
+    "Thermal Properties of Matter & Calorimetry":"Q=mcΔT, Q=mL. Linear expansion: ΔL=αLΔT. Conduction: H=KA(T1-T2)/d. Newton's law of cooling. Stefan's law: P=σAT⁴. Wien's law: λmaxT=b.",
+    "Waves & Sound":"v=√(T/μ) for string, v=√(γP/ρ) for gas. Stationary waves: λn=2L/n. Beats: Δf=f1-f2. Doppler: f'=f(v±vO)/(v∓vS). Intensity: I∝A², I∝1/r². Decibel: L=10log(I/I0).",
+    "Magnetism & Matter":"M=m·2l (magnetic moment). B at axial=μ0·2M/4πr³, equatorial=μ0M/4πr³. Dia, para, ferromagnetic materials. Hysteresis curve. Earth's magnetic field components. Curie's law.",
+  },
+  Chemistry:{
+    "Aldehydes, Ketones & Carboxylic Acids":"Nucleophilic addition to C=O. Aldol condensation, Cannizzaro, Clemmensen, Wolff-Kishner. Oxidation: Tollens, Fehling (only aldehydes). Carboxylic acids: acidity, Fischer esterification. KEY: #1 Chem chapter!",
+    "Coordination Compounds":"Werner's theory, EAN rule. IUPAC nomenclature, coordination number, denticity. Isomerism: geometric, optical, linkage, ionisation. VBT vs CFT: t2g/eg splitting, Δo, CFSE. Spectrochemical series. Stability constants.",
+    "d & f Block Elements (Transition Metals)":"Variable oxidation states (due to (n-1)d electrons). High melting points, complex formation, coloured ions (d-d transition), paramagnetic, catalytic. Mn2O7 acidic, Cr2O7²⁻ vs CrO4²⁻. KMnO4 reactions in acid/base. f-block lanthanide contraction.",
+    "Amines & Diazonium Salts":"Primary/secondary/tertiary, 1°>3° basicity (aliphatic), but aniline weak base. Gabriel synthesis, Hofmann degradation. Diazonium: Sandmeyer, Balz-Schiemann, Gattermann reactions. Coupling reaction → azo dyes.",
+    "Solutions & Colligative Properties":"Raoult's law: p=x·p°. Colligative properties depend on number of solute particles. ΔTb=Kb·m, ΔTf=Kf·m, π=iMRT. Van't Hoff factor i=(1+α(n-1)) for dissociation. Henry's law for gas solubility.",
+    "Equilibrium — Chemical & Ionic":"Kp=Kc(RT)^Δn. Le Chatelier's principle. Ka·Kb=Kw=10^(-14). pH=-log[H+]. Buffer: Henderson-Hasselbalch pH=pKa+log([A-]/[HA]). Common ion effect. Ksp and precipitation conditions.",
+    "s-Block Elements (Alkali & Alkaline Earth)":"Li anomaly (diagonal relationship with Mg). Flame colours: Li=crimson, Na=yellow, K=violet, Ca=brick red, Ba=apple green. Be anomaly. Diagonal relationship Be-Al. Uses of NaOH, Na2CO3, CaO, Ca(OH)2.",
+    "Chemical Thermodynamics & Thermochemistry":"ΔG=ΔH-TΔS. ΔG<0 spontaneous. Standard enthalpy of formation, Hess's law. Bond enthalpy method. Lattice energy: Born-Haber cycle. Kirchhoff's law: ΔCp integration. CP-CV=R.",
+    "p-Block Pt.2 — Group 15,16,17,18":"N: +1 to +5 OS. HNO3 reactions (dilute vs conc). P allotropes. S: H2SO4 (conc) as oxidising/dehydrating agent. Halogen reactivity order F>Cl>Br>I. Noble gases: XeF2, XeF4, XeF6 structures. Trends in bond angles, acidic strength.",
+    "Chemical Kinetics":"Rate=k[A]^m[B]^n. Zero order: [A]=[A]0-kt. First order: t1/2=0.693/k, ln[A]=ln[A]0-kt. Arrhenius: k=Ae^(-Ea/RT). Activation energy from ln(k2/k1)=Ea/R·(1/T1-1/T2). Molecularity vs order.",
+    "Electrochemistry":"E°cell=E°cathode-E°anode. Nernst: E=E°-(RT/nF)lnQ. ΔG°=-nFE°. Kohlrausch: Λ∞m=Σλ∞ions. Faraday's 1st: m=ZIt, 2nd: m1/m2=E1/E2 (equiv. weights). Corrosion, hydrogen fuel cell.",
+    "Atomic Structure & Quantum Numbers":"Bohr's model En=-13.6/n² eV. Quantum numbers n,l,m,s. Shapes: s(spherical), p(dumbbell), d(double dumbbell). Aufbau, Hund, Pauli. de Broglie λ=h/mv. Heisenberg's uncertainty. Radial/angular nodes.",
+    "Chemical Bonding & Molecular Structure":"Ionic (ΔENG>1.7), Covalent, Metallic. Lewis structures, formal charge. VSEPR for shapes (linear, trigonal, tetrahedral, pyramidal, bent). Hybridisation sp,sp2,sp3. MO theory (σ,π,σ*,π*). Bond order=(bonding-antibonding)/2.",
+    "Hydrocarbons & Aromatic Chemistry":"Alkane: free radical halogenation. Alkene: Markovnikov, Peroxide effect (anti-Markov). Alkyne: acidic H, addition reactions. Benzene: EAS mechanism (SEAr). Activating (ortho-para directors) vs deactivating (meta directors) groups.",
+    "Biomolecules (Carbohydrates, Proteins, DNA)":"Carbohydrates: aldoses/ketoses, D/L, α/β anomers. Reducing sugars (Tollens/Fehling test). Proteins: peptide bond, primary-quaternary structure. Enzymes. DNA: purine (A,G), pyrimidine (C,T,U). Watson-Crick model. RNA types.",
+    "Metallurgy & Extraction of Metals":"Concentration (froth flotation, magnetic separation, leaching). Reduction (calcination, roasting, smelting). Thermite process. Hall-Heroult (Al). Zone refining, Van Arkel (Ti). Ellingham diagram: ΔG vs T.",
+    "GOC — Isomerism, Reaction Mechanisms, IUPAC":"Chain, position, functional group isomerism. Stereoisomers: geometric (E/Z), optical (R/S, CIP). Carbocation>carbanion>free radical stability. Inductive (+I,-I), Mesomeric (+M,-M) effects. Hyperconjugation. SN1 vs SN2.",
+    "Haloalkanes & Haloarenes":"SN1 (3°>2°>1°, racemisation), SN2 (1°>2°>3°, inversion-Walden). E1 vs E2 elimination. Nucleophilic strength order. Aryl halides (less reactive - resonance). Wurtz, Finkelstein, Swarts reactions.",
+    "Alcohols, Phenols & Ethers":"Alcohol: Lucas test (3°>2°>1° reactivity), Victor Meyer, Esterification. Phenol: acidic (pKa~10), EAS (o,p-director). Kolbe-Schmitt, Reimer-Tiemann, Fries rearrangement. Ether: Williamson synthesis, cleavage by HI.",
+    "Environmental Chemistry":"Types of pollution. Ozone depletion (CFCs, Dobson units). Green chemistry. Photochemical smog, acid rain (H2SO4, HNO3). BOD, COD. Heavy metal pollution. Greenhouse effect: CO2, CH4, N2O.",
+    "Hydrogen & Its Compounds":"Isotopes: protium, deuterium, tritium. Ortho/para hydrogen. H2O2: structure, preparation (BaO2+H2SO4), bleaching agent. H2O: anomalous properties (H-bonding). Dihydrogen as fuel.",
+    "Some Basic Concepts of Chemistry (Mole Concept)":"Molar mass, Avogadro number (6.022×10²³). Mole=mass/M=V/22.4L (STP). Limiting reagent. % composition. Empirical vs molecular formula. Stoichiometry. Concentration: molarity (M=moles/L), molality (m=moles/kg).",
+    "Surface Chemistry (Adsorption, Colloids, Emulsion)":"Physisorption vs chemisorption. Freundlich isotherm: x/m=kp^(1/n). Types: aerosol, foam, emulsion, sol. Tyndall effect (colloids). Coagulation (Hardy-Schulze rule). Protective colloid, gold number. Micelles (above CMC).",
+    "Periodic Table & Periodicity in Properties":"Screening effect, Zeff=Z-σ. Atomic radius: decreases across period, increases down group. IE1: increases across, decreases down. Electronegativity: Pauling scale. Electron affinity trends. Diagonal similarity.",
+    "Redox Reactions":"Oxidation (loses e⁻, OS increases), Reduction (gains e⁻). Balancing by half-reaction method (acidic/basic medium). Disproportionation. Standard reduction potentials. Activity series (displacement reactions).",
+    "p-Block Pt.1 — Group 13 & 14":"B: electron deficient, forms diborane (3c-2e bond). Al: amphoteric. Anomalous properties of C (small size, 4 valency). Allotropes of C (diamond, graphite, fullerene). CO toxic (binds Hb). SiO2 structure (3D).",
+    "States of Matter — Gases & Liquids":"Ideal gas: PV=nRT. van der Waals: (P+an²/V²)(V-nb)=nRT. Critical temp Tc=8a/27Rb. Viscosity, surface tension decrease with T. Vapour pressure, relative humidity. Raoult's law for vapour pressure lowering.",
+    "Solid State":"Crystal systems (7), Bravais lattices (14). Packing: BCC (68%), FCC/CCP (74%), HCP (74%). Voids: tetrahedral (8), octahedral (4) per FCC. Defects: Schottky (vacancies), Frenkel (interstitial). Radius ratios for ionic crystals.",
+    "Polymers — Types, Classification & Uses":"Addition vs condensation polymerization. Chain growth vs step growth. Homopolymer vs copolymer. LDPE, HDPE, PVC, Nylon-6,6, Polyester, Bakelite, Natural rubber (cis-isoprene). Biodegradable polymers. Mains only.",
+    "Chemistry in Everyday Life":"Drugs: analgesics, antiseptics, antibiotics, antacids, antihistamines. Soaps/detergents: micelle formation. Artificial sweeteners. Food preservatives. Dyes. Mains only.",
+  },
+  Maths:{
+    "Three-Dimensional Geometry — Lines, Planes, Angles":"Direction cosines: l²+m²+n²=1. Direction ratios. Line: x-x1/a=y-y1/b=z-z1/c. Plane: ax+by+cz+d=0. Angle between lines/planes. Shortest distance between skew lines. Distance from point to plane=|ax1+by1+cz1+d|/√(a²+b²+c²). #1 in Maths!",
+    "Sequences & Series — AP, GP, HP & Special Series":"AP: an=a+(n-1)d, Sn=n/2(2a+(n-1)d). GP: an=ar^(n-1), Sn=a(rⁿ-1)/(r-1). Sum of infinite GP=a/(1-r) when |r|<1. HP: 1/AP. AM≥GM≥HM. AGP: multiply by r and subtract. Telescoping, partial fractions for summation.",
+    "Limit, Continuity & Differentiability":"lim forms: 0/0, ∞/∞, 0×∞, ∞-∞, 0⁰, 1^∞, ∞⁰. L'Hôpital rule. Sandwich theorem. Standard limits: sinx/x→1, (1+1/n)^n→e, (aⁿ-1)/x→lna. Continuity: LHL=RHL=f(a). Differentiability⟹continuity. IVT.",
+    "Definite Integration & Properties":"∫aᵦf(x)dx=F(b)-F(a). King's rule: ∫f(x)=∫f(a+b-x). Even/odd function: ∫₋ₐᵃf(x)=2∫₀ᵃf (even), 0 (odd). Periodic: ∫₀ⁿᵀ=n∫₀ᵀ. Leibniz rule. Walli's formula. Newton-Leibniz: d/dx∫f(t)dt=f(x).",
+    "Binomial Theorem & Mathematical Induction":"(a+b)ⁿ=ΣC(n,r)aⁿ⁻ʳbʳ. T(r+1)=C(n,r)aⁿ⁻ʳbʳ. Middle term: n even → T(n/2+1). C(n,r)+C(n,r-1)=C(n+1,r). Sum of coefficients: put a=b=1 → 2ⁿ. Greatest coefficient. Properties of binomial coefficients. PMI.",
+    "Application of Derivatives (AOD) — Tangents, Maxima, Rate":"Slope of tangent=dy/dx at point. Normal slope=-1/(dy/dx). Increasing: f'>0, Decreasing: f'<0. Maxima/Minima: f'=0 and f''<0 (max), f''>0 (min). LMVT, Rolle's theorem. Rate of change. Approximation Δy≈dy.",
+    "Complex Numbers — Modulus, Argument, Geometry, Roots":"z=a+ib, |z|=√(a²+b²), arg(z)=tan⁻¹(b/a). Euler's: e^(iθ)=cosθ+isinθ. De Moivre: (cosθ+isinθ)ⁿ=cosnθ+isinnθ. nth roots of unity: e^(2πik/n). Rotation by θ: z→z·e^(iθ). Triangle inequality: ||z1|-|z2||≤|z1+z2|≤|z1|+|z2|.",
+    "Vectors — Dot, Cross, Triple, Scalar Triple Product":"a⃗·b⃗=|a||b|cosθ. a⃗×b⃗=|a||b|sinθ·n̂. [a⃗ b⃗ c⃗]=a⃗·(b⃗×c⃗)=scalar (volume of parallelepiped). Coplanar if [a⃗ b⃗ c⃗]=0. Projection of a on b=a⃗·b̂. Area of triangle=½|a⃗×b⃗|. Vector triple product: a×(b×c)=(a·c)b-(a·b)c.",
+    "Differential Equations":"Order, degree. Variable separable: f(y)dy=g(x)dx. Homogeneous: put y=vx. Linear 1st order: IF=e^∫P·dx, solution y·IF=∫Q·IF·dx. Bernoulli: divide by yⁿ, substitute z=y^(1-n). Exact DE: M∂x+N∂y=0 when ∂M/∂y=∂N/∂x.",
+    "Determinants + Matrices":"det(A): expansion along row/column. Properties: interchange rows ⟹ det changes sign. Singular if det=0. Cofactor, Adjoint. A⁻¹=adj(A)/|A|. System AX=B: Cramer's rule. Matrix mult (AB)≠(BA). Symmetric, skew-symmetric, orthogonal, idempotent.",
+    "Permutation & Combination":"P(n,r)=n!/(n-r)!. C(n,r)=n!/r!(n-r)!. Circular: (n-1)!. Identical objects. Distribution into groups. Derangement. Multinomial theorem. Number of selections with/without restrictions.",
+    "Probability & Statistics":"P(A∪B)=P(A)+P(B)-P(A∩B). Bayes' theorem: P(Ai|B)=P(B|Ai)P(Ai)/ΣP(B|Aj)P(Aj). Binomial: P(X=r)=C(n,r)p^r·q^(n-r), mean=np, var=npq. Poisson: P(X=r)=e^(-λ)λʳ/r!. Mean, Variance, SD. Correlation.",
+    "Quadratic Equations & Inequalities":"For ax²+bx+c=0: sum=-b/a, product=c/a, D=b²-4ac. D>0 real distinct, D=0 real equal, D<0 complex. Location of roots (between, both sides). Wavy curve method for inequalities. Modulus inequalities. Quadratic in disguise.",
+    "Circles + Straight Lines":"Circle: (x-h)²+(y-k)²=r². Tangent at (x1,y1): xx1+yy1=r². Pair of tangents from external point. Radical axis: S1-S2=0. Straight line: distance from point to line, angle bisectors, image of point. Family of circles. 2nd degree homogeneous for pair of lines.",
+    "Parabola":"y²=4ax: focus(a,0), directrix x=-a, vertex (0,0). Parametric: (at²,2at). Tangent at t: ty=x+at². Normal at t: y+tx=2at+at³. Chord of contact. Focal chord: t1·t2=-1. Number of normals through a point.",
+    "Ellipse":"x²/a²+y²/b²=1 (a>b). e=c/a, b²=a²(1-e²). Focus (±c,0). Sum of focal distances=2a. Tangent: xcosα/a+ysinα/b=1. Parametric (acosθ,bsinθ). Auxiliary circle. Director circle. Chord of contact.",
+    "Application of Integrals — Area Under Curves":"Area=∫|f(x)|dx between limits. Area between 2 curves: ∫(upper-lower)dx. For y=f(x) and x=g(y). Area of circle/ellipse by integration. Symmetry to simplify. LIATE rule for integration by parts.",
+    "Inverse Trigonometric Functions":"Domain/range of sin⁻¹,cos⁻¹,tan⁻¹. sin⁻¹x+cos⁻¹x=π/2. tan⁻¹x+cot⁻¹x=π/2. tan⁻¹x+tan⁻¹y=tan⁻¹((x+y)/(1-xy)) when xy<1. Principal value branch. Composition identities: sin(cos⁻¹x)=√(1-x²).",
+    "Hyperbola":"x²/a²-y²/b²=1. e=c/a>1, b²=c²-a². Focus (±c,0). Asymptotes: y=±(b/a)x. Rectangular hyperbola: xy=c². Parametric (asecθ,btanθ). Difference of focal distances=2a. Tangent/normal similar to ellipse.",
+    "Indefinite Integration & Standard Forms":"∫xⁿ=xⁿ⁺¹/(n+1). ∫eˣ=eˣ. ∫1/x=ln|x|. ∫sinx=-cosx. Standard forms, substitution, by parts (LIATE). Partial fractions. ∫√(a²-x²) type. ∫1/(ax²+bx+c) completing square.",
+    "Trigonometric Ratios, Identities & Equations":"sin²x+cos²x=1, tan²x+1=sec²x, cot²x+1=cosec²x. Compound angle, double angle, half angle formulas. Sum-to-product, product-to-sum. General solution of trigonometric equations. Range of expressions. t-substitution t=tan(x/2).",
+    "Relations & Functions":"Domain, codomain, range. Types: one-one, onto, bijective. Composition f∘g. Inverse function (exists iff bijective). Even/odd functions. Periodic functions. Piecewise functions. Floor, ceiling, fractional part functions.",
+    "Sets & Mathematical Reasoning":"Set operations: union, intersection, complement, power set. De Morgan's laws: (A∪B)'=A'∩B', (A∩B)'=A'∪B'. Venn diagrams. Statements: conjunction, disjunction, negation, implication. Tautology, contradiction. Biconditional. Mains only.",
+  }
+};
+
+/* ═══════════════════════════════════════════
+   MASTER COMBINED CHAPTER LIST (Mains+Advanced)
+   Tags: "both" | "mainsOnly" | "advOnly"
+═══════════════════════════════════════════ */
+const MASTER_CHAPTERS=(()=>{
+  const out=[];
+  Object.entries(DATA).forEach(([subj,sd])=>{
+    const mainsSet=new Set(sd.mains.map(c=>c.ch));
+    const advSet=new Set(sd.advanced.map(c=>c.ch));
+    // Both
+    sd.mains.forEach(c=>{
+      const advMatch=sd.advanced.find(a=>a.ch.toLowerCase().includes(c.ch.split(" ")[0].toLowerCase())||c.ch.toLowerCase().includes(a.ch.split(" ")[0].toLowerCase()));
+      out.push({subj,ch:c.ch,mainsWt:c.wt,advWt:advMatch?advMatch.wt:0,pct:c.pct,tag:c.mo?"mainsOnly":"both",stars:c.tag,notes:NOTES[subj]&&NOTES[subj][c.ch]});
+    });
+    sd.advanced.forEach(c=>{
+      const inMains=sd.mains.some(m=>m.ch.toLowerCase().includes(c.ch.split(" ")[0].toLowerCase())||c.ch.toLowerCase().includes(m.ch.split(" ")[0].toLowerCase()));
+      if(!inMains||c.ao){out.push({subj,ch:c.ch,mainsWt:0,advWt:c.wt,tag:"advOnly",stars:c.tag,notes:""});}
+    });
+  });
+  return out;
+})();
+
+/* ═══════════════════════════════════════════
+   TOP 50 MAINS CHAPTERS (all subjects combined, ranked)
+═══════════════════════════════════════════ */
+const TOP50_MAINS=(()=>{
+  const all=[];
+  Object.entries(DATA).forEach(([subj,sd])=>{
+    sd.mains.forEach((c,i)=>all.push({rank:0,subj,ch:c.ch,wt:c.wt,pct:c.pct,tag:c.tag,notes:NOTES[subj]&&NOTES[subj][c.ch]||"",icon:sd.icon,color:sd.color}));
+  });
+  all.sort((a,b)=>b.wt-a.wt||(parseFloat(b.pct)||0)-(parseFloat(a.pct)||0));
+  return all.slice(0,50).map((c,i)=>({...c,rank:i+1}));
+})();
+
+/* ═══════════════════════════════════════════
+   DETAILED SUBTOPICS PER CHAPTER
+═══════════════════════════════════════════ */
+const SUBTOPICS={
+  Physics:{
+    "Current Electricity":{
+      mainsTopics:["Ohm's Law, V-I characteristics (linear & non-linear)","Kirchhoff's Current Law (KCL) & Voltage Law (KVL)","Wheatstone Bridge (balanced condition P/Q=R/S)","Potentiometer — comparison of EMF, internal resistance","Meter Bridge experiment","RC circuits — charging & discharging (V=V0(1-e^-t/RC))","Combination of resistors (series/parallel)","Electric cell — EMF, terminal voltage, internal resistance","Power dissipation P=V²/R=I²R=VI","Cells in series & parallel — effective EMF & resistance"],
+      advancedTopics:["Kirchhoff's laws in complex multi-loop circuits","Unbalanced Wheatstone bridge using Thevenin/Norton","Galvanometer sensitivity & conversion","Complex RC/RL transient circuits","Battery networks with multiple EMFs — current distribution","Variable resistance & non-standard potentiometer problems"],
+      advOnly:["RC circuits in combination with dependent sources","Non-trivial network reduction using star-delta"],
+      mainsOnly:["Colour coding of resistors","Electric fuse & household wiring concepts"]
+    },
+    "Ray Optics & Optical Instruments":{
+      mainsTopics:["Laws of reflection — plane & spherical mirrors, mirror formula","Refraction — Snell's law, n1sinθ1=n2sinθ2","Total Internal Reflection (TIR), critical angle","Refraction at spherical surface: n1/v - n2/u","Thin lens formula 1/v-1/u=1/f, lens maker's equation","Power of lens P=1/f, combination of lenses","Prism — δ, δmin, μ=sin((A+δmin)/2)/sin(A/2)","Optical instruments: microscope, telescope, eye defects"],
+      advancedTopics:["Multi-lens systems with intermediate image analysis","Chromatic & spherical aberration, achromatic doublet","Silvered lens (equivalent mirror concept)","Advanced prism problems — hollow prism, crown+flint","Resolving power of microscope & telescope"],
+      advOnly:["Polarisation by reflection (Brewster's angle) — more advanced","Matrix method in optics","Fibre optics — numerical aperture"],
+      mainsOnly:["Simple microscope magnification","Camera, projector basics"]
+    },
+    "Rotational Motion & MOI":{
+      mainsTopics:["MOI of standard bodies (ring, disc, sphere, rod, cylinder)","Parallel axis theorem I=Icm+Md²","Perpendicular axis theorem Iz=Ix+Iy (plane laminas)","Torque τ=r×F, angular acceleration α=τ/I","Newton's 2nd law for rotation: τnet=Iα","Angular momentum L=Iω, conservation when τext=0","Rolling without slipping: v=Rω, KE=½mv²(1+k²/R²)","Work done by torque W=τθ"],
+      advancedTopics:["Toppling condition — critical angle","Gyroscopic motion (precession) — qualitative","Rolling on inclined plane with friction (advanced analysis)","Angular impulse & angular momentum in collisions","MOI of non-standard composite bodies","Instantaneous axis of rotation"],
+      advOnly:["Precession of a gyroscope (τ=dL/dt formulation)","Non-uniform rotation with varying moment of inertia"],
+      mainsOnly:["Basic gear systems"]
+    },
+    "Electrostatic Potential & Capacitance":{
+      mainsTopics:["Electric potential V=kq/r, potential due to a dipole","Equipotential surfaces (always perpendicular to E)","Relation E=-dV/dr, E=-∇V","Capacitance C=Q/V, parallel plate C=ε0A/d","Dielectric: C'=kC, energy U=½CV²=Q²/2C","Series capacitors: 1/C=Σ1/Ci, Parallel: C=ΣCi","Energy stored in capacitor and energy of electric field","Effect of inserting dielectric (at constant V or Q)"],
+      advancedTopics:["Capacitors with conducting/dielectric slabs — combination analysis","Energy methods for force on dielectric in capacitor","Capacitor networks — Kirchhoff's laws","Van de Graaff generator mechanism","Non-parallel plate configurations"],
+      advOnly:["Moving dielectric slab in capacitor (force, work-energy)","Capacitor with gravity and charge — oscillatory motion"],
+      mainsOnly:["Electrocardiography basics","Lightning rod principle"]
+    },
+  },
+  Chemistry:{
+    "Aldehydes, Ketones & Carboxylic Acids":{
+      mainsTopics:["Nucleophilic addition to carbonyl (mechanism: tetrahedral intermediate)","Aldol condensation (base-catalysed), aldol product","Cannizzaro reaction (no α-H aldehydes: HCHO, PhCHO, (CH3)3CCHO)","Clemmensen reduction (Zn/Hg, HCl) → CH2","Wolff-Kishner reduction (NH2NH2, KOH) → CH2","Oxidation tests: Tollens (silver mirror), Fehling (brick red) — aldehydes only","Tischenko reaction, Benzoin condensation","Carboxylic acids: acidity (pKa), inductive effects on acidity","Fischer esterification (acid catalyst, reversible), Soda lime decarboxylation"],
+      advancedTopics:["Mechanism of Aldol in acidic vs basic conditions","Crossed Aldol selectivity (protecting groups)","Retrosynthetic analysis involving carbonyls","Meerwein-Ponndorf-Verley reduction","Reformatsky reaction","Enolisation — kinetic vs thermodynamic enolate"],
+      advOnly:["Enolate chemistry in multistep synthesis","Knoevenagel condensation","Dieckmann cyclization"],
+      mainsOnly:["Industrial preparation of acetic acid (fermentation)","Formalin uses"]
+    },
+    "Coordination Compounds":{
+      mainsTopics:["Werner's theory, coordination number, denticity, chelates","IUPAC nomenclature rules (complex cation/anion naming)","Structural isomerism: ionisation, solvate/hydrate, linkage, coordination","Stereoisomerism: geometric (cis/trans in square planar & octahedral), optical","VBT: inner orbital vs outer orbital complexes","CFT: d orbital splitting in octahedral (t2g, eg), Δo","Crystal field stabilisation energy (CFSE) calculation","Spectrochemical series (I⁻ < Br⁻ < Cl⁻ < F⁻ < H2O < NH3 < CN⁻)","High spin vs low spin, magnetic moment μ=√(n(n+2)) BM"],
+      advancedTopics:["CFT for tetrahedral (Δt=4/9Δo) and square planar","EAN rule and its limitations","Jahn-Teller distortion","Trans effect in square planar (Pt complexes)","Stability of complexes — thermodynamic & kinetic","Metal carbonyls (σ-donor, π-acceptor)"],
+      advOnly:["Organometallic chemistry: 18-electron rule","Sandwich compounds (ferrocene, zeise's salt)","Catalytic cycles using complexes (Wilkinson's catalyst)"],
+      mainsOnly:["Industrial applications: EDTA, cisplatin in medicine","Cyanide process for gold extraction (leaching)"]
+    },
+    "Equilibrium — Chemical & Ionic":{
+      mainsTopics:["Kc and Kp expressions, relation Kp=Kc(RT)^Δn","Le Chatelier's principle (effect of P, T, concentration, catalyst)","Henderson-Hasselbalch equation for pH of buffer","Ka, Kb, Kw=10^-14 at 25°C, relationship Ka·Kb=Kw","pH calculations: strong acid/base, weak acid/base, buffer, salt","Common ion effect on solubility","Ksp and relative solubility, ionic product vs Ksp (precipitation)","Degree of hydrolysis, hydrolysis constant Kh=Kw/Ka"],
+      advancedTopics:["Polyprotic acids — simultaneous equilibria","Fractional precipitation — separation of ions","pH of amphiprotic salts (e.g., NaHCO3, NaHS)","Solubility in buffered solutions vs pure water","Multiple equilibria: combined Ksp, Kc effect","Charge balance and mass balance approach"],
+      advOnly:["Distribution diagrams for weak acid speciation","Phase diagrams (solid-liquid-gas equilibrium)"],
+      mainsOnly:["Ionic equilibrium in saline water","Antacid mechanism (neutralization)"]
+    },
+  },
+  Maths:{
+    "Three-Dimensional Geometry — Lines, Planes, Angles":{
+      mainsTopics:["Direction cosines l,m,n with l²+m²+n²=1","Direction ratios and conversion to DC","Equation of line in vector form r=a+λb and Cartesian form","Angle between two lines using dot product","Equation of plane in vector & Cartesian form","Angle between two planes, plane and line","Distance from point to plane: |ax+by+cz+d|/√(a²+b²+c²)","Equation of plane through 3 points","Foot of perpendicular from point to plane","Image of point in a plane"],
+      advancedTopics:["Shortest distance between skew lines (vector method)","Equation of line of intersection of 2 planes","Plane through line of intersection of 2 planes: S1+λS2=0","Coplanar lines condition","Family of planes, angle bisector of 2 planes","Sphere: equation, centre, radius, tangent plane"],
+      advOnly:["Skew lines — point of closest approach in 3D","Complex locus problems in 3D"],
+      mainsOnly:["Projection of a point on xy, yz, xz planes","Direction of line segment only (Mains simple Qs)"]
+    },
+    "Limit, Continuity & Differentiability":{
+      mainsTopics:["Standard limits: sinx/x→1, tanx/x→1, (1+1/n)^n→e, (aˣ-1)/x→lna","L'Hôpital's rule for 0/0 and ∞/∞ forms","Sandwich theorem (squeeze theorem)","1^∞ form: lim(1+f(x))^(1/g(x))=e^(lim f(x)/g(x))","Left & right hand limits, existence condition","Continuity: LHL=RHL=f(a), types of discontinuity","Differentiability: LHD=RHD at a point, differentiable⟹continuous","Chain rule, product rule, quotient rule"],
+      advancedTopics:["Functional equations with limits","Iterative limits and limit of sequences","Differentiability of composite piecewise functions","Derivatives of implicit & parametric functions (2nd order)","Mean Value Theorem (LMVT, Rolle's) — applications","Leibniz's rule for nth derivative"],
+      advOnly:["ε-δ definition of limits (rigorous proof)","Uniform continuity vs pointwise continuity"],
+      mainsOnly:["Simple piecewise function continuity checks","Derivative from first principles (basic functions)"]
+    },
+    "Definite Integration & Properties":{
+      mainsTopics:["Newton-Leibniz formula: ∫aᵇf(x)dx=F(b)-F(a)","Substitution in definite integrals","King's rule: ∫₀ᵃf(x)dx=∫₀ᵃf(a-x)dx","Even function: ∫₋ₐᵃf(x)=2∫₀ᵃf(x); Odd=0","Periodic function: ∫₀ⁿᵀf=n∫₀ᵀf","Integration by parts in definite form (LIATE)","Walli's formula: ∫₀^(π/2) sinⁿx dx","Definite integral as limit of a sum"],
+      advancedTopics:["Abel's/Dirichlet's test for improper integrals","Differentiation under integral sign (Leibniz)","Reduction formulae for ∫sinⁿx, ∫cosⁿx","Cauchy's mean value for integrals","Summation using ∫ (Riemann sum approach)","Beta and Gamma functions (introductory)"],
+      advOnly:["Improper integrals ∫₀^∞ — convergence tests","Complex integrals (contour integration — very rare)"],
+      mainsOnly:["Simple area using definite integral","Basic trapezoidal approximation"]
+    },
+    "Complex Numbers — Modulus, Argument, Geometry, Roots":{
+      mainsTopics:["Algebraic form z=a+ib, conjugate z̄=a-ib","Modulus |z|=√(a²+b²), argument arg(z)","Polar form z=r(cosθ+isinθ)=re^(iθ)","Properties: |z1z2|=|z1||z2|, arg(z1z2)=arg(z1)+arg(z2)","Cube roots of unity ω: 1+ω+ω²=0, ω³=1","De Moivre's theorem: (cosθ+isinθ)ⁿ=cosnθ+isinnθ","nth roots of unity: uniformly spaced on unit circle","Geometry: modulus as distance, arg as angle","Rotation: multiplication by e^(iα) rotates by α"],
+      advancedTopics:["Loci in complex plane (e.g., |z-z1|=|z-z2|, arg conditions)","Applications to geometry: circumcircle, collinearity","Complex number methods for trigonometric identities","Lagrange's identity, vector interpretation","Roots of polynomial equations with complex coefficients","Argument principle and winding number (advanced)"],
+      advOnly:["Complex analysis: analytic functions (basic)","Conformal mapping (theoretical)"],
+      mainsOnly:["Simple DEMOIVRE application for finding (cosθ+isinθ)^n","Imaginary part/real part extraction"]
+    },
+  }
+};
+
+/* ═══════════════════════════════════════════
+   CHAPTERS TAB — Master List, Top 50, Subtopics
+═══════════════════════════════════════════ */
+function ChaptersTab(){
+  const[view,setView]=useState("top50");
+  const[subj,setSubj]=useState("All");
+  const[filter,setFilter]=useState("all");
+  const[selCh,setSelCh]=useState(null);
+  const[searchQ,setSearchQ]=useState("");
+
+  // ─── TOP 50 VIEW ───
+  function Top50View(){
+    return(
+      <div style={{display:"flex",flexDirection:"column",gap:10}}>
+        <div style={{background:"linear-gradient(135deg,rgba(201,168,76,0.1),rgba(91,156,246,0.06))",border:"1px solid rgba(201,168,76,0.25)",borderRadius:14,padding:16,marginBottom:6}}>
+          <div style={{fontFamily:"var(--font-display)",fontSize:17,fontWeight:700,color:"var(--gold3)",marginBottom:4}}>🏆 Top 50 Most Important Chapters — JEE Mains</div>
+          <div style={{fontSize:13,color:"var(--muted)"}}>Ranked by 5-year PYQ weightage + frequency analysis. Master these 50 to cover ~85% of Mains syllabus.</div>
+        </div>
+        {TOP50_MAINS.map((c,i)=>{
+          const rank_colors=i<10?"var(--gold)":i<20?"var(--orange)":i<35?"var(--green)":"var(--muted)";
+          return(
+            <div key={i} style={{display:"flex",gap:12,alignItems:"flex-start",padding:"12px 14px",borderRadius:12,background:"var(--card)",border:`1px solid ${i<10?"rgba(201,168,76,0.25)":i<20?"rgba(251,146,60,0.15)":"var(--border)"}`,cursor:"pointer",transition:"all 0.2s"}}
+              onClick={()=>setSelCh(selCh===c.ch?null:c.ch)}>
+              <div style={{width:32,height:32,borderRadius:10,background:rank_colors+"18",border:`1.5px solid ${rank_colors}40`,display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"var(--font-mono)",fontWeight:700,fontSize:12,color:rank_colors,flexShrink:0}}>#{c.rank}</div>
+              <div style={{flex:1}}>
+                <div style={{display:"flex",gap:8,alignItems:"center",flexWrap:"wrap",marginBottom:4}}>
+                  <span style={{fontSize:14,fontWeight:600,color:"var(--cream)"}}>{c.ch}</span>
+                  <span style={{fontSize:11,padding:"2px 7px",borderRadius:99,background:c.color+"18",color:c.color,border:`1px solid ${c.color}30`}}>{c.icon} {c.subj}</span>
+                  <span className="pill pill-gold">{c.tag}</span>
+                  {c.pct&&<span style={{fontFamily:"var(--font-mono)",fontSize:11,color:rank_colors,fontWeight:700}}>{c.pct}</span>}
+                </div>
+                {selCh===c.ch&&c.notes&&(
+                  <div style={{marginTop:8,padding:"10px 12px",borderRadius:10,background:"var(--bg2)",border:"1px solid var(--border2)",fontSize:13,color:"var(--text)",lineHeight:1.75}}>
+                    <div style={{fontSize:11,color:"var(--gold)",fontWeight:700,marginBottom:4,letterSpacing:1}}>📝 QUICK NOTES</div>
+                    {c.notes}
+                  </div>
+                )}
+              </div>
+              <div style={{textAlign:"right",flexShrink:0}}>
+                <div style={{fontFamily:"var(--font-mono)",fontSize:15,fontWeight:700,color:rank_colors}}>{c.wt}/10</div>
+                <div style={{fontSize:10,color:"var(--muted)"}}>weight</div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+
+  // ─── MASTER LIST VIEW ───
+  function MasterListView(){
+    const filtSubj=subj==="All"?MASTER_CHAPTERS:MASTER_CHAPTERS.filter(c=>c.subj===subj);
+    const filtTag=filter==="all"?filtSubj:filtSubj.filter(c=>c.tag===filter);
+    const searched=searchQ?filtTag.filter(c=>c.ch.toLowerCase().includes(searchQ.toLowerCase())):filtTag;
+    const counts={both:MASTER_CHAPTERS.filter(c=>c.tag==="both").length,mainsOnly:MASTER_CHAPTERS.filter(c=>c.tag==="mainsOnly").length,advOnly:MASTER_CHAPTERS.filter(c=>c.tag==="advOnly").length};
+    return(
+      <div style={{display:"flex",flexDirection:"column",gap:12}}>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10}}>
+          {[["📝+⚡ Both Exams",counts.both,"var(--gold)","both"],["📝 Mains Only",counts.mainsOnly,"var(--green)","mainsOnly"],["⚡ Advanced Only",counts.advOnly,"var(--purple)","advOnly"]].map(([l,v,c,f])=>(
+            <div key={f} onClick={()=>setFilter(filter===f?"all":f)} style={{padding:14,borderRadius:12,background:filter===f?c+"18":"var(--card)",border:`1.5px solid ${filter===f?c+"60":"var(--border)"}`,textAlign:"center",cursor:"pointer",transition:"all 0.2s"}}>
+              <div style={{fontFamily:"var(--font-display)",fontSize:24,fontWeight:700,color:c}}>{v}</div>
+              <div style={{fontSize:12,color:filter===f?c:"var(--muted)",marginTop:2}}>{l}</div>
+            </div>
+          ))}
+        </div>
+        <div style={{display:"flex",gap:8,flexWrap:"wrap",alignItems:"center"}}>
+          <input value={searchQ} onChange={e=>setSearchQ(e.target.value)} placeholder="🔍 Search chapters..." className="inp" style={{flex:1,minWidth:180,height:38,fontSize:13}}/>
+          <div style={{display:"flex",background:"var(--bg2)",padding:3,borderRadius:10,border:"1px solid var(--border)"}}>
+            {["All","Physics","Chemistry","Maths"].map(s=>(
+              <button key={s} onClick={()=>setSubj(s)} className="btn" style={{padding:"5px 12px",fontSize:12,borderRadius:8,background:subj===s?"var(--border2)":"transparent",color:subj===s?"var(--cream)":"var(--muted)",border:"none"}}>{s}</button>
+            ))}
+          </div>
+        </div>
+        <div style={{display:"flex",flexDirection:"column",gap:6}}>
+          {searched.map((c,i)=>{
+            const tagColor=c.tag==="both"?"var(--gold)":c.tag==="mainsOnly"?"var(--green)":"var(--purple)";
+            const tagLabel=c.tag==="both"?"Both Exams":c.tag==="mainsOnly"?"Mains Only":"Advanced Only";
+            const subjData=DATA[c.subj];
+            return(
+              <div key={i} style={{borderRadius:12,background:"var(--card)",border:"1px solid var(--border)",overflow:"hidden",cursor:"pointer",transition:"all 0.2s"}} onClick={()=>setSelCh(selCh===c.ch?null:c.ch)}>
+                <div style={{display:"flex",gap:10,alignItems:"center",padding:"11px 14px"}}>
+                  <span style={{fontSize:16,flexShrink:0}}>{subjData.icon}</span>
+                  <div style={{flex:1}}>
+                    <div style={{fontSize:13,fontWeight:600,color:"var(--cream)"}}>{c.ch}</div>
+                    <div style={{display:"flex",gap:6,marginTop:3,flexWrap:"wrap"}}>
+                      <span style={{fontSize:10,padding:"2px 8px",borderRadius:99,background:tagColor+"18",color:tagColor,border:`1px solid ${tagColor}30`,fontWeight:700}}>{tagLabel}</span>
+                      {c.stars&&<span className="pill pill-muted" style={{fontSize:9}}>{c.stars}</span>}
+                      {c.pct&&<span style={{fontFamily:"var(--font-mono)",fontSize:10,color:subjData.color,fontWeight:600}}>{c.pct}</span>}
+                      <span style={{fontSize:10,color:"var(--muted)"}}>{c.subj}</span>
+                    </div>
+                  </div>
+                  <div style={{textAlign:"right",flexShrink:0}}>
+                    {c.mainsWt>0&&<div style={{fontSize:11,color:"var(--green)",fontFamily:"var(--font-mono)",fontWeight:600}}>M:{c.mainsWt}/10</div>}
+                    {c.advWt>0&&<div style={{fontSize:11,color:"var(--blue)",fontFamily:"var(--font-mono)",fontWeight:600}}>A:{c.advWt}/10</div>}
+                  </div>
+                </div>
+                {selCh===c.ch&&c.notes&&(
+                  <div style={{padding:"0 14px 12px",borderTop:"1px solid var(--border)"}}>
+                    <div style={{marginTop:10,padding:"10px 12px",borderRadius:10,background:"var(--bg2)",border:"1px solid var(--border2)",fontSize:13,color:"var(--text)",lineHeight:1.8}}>
+                      <div style={{fontSize:11,color:"var(--gold)",fontWeight:700,marginBottom:4,letterSpacing:1}}>📝 QUICK REVISION NOTES</div>
+                      {c.notes}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  // ─── SUBTOPICS VIEW ───
+  function SubtopicsView(){
+    const[selSubj,setSelSubj]=useState("Physics");
+    const[selChName,setSelChName]=useState(null);
+    const chList=DATA[selSubj]?[...DATA[selSubj].mains,...DATA[selSubj].advanced.filter(a=>a.ao)]:[]; 
+    const sData=SUBTOPICS[selSubj];
+    const uniqueChs=[...new Map(chList.map(c=>[c.ch,c])).values()];
+    const hasSub=sData&&selChName&&sData[selChName];
+    return(
+      <div style={{display:"flex",flexDirection:"column",gap:12}}>
+        <div style={{background:"rgba(91,156,246,0.06)",border:"1px solid rgba(91,156,246,0.2)",borderRadius:12,padding:14,fontSize:13,color:"var(--muted)"}}>
+          <b style={{color:"var(--blue)"}}>📖 Chapter-Wise Subtopic Breakdown</b> — see exactly what's tested in Mains vs Advanced, and what's exclusive to each exam.
+        </div>
+        <div style={{display:"flex",gap:6}}>
+          {Object.entries(DATA).map(([s,d])=>(
+            <button key={s} onClick={()=>{setSelSubj(s);setSelChName(null);}} className="btn" style={{fontSize:13,background:selSubj===s?d.color+"18":"rgba(255,255,255,0.04)",color:selSubj===s?d.color:"var(--muted)",border:`1px solid ${selSubj===s?d.color+"40":"var(--border)"}`}}>{d.icon} {s}</button>
+          ))}
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))",gap:6}}>
+          {uniqueChs.map((c,i)=>{
+            const isSel=selChName===c.ch;
+            const has=sData&&sData[c.ch];
+            const subjColor=DATA[selSubj].color;
+            return(
+              <div key={i} onClick={()=>setSelChName(isSel?null:c.ch)} style={{padding:"10px 12px",borderRadius:10,background:isSel?subjColor+"12":"var(--bg2)",border:`1.5px solid ${isSel?subjColor+"50":"var(--border)"}`,cursor:"pointer",transition:"all 0.2s",opacity:has?1:0.6}}>
+                <div style={{fontSize:12,fontWeight:600,color:isSel?subjColor:"var(--text)",lineHeight:1.35,marginBottom:4}}>{c.ch}</div>
+                <div style={{display:"flex",gap:4,flexWrap:"wrap"}}>
+                  {c.mo&&<span className="pill pill-green" style={{fontSize:9}}>Mains Only</span>}
+                  {c.ao&&<span className="pill pill-purple" style={{fontSize:9}}>Adv Only</span>}
+                  {!c.mo&&!c.ao&&<span className="pill pill-gold" style={{fontSize:9}}>Both</span>}
+                  {!has&&<span className="pill pill-muted" style={{fontSize:9}}>Soon</span>}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        {hasSub&&(()=>{
+          const sd=sData[selChName];
+          const subjColor=DATA[selSubj].color;
+          return(
+            <div style={{display:"flex",flexDirection:"column",gap:10}}>
+              <div style={{fontFamily:"var(--font-display)",fontSize:17,fontWeight:700,color:subjColor,padding:"4px 0"}}>{selChName}</div>
+              {NOTES[selSubj]&&NOTES[selSubj][selChName]&&(
+                <div style={{padding:"12px 14px",borderRadius:12,background:"rgba(201,168,76,0.06)",border:"1px solid rgba(201,168,76,0.2)",fontSize:13,lineHeight:1.8}}>
+                  <div style={{fontSize:11,color:"var(--gold)",fontWeight:700,letterSpacing:1,marginBottom:5}}>📝 QUICK NOTES</div>
+                  <div style={{color:"var(--text)"}}>{NOTES[selSubj][selChName]}</div>
+                </div>
+              )}
+              {[["📝 Mains Topics (asked in JEE Mains)","var(--green)",sd.mainsTopics],["⚡ Advanced Topics (asked in both/more depth)","var(--blue)",sd.advancedTopics],["⚡ Advanced ONLY (not in Mains syllabus)","var(--purple)",sd.advOnly,"rgba(167,139,250,0.06)","rgba(167,139,250,0.25)"],["📝 Mains ONLY (not in Advanced syllabus)","var(--green)",sd.mainsOnly,"rgba(74,222,128,0.06)","rgba(74,222,128,0.25)"]].map(([title,col,items,bg,border])=>(
+                items&&items.length>0&&(
+                  <div key={title} style={{padding:"12px 14px",borderRadius:12,background:bg||col+"08",border:`1px solid ${border||col+"30"}`}}>
+                    <div style={{fontSize:12,fontWeight:700,color:col,letterSpacing:0.5,marginBottom:8}}>{title}</div>
+                    {items.map((item,j)=>(
+                      <div key={j} style={{display:"flex",gap:8,padding:"6px 0",borderBottom:j<items.length-1?"1px solid var(--border)":"none"}}>
+                        <span style={{color:col,flexShrink:0,fontSize:13}}>▸</span>
+                        <span style={{fontSize:13,color:"var(--text)",lineHeight:1.55}}>{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                )
+              ))}
+            </div>
+          );
+        })()}
+      </div>
+    );
+  }
+
+  return(
+    <div style={{display:"flex",flexDirection:"column",gap:16}}>
+      <div style={{display:"flex",gap:6,background:"var(--bg2)",padding:4,borderRadius:12,border:"1px solid var(--border)",width:"fit-content"}}>
+        {[["top50","🏆 Top 50 Mains"],["master","📋 Master List"],["subtopics","📖 Subtopics"]].map(([v,l])=>(
+          <button key={v} onClick={()=>setView(v)} className="btn" style={{fontSize:13,padding:"8px 16px",borderRadius:9,background:view===v?"var(--card2)":"transparent",color:view===v?"var(--gold)":"var(--muted)",border:view===v?"1px solid var(--border2)":"1px solid transparent"}}>{l}</button>
+        ))}
+      </div>
+      {view==="top50"&&<Top50View/>}
+      {view==="master"&&<MasterListView/>}
+      {view==="subtopics"&&<SubtopicsView/>}
+    </div>
+  );
+}
 
 /* ═══════════════════════════════════════════
    HOME DASHBOARD
@@ -1425,7 +1883,7 @@ function App(){
   const[tab,setTab]=useState("home");
   const[apiKey,setApiKey]=useState(()=>{try{return localStorage.getItem("jee_gemini_key")||"";}catch(e){return"";}});
   if(!loggedIn)return<LoginPage onLogin={n=>{setUserName(n);setLoggedIn(true);}}/>;
-  const TABS=[["home","🏠 Home"],["planner","📅 Plan"],["tracker","📊 Tracker"],["practice","🎯 Practice"],["exam","🏛️ Exam"],["tutor","🤖 Tutor"],["settings","⚙️ Settings"]];
+  const TABS=[["home","🏠 Home"],["planner","📅 Plan"],["tracker","📊 Tracker"],["chapters","📚 Chapters"],["practice","🎯 Practice"],["exam","🏛️ Exam"],["tutor","🤖 Tutor"],["settings","⚙️ Settings"]];
   return(
     <div style={{minHeight:"100vh",background:"var(--bg)",position:"relative",zIndex:1}}>
       <nav className="navbar">
@@ -1451,6 +1909,7 @@ function App(){
         {tab==="home"&&<HomeTab userName={userName} apiKey={apiKey}/>}
         {tab==="planner"&&<PlannerTab/>}
         {tab==="tracker"&&<TrackerTab/>}
+        {tab==="chapters"&&<ChaptersTab/>}
         {tab==="practice"&&<PracticeTab apiKey={apiKey}/>}
         {tab==="exam"&&<ExamTab/>}
         {tab==="tutor"&&<TutorTab apiKey={apiKey}/>}

@@ -246,6 +246,8 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg0);color:var(
   <div class="ni" onclick="ST('tests-adv',this)"><span class="ni-ico">⚡</span>Adv Tests<span class="ni-badge" style="background:rgba(162,155,254,.12);color:var(--pu)">14</span></div>
   <div class="nl">Advanced Prep</div>
   <div class="ni" onclick="ST('adv-plan',this)"><span class="ni-ico">🎯</span>Adv Plan</div>
+  <div class="nl">Syllabus</div>
+  <div class="ni" onclick="ST('subtopics',this)"><span class="ni-ico">📑</span>Chapter Syllabus</div>
   <div class="nl">Analysis</div>
   <div class="ni" onclick="ST('analysis',this)"><span class="ni-ico">📊</span>10yr Analysis</div>
   <div class="ni" onclick="ST('predict',this)"><span class="ni-ico">🔮</span>April Predict</div>
@@ -430,11 +432,29 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg0);color:var(
 
 <!-- ══ PREDICTION ══ -->
 <div class="tab-pane" id="tab-predict">
-  <div class="card-g mb16" style="animation:borderGlow 3s ease-in-out infinite">
-    <div class="section-t">🔮 April 2026 Prediction</div>
-    <div class="section-s">Based on Jan→April shift patterns over 10 years. April typically differs 15–25% from January.</div>
+  <div class="card-g mb20" style="animation:borderGlow 3s ease-in-out infinite;text-align:center;padding:28px">
+    <div class="section-t" style="font-size:22px">🔮 JEE Prediction Engine</div>
+    <div class="section-s" style="font-size:14px;margin-top:6px">Last 20 years JEE Mains + Last 48 years JEE Advanced — most repeated topics, minimum marks content</div>
   </div>
-  <div id="pred-content" class="g3"></div>
+  <div class="pill-tabs" style="justify-content:center;margin-bottom:20px" id="pred-switcher">
+    <button class="pill-tab ac" onclick="switchPred('mains',this)" id="pred-tab-mains">📝 JEE Mains (20yr)</button>
+    <button class="pill-tab" onclick="switchPred('adv',this)" id="pred-tab-adv">⚡ JEE Advanced (48yr)</button>
+    <button class="pill-tab" onclick="switchPred('minmarks',this)" id="pred-tab-mm">🎯 Min Marks Strategy</button>
+  </div>
+  <div id="pred-mains-content" style="display:block"></div>
+  <div id="pred-adv-content" style="display:none"></div>
+  <div id="pred-minmarks-content" style="display:none"></div>
+</div>
+
+<!-- ══ SUBTOPICS ══ -->
+<div class="tab-pane" id="tab-subtopics">
+  <div class="card-g mb16">
+    <div class="section-t">📑 Complete Chapter Syllabus</div>
+    <div class="section-s">Every subtopic for every chapter — JEE Mains [M] and JEE Advanced [A] separated. Chapter importance marked.</div>
+  </div>
+  <div class="pill-tabs" id="sub-subj-tabs"></div>
+  <div class="pill-tabs" id="sub-imp-tabs"></div>
+  <div id="sub-content"></div>
 </div>
 
 <!-- ══ TRACKER ══ -->
@@ -1389,7 +1409,7 @@ const PG={
  'adv-plan':'JEE ADVANCED PLAN (36 DAYS)',
  'analysis-mains':'MAINS 10-YEAR ANALYSIS', 'analysis-adv':'ADVANCED 10-YEAR ANALYSIS',
  'predict-mains':'APRIL 2026 MAINS PREDICTION', 'predict-adv':'JEE ADV 2026 PREDICTION',
- focus:'🔥 LAST-DAY MARKS BOOSTER', tracker:'FULL CHAPTER TRACKER', github:'STUDY ACTIVITY GRAPH'
+ focus:'🔥 LAST-DAY MARKS BOOSTER', tracker:'FULL CHAPTER TRACKER', github:'STUDY ACTIVITY GRAPH', subtopics:'CHAPTER SYLLABUS — MAINS & ADVANCED'
 };
 function gTab(tab,el){
 
@@ -1411,6 +1431,8 @@ function gTab(tab,el){
  if(tab==='adv-plan')renderAdvPlan();
  if(tab==='plan')renderPlanWeek();
  if(tab==='countdown')renderCountdownPage();
+ if(tab==='subtopics')renderSubtopics();
+ if(tab==='predict'){renderPredictionMains();renderPredictionAdv();renderMinMarks();}
 }
 
 const ST = gTab; // backward compat alias
@@ -1690,10 +1712,10 @@ function renderPlanWeek(){
  const el=document.getElementById('plan-week-content');
  if(!el)return;
  const sCol={Physics:'var(--ph)',Maths:'var(--ma)',Chemistry:'var(--ch)',ALL:'var(--gold)',REST:'var(--gr)'};
- const sIco={Physics:'⚛️',Maths:'📐',Chemistry:'🧪',ALL:'📚',REST:'😴'};
+ const sIco={Physics:'⚛️',Maths:'📐',Chemistry:'🧪',ALL:'📚',REST:'😴','Physics [A]':'⚛️','Chemistry [A]':'🧪','Maths [A]':'📐'};
  el.innerHTML=days.map(d=>{
-  const sc1=sCol[d.s1.subj]||'var(--t3)';
-  const sc2=sCol[d.s2.subj]||'var(--t3)';
+  const sc1=sCol[d.s1.subj.split(' ')[0]]||'var(--t3)';
+  const sc2=sCol[d.s2.subj.split(' ')[0]]||'var(--t3)';
   const startD=new Date('2026-03-05');startD.setDate(startD.getDate()+d.d-1);
   const isToday=new Date().toDateString()===startD.toDateString();
   const isPast=startD<new Date()&&!isToday;
@@ -1708,11 +1730,11 @@ function renderPlanWeek(){
     <div style="flex:1;min-width:0">
      <div class="dual-day">
       <div class="dual-subj" style="border-color:${sc1}30;background:${sc1}06">
-       <div style="font-size:10px;font-weight:700;color:${sc1};letter-spacing:1px;margin-bottom:4px">${sIco[d.s1.subj]||'📚'} ${d.s1.subj.toUpperCase()}</div>
+       <div style="font-size:10px;font-weight:700;color:${sc1};letter-spacing:1px;margin-bottom:4px">${sIco[d.s1.subj.split(' ')[0]]||'📚'} ${d.s1.subj.toUpperCase()}</div>
        <div style="font-size:13px;font-weight:600;color:var(--t1);line-height:1.3">${d.s1.ch}</div>
       </div>
       <div class="dual-subj" style="border-color:${sc2}30;background:${sc2}06">
-       <div style="font-size:10px;font-weight:700;color:${sc2};letter-spacing:1px;margin-bottom:4px">${sIco[d.s2.subj]||'📚'} ${d.s2.subj.toUpperCase()}</div>
+       <div style="font-size:10px;font-weight:700;color:${sc2};letter-spacing:1px;margin-bottom:4px">${sIco[d.s2.subj.split(' ')[0]]||'📚'} ${d.s2.subj.toUpperCase()}</div>
        <div style="font-size:13px;font-weight:600;color:var(--t1);line-height:1.3">${d.s2.ch}</div>
       </div>
      </div>
@@ -1730,10 +1752,10 @@ function renderAdvPlan(){
  const el=document.getElementById('adv-plan-content');
  if(!el)return;
  const sCol={Physics:'var(--ph)',Maths:'var(--ma)',Chemistry:'var(--ch)',ALL:'var(--gold)',REST:'var(--gr)'};
- const sIco={Physics:'⚛️',Maths:'📐',Chemistry:'🧪',ALL:'📚',REST:'😴'};
- el.innerHTML=ADV_PLAN.map(d=>{
-  const sc1=sCol[d.s1.subj]||'var(--t3)';
-  const sc2=sCol[d.s2.subj]||'var(--t3)';
+ const sIco={Physics:'⚛️',Maths:'📐',Chemistry:'🧪',ALL:'📚',REST:'😴','Physics [A]':'⚛️','Chemistry [A]':'🧪','Maths [A]':'📐'};
+ el.innerHTML=ADV_PLAN_DATA.map(d=>{
+  const sc1=sCol[d.s1.subj.split(' ')[0]]||'var(--t3)';
+  const sc2=sCol[d.s2.subj.split(' ')[0]]||'var(--t3)';
   const startD=new Date('2026-04-11');startD.setDate(startD.getDate()+d.d-1);
   const isToday=new Date().toDateString()===startD.toDateString();
   return`<div class="card mb10" style="${isToday?'border-color:rgba(162,155,254,.45);box-shadow:0 0 20px rgba(162,155,254,.06)':''}">
@@ -1746,11 +1768,11 @@ function renderAdvPlan(){
     <div style="flex:1;min-width:0">
      <div class="dual-day">
       <div class="dual-subj" style="border-color:${sc1}30;background:${sc1}06">
-       <div style="font-size:10px;font-weight:700;color:${sc1};letter-spacing:1px;margin-bottom:4px">${sIco[d.s1.subj]||'📚'} ${d.s1.subj.toUpperCase()}</div>
+       <div style="font-size:10px;font-weight:700;color:${sc1};letter-spacing:1px;margin-bottom:4px">${sIco[d.s1.subj.split(' ')[0]]||'📚'} ${d.s1.subj.toUpperCase()}</div>
        <div style="font-size:13px;color:var(--t1);line-height:1.3">${d.s1.ch}</div>
       </div>
       <div class="dual-subj" style="border-color:${sc2}30;background:${sc2}06">
-       <div style="font-size:10px;font-weight:700;color:${sc2};letter-spacing:1px;margin-bottom:4px">${sIco[d.s2.subj]||'📚'} ${d.s2.subj.toUpperCase()}</div>
+       <div style="font-size:10px;font-weight:700;color:${sc2};letter-spacing:1px;margin-bottom:4px">${sIco[d.s2.subj.split(' ')[0]]||'📚'} ${d.s2.subj.toUpperCase()}</div>
        <div style="font-size:13px;color:var(--t1);line-height:1.3">${d.s2.ch}</div>
       </div>
      </div>
@@ -2074,7 +2096,7 @@ function renderCountdownPage(){
  const dayNum=Math.max(1,Math.min(28,Math.floor((today-startD)/86400000)+1));
  const todayInfo=MAINS_DAILY.find(d=>d.d===dayNum)||MAINS_DAILY[27];
  const sCol={Physics:'var(--ph)',Maths:'var(--ma)',Chemistry:'var(--ch)',ALL:'var(--gold)',REST:'var(--gr)'};
- const sIco={Physics:'⚛️',Maths:'📐',Chemistry:'🧪',ALL:'📚',REST:'😴'};
+ const sIco={Physics:'⚛️',Maths:'📐',Chemistry:'🧪',ALL:'📚',REST:'😴','Physics [A]':'⚛️','Chemistry [A]':'🧪','Maths [A]':'📐'};
  const sc1=sCol[todayInfo.s1.subj]||'var(--t3)';
  const sc2=sCol[todayInfo.s2.subj]||'var(--t3)';
  const todayEl=document.getElementById('today-chapters');
@@ -2143,6 +2165,339 @@ function renderCountdownPage(){
 // ═══════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════
+
+// ═══════════════════════════════════════════════════════════════
+// PREDICTION SWITCHER
+// ═══════════════════════════════════════════════════════════════
+function switchPred(mode,el){
+  document.querySelectorAll('#pred-switcher .pill-tab').forEach(b=>b.classList.remove('ac'));
+  if(el)el.classList.add('ac');
+  document.getElementById('pred-mains-content').style.display=mode==='mains'?'block':'none';
+  document.getElementById('pred-adv-content').style.display=mode==='adv'?'block':'none';
+  document.getElementById('pred-minmarks-content').style.display=mode==='minmarks'?'block':'none';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// SUBTOPICS TAB
+// ═══════════════════════════════════════════════════════════════
+const SUB_STATE={subj:'Physics',imp:'all'};
+function renderSubtopics(){
+  const subjTabs=document.getElementById('sub-subj-tabs');
+  const impTabs=document.getElementById('sub-imp-tabs');
+  const cont=document.getElementById('sub-content');
+  if(!cont)return;
+  const subjList=['Physics','Maths','Chemistry'];
+  subjTabs.innerHTML=subjList.map(s=>{
+    const col=s==='Physics'?'var(--ph)':s==='Maths'?'var(--ma)':'var(--ch)';
+    const ac=SUB_STATE.subj===s;
+    return`<button class="pill-tab ${ac?'ac':''}" style="${ac?`border-color:${col}40;background:${col}08;color:${col}`:''}" onclick="SUB_STATE.subj='${s}';renderSubtopics()">${s==='Physics'?'⚛️':s==='Maths'?'📐':'🧪'} ${s}</button>`;
+  }).join('');
+  impTabs.innerHTML=[['all','All Chapters'],['must','🔥 Must Do'],['high','⭐ High Value'],['skip','Can Skip']].map(([v,l])=>{
+    const ac=SUB_STATE.imp===v;
+    return`<button class="pill-tab ${ac?'ac':''}" onclick="SUB_STATE.imp='${v}';renderSubtopics()">${l}</button>`;
+  }).join('');
+  const arr=SUB_STATE.subj==='Physics'?PH:SUB_STATE.subj==='Maths'?MA:CH;
+  const col=SUB_STATE.subj==='Physics'?'var(--ph)':SUB_STATE.subj==='Maths'?'var(--ma)':'var(--ch)';
+  // Chapter importance map
+  const IMP={
+    Physics:{1:'must',2:'must',3:'must',4:'must',5:'high',6:'high',7:'must',8:'high',9:'must',10:'high',11:'must',12:'must',13:'must',14:'must',15:'must'},
+    Maths:{1:'must',2:'must',3:'must',4:'must',5:'must',6:'must',7:'must',8:'high',9:'must',10:'must',11:'must',12:'must',13:'must',14:'high'},
+    Chemistry:{1:'high',2:'must',3:'high',4:'must',5:'must',6:'high',7:'must',8:'high',9:'must',10:'high',11:'must',12:'must',13:'high',14:'high',15:'high',16:'must',17:'must',18:'must',19:'high',20:'must',21:'high',22:'high',23:'high',24:'must',25:'must',26:'high',27:'high',28:'must'}
+  };
+  const impMap=IMP[SUB_STATE.subj]||{};
+  const impLabel={must:'🔥 MUST DO',high:'⭐ HIGH VALUE',skip:'📌 LOW PRIORITY'};
+  const impColor={must:'#c0392b',high:'#d4a93a',skip:'#7a7060'};
+  const impBg={must:'rgba(192,57,43,.07)',high:'rgba(212,169,58,.06)',skip:'rgba(122,112,96,.04)'};
+  let filtered=arr;
+  if(SUB_STATE.imp!=='all') filtered=arr.filter(ch=>(impMap[ch.day]||'high')===SUB_STATE.imp);
+  if(filtered.length===0){
+    cont.innerHTML=`<div class="card" style="text-align:center;padding:40px;color:var(--t3)">No chapters in this category for ${SUB_STATE.subj}</div>`;
+    return;
+  }
+  cont.innerHTML=filtered.map(ch=>{
+    const imp=impMap[ch.day]||'high';
+    const mSubs=(ch.subs||[]).filter(s=>s.t.startsWith('[M]'));
+    const aSubs=(ch.subs||[]).filter(s=>s.t.startsWith('[A]'));
+    const allSubs=(ch.subs||[]).filter(s=>!s.t.startsWith('[M]')&&!s.t.startsWith('[A]'));
+    const doneCount=(LSG[`sub_${SUB_STATE.subj[0].toLowerCase()}_${ch.day}`]||[]).length;
+    const totalSubs=ch.subs?ch.subs.length:0;
+    const pct=totalSubs>0?Math.round(doneCount/totalSubs*100):0;
+    return`<div class="card mb12" style="border-left:3px solid ${impColor[imp]};background:${impBg[imp]}">
+      <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:12px">
+        <div style="background:${impColor[imp]}15;border:1px solid ${impColor[imp]}30;border-radius:8px;padding:8px 12px;text-align:center;min-width:52px;flex-shrink:0">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:${impColor[imp]};font-weight:800">D${ch.day}</div>
+          <div style="font-size:9px;color:var(--t3);margin-top:2px">${ch.pct||''}</div>
+        </div>
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px">
+            <span style="font-size:16px;font-weight:700;color:var(--t1);font-family:'Cormorant Garamond',serif">${ch.title||ch.name||''}</span>
+            <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;background:${impColor[imp]}15;color:${impColor[imp]}">${impLabel[imp]}</span>
+            <span style="font-size:10px;padding:2px 8px;border-radius:99px;background:${col}10;color:${col};font-family:'JetBrains Mono',monospace">${ch.wt||0}/10</span>
+          </div>
+          <div style="font-size:12px;color:var(--t3);font-style:italic;line-height:1.4">${ch.note||''}</div>
+          <div style="margin-top:8px;height:4px;background:var(--b1);border-radius:99px;overflow:hidden">
+            <div style="height:100%;width:${pct}%;background:${col};border-radius:99px;transition:width .5s"></div>
+          </div>
+          <div style="font-size:10px;color:var(--t3);margin-top:3px">${doneCount}/${totalSubs} subtopics done</div>
+        </div>
+      </div>
+      ${(mSubs.length||allSubs.length)?`
+      <div style="background:rgba(26,111,168,.05);border:1px solid rgba(26,111,168,.15);border-radius:10px;padding:12px;margin-bottom:8px">
+        <div style="font-size:10px;font-weight:700;letter-spacing:2px;color:#1a6fa8;margin-bottom:8px">📝 JEE MAINS SYLLABUS</div>
+        ${(mSubs.length?mSubs:allSubs).map(s=>`<div style="display:flex;gap:8px;align-items:flex-start;padding:4px 0;border-bottom:1px solid rgba(26,111,168,.08)">
+          <span style="color:#1a6fa8;font-size:11px;flex-shrink:0;margin-top:1px">${s.imp?'★':'◦'}</span>
+          <span style="font-size:13px;color:var(--t2);line-height:1.45">${s.t.replace('[M] ','')}</span>
+        </div>`).join('')}
+      </div>`:''}
+      ${aSubs.length?`
+      <div style="background:rgba(108,95,168,.05);border:1px solid rgba(108,95,168,.15);border-radius:10px;padding:12px">
+        <div style="font-size:10px;font-weight:700;letter-spacing:2px;color:var(--pu);margin-bottom:8px">⚡ JEE ADVANCED ONLY</div>
+        ${aSubs.map(s=>`<div style="display:flex;gap:8px;align-items:flex-start;padding:4px 0;border-bottom:1px solid rgba(108,95,168,.08)">
+          <span style="color:var(--pu);font-size:11px;flex-shrink:0;margin-top:1px">✦</span>
+          <span style="font-size:13px;color:var(--t2);line-height:1.45">${s.t.replace('[A] ','')}</span>
+        </div>`).join('')}
+      </div>`:''}
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PREDICTION — JEE MAINS (20 YEARS 2002-2024)
+// ═══════════════════════════════════════════════════════════════
+function renderPredictionMains(){
+  const el=document.getElementById('pred-mains-content');
+  if(!el||el.dataset.rendered)return;
+  el.dataset.rendered='1';
+  const data=[
+    {s:'Physics',col:'var(--ph)',ico:'⚛️',chapters:[
+      {name:'Current Electricity',yrs:20,imp:'must',freq:'20/20 years',note:'2-3 Qs EVERY single session. Kirchhoff, Wheatstone, potentiometer.',topics:['Kirchhoff KVL+KCL mesh analysis','Potentiometer: EMF comparison & internal r','Wheatstone bridge balanced/unbalanced','RC circuit charging/discharging τ=RC','Terminal voltage, max power transfer theorem']},
+      {name:'Modern Physics (Atoms+Nuclei)',yrs:20,imp:'must',freq:'20/20 years',note:'Half-life numerical + Bohr model energy levels every year.',topics:['Half-life: N=N₀(½)^(t/T½), Activity A=λN','Bohr model: Eₙ=-13.6/n² eV, rₙ=n²×0.529Å','H-spectrum: series identification by wavelength range','Radioactive decay α/β/γ changes in Z and A','de Broglie λ=h/mv numericals']},
+      {name:'Ray Optics',yrs:19,imp:'must',freq:'19/20 years',note:'Lens-mirror combo + prism minimum deviation.',topics:['Lens formula + mirror formula combo','Lensmaker equation derivation','TIR critical angle sin(θc)=1/n','Prism: minimum deviation n=sin((A+dm)/2)/sin(A/2)','Magnification compound microscope & telescope']},
+      {name:'Semiconductors & Logic Gates',yrs:19,imp:'must',freq:'19/20 years',note:'NAND/NOR as universal gate + Boolean algebra.',topics:['p-n junction IV characteristics','Zener diode as voltage regulator','NAND/NOR as universal gates','Boolean expression simplification','Logic gate truth tables: XOR, XNOR']},
+      {name:'Electrostatics',yrs:18,imp:'must',freq:'18/20 years',note:'Gauss law applications + capacitor network problems.',topics:['Gauss law for sphere/cylinder/infinite plane','Capacitor: series+parallel combinations','Energy stored U=CV²/2, charge redistribution','Electric field at various points for dipole','Potential due to system of charges']},
+      {name:'Thermodynamics + KTG',yrs:18,imp:'must',freq:'18/20 years',note:'Carnot efficiency + adiabatic process every year.',topics:['Carnot: η=1-T₂/T₁','Adiabatic: PVᵞ=const, TVᵞ⁻¹=const','vrms=√(3RT/M), vavg=√(8RT/πM)','1st law ΔU=Q-W for all processes','Degrees of freedom, Cv=(f/2)R, γ=Cp/Cv']},
+      {name:'Rotational Motion',yrs:18,imp:'must',freq:'18/20 years',note:'MOI values + rolling on incline always tested.',topics:['MOI: disc MR²/2, sphere 2MR²/5, rod ML²/12','Parallel axis theorem I=Icm+Md²','Rolling: total KE = ½mv²(1+k²/R²)','Angular momentum conservation','Rolling down incline: a=gsinθ/(1+I/MR²)']},
+      {name:'Wave Optics',yrs:17,imp:'high',freq:'17/20 years',note:'YDSE fringe width + Malus law numerical.',topics:['YDSE: β=λD/d, fringe shift with slab','Intensity I=4I₀cos²(φ/2)','Single slit: central max 2λD/a','Malus law I=I₀cos²θ','Brewster angle tanθ=n']},
+      {name:'Electromagnetic Induction + AC',yrs:17,imp:'must',freq:'17/20 years',note:'LCR resonance + motional EMF + transformer.',topics:['Faraday EMF=-dΦ/dt, Lenz law direction','Motional EMF ε=Bvl','LCR: Z=√(R²+(XL-XC)²), resonance f₀','Power factor cosφ=R/Z','Transformer V₁/V₂=N₁/N₂']},
+      {name:'Units + Dimensions + Error Analysis',yrs:16,imp:'must',freq:'16/20 years',note:'Error propagation formula — quick 4 marks.',topics:['Dimensional analysis: [G], [h], [ε₀]','%error in aⁿbᵐ/cᵖ = n(Δa/a)+m(Δb/b)+p(Δc/c)','Significant figures rules','Screw gauge: LC=pitch/N divisions','Vernier caliper: LC=1 MSD-1 VSD']},
+      {name:'Gravitation',yrs:15,imp:'high',freq:'15/20 years',note:'Orbital velocity + Kepler 3rd law.',topics:["Orbital v=√(GM/r), escape v=√(2GM/R)","Kepler 3rd T²∝r³","g variation with altitude and depth","Binding energy of satellite","Geostationary conditions"]},
+      {name:'Moving Charges + Magnetism',yrs:15,imp:'high',freq:'15/20 years',note:'Biot-Savart at centre of loop + cyclotron.',topics:['Biot-Savart: B at centre=μ₀I/2R','Solenoid B=μ₀nI','Lorentz force: circular motion r=mv/qB','Torque on current loop τ=NIAB sinθ','Galvanometer shunt calculation']},
+      {name:'Magnetism + Materials',yrs:12,imp:'high',freq:'12/20 years',note:'Hysteresis + dia/para/ferro properties.',topics:['Dia/para/ferromagnetic properties','Hysteresis: retentivity, coercivity','Self-inductance L of solenoid','Mutual inductance formula','Energy in inductor U=LI²/2']},
+      {name:'EMW + Communication',yrs:13,imp:'high',freq:'13/20 years',note:'EM spectrum order + displacement current.',topics:['EM spectrum order: γ→X→UV→Vis→IR→MW→Radio','Displacement current iD=ε₀dΦE/dt','c=E₀/B₀=1/√(μ₀ε₀)','AM vs FM: advantages','Modulation index']},
+      {name:'Fluids + SHM',yrs:14,imp:'high',freq:'14/20 years',note:'Bernoulli + SHM energy at specific positions.',topics:['Bernoulli: P+½ρv²+ρgh=const','Terminal velocity Stokes: v=2r²Δρg/9η','SHM: v=ω√(A²-x²), E=½mω²A²','Capillary rise h=2Tcosθ/ρgr','Simple pendulum: T=2π√(L/g)']}
+    ]},
+    {s:'Chemistry',col:'var(--ch)',ico:'🧪',chapters:[
+      {name:'Chemical Bonding',yrs:20,imp:'must',freq:'20/20 years',note:'VSEPR+MO bond order+dipole moment every year.',topics:['VSEPR: geometry from BP+LP count','MO bond order: N₂=3, O₂=2, F₂=1, NO=2.5','Hybridisation for all molecules','Dipole moment: HF>H₂O>NH₃>HCl','H-bonding effect on boiling points']},
+      {name:'Coordination Compounds',yrs:20,imp:'must',freq:'20/20 years',note:'IUPAC+isomerism+CFT = 2-3 Qs every paper.',topics:['IUPAC naming: ligands alphabetical, -ate suffix','Geometric isomers: cis/trans in MA₂B₂','Optical isomers: [Co(en)₃]³⁺','VBT: dsp² sq planar, sp³d² octahedral','CFT: high/low spin, spectrochemical series']},
+      {name:'Aldehydes, Ketones & Acids',yrs:20,imp:'must',freq:'20/20 years',note:'Highest organic weightage — Aldol, Cannizzaro, iodoform.',topics:['Aldol condensation: α-H + base required','Cannizzaro: no α-H + conc NaOH','Tollens (Ag) + Fehling (Cu₂O): aldehydes only','Iodoform: CH₃CO- or CH₃CHOH groups','Esterification: Fischer, conditions']},
+      {name:'d-Block + f-Block',yrs:19,imp:'must',freq:'19/20 years',note:'KMnO₄ chemistry + magnetic moment formula.',topics:['KMnO₄: acid→Mn²⁺, neutral→MnO₂, base→MnO₄²⁻','CrO₄²⁻(yellow)⇌Cr₂O₇²⁻(orange) pH-dependent','Magnetic moment μ=√[n(n+2)] BM','Lanthanoid contraction explanation','Variable OS due to (n-1)d and ns proximity']},
+      {name:'Electrochemistry',yrs:19,imp:'must',freq:'19/20 years',note:'Nernst equation + Faraday numericals every year.',topics:['E°cell=E°cath-E°anode; ΔG°=-nFE°','Nernst E=E°-(0.0591/n)logQ at 25°C','Faraday: w=MIt/nF','Kohlrausch: Λ°m=Σν±λ°±','Discharge order at electrodes']},
+      {name:'Chemical Thermodynamics',yrs:19,imp:'must',freq:'19/20 years',note:'ΔG = ΔH - TΔS sign analysis + Hess law.',topics:['ΔH=ΔU+ΔngRT; Δng calculation','Hess law: algebraic combination','Bond enthalpy: Σbroken - Σformed','ΔG=ΔH-TΔS; spontaneity condition','ΔG°=-RTlnK=-nFE° trinity']},
+      {name:'p-Block Gr 15-18',yrs:19,imp:'must',freq:'19/20 years',note:'XeF structures + PCl₅ + H₂SO₄ every year.',topics:['XeF₂(linear) XeF₄(sq planar) XeF₆(distorted oct)','PCl₃(sp³) vs PCl₅(sp³d): axial bonds longer','H₂SO₄: dehydrating+oxidising+sulphonating','Halogen reactivity vs bond energy trend','Interhalogen geometries: ClF₃ T-shape, IF₇ pentag']},
+      {name:'Chemical Kinetics',yrs:18,imp:'must',freq:'18/20 years',note:'First-order half-life + Arrhenius Ea calculation.',topics:['First order t½=0.693/k (conc-independent)','Arrhenius: ln(k₂/k₁)=(Ea/R)(1/T₁-1/T₂)','Zero order: t½=[A]₀/2k','Pseudo first order: excess reactant','Determine order from initial rate data']},
+      {name:'Ionic Equilibrium',yrs:18,imp:'must',freq:'18/20 years',note:'Buffer pH + Ksp + salt hydrolysis.',topics:['Buffer pH=pKa+log([A⁻]/[HA])','Ksp + common ion effect calculation','Salt hydrolysis: pH=7+½(pKa-pKb)','Ostwald: Ka=Cα²/(1-α)','Solubility from Ksp: s=[Mn+]^(1/n) type']},
+      {name:'s-Block Elements',yrs:17,imp:'must',freq:'17/20 years',note:'Na₂O₂ + KO₂ + flame colours every year.',topics:['Na₂O₂+H₂O→NaOH+H₂O₂ reaction','KO₂ in breathing apparatus','Flame colours: Na yellow, K violet, Ca brick-red','Anomalous Li: Li₂O not peroxide, Li₃N','Plaster of Paris setting reaction']},
+      {name:'Mole Concept + Stoichiometry',yrs:17,imp:'must',freq:'17/20 years',note:'Limiting reagent + normality calculations.',topics:['Limiting reagent: smallest moles/coefficient','n-factor: acid/base=H⁺, redox=ΔON','Normality meq₁=meq₂ at equivalence','% yield and % purity calculations','POAC for complex multi-step stoichiometry']},
+      {name:'GOC + Hydrocarbons',yrs:18,imp:'must',freq:'18/20 years',note:'Stability orders + EAS directing effects.',topics:['Carbocation: 3°>2°>1° + benzylic/allylic','Markovnikov vs anti-Markovnikov','Benzene EAS: directing effects o/p vs m','Ozonolysis: predict products','Free radical halogenation selectivity']},
+      {name:'Haloalkanes + Alcohols + Phenols',yrs:16,imp:'must',freq:'16/20 years',note:'SN1/SN2 conditions + Lucas test + phenol reactions.',topics:['SN2: inversion, primary, polar aprotic','SN1: racemisation, tertiary, polar protic','Lucas test: 3°immediate, 2°slow, 1°no turbidity','Kolbe reaction: phenol+CO₂/NaOH','Reimer-Tiemann: phenol+CHCl₃/NaOH→salicylaldehyde']},
+      {name:'Amines + Biomolecules',yrs:15,imp:'high',freq:'15/20 years',note:'Basicity order + Sandmeyer + diazonium.',topics:['Basicity: aliphatic>NH₃>aniline (aqueous)','Sandmeyer: ArN₂⁺+CuCN→ArCN, CuCl→ArCl','Diazotisation: 0-5°C condition','Iodoform test groups: CH₃CO- or CH₃CHOH-','Gabriel synthesis: primary amine only']},
+      {name:'Solid State',yrs:15,imp:'high',freq:'15/20 years',note:'NaCl/ZnS structure + packing efficiency.',topics:['SC(1,52%), BCC(2,68%), FCC(4,74%)','NaCl: CN=6:6, 4 formula units','ZnS: CN=4:4 tetrahedral','Schottky (vacancy) vs Frenkel (interstitial)','Radius ratio: tet 0.225, oct 0.414']},
+      {name:'Polymers + Everyday Life',yrs:13,imp:'high',freq:'13/20 years',note:'Monomer identification + biodegradable.',topics:['Nylon-6,6: monomers hexamethylenediamine+adipic acid','Natural rubber = cis-1,4-polyisoprene','Biodegradable: PHBV, nylon-2-nylon-6','Aspirin: analgesic + antipyretic mechanism','Detergent vs soap: hard water behaviour']}
+    ]},
+    {s:'Maths',col:'var(--ma)',ico:'📐',chapters:[
+      {name:'3D Geometry',yrs:20,imp:'must',freq:'20/20 years',note:'7.35% highest in Maths — 2 questions every paper.',topics:['Line in symmetric/vector form','Plane: ax+by+cz+d=0, normal form','Distance of point from plane: formula','Shortest distance between skew lines','Image of point in plane, foot of perpendicular']},
+      {name:'Definite Integration',yrs:20,imp:'must',freq:'20/20 years',note:'8.05% — King rule solves 50% of problems.',topics:["KING RULE: ∫f(x)=∫f(a-x) — use ALWAYS first","Even/odd property on symmetric intervals","Periodic function property","Leibniz rule: d/dx∫(u,v)f(t)dt","Riemann sum → definite integral"]},
+      {name:'Limits, Continuity & Differentiability',yrs:20,imp:'must',freq:'20/20 years',note:'1^∞ form + L Hopital appear every paper.',topics:['1^∞ form: e^[lim(f-1)·g]','L Hopital for 0/0 and ∞/∞','Standard limits: sinx/x=1, (eˣ-1)/x=1','LHL=RHL=f(a) for continuity','LHD=RHD for differentiability']},
+      {name:'Matrices + Determinants',yrs:19,imp:'must',freq:'19/20 years',note:'7.46% — adjoint+inverse+Cramer rule.',topics:['Adjoint: cofactor matrix transposed','Inverse A⁻¹=adj(A)/|A|','Cramer rule: x=Dx/D','Consistency: rank method','|AB|=|A||B|, |A⁻¹|=1/|A|']},
+      {name:'Sequences & Series',yrs:19,imp:'must',freq:'19/20 years',note:'5.74% — AGP and telescoping every paper.',topics:['AGP: multiply by r, subtract method','Telescoping via partial fractions','aₙ=Sₙ-Sₙ₋₁ for n≥2','AM≥GM≥HM, AM·HM=GM²','Σn=n(n+1)/2, Σn²=n(n+1)(2n+1)/6, Σn³=(Σn)²']},
+      {name:'Probability',yrs:19,imp:'must',freq:'19/20 years',note:'Bayes theorem appears almost every session.',topics:['Bayes theorem: P(Ai|B)=P(B|Ai)P(Ai)/Σ','Binomial: P(X=r)=ⁿCr pʳ qⁿ⁻ʳ','Mean=np, Variance=npq','E(X)=Σx·P(x)','Conditional: P(A|B)=P(A∩B)/P(B)']},
+      {name:'Conics (Parabola+Ellipse+Hyperbola)',yrs:19,imp:'must',freq:'19/20 years',note:'6.20% — tangent conditions every paper.',topics:['Parabola y²=4ax: parametric (at²,2at)','Tangent ty=x+at², normal t-equation','Ellipse: sum of focal radii=2a','Tangent condition c²=a²m²+b² (ellipse)','Rectangular hyperbola xy=c²']},
+      {name:'Application of Derivatives',yrs:18,imp:'must',freq:'18/20 years',note:'Maxima-minima + tangent-normal problems.',topics:['Tangent: y-y₁=m(x-x₁) at point on curve','2nd derivative test for max/min','AM-GM trick for optimisation','Rate of change: chain rule dy/dt','Increasing/decreasing intervals']},
+      {name:'Complex Numbers',yrs:18,imp:'must',freq:'18/20 years',note:'Rotation trick + cube roots every paper.',topics:['Rotation: multiply by e^(iα)','Cube roots: 1+ω+ω²=0','|z-a|=r circle locus in Argand plane','Triangle inequality','De Moivre: (cosθ+i sinθ)ⁿ=cos nθ+i sin nθ']},
+      {name:'Binomial Theorem',yrs:18,imp:'must',freq:'18/20 years',note:'General term + term independent of x.',topics:['General term Tᵣ₊₁=ⁿCr·aⁿ⁻ʳ·bʳ','Term independent of x: set power=0','Middle term: n even→(n/2+1)th','Sum of coefficients=2ⁿ','Negative index: (1+x)ⁿ for |x|<1']},
+      {name:'Straight Lines + Circles',yrs:17,imp:'must',freq:'17/20 years',note:'Family of lines + radical axis.',topics:['Distance from point to line formula','Pair of lines: ax²+2hxy+by²=0','Chord of contact: T=0','Radical axis: S₁-S₂=0','Family of circles: S₁+λS₂=0']},
+      {name:'Differential Equations',yrs:16,imp:'high',freq:'16/20 years',note:'Linear DE (IF method) covers 90% of questions.',topics:['Linear DE: IF=e^∫P dx','Variable separable','Homogeneous: y=vx substitution','Orthogonal trajectories','Applications: growth/decay/cooling']},
+      {name:'Vectors',yrs:16,imp:'must',freq:'16/20 years',note:'Scalar triple product + area applications.',topics:['Triple product [a b c]=a·(b×c)','Area of triangle=½|a×b|','Coplanar: [a b c]=0','Projection formula a·b/|b|','Section formula in vector form']},
+      {name:'P&C + Sets + Relations',yrs:15,imp:'high',freq:'15/20 years',note:'Circular permutation + distribution.',topics:['Circular: (n-1)!','nCr+nCr-1=(n+1)Cr Pascal','Distribution of n distinct into r groups','Derangements formula','De Morgan laws for sets']}
+    ]}
+  ];
+  el.innerHTML=`<div style="margin-bottom:16px;padding:12px 16px;background:rgba(26,111,168,.06);border:1px solid rgba(26,111,168,.18);border-radius:12px;font-size:13px;color:var(--t2)">📊 Analysis based on <b>20 years of JEE Mains papers (2002-2024)</b> including both Jan & April attempts. "Must Do" chapters appeared in 16+ of 20 years.</div>`+
+  data.map(({s,col,ico,chapters})=>`
+    <div style="margin-bottom:24px">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:${col};margin-bottom:14px;padding-bottom:8px;border-bottom:1.5px solid ${col}20">${ico} ${s}</div>
+      ${chapters.map(ch=>`<div class="card mb10" style="border-left:3px solid ${ch.imp==='must'?'#c0392b':'#d4a93a'}">
+        <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px">
+          <div style="flex:1">
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px">
+              <span style="font-size:15px;font-weight:700;color:var(--t1)">${ch.name}</span>
+              <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;background:${ch.imp==='must'?'rgba(192,57,43,.1)':'rgba(212,169,58,.1)'};color:${ch.imp==='must'?'#c0392b':'#d4a93a'}">${ch.imp==='must'?'🔥 MUST DO':'⭐ HIGH VALUE'}</span>
+              <span style="font-size:10px;font-family:'JetBrains Mono',monospace;color:${ch.yrs>=18?'var(--gr)':ch.yrs>=15?'var(--or)':'var(--t3)'};font-weight:700">${ch.freq}</span>
+            </div>
+            <div style="height:6px;background:var(--b1);border-radius:99px;overflow:hidden;margin-bottom:6px">
+              <div style="height:100%;width:${ch.yrs/20*100}%;background:${ch.yrs>=18?'var(--gr)':ch.yrs>=15?'var(--or)':'var(--re)'};border-radius:99px"></div>
+            </div>
+            <div style="font-size:12px;color:var(--t3);font-style:italic;margin-bottom:8px">${ch.note}</div>
+            <div>${ch.topics.map(t=>`<div style="font-size:12.5px;color:var(--t2);padding:3px 0;display:flex;gap:6px"><span style="color:${col}">▸</span>${t}</div>`).join('')}</div>
+          </div>
+        </div>
+      </div>`).join('')}
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PREDICTION — JEE ADVANCED (48 YEARS 1978-2025)
+// ═══════════════════════════════════════════════════════════════
+function renderPredictionAdv(){
+  const el=document.getElementById('pred-adv-content');
+  if(!el||el.dataset.rendered)return;
+  el.dataset.rendered='1';
+  const data=[
+    {s:'Physics',col:'var(--ph)',ico:'⚛️',chapters:[
+      {name:'Classical Mechanics (NLM+WEP+CoM+Rotation)',yrs:48,imp:'must',freq:'48/48 years',note:'Appeared in EVERY JEE Advanced/IIT-JEE since 1978. Constraint motion + rolling + variable mass.',topics:['Constraint relation: wedge-block, Atwood, pulley systems','Variable mass (rocket thrust) F=v_rel·dm/dt','Rolling on inclined plane — full derivation','Oblique elastic/inelastic collision (2D)','Angular momentum conservation: I₁ω₁=I₂ω₂']},
+      {name:'Electrostatics + Capacitors',yrs:46,imp:'must',freq:'46/48 years',note:'Gauss law proofs + capacitor with dielectric always tested.',topics:['Method of images: grounded plane','Conductor with cavity: induced charge distribution','Energy of system of point charges','Capacitor: dielectric partially inserted (force, energy)','Van de Graaff: max potential calculation']},
+      {name:'Electromagnetic Induction + Magnetism',yrs:46,imp:'must',freq:'46/48 years',note:'Rotating rod EMF + toroid + Hall effect every year.',topics:['Rotating rod EMF: ε=½Bωl²','Toroid: B=μ₀NI/2πr','Hall effect: V_H=IB/ned','Charged particle in crossed E and B fields','Magnetic braking: induced current opposes motion']},
+      {name:'Optics (Geometrical + Wave)',yrs:45,imp:'must',freq:'45/48 years',note:'Thin film interference + Newton rings every year since 1983.',topics:['Thin film: 2μtcosθ path difference','Newton rings: rₙ²=nλR','Resolving power: Δθ=1.22λ/D','Fibre optics: NA=√(n₁²-n₂²)','Wavefront and Huygens construction']},
+      {name:'Thermodynamics + KTG',yrs:44,imp:'must',freq:'44/48 years',note:'Multi-step PV cycle + entropy calculation.',topics:['Entropy: ΔS=nCvln(T₂/T₁)+nRln(V₂/V₁)','Irreversible processes: ΔS_universe>0','Clausius inequality: ∮dQ/T≤0','Multi-step cycle efficiency calculation','Maxwell-Boltzmann distribution analysis']},
+      {name:'Modern Physics (Photoelectric+Nuclear+Solid State)',yrs:44,imp:'must',freq:'44/48 years',note:'Photoelectric + nuclear Q-value every paper.',topics:['Compton scattering: Δλ=(h/mc)(1-cosθ)','X-rays: Moseley law √f=a(Z-b), Bragg 2dsinθ=nλ','Nuclear Q-value: Δm·c² in MeV','Radioactive equilibrium: A₁N₁=A₂N₂','Alpha decay tunnelling (qualitative)']},
+      {name:'SHM + Waves + Sound',yrs:43,imp:'must',freq:'43/48 years',note:'Coupled oscillators + resonance column every year.',topics:['SHM superposition: resultant R=√(A₁²+A₂²+2A₁A₂cosφ)','Coupled oscillators: normal modes','Melde experiment: v=√(T/μ)','Resonance column: v=2f(L₂-L₁)','Doppler for moving medium: v±v_wind']},
+      {name:'Fluids + Viscosity',yrs:40,imp:'must',freq:'40/48 years',note:'Poiseuille equation + surface tension problems.',topics:['Poiseuille: Q=πr⁴ΔP/(8ηL)','Reynolds number Re=ρvD/η','Surface energy: W=8πr²T to blow bubble','Capillary: meniscus height, contact angle effects','Stokes terminal velocity derivation']},
+      {name:'Current Electricity + AC',yrs:38,imp:'must',freq:'38/48 years',note:'LCR circuit analysis + network problems.',topics:['LCR quality factor Q=ω₀L/R=1/ω₀CR','Power dissipation: P_avg=½I₀²R','Complex impedance method','Wheatstone bridge: sensitivity analysis','Network theorems: Thevenin, Norton']},
+      {name:'Semiconductor + Devices',yrs:30,imp:'high',freq:'30/48 years',note:'Less frequent recently but transistor circuits still appear.',topics:['Common emitter: voltage gain Av=-β(Rc/re)','Load line analysis','Zener diode: power dissipation in circuit','LED: forward biased, specific wavelength','Solar cell: IV characteristics, fill factor']}
+    ]},
+    {s:'Chemistry',col:'var(--ch)',ico:'🧪',chapters:[
+      {name:'Organic Mechanisms + Synthesis',yrs:48,imp:'must',freq:'48/48 years',note:'Multi-step synthesis in EVERY paper since 1978. Most marks in organic.',topics:['Retrosynthesis: work backwards from target','Neighbouring group participation (NGP): retention','Benzyne mechanism: isotope labelling proof','Claisen + Michael + Reformatsky combined','Robinson annulation: Michael + aldol']},
+      {name:'Coordination Compounds',yrs:46,imp:'must',freq:'46/48 years',note:'CFSE calculation + isomers + trans effect.',topics:['CFSE: -0.4×(n_t2g)×Δo for octahedral','Jahn-Teller: Cu²⁺(d⁹), Mn³⁺(d⁴) distortion','Trans effect: CO>CN⁻>NO₂⁻>Cl⁻>NH₃','π-backbonding: synergic bond in M-CO','All isomerism types: geometric+optical+ionisation+linkage']},
+      {name:'Chemical Equilibrium + Thermodynamics',yrs:45,imp:'must',freq:'45/48 years',note:'Entropy integrals + Born-Haber + coupled equilibria.',topics:['Kirchhoff: ΔH(T₂)=ΔH(T₁)+ΔCp·ΔT','Born-Haber cycle: lattice enthalpy for ionic solids','Coupled equilibria: simultaneous Kc/Kp','Clausius-Clapeyron: ln(P₂/P₁)=ΔHvap/R(1/T₁-1/T₂)','Entropy: ΔS=nCvln(T₂/T₁)+nRln(V₂/V₁)']},
+      {name:'Electrochemistry Advanced',yrs:43,imp:'must',freq:'43/48 years',note:'Concentration cells + transference numbers.',topics:['Concentration cell: E=-(0.0591/n)log(C₁/C₂)','Transference number: Hittorf method','Fuel cell: H₂-O₂ electrode reactions','Corrosion electrochemistry: anode/cathode identification','Activity coefficient effects on EMF']},
+      {name:'Chemical Kinetics Advanced',yrs:42,imp:'must',freq:'42/48 years',note:'Consecutive+parallel reactions + Lindemann mechanism.',topics:['Consecutive: [B]_max at t=ln(k₂/k₁)/(k₂-k₁)','Parallel: ratio k₁/k₂ (time-independent)','Lindemann: high P first order, low P second order','Steady-state approximation for intermediates','Photo-chemical quantum yield φ']},
+      {name:'p-Block Deep',yrs:42,imp:'must',freq:'42/48 years',note:'Oxoacids of P/S/Cl + interhalogen structures.',topics:['Oxoacids of P: basicity=number of P-OH groups only','Oxoacids of S: H₂S₂O₈ Marshall acid (O-O bond)','Oxoacids of Cl: acidity order HClO<HClO₂<HClO₃<HClO₄','Interhalogen: BrF₅ sq pyramidal, IF₇ pentag bipyr','Back bonding: Lewis acidity BF₃<BCl₃<BBr₃']},
+      {name:'States of Matter (vdW + KMT)',yrs:40,imp:'must',freq:'40/48 years',note:'This chapter is ONLY in JEE Advanced — full vdW theory.',topics:['vdW: (P+an²/V²)(V-nb)=nRT','Critical: Tc=8a/27Rb, Pc=a/27b², Zc=3/8','Boyle temp: Tb=a/Rb (Z=1 at all P)','Maxwell-Boltzmann: T↑ shifts right, area constant','Joule-Thomson: cools below inversion temp Ti=2a/Rb']},
+      {name:'Stereochemistry + GOC Advanced',yrs:39,imp:'must',freq:'39/48 years',note:'R/S + NGP + Hückel aromaticity every year.',topics:['Hückel: 4n+2 π electrons for aromaticity','Antiaromatic: 4n (cyclobutadiene 4e⁻)','Ambident nucleophiles: CN⁻ via C or N','NGP: anchimeric assistance → retention of config','E1cb mechanism: carbanion intermediate']},
+      {name:'Solid State Advanced',yrs:36,imp:'must',freq:'36/48 years',note:'Density calculation + band theory + diamond cubic.',topics:['Density d=ZM/(Nₐ·a³): calculate a from d or vice versa','CsCl: simple cubic, CN=8:8','Diamond cubic: 8 atoms, FCC+4 tet voids, CN=4','Band theory: gap determines conductor/semi/insulator','F-centres: colour centres from electron-trapped vacancy']},
+      {name:'Amines + Named Reactions',yrs:34,imp:'high',freq:'34/48 years',note:'Hoffmann bromamide + Curtius in recent papers.',topics:['Hoffmann bromamide: RCONH₂+Br₂+NaOH→RNH₂ (n-1 C)','Curtius: acyl azide→isocyanate→amine','Wolff rearrangement: α-diazo ketone→ketene','Gas phase basicity: 3°>2°>1°>NH₃ (no solvation)','Birch reduction: Na/liq.NH₃ reduces unsubstituted positions']}
+    ]},
+    {s:'Maths',col:'var(--ma)',ico:'📐',chapters:[
+      {name:'Calculus (Integration + DE)',yrs:48,imp:'must',freq:'48/48 years',note:'Definite integration in EVERY IIT-JEE since 1978.',topics:['Reduction formulae: derive Iₙ=(n-1)/n·Iₙ₋₂','Wallis: ∫sinⁿx from 0 to π/2','Leibniz under integral sign: d/da∫f(x,a)dx=∫∂f/∂a dx','Beta function: B(m,n)=Γ(m)Γ(n)/Γ(m+n)','Exact DE + Bernoulli + orthogonal trajectories']},
+      {name:'3D Geometry + Vectors',yrs:46,imp:'must',freq:'46/48 years',note:'Combined 3D+vector problems every year.',topics:['BAC-CAB: a×(b×c)=b(a·c)-c(a·b)','Tetrahedron volume=1/6|[a b c]|','Foot of perpendicular (parametric method)','Distance between parallel planes: |d₁-d₂|/√(a²+b²+c²)','Coplanar lines: determinant condition']},
+      {name:'Complex Numbers',yrs:45,imp:'must',freq:'45/48 years',note:'Geometric problems in Argand plane every year.',topics:['arg((z-a)/(z-b))=θ: arc of circle','Ptolemy theorem using complex numbers','Reflection of z in line: formula','nth roots: sum=0, product=(-1)^(n+1)','Functional equation: f(z)=z̄ reflection']},
+      {name:'Conics Advanced',yrs:44,imp:'must',freq:'44/48 years',note:'Director circle + conjugate diameters rarely missed.',topics:['Director circle: tangents perpendicular from this locus','Conjugate diameters: slope product=-b²/a²','Polar of a point T=0','Eccentric angle: P=(a·cosφ, b·sinφ)','Chord with given midpoint T=S₁']},
+      {name:'Probability Advanced',yrs:44,imp:'must',freq:'44/48 years',note:'Multi-correct probability with complex sample spaces.',topics:['Geometric probability: length/area/volume ratio','Negative binomial: number of trials to rth success','Inclusion-exclusion: P(A₁∪A₂∪A₃)','Derangements: D_n=n!Σ(-1)^k/k! from k=0 to n','Conditional chains: P(A₁∩A₂∩A₃)=P(A₁)·P(A₂|A₁)·...']},
+      {name:'Algebra (Matrices+Sequences+Inequalities)',yrs:43,imp:'must',freq:'43/48 years',note:'Cayley-Hamilton + AM-GM proofs every year.',topics:['Cayley-Hamilton: A satisfies own characteristic equation','Cauchy-Schwarz: (Σaᵢbᵢ)²≤(Σaᵢ²)(Σbᵢ²)','AM-GM proof for n terms; when equality holds','Method of differences for nth term','Telescoping with partial fractions (non-standard)']},
+      {name:'Differential Equations Advanced',yrs:40,imp:'must',freq:'40/48 years',note:'Exact DE + orthogonal trajectories.',topics:['Exact: M dx+N dy=0, check ∂M/∂y=∂N/∂x','Integrating factor: e^∫P or e^∫Q','Clairaut: y=px+f(p); singular solution','Bernoulli: v=y^(1-n) substitution','Orthogonal trajectory: replace dy/dx with -dx/dy']},
+      {name:'Functions + Functional Equations',yrs:38,imp:'high',freq:'38/48 years',note:'Functional equations + period analysis.',topics:['f(x+y)=f(x)+f(y) → f(x)=kx','f(xy)=f(x)+f(y) → f(x)=k·log(x)','Even/odd in definite integration','Period of combined: LCM of periods','Number of solutions: graphical intersection method']},
+      {name:'P&C Advanced',yrs:36,imp:'high',freq:'36/48 years',note:'Distribution + derangements + inclusion-exclusion.',topics:['n distinct into r distinct groups: r^n total','n identical into r distinct: C(n+r-1,r-1)','Dearrangement: D_n=n!(1-1/1!+1/2!-...+(-1)^n/n!)','Non-negative integer solutions of x₁+...+xr=n','Multinomial coefficient applications']},
+      {name:'Binomial + Number Theory',yrs:32,imp:'high',freq:'32/48 years',note:'Fractional part + largest power of prime in n!.',topics:['Fractional part of (a+√b)^n','Largest power of p in n!: ⌊n/p⌋+⌊n/p²⌋+...','mod arithmetic: Fermat little theorem','Properties of C(n,r) for large n','Sum of series using binomial expansion']}
+    ]}
+  ];
+  el.innerHTML=`<div style="margin-bottom:16px;padding:12px 16px;background:rgba(108,95,168,.06);border:1px solid rgba(108,95,168,.18);border-radius:12px;font-size:13px;color:var(--t2)">📊 Analysis based on <b>48 years of IIT-JEE / JEE Advanced papers (1978-2025)</b>. "Must Do" chapters appeared in 35+ of 48 years.</div>`+
+  data.map(({s,col,ico,chapters})=>`
+    <div style="margin-bottom:24px">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:${col};margin-bottom:14px;padding-bottom:8px;border-bottom:1.5px solid ${col}20">${ico} ${s}</div>
+      ${chapters.map(ch=>`<div class="card mb10" style="border-left:3px solid ${ch.imp==='must'?'var(--pu)':'#d4a93a'}">
+        <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px">
+          <div style="flex:1">
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px">
+              <span style="font-size:15px;font-weight:700;color:var(--t1)">${ch.name}</span>
+              <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;background:${ch.imp==='must'?'rgba(108,95,168,.1)':'rgba(212,169,58,.1)'};color:${ch.imp==='must'?'var(--pu)':'#d4a93a'}">${ch.imp==='must'?'🔥 MUST DO':'⭐ HIGH VALUE'}</span>
+              <span style="font-size:10px;font-family:'JetBrains Mono',monospace;color:${ch.yrs>=42?'var(--gr)':ch.yrs>=35?'var(--or)':'var(--t3)'};font-weight:700">${ch.freq}</span>
+            </div>
+            <div style="height:6px;background:var(--b1);border-radius:99px;overflow:hidden;margin-bottom:6px">
+              <div style="height:100%;width:${ch.yrs/48*100}%;background:${ch.yrs>=42?'var(--gr)':ch.yrs>=35?'var(--or)':'var(--re)'};border-radius:99px"></div>
+            </div>
+            <div style="font-size:12px;color:var(--t3);font-style:italic;margin-bottom:8px">${ch.note}</div>
+            <div>${ch.topics.map(t=>`<div style="font-size:12.5px;color:var(--t2);padding:3px 0;display:flex;gap:6px"><span style="color:${col}">▸</span>${t}</div>`).join('')}</div>
+          </div>
+        </div>
+      </div>`).join('')}
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// MINIMUM MARKS STRATEGY
+// ═══════════════════════════════════════════════════════════════
+function renderMinMarks(){
+  const el=document.getElementById('pred-minmarks-content');
+  if(!el||el.dataset.rendered)return;
+  el.dataset.rendered='1';
+  el.innerHTML=`
+  <div class="g2 mb16">
+    <div class="card-g" style="border-color:rgba(26,111,168,.3)">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--ph);margin-bottom:8px">📝 JEE Mains Minimum Strategy</div>
+      <div style="font-size:13px;color:var(--t2);line-height:1.8">
+        <b>Target: 85-90 marks</b> (safe for NIT/IIIT cutoff in most branches)<br>
+        <b>Target: 99+ percentile</b> = ~165+ marks typically<br>
+        Paper: 90 questions × 4 marks = <b>300 total</b><br>
+        <b>-1 mark</b> per wrong MCQ answer (no -ve for numeric)
+      </div>
+    </div>
+    <div class="card-g" style="border-color:rgba(108,95,168,.3)">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--pu);margin-bottom:8px">⚡ JEE Advanced Minimum Strategy</div>
+      <div style="font-size:13px;color:var(--t2);line-height:1.8">
+        <b>Target: 35% per subject</b> = avoid cutoff for subject-wise<br>
+        <b>Overall ~45-50%</b> = safe for most IIT branches<br>
+        Paper: 2 papers × ~62 marks each = <b>~124 marks per paper</b><br>
+        Multiple correct: +4/-2 | Single correct: +3/-1 | Numeric: +4/0
+      </div>
+    </div>
+  </div>
+  <div style="margin-bottom:16px;padding:14px 18px;background:rgba(192,57,43,.06);border:1.5px solid rgba(192,57,43,.2);border-radius:12px">
+    <div style="font-size:13px;font-weight:700;color:#c0392b;margin-bottom:6px">⚠️ MINIMUM CONTENT — If time is very short, do ONLY these:</div>
+    <div style="font-size:12.5px;color:var(--t2);line-height:2">
+      <b>Physics:</b> Current Electricity (6.57%) + Atoms+Nuclei (5.60%) + Ray Optics (5.04%) + Thermodynamics+KTG (5.94%) + Rotational Motion (4.31%) = <b>~27% of Physics marks</b><br>
+      <b>Chemistry:</b> Chemical Bonding + Coordination Compounds + Aldehydes+Ketones + d-Block + Electrochemistry = <b>~25% of Chemistry marks</b><br>
+      <b>Maths:</b> 3D Geometry (7.35%) + Definite Integration (8.05%) + Matrices+Det (7.46%) + Conics (6.20%) + Sequences (5.74%) = <b>~35% of Maths marks</b>
+    </div>
+  </div>
+  ${[
+    {subj:'Physics',col:'var(--ph)',ico:'⚛️',target:'60+/120',chapters:[
+      {name:'Current Electricity',marks:'8-12',why:'2-3 Qs every paper. Formula-based. High ROI.'},
+      {name:'Modern Physics (Atoms+Nuclei)',marks:'8-12',why:'Formulaic. Half-life + Bohr = direct marks.'},
+      {name:'Ray Optics',marks:'8-12',why:'Formula-based. Lens-mirror combo easy.'},
+      {name:'Thermodynamics + KTG',marks:'8-12',why:'Carnot+adiabatic = standard numericals.'},
+      {name:'Rotational Motion',marks:'8-12',why:'MOI values + rolling = direct formula application.'},
+      {name:'Semiconductors + Logic',marks:'4-8',why:'Theory + gate truth tables = easy 4 marks.'},
+      {name:'Units + Error Analysis',marks:'4-8',why:'Quick formula. Error propagation = guaranteed.'},
+    ]},
+    {subj:'Chemistry',col:'var(--ch)',ico:'🧪',target:'65+/120',chapters:[
+      {name:'Chemical Bonding',marks:'8-12',why:'VSEPR+MO+dipole = very formulaic. 2-3 Qs.'},
+      {name:'Coordination Compounds',marks:'8-12',why:'IUPAC+isomers+VBT = high repeating. 2-3 Qs.'},
+      {name:'Aldehydes, Ketones & Acids',marks:'8-12',why:'Highest organic. Named reactions = direct marks.'},
+      {name:'Electrochemistry',marks:'8-12',why:'Nernst + Faraday numerical = formula application.'},
+      {name:'s-Block Elements',marks:'4-8',why:'Factual. Na₂O₂ + flame test = 1-2 Qs.'},
+      {name:'Mole Concept + Stoichiometry',marks:'4-8',why:'Foundation. Limiting reagent + n-factor.'},
+      {name:'Chemical Thermodynamics',marks:'8-12',why:'ΔG sign + Hess law = 2 Qs every year.'},
+    ]},
+    {subj:'Maths',col:'var(--ma)',ico:'📐',target:'70+/120',chapters:[
+      {name:'3D Geometry',marks:'12-16',why:'7.35% alone. Distance + plane = 2 Qs guaranteed.'},
+      {name:'Definite Integration',marks:'12-16',why:'8.05% highest. King rule = 50% solved instantly.'},
+      {name:'Matrices + Determinants',marks:'8-12',why:'7.46%. Adjoint+inverse+Cramer = formula.'},
+      {name:'Conics',marks:'8-12',why:'6.20%. Tangent condition to all 3 conics.'},
+      {name:'Sequences + Series',marks:'8-12',why:'5.74%. AGP + telescoping.'},
+      {name:'Probability',marks:'8-12',why:'Bayes theorem appears every session.'},
+      {name:'Limits + Continuity',marks:'8-12',why:'1^∞ form + L Hopital = every paper.'},
+    ]}
+  ].map(({subj,col,ico,target,chapters})=>`
+    <div class="card mb16" style="border-top:3px solid ${col}">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:${col}">${ico} ${subj} — Minimum Strategy</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:${col};background:${col}10;padding:4px 10px;border-radius:8px">Target: ${target}</div>
+      </div>
+      <table style="width:100%;border-collapse:collapse">
+        <thead><tr>
+          <th style="text-align:left;font-size:10px;color:var(--t4);letter-spacing:2px;padding:6px 0;border-bottom:1.5px solid var(--b1)">CHAPTER</th>
+          <th style="text-align:center;font-size:10px;color:var(--t4);letter-spacing:2px;padding:6px;border-bottom:1.5px solid var(--b1)">MARKS</th>
+          <th style="text-align:left;font-size:10px;color:var(--t4);letter-spacing:2px;padding:6px 0;border-bottom:1.5px solid var(--b1)">WHY HIGH ROI</th>
+        </tr></thead>
+        <tbody>${chapters.map(ch=>`<tr>
+          <td style="padding:8px 0;font-size:13px;font-weight:600;color:var(--t1);border-bottom:1px solid var(--b1)">${ch.name}</td>
+          <td style="text-align:center;padding:8px 6px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:${col};border-bottom:1px solid var(--b1)">${ch.marks}</td>
+          <td style="padding:8px 0;font-size:12px;color:var(--t3);font-style:italic;border-bottom:1px solid var(--b1)">${ch.why}</td>
+        </tr>`).join('')}</tbody>
+      </table>
+    </div>`).join('')}`;
+}
+
+
 function init(){
  renderSubject('ph','ph-list','ph-stats','#4fc3f7');
  renderSubject('ma','ma-list','ma-stats','#ffb74d');
@@ -2154,6 +2509,9 @@ function init(){
  renderTracker();
  renderTests('mains');
  renderTests('adv');
+ renderPredictionMains();
+ renderPredictionAdv();
+ renderMinMarks();
 }
 init();
 

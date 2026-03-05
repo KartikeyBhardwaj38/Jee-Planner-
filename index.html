@@ -3,59 +3,63 @@
 <head>
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>JEE Ultimate Tracker 2026</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;0,900&display=swap" rel="stylesheet"/>
 <style>
 :root{
-  --bg0:#020206;--bg1:#06060f;--bg2:#0b0b18;--bg3:#111122;--bg4:#181830;--bg5:#1f1f3a;
-  --b1:#1a1a30;--b2:#252545;
-  --gold:#c9a84c;--gold2:#e8c96a;--gold3:#f5dfa0;--gdim:#7a6428;
-  --re:#ff4757;--re2:#ff6b81;--gr:#2ed573;--gr2:#7bed9f;
-  --bl:#1e90ff;--bl2:#70a1ff;--or:#ffa502;--pu:#a29bfe;--cy:#00cec9;--pi:#fd79a8;
-  --ph:#4fc3f7;--ch:#81c784;--ma:#ffb74d;
-  --t1:#f0ebe0;--t2:#c8c4b8;--t3:#7575a0;--t4:#3a3a5c;
+  --bg0:#ffffff;--bg1:#faf9f7;--bg2:#f4f2ed;--bg3:#edeae3;--bg4:#e5e1d8;--bg5:#dcd7cc;
+  --b1:#e8e4dc;--b2:#d4cfc4;--b3:#c0baae;
+  --gold:#b8922a;--gold2:#d4a93a;--gold3:#e8c96a;--gdim:#9a7820;--gold-bg:rgba(184,146,42,.07);
+  --re:#c0392b;--re2:#e74c3c;--gr:#1e7e4a;--gr2:#27ae60;
+  --bl:#1a5fa8;--bl2:#2980b9;--or:#c47422;--pu:#6c5fa8;--cy:#1a8a8a;--pi:#a04070;
+  --ph:#1a6fa8;--ch:#2a7a3a;--ma:#9a6820;
+  --t1:#1a1610;--t2:#3d3428;--t3:#7a7060;--t4:#b0a898;
+  --shadow-sm:0 1px 4px rgba(0,0,0,.06),0 2px 8px rgba(0,0,0,.04);
+  --shadow-md:0 4px 16px rgba(0,0,0,.08),0 2px 6px rgba(0,0,0,.04);
+  --shadow-lg:0 8px 32px rgba(0,0,0,.10),0 4px 12px rgba(0,0,0,.06);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
-body{font-family:'Crimson Pro',Georgia,serif;background:var(--bg0);color:var(--t1);min-height:100vh;overflow-x:hidden;}
-::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:var(--bg1);}::-webkit-scrollbar-thumb{background:var(--b2);border-radius:2px;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-@keyframes glow{0%,100%{text-shadow:0 0 20px rgba(201,168,76,.4)}50%{text-shadow:0 0 50px rgba(201,168,76,.9),0 0 100px rgba(201,168,76,.3)}}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg0);color:var(--t1);min-height:100vh;overflow-x:hidden;font-size:15px;line-height:1.6;}
+::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:var(--bg1);}::-webkit-scrollbar-thumb{background:var(--b2);border-radius:3px;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes glow{0%,100%{text-shadow:0 0 24px rgba(184,146,42,.25)}50%{text-shadow:0 0 40px rgba(184,146,42,.55),0 0 80px rgba(184,146,42,.15)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
 @keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
-@keyframes borderGlow{0%,100%{box-shadow:0 0 0 rgba(201,168,76,0)}50%{box-shadow:0 0 30px rgba(201,168,76,.15)}}
+@keyframes borderGlow{0%,100%{box-shadow:0 0 0 rgba(184,146,42,0)}50%{box-shadow:0 0 24px rgba(184,146,42,.12)}}
 @keyframes tickFlip{0%{transform:rotateX(0)}50%{transform:rotateX(90deg);opacity:.3}100%{transform:rotateX(0)}}
 .flip{animation:tickFlip .15s ease}
 
 /* LAYOUT */
 .app{display:flex;min-height:100vh;}
-.sb{width:220px;flex-shrink:0;background:var(--bg1);border-right:1px solid var(--b1);display:flex;flex-direction:column;padding:0;position:sticky;top:0;height:100vh;overflow-y:auto;z-index:100;}
-.main{flex:1;overflow-x:hidden;min-width:0;}
+.sb{width:228px;flex-shrink:0;background:var(--bg1);border-right:1.5px solid var(--b1);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto;z-index:100;box-shadow:2px 0 12px rgba(0,0,0,.04);}
+.main{flex:1;overflow-x:hidden;min-width:0;background:var(--bg0);}
 
 /* SIDEBAR */
-.logo{padding:18px 16px;border-bottom:1px solid var(--b1);}
-.logo-t{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:3px;color:var(--gold);animation:glow 3s ease-in-out infinite;line-height:1;}
-.logo-s{font-size:10px;color:var(--t4);letter-spacing:2px;text-transform:uppercase;margin-top:3px;}
-.nl{font-size:9px;color:var(--t4);letter-spacing:3px;text-transform:uppercase;padding:14px 16px 5px;}
-.ni{display:flex;align-items:center;gap:9px;padding:9px 16px;cursor:pointer;transition:all .2s;color:var(--t3);font-size:14px;font-weight:600;border-left:2px solid transparent;}
-.ni:hover{background:rgba(255,255,255,.03);color:var(--t1);}
-.ni.ac{background:rgba(201,168,76,.07);border-left-color:var(--gold);color:var(--gold);}
+.logo{padding:22px 18px 16px;border-bottom:1.5px solid var(--b1);}
+.logo-t{font-family:'Cormorant Garamond',Georgia,serif;font-size:26px;font-weight:700;letter-spacing:2px;color:var(--gold);line-height:1;animation:glow 4s ease-in-out infinite;}
+.logo-s{font-size:10px;color:var(--t4);letter-spacing:3px;text-transform:uppercase;margin-top:4px;font-family:'DM Sans',sans-serif;font-weight:500;}
+.nl{font-size:9.5px;color:var(--t4);letter-spacing:3px;text-transform:uppercase;padding:16px 18px 5px;font-weight:600;}
+.ni{display:flex;align-items:center;gap:10px;padding:10px 18px;cursor:pointer;transition:all .18s;color:var(--t3);font-size:14px;font-weight:500;border-left:2.5px solid transparent;}
+.ni:hover{background:rgba(0,0,0,.025);color:var(--t2);}
+.ni.ac{background:var(--gold-bg);border-left-color:var(--gold);color:var(--gold);}
 .ni-ico{font-size:16px;width:18px;text-align:center;flex-shrink:0;}
-.ni-badge{margin-left:auto;font-size:9px;padding:1px 6px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-weight:700;flex-shrink:0;}
-.sb-foot{margin-top:auto;padding:12px 16px;border-top:1px solid var(--b1);}
-.exam-mini{font-family:'JetBrains Mono',monospace;font-size:10px;text-align:center;padding:8px;border-radius:8px;margin-bottom:6px;}
+.ni-badge{margin-left:auto;font-size:9px;padding:2px 7px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-weight:700;flex-shrink:0;}
+.sb-foot{margin-top:auto;padding:14px 18px;border-top:1.5px solid var(--b1);}
+.exam-mini{font-family:'JetBrains Mono',monospace;font-size:10px;text-align:center;padding:9px;border-radius:9px;margin-bottom:6px;}
 
 /* TOPBAR */
-.topbar{position:sticky;top:0;background:rgba(2,2,6,.93);backdrop-filter:blur(20px);border-bottom:1px solid var(--b1);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;z-index:50;gap:12px;}
-.pg-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;color:var(--t1);flex-shrink:0;}
-.content{max-width:1440px;margin:0 auto;padding:20px 24px 80px;}
-.tab-pane{display:none;animation:fadeUp .3s ease;}
+.topbar{position:sticky;top:0;background:rgba(255,255,255,.94);backdrop-filter:blur(20px);border-bottom:1.5px solid var(--b1);padding:13px 26px;display:flex;align-items:center;justify-content:space-between;z-index:50;gap:14px;box-shadow:0 2px 12px rgba(0,0,0,.04);}
+.pg-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:24px;font-weight:700;letter-spacing:1.5px;color:var(--t1);flex-shrink:0;}
+.content{max-width:1440px;margin:0 auto;padding:22px 26px 90px;}
+.tab-pane{display:none;animation:fadeUp .25s ease;}
 .tab-pane.ac{display:block;}
 
 /* CARDS */
-.card{background:var(--bg2);border:1px solid var(--b1);border-radius:16px;padding:20px;}
-.card-g{background:linear-gradient(135deg,rgba(201,168,76,.07),rgba(30,144,255,.03));border:1px solid rgba(201,168,76,.2);border-radius:16px;padding:20px;}
-.card-re{background:rgba(255,71,87,.05);border:1px solid rgba(255,71,87,.2);border-radius:16px;padding:20px;}
+.card{background:var(--bg1);border:1.5px solid var(--b1);border-radius:16px;padding:20px;box-shadow:var(--shadow-sm);}
+.card-g{background:linear-gradient(135deg,rgba(184,146,42,.06),rgba(26,95,168,.03));border:1.5px solid rgba(184,146,42,.22);border-radius:16px;padding:20px;box-shadow:var(--shadow-sm);}
+.card-re{background:rgba(192,57,43,.04);border:1.5px solid rgba(192,57,43,.18);border-radius:16px;padding:20px;box-shadow:var(--shadow-sm);}
 
 /* GRID */
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
@@ -65,133 +69,133 @@ body{font-family:'Crimson Pro',Georgia,serif;background:var(--bg0);color:var(--t
 .mb12{margin-bottom:12px;}.mb16{margin-bottom:16px;}.mb20{margin-bottom:20px;}
 
 /* COUNTDOWN HERO */
-.cd-hero{position:relative;overflow:hidden;border-radius:20px;padding:28px;margin-bottom:16px;}
-.cd-hero::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--re),var(--gold),var(--bl),transparent);background-size:200% auto;animation:shimmer 3s linear infinite;}
+.cd-hero{position:relative;overflow:hidden;border-radius:22px;padding:28px;margin-bottom:16px;background:linear-gradient(135deg,#1a1610 0%,#2d2518 50%,#1a1610 100%);box-shadow:var(--shadow-lg);}
+.cd-hero::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold2),var(--gold3),var(--gold2),transparent);background-size:200% auto;animation:shimmer 3s linear infinite;}
 .cd-twin{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
-.cd-box{background:rgba(0,0,0,.3);border:1px solid;border-radius:14px;padding:16px;}
-.cd-box-title{font-size:10px;letter-spacing:3px;text-transform:uppercase;font-weight:700;margin-bottom:12px;text-align:center;}
+.cd-box{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:16px;}
+.cd-box-title{font-size:9.5px;letter-spacing:3px;text-transform:uppercase;font-weight:700;margin-bottom:12px;text-align:center;font-family:'DM Sans',sans-serif;color:rgba(255,255,255,.5);}
 .cd-digits{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
-.cd-unit{background:var(--bg3);border:1px solid var(--b2);border-radius:10px;padding:12px 6px;text-align:center;perspective:200px;}
-.cd-num{font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:800;line-height:1;background:linear-gradient(180deg,var(--gold3),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block;}
-.cd-lbl{font-size:9px;color:var(--t3);letter-spacing:2px;text-transform:uppercase;margin-top:4px;}
+.cd-unit{background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:13px 6px;text-align:center;}
+.cd-num{font-family:'JetBrains Mono',monospace;font-size:34px;font-weight:800;line-height:1;background:linear-gradient(180deg,#f5dfa0,#c9a84c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block;}
+.cd-lbl{font-size:8.5px;color:rgba(255,255,255,.35);letter-spacing:2px;text-transform:uppercase;margin-top:4px;}
 .cd-ms-row{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:10px;font-family:'JetBrains Mono',monospace;}
-.cd-ms-num{font-size:20px;font-weight:800;color:var(--gold2);}
-.cd-ms-lbl{font-size:9px;color:var(--t4);}
-.cd-bar{height:5px;background:rgba(255,255,255,.05);border-radius:99px;overflow:hidden;margin-top:10px;}
+.cd-ms-num{font-size:22px;font-weight:800;color:#e8c96a;}
+.cd-ms-lbl{font-size:9px;color:rgba(255,255,255,.35);}
+.cd-bar{height:5px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden;margin-top:10px;}
 .cd-bar-fill{height:100%;border-radius:99px;transition:width .1s linear;}
 
 /* STATS */
-.stat-p{background:var(--bg3);border:1px solid var(--b1);border-radius:12px;padding:14px;text-align:center;transition:all .2s;}
-.stat-p:hover{transform:translateY(-2px);border-color:rgba(201,168,76,.2);}
-.stat-v{font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:800;line-height:1;}
-.stat-l{font-size:11px;color:var(--t3);margin-top:4px;font-style:italic;}
+.stat-p{background:var(--bg1);border:1.5px solid var(--b1);border-radius:13px;padding:16px;text-align:center;transition:all .2s;box-shadow:var(--shadow-sm);}
+.stat-p:hover{transform:translateY(-2px);border-color:rgba(184,146,42,.25);box-shadow:var(--shadow-md);}
+.stat-v{font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:800;line-height:1;}
+.stat-l{font-size:11.5px;color:var(--t3);margin-top:4px;font-style:italic;}
 
 /* DAY CARDS */
-.day-card{background:var(--bg2);border:1px solid var(--b1);border-radius:14px;overflow:hidden;margin-bottom:8px;transition:border-color .2s;}
-.day-card:hover{border-color:rgba(201,168,76,.15);}
-.day-card.today-card{border-color:rgba(255,71,87,.4);box-shadow:0 0 24px rgba(255,71,87,.08);}
-.dh{display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer;user-select:none;}
-.day-num-badge{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:800;flex-shrink:0;}
+.day-card{background:var(--bg1);border:1.5px solid var(--b1);border-radius:14px;overflow:hidden;margin-bottom:9px;transition:all .2s;box-shadow:var(--shadow-sm);}
+.day-card:hover{border-color:rgba(184,146,42,.22);box-shadow:var(--shadow-md);transform:translateY(-1px);}
+.day-card.today-card{border-color:rgba(192,57,43,.35);box-shadow:0 0 0 3px rgba(192,57,43,.07),var(--shadow-md);}
+.dh{display:flex;align-items:center;gap:11px;padding:13px 17px;cursor:pointer;user-select:none;}
+.day-num-badge{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:800;flex-shrink:0;}
 .di{flex:1;min-width:0;}
-.di-title{font-size:15px;font-weight:700;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.di-title{font-size:15px;font-weight:600;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--t1);}
 .di-sub{font-size:12px;color:var(--t3);margin-top:2px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
 .dr{display:flex;align-items:center;gap:8px;flex-shrink:0;}
 .d-pct{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;}
-.d-chk{width:26px;height:26px;border-radius:7px;border:1.5px solid;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;font-size:12px;}
-.db{padding:0 16px 14px;border-top:1px solid rgba(255,255,255,.04);}
-.sub-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:5px;margin-top:10px;}
-.sub-item{display:flex;align-items:center;gap:7px;padding:7px 10px;border-radius:8px;background:var(--bg3);border:1px solid var(--b1);cursor:pointer;transition:all .15s;font-size:12px;}
-.sub-item:hover{border-color:rgba(201,168,76,.25);}
-.sub-item.done{background:rgba(46,213,115,.06);border-color:rgba(46,213,115,.2);color:var(--gr);}
-.sub-chk{width:14px;height:14px;border-radius:3px;border:1.5px solid currentColor;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:8px;opacity:.6;}
-.sub-chk.done{background:var(--gr);border-color:var(--gr);color:var(--bg0);opacity:1;}
+.d-chk{width:27px;height:27px;border-radius:8px;border:1.5px solid;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;font-size:13px;}
+.db{padding:0 17px 15px;border-top:1.5px solid var(--b1);}
+.sub-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:5px;margin-top:10px;}
+.sub-item{display:flex;align-items:center;gap:8px;padding:8px 11px;border-radius:9px;background:var(--bg0);border:1.5px solid var(--b1);cursor:pointer;transition:all .15s;font-size:13px;color:var(--t2);}
+.sub-item:hover{border-color:rgba(184,146,42,.28);background:var(--gold-bg);}
+.sub-item.done{background:rgba(30,126,74,.05);border-color:rgba(30,126,74,.22);color:var(--gr);}
+.sub-chk{width:15px;height:15px;border-radius:3px;border:1.5px solid currentColor;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:8px;opacity:.55;}
+.sub-chk.done{background:var(--gr);border-color:var(--gr);color:#fff;opacity:1;}
 .imp-dot{width:5px;height:5px;border-radius:50%;background:var(--or);flex-shrink:0;margin-left:auto;}
-.conf-strip{display:flex;gap:4px;margin-top:10px;align-items:center;}
-.conf-dot{flex:1;height:5px;border-radius:99px;cursor:pointer;transition:all .15s;border:1px solid rgba(255,255,255,.08);}
-.jee-note-box{background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.15);border-radius:8px;padding:9px 12px;margin-top:10px;font-size:12px;color:var(--gold3);font-style:italic;line-height:1.5;}
+.conf-strip{display:flex;gap:4px;margin-top:11px;align-items:center;}
+.conf-dot{flex:1;height:5px;border-radius:99px;cursor:pointer;transition:all .15s;border:1px solid rgba(0,0,0,.07);}
+.jee-note-box{background:rgba(184,146,42,.06);border:1.5px solid rgba(184,146,42,.18);border-radius:9px;padding:10px 13px;margin-top:10px;font-size:12.5px;color:var(--gold);font-style:italic;line-height:1.55;}
 
 /* DUAL SUBJECT DAY */
-.dual-day{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;}
-.dual-subj{border-radius:10px;padding:10px;border:1px solid;}
+.dual-day{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:9px;}
+.dual-subj{border-radius:11px;padding:11px;border:1.5px solid;}
 
 /* TEST TRACKER */
-.test-card{background:var(--bg3);border:1px solid var(--b1);border-radius:14px;padding:16px;cursor:pointer;transition:all .2s;position:relative;}
-.test-card:hover{border-color:rgba(201,168,76,.2);transform:translateY(-1px);}
-.test-card.done-tc{border-color:rgba(46,213,115,.25);background:rgba(46,213,115,.03);}
-.test-card.today-tc{border-color:rgba(255,71,87,.4);background:rgba(255,71,87,.04);}
+.test-card{background:var(--bg1);border:1.5px solid var(--b1);border-radius:14px;padding:17px;cursor:pointer;transition:all .2s;position:relative;box-shadow:var(--shadow-sm);}
+.test-card:hover{border-color:rgba(184,146,42,.25);transform:translateY(-1px);box-shadow:var(--shadow-md);}
+.test-card.done-tc{border-color:rgba(30,126,74,.25);background:rgba(30,126,74,.025);}
+.test-card.today-tc{border-color:rgba(192,57,43,.35);background:rgba(192,57,43,.03);}
 .test-date{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t4);}
-.test-name{font-size:15px;font-weight:700;color:var(--t1);margin-top:4px;}
-.test-type{font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px;font-family:'JetBrains Mono',monospace;display:inline-block;margin-top:5px;}
-.score-display{margin-top:12px;}
-.score-bars{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px;}
+.test-name{font-size:15.5px;font-weight:700;color:var(--t1);margin-top:4px;font-family:'Cormorant Garamond',Georgia,serif;letter-spacing:.3px;}
+.test-type{font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;font-family:'JetBrains Mono',monospace;display:inline-block;margin-top:5px;}
+.score-display{margin-top:13px;}
+.score-bars{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:9px;}
 .score-bar-item{text-align:center;}
-.score-bar-track{height:60px;background:rgba(255,255,255,.04);border-radius:4px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;}
-.score-bar-fill{border-radius:4px 4px 0 0;transition:height .5s ease;}
-.score-num{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;margin-top:4px;}
+.score-bar-track{height:62px;background:rgba(0,0,0,.04);border-radius:5px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;}
+.score-bar-fill{border-radius:5px 5px 0 0;transition:height .5s ease;}
+.score-num{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;margin-top:5px;}
 .score-sub-lbl{font-size:10px;color:var(--t3);}
 
 /* SCORE ENTRY MODAL */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);z-index:1000;align-items:center;justify-content:center;}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(8px);z-index:1000;align-items:center;justify-content:center;}
 .modal-overlay.open{display:flex;}
-.modal{background:var(--bg2);border:1px solid var(--b2);border-radius:20px;padding:28px;width:480px;max-width:95vw;max-height:90vh;overflow-y:auto;animation:fadeUp .3s ease;}
-.modal-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;margin-bottom:20px;color:var(--gold);}
-.inp-group{margin-bottom:14px;}
-.inp-label{font-size:12px;color:var(--t3);letter-spacing:1px;text-transform:uppercase;font-weight:700;margin-bottom:6px;display:block;}
-.inp{width:100%;background:var(--bg3);border:1px solid var(--b2);border-radius:10px;padding:10px 14px;color:var(--t1);font-family:'JetBrains Mono',monospace;font-size:15px;outline:none;transition:border-color .2s;}
-.inp:focus{border-color:rgba(201,168,76,.4);}
+.modal{background:var(--bg0);border:1.5px solid var(--b1);border-radius:22px;padding:30px;width:490px;max-width:95vw;max-height:90vh;overflow-y:auto;animation:fadeUp .28s ease;box-shadow:var(--shadow-lg);}
+.modal-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:24px;font-weight:700;margin-bottom:20px;color:var(--gold);}
+.inp-group{margin-bottom:15px;}
+.inp-label{font-size:11.5px;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;font-weight:600;margin-bottom:7px;display:block;}
+.inp{width:100%;background:var(--bg2);border:1.5px solid var(--b1);border-radius:11px;padding:10px 14px;color:var(--t1);font-family:'JetBrains Mono',monospace;font-size:15px;outline:none;transition:border-color .2s;}
+.inp:focus{border-color:rgba(184,146,42,.4);background:var(--bg1);}
 .inp-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
-.btn{cursor:pointer;border:none;outline:none;font-family:'Crimson Pro',serif;transition:all .2s;border-radius:10px;}
-.btn-gold{background:linear-gradient(135deg,#7a5010,#c9a84c,#e8c96a);color:#1a0f00;font-weight:800;}
-.btn-gold:hover{filter:brightness(1.1);transform:translateY(-1px);}
-.btn-ghost{background:rgba(255,255,255,.05);border:1px solid var(--b2);color:var(--t3);}
-.btn-ghost:hover{background:rgba(255,255,255,.08);color:var(--t1);}
+.btn{cursor:pointer;border:none;outline:none;font-family:'DM Sans',sans-serif;transition:all .2s;border-radius:11px;font-weight:600;}
+.btn-gold{background:linear-gradient(135deg,#7a5010,var(--gold2),var(--gold3));color:#fff;font-weight:700;letter-spacing:.3px;}
+.btn-gold:hover{filter:brightness(1.08);transform:translateY(-1px);box-shadow:0 4px 16px rgba(184,146,42,.3);}
+.btn-ghost{background:rgba(0,0,0,.04);border:1.5px solid var(--b1);color:var(--t3);}
+.btn-ghost:hover{background:rgba(0,0,0,.07);color:var(--t2);}
 .btn-sm{font-size:13px;padding:6px 14px;}
-.btn-md{font-size:15px;padding:10px 20px;}
+.btn-md{font-size:15px;padding:11px 22px;}
 
 /* ANALYSIS CHARTS */
 .bar-chart{display:flex;flex-direction:column;gap:5px;}
 .bc-row{display:flex;align-items:center;gap:8px;}
-.bc-lbl{font-size:11px;color:var(--t2);width:160px;flex-shrink:0;text-align:right;}
-.bc-track{flex:1;height:20px;background:rgba(255,255,255,.04);border-radius:5px;overflow:hidden;}
+.bc-lbl{font-size:11.5px;color:var(--t2);width:160px;flex-shrink:0;text-align:right;}
+.bc-track{flex:1;height:20px;background:rgba(0,0,0,.05);border-radius:5px;overflow:hidden;}
 .bc-fill{height:100%;border-radius:5px;display:flex;align-items:center;padding-left:8px;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;transition:width .8s ease;white-space:nowrap;}
 .bc-val{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t3);width:28px;text-align:right;}
 
-/* PROGRESS CHART (line) */
+/* PROGRESS CHART */
 .prog-chart{width:100%;height:180px;position:relative;overflow:hidden;}
 .prog-svg{width:100%;height:100%;}
 
 /* PREDICTION */
-.pred-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.pred-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1.5px solid var(--b1);}
 .pred-ch{font-size:13px;color:var(--t2);flex-shrink:0;width:180px;}
-.pred-track{flex:1;height:7px;background:rgba(255,255,255,.05);border-radius:99px;overflow:hidden;}
+.pred-track{flex:1;height:7px;background:rgba(0,0,0,.05);border-radius:99px;overflow:hidden;}
 .pred-fill{height:100%;border-radius:99px;}
 .pred-pct{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;width:38px;text-align:right;}
-.pred-note{font-size:10px;color:var(--t4);padding:2px 0 6px;font-style:italic;}
+.pred-note{font-size:10.5px;color:var(--t4);padding:2px 0 6px;font-style:italic;}
 
 /* GITHUB HEATMAP */
 .gh-grid{display:flex;gap:3px;}
 .gh-week{display:flex;flex-direction:column;gap:3px;}
 .gh-cell{width:13px;height:13px;border-radius:2px;cursor:pointer;transition:all .1s;position:relative;}
-.gh-cell:hover::after{content:attr(data-tip);position:absolute;bottom:calc(100%+5px);left:50%;transform:translateX(-50%);background:var(--bg5);border:1px solid var(--b2);border-radius:6px;padding:3px 7px;font-size:10px;color:var(--t1);white-space:nowrap;z-index:100;pointer-events:none;font-family:'JetBrains Mono',monospace;}
+.gh-cell:hover::after{content:attr(data-tip);position:absolute;bottom:calc(100%+5px);left:50%;transform:translateX(-50%);background:var(--t1);border:1px solid var(--b2);border-radius:6px;padding:3px 7px;font-size:10px;color:#fff;white-space:nowrap;z-index:100;pointer-events:none;font-family:'JetBrains Mono',monospace;}
 
 /* TABS / PILLS */
-.pill-tabs{display:flex;gap:5px;margin-bottom:14px;flex-wrap:wrap;}
-.pill-tab{padding:7px 16px;border-radius:9px;border:1px solid var(--b1);background:rgba(255,255,255,.02);color:var(--t3);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Crimson Pro',serif;}
-.pill-tab:hover{color:var(--t1);}
-.pill-tab.ac{background:rgba(201,168,76,.1);border-color:rgba(201,168,76,.35);color:var(--gold);}
-.pill-tab.ph-ac{background:rgba(79,195,247,.08);border-color:rgba(79,195,247,.3);color:var(--ph);}
-.pill-tab.ch-ac{background:rgba(129,199,132,.08);border-color:rgba(129,199,132,.3);color:var(--ch);}
-.pill-tab.ma-ac{background:rgba(255,183,77,.08);border-color:rgba(255,183,77,.3);color:var(--ma);}
+.pill-tabs{display:flex;gap:5px;margin-bottom:15px;flex-wrap:wrap;}
+.pill-tab{padding:7px 17px;border-radius:10px;border:1.5px solid var(--b1);background:var(--bg1);color:var(--t3);font-size:13px;font-weight:600;cursor:pointer;transition:all .18s;}
+.pill-tab:hover{color:var(--t2);border-color:var(--b2);}
+.pill-tab.ac{background:var(--gold-bg);border-color:rgba(184,146,42,.35);color:var(--gold);}
+.pill-tab.ph-ac{background:rgba(26,111,168,.06);border-color:rgba(26,111,168,.28);color:var(--ph);}
+.pill-tab.ch-ac{background:rgba(42,122,58,.06);border-color:rgba(42,122,58,.28);color:var(--ch);}
+.pill-tab.ma-ac{background:rgba(154,104,32,.06);border-color:rgba(154,104,32,.28);color:var(--ma);}
 
 /* TRACKER TABLE */
 .tr-table{width:100%;border-collapse:collapse;}
-.tr-table th{font-size:10px;color:var(--t4);letter-spacing:2px;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--b1);text-align:left;}
-.tr-table td{padding:9px 12px;font-size:13px;vertical-align:middle;border-bottom:1px solid rgba(255,255,255,.025);}
-.tr-table tr:hover td{background:rgba(255,255,255,.015);}
-.pri-badge{font-size:10px;padding:2px 7px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-weight:800;}
+.tr-table th{font-size:10px;color:var(--t4);letter-spacing:2px;text-transform:uppercase;padding:9px 13px;border-bottom:1.5px solid var(--b1);text-align:left;font-weight:700;}
+.tr-table td{padding:10px 13px;font-size:13px;vertical-align:middle;border-bottom:1.5px solid var(--b1);}
+.tr-table tr:hover td{background:rgba(184,146,42,.03);}
+.pri-badge{font-size:10px;padding:2px 8px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-weight:800;}
 .mini-conf{display:flex;gap:3px;}
-.mc-btn{width:22px;height:22px;border-radius:5px;border:1px solid var(--b2);background:transparent;cursor:pointer;font-size:10px;transition:all .15s;display:flex;align-items:center;justify-content:center;}
-.prog-mini{width:55px;height:4px;background:rgba(255,255,255,.07);border-radius:99px;overflow:hidden;}
+.mc-btn{width:22px;height:22px;border-radius:5px;border:1.5px solid var(--b1);background:transparent;cursor:pointer;font-size:10px;transition:all .15s;display:flex;align-items:center;justify-content:center;}
+.prog-mini{width:55px;height:4px;background:rgba(0,0,0,.07);border-radius:99px;overflow:hidden;}
 .prog-fill{height:100%;border-radius:99px;}
 
 /* SCORE SUMMARY */
@@ -202,21 +206,10 @@ body{font-family:'Crimson Pro',Georgia,serif;background:var(--bg0);color:var(--t
 .trend-nt{color:var(--or);font-family:'JetBrains Mono',monospace;font-size:11px;}
 
 /* MISC */
-.chip{display:inline-flex;align-items:center;gap:3px;font-size:10px;padding:2px 7px;border-radius:99px;font-weight:700;font-family:'JetBrains Mono',monospace;}
-.today-banner{background:rgba(255,71,87,.08);border:1px solid rgba(255,71,87,.3);border-radius:10px;padding:8px 14px;margin-bottom:14px;font-size:13px;color:var(--re2);display:flex;align-items:center;gap:8px;}
-.sep{width:100%;height:1px;background:var(--b1);margin:14px 0;}
-.section-t{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;margin-bottom:5px;}
-.section-s{font-size:14px;color:var(--t3);margin-bottom:16px;line-height:1.6;}
+.chip{display:inline-flex;align-items:center;gap:3px;font-size:10px;padding:2px 8px;border-radius:99px;font-weight:700;font-family:'JetBrains Mono',monospace;}
+.today-banner{background:rgba(192,57,43,.05);border:1.5px solid rgba(192,57,43,.25);border-radius:11px;padding:9px 15px;margin-bottom:14px;font-size:13px;color:var(--re);display:flex;align-items:center;gap:8px;}
+.sep{width:100%;height:1.5px;background:var(--b1);margin:14px 0;}
 
-/* SCAN LINES */
-.scan{position:fixed;inset:0;pointer-events:none;z-index:999;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.012) 2px,rgba(0,0,0,.012) 4px);}
-
-@media(max-width:900px){
-  .sb{width:100%;height:auto;flex-direction:row;position:relative;flex-wrap:wrap;padding:8px;}
-  .g2,.g3,.g4,.g5{grid-template-columns:1fr;}
-  .cd-twin{grid-template-columns:1fr;}
-  .dual-day{grid-template-columns:1fr;}
-}
 </style>
 </head>
 <body>
@@ -992,51 +985,125 @@ const CH=[
 ];
 
 const MAINS_DAILY=[
- // ══════════════════════════════════════════════════════════════════
- // PHASE 1 — DAYS 1-10: MATHS INTENSIVE (Full Mains Syllabus)
- // Physics on odd days, Chemistry on even days (alternating)
- // Goal: Every important Maths subtopic — most weightage chapters first
- // ══════════════════════════════════════════════════════════════════
- {d:1,date:'Mar 6',s1:{subj:'Maths',ch:'M1: 3D Geometry ⭐⭐ (7.35%) — direction cosines, lines, planes, shortest distance',id:'ma-1'},s2:{subj:'Physics',ch:'P1: Modern Physics — Dual Nature, Photoelectric effect, de Broglie ⭐',id:'ph-1'}},
- {d:2,date:'Mar 7',s1:{subj:'Maths',ch:'M2: Vectors ⭐ — dot/cross product, scalar triple product, coplanar condition',id:'ma-2'},s2:{subj:'Chemistry',ch:'C1: Atomic Structure ⭐ — quantum numbers, config exceptions, photoelectric, spectrum',id:'ch-1'}},
- {d:3,date:'Mar 8',s1:{subj:'Maths',ch:'M3: Sequences & Series ⭐⭐ (5.74%) — AP/GP/HP, AM-GM, AGP formula, telescoping',id:'ma-3'},s2:{subj:'Physics',ch:'P2: Modern Physics — Atoms, Nuclei, Bohr model, radioactive decay ⭐',id:'ph-2'},test:'Comeback Test (Online)'},
- {d:4,date:'Mar 9',s1:{subj:'Maths',ch:'M4: Complex Numbers ⭐ — polar form, De Moivre theorem, nth roots of unity, rotation trick',id:'ma-4'},s2:{subj:'Chemistry',ch:'C2: Mole Concept ⭐ + Periodic Properties — limiting reagent, n-factor, IE/EN anomalies',id:'ch-2'}},
- {d:5,date:'Mar 10',s1:{subj:'Maths',ch:'M5: Matrices & Determinants — inverse, Cramer rule, determinant properties, consistency',id:'ma-5'},s2:{subj:'Physics',ch:'P3: Ray Optics ⭐⭐ — mirror/lens formula, refraction at sphere, TIR, prism, optical instruments',id:'ph-3'},test:'Mastery 2.8 (Offline)'},
- {d:6,date:'Mar 11',s1:{subj:'Maths',ch:'M6: Binomial Theorem ⭐ + P&C — general term, independent of x, circular permutation',id:'ma-6'},s2:{subj:'Chemistry',ch:'C3: Chemical Bonding ⭐⭐ — VSEPR, hybridisation, MO bond order, dipole moment, H-bonding',id:'ch-3'}},
- {d:7,date:'Mar 12',s1:{subj:'Maths',ch:'M7: Probability ⭐ + Statistics — Bayes theorem, binomial distribution, mean, variance, E(X)',id:'ma-7'},s2:{subj:'Physics',ch:'P4: Wave Optics ⭐ — YDSE fringe width, single slit diffraction, polarisation, Brewster',id:'ph-4'},test:'Mastery 2.9 (Offline)'},
- {d:8,date:'Mar 13',s1:{subj:'Maths',ch:'M8: Straight Lines & Circles — distance, family of lines, tangent from point, radical axis',id:'ma-8'},s2:{subj:'Chemistry',ch:'C4: Thermodynamics ⭐⭐ + Equilibrium ⭐ — delta-G, Hess law, Le Chatelier, Kp/Kc conversion',id:'ch-4'}},
- {d:9,date:'Mar 14',s1:{subj:'Maths',ch:'M9: Conics ⭐ — parabola/ellipse/hyperbola tangent condition, parametric forms, eccentricity',id:'ma-9'},s2:{subj:'Physics',ch:'P5: EMW ⭐ + Electrostatics & Potential ⭐⭐ — Gauss law, field/potential, capacitor energy',id:'ph-5'}},
- {d:10,date:'Mar 15',s1:{subj:'Maths',ch:'M10: Limits+AOD ⭐ + Definite Integration ⭐⭐ + DE — King rule, maxima-minima, linear DE',id:'ma-10'},s2:{subj:'Chemistry',ch:'C5: Ionic Equilibrium ⭐ + Redox + Electrochemistry ⭐⭐ — pH, buffer, Nernst equation',id:'ch-5'}},
- // ══════════════════════════════════════════════════════════════════
- // PHASE 2 — DAYS 11-20: CHEMISTRY INTENSIVE (Full Mains Syllabus)
- // Physics every day (secondary) | ⚡ +2hr Maths revision & practice each day
- // Goal: All remaining Chemistry — most important subtopics only
- // ══════════════════════════════════════════════════════════════════
- {d:11,date:'Mar 16',s1:{subj:'Chemistry',ch:'C6: Chemical Kinetics ⭐ + Solid State ⭐ — first-order t-half, Arrhenius, BCC/FCC packing, NaCl/ZnS',id:'ch-6'},s2:{subj:'Physics',ch:'P6: Current Electricity ⭐⭐ + Capacitance + AC — Kirchhoff, Wheatstone, AC impedance',id:'ph-6'},note:'⚡ +2hr Maths: timed PYQs on 3D Geom + Vectors'},
- {d:12,date:'Mar 17',s1:{subj:'Chemistry',ch:'C7: Solutions ⭐ + Surface Chemistry — colligative props, van t Hoff factor, Tyndall, Hardy-Schulze rule',id:'ch-7'},s2:{subj:'Physics',ch:'P7: Moving Charges & Magnetism ⭐ — Biot-Savart, Ampere law, force on conductor, cyclotron',id:'ph-7'},note:'⚡ +2hr Maths: Sequences + Complex Numbers problems'},
- {d:13,date:'Mar 18',s1:{subj:'Chemistry',ch:'C8: s-Block ⭐ + p-Block Gr 13&14 ⭐ — Na2O2, KO2, B2H6 banana bonds, BF3 Lewis acid, C allotropes',id:'ch-8'},s2:{subj:'Physics',ch:'P8: Magnetism & EMI ⭐ — Faraday, Lenz law, self/mutual inductance, transformer',id:'ph-8'},test:'PYQ 2024 Test (Offline)',note:'⚡ +2hr Maths: Matrices + Binomial + P&C problems'},
- {d:14,date:'Mar 19',s1:{subj:'Chemistry',ch:'C9: p-Block Gr 15-18 ⭐⭐ + d&f Block ⭐ — XeF2/XeF4, oxoacids, Mn/Cr chemistry, magnetic moment',id:'ch-9'},s2:{subj:'Physics',ch:'P9: KTG & Thermodynamics ⭐ — rms/avg/mp speed ratios, Cp-Cv=R, adiabatic, Carnot',id:'ph-9'},note:'⚡ +2hr Maths: Probability + Statistics drill'},
- {d:15,date:'Mar 20',s1:{subj:'Chemistry',ch:'C10: Coordination Compounds ⭐⭐ + Metallurgy — IUPAC, CFT high/low spin, spectrochemical series, Ellingham',id:'ch-10'},s2:{subj:'Physics',ch:'P10: Mechanics — Newton laws, WEP, COM, collision, friction ⭐',id:'ph-10'},test:'PYQ 2025 Test (Offline)',note:'⚡ +2hr Maths: Coordinate Geometry + Conics practice'},
- {d:16,date:'Mar 21',s1:{subj:'Chemistry',ch:'C11: GOC ⭐ + Hydrocarbons ⭐ — carbocation stability, hyperconjugation, Markovnikov, EAS directing effects',id:'ch-11'},s2:{subj:'Physics',ch:'P11: Gravitation + SHM ⭐ — Kepler laws, orbital velocity, SHM energy, simple pendulum',id:'ph-11'},note:'⚡ +2hr Maths: Limits + AOD timed problems'},
- {d:17,date:'Mar 22',s1:{subj:'Chemistry',ch:'C12: Haloalkanes ⭐ + Alcohols & Phenols ⭐ — SN1/SN2 conditions, Lucas test, phenol acidity, Kolbe reaction',id:'ch-12'},s2:{subj:'Physics',ch:'P12: Fluids ⭐ — Bernoulli equation, viscosity, surface tension, capillary rise',id:'ph-12'},test:'Mastery 2.11 (Offline)',note:'⚡ +2hr Maths: Definite Integration King rule practice'},
- {d:18,date:'Mar 23',s1:{subj:'Chemistry',ch:'C13: Aldehydes, Ketones & Acids ⭐⭐ — Aldol, Cannizzaro, Tollens, Fehling, iodoform test, HVZ',id:'ch-13'},s2:{subj:'Physics',ch:'P13: Rotational Motion ⭐ — torque, MOI parallel axis, rolling without slipping',id:'ph-13'},note:'⚡ +2hr Maths: Differential Equations + Inverse Trig'},
- {d:19,date:'Mar 24',s1:{subj:'Chemistry',ch:'C14: Amines ⭐ + Biomolecules — basicity order, Sandmeyer, Gattermann, diazo coupling, glucose anomers',id:'ch-14'},s2:{subj:'Physics',ch:'P14: Waves & Sound — standing waves, beats, Doppler effect ⭐',id:'ph-14'},test:'AITS-18 (Offline)',note:'⚡ +2hr Maths: Mixed PYQs from all 10 Maths topics'},
- {d:20,date:'Mar 25',s1:{subj:'Chemistry',ch:'C15: Polymers + Env Chem + States of Matter [Adv only] — vdW equation, critical constants, polymer types',id:'ch-15'},s2:{subj:'Physics',ch:'P15: Electrostatics deep dive ⭐ + Error Analysis — Gauss, dipole, error propagation formulas',id:'ph-15'},test:'Mock Test 2 (Online)',note:'⚡ +2hr Maths: weakest chapter targeted revision'},
- // ══════════════════════════════════════════════════════════════════
- // PHASE 3 — DAYS 21-28: FULL REVISION + PHYSICS SWEEP
- // All subjects targeted | PYQ papers + formula sheets
- // ══════════════════════════════════════════════════════════════════
- {d:21,date:'Mar 26',s1:{subj:'Physics',ch:'P-REV1: Mechanics + Rotation + Fluids — 20 PYQs rapid fire + formula sheet drill',id:'ph-r1'},s2:{subj:'Maths',ch:'M-REV1: 3D Geom + Vectors + Sequences — 30 timed problems in 45 min',id:'ma-r1'},test:'Final Mock (Online)'},
- {d:22,date:'Mar 27',s1:{subj:'Physics',ch:'P-REV2: Optics + Modern Physics + EMW — 20 PYQs rapid + formula sheet',id:'ph-r2'},s2:{subj:'Chemistry',ch:'C-REV1: Physical Chem rapid fire — Thermo, Equilibrium, Kinetics, Electrochem key formulas',id:'ch-r1'}},
- {d:23,date:'Mar 28',s1:{subj:'Physics',ch:'P-REV3: Electricity + Magnetism + EMI — 20 PYQs rapid + formula sheet',id:'ph-r3'},s2:{subj:'Maths',ch:'M-REV2: Calculus (Limits+AOD+Integration) + Conics — 30 timed problems 45 min',id:'ma-r2'}},
- {d:24,date:'Mar 29',s1:{subj:'Physics',ch:'P-REV4: Thermodynamics + Waves + Gravitation + SHM — 20 PYQs rapid fire',id:'ph-r4'},s2:{subj:'Chemistry',ch:'C-REV2: Inorganic rapid fire — s/p/d-Block, Coordination Compounds key reactions',id:'ch-r2'},test:'AITS Final (Offline)'},
- {d:25,date:'Mar 30',s1:{subj:'Physics',ch:'P-REV5: Full Physics — hardest PYQs 2020-2025 mixed, 30 questions timed',id:'ph-r5'},s2:{subj:'Chemistry',ch:'C-REV3: Organic rapid fire — GOC, named reactions, mechanisms flash card recall',id:'ch-r3'}},
- {d:26,date:'Mar 31',s1:{subj:'Maths',ch:'M-REV3: Algebra — Binomial, P&C, Probability, Matrices timed 30 problems',id:'ma-r3'},s2:{subj:'Chemistry',ch:'C-REV4: Full Chemistry — attack 3 weakest chapters, 15 min each targeted',id:'ch-r4'}},
- {d:27,date:'Apr 1',s1:{subj:'ALL',ch:'🎯 Grand Revision — top 5 weak topics from each subject from mock test analysis',id:'rev1'},s2:{subj:'ALL',ch:'📋 Formula Sheet review — 1 page Physics + 1 page Maths + 1 page Chemistry',id:'rev2'}},
- {d:28,date:'Apr 2',s1:{subj:'ALL',ch:'🔥 Light revision morning — formulas and key points only, no new topics',id:'rev'},s2:{subj:'ALL',ch:'🎯 JEE MAINS BEGINS TODAY! Trust your preparation! 🚀',id:'exam'}},
+// ══════════════════════════════════════════════════════════════════════════
+// PHASE 1 — DAYS 1–10 | MATHS COMPLETE SYLLABUS
+// All 14 MA chapters covered | Physics odd days, Chemistry even days
+// Every [M] subtopic from the Maths array
+// ══════════════════════════════════════════════════════════════════════════
+{d:1,date:'Mar 6',
+ s1:{subj:'Maths',ch:'MA-1: 3D Geometry ⭐⭐ 7.35% | DC ratios & cosines l²+m²+n²=1 | Line: cartesian (x-x1)/a=(y-y1)/b=(z-z1)/c & vector r=a+λb | Plane: ax+by+cz+d=0 | Dist point-to-plane |ax1+by1+cz1+d|/√(a²+b²+c²) | Angle between two lines | Shortest distance between skew lines | Image of point in plane + foot of perpendicular | Family of planes S1+λS2=0',id:'ma-1'},
+ s2:{subj:'Physics',ch:'PH-1: Semiconductors & Logic Gates 4.75% | Energy bands, p-n junction forward/reverse bias VI curve | Diode: half-wave & full-wave rectifier | Zener diode as voltage regulator | Transistor CE: β gain, amplifier & switch | Logic gates: AND OR NOT NAND NOR XOR truth tables | Boolean algebra + De Morgan theorem | Build any gate from NAND or NOR (universal gates)',id:'ph-1'}},
+{d:2,date:'Mar 7',
+ s1:{subj:'Maths',ch:'MA-2: Vectors 4.69% + MA-8: P&C 3.60% | Vectors: dot product a·b=|a||b|cosθ, cross |a×b|=|a||b|sinθ | Area of parallelogram=|a×b|, triangle=½|a×b| | Scalar triple product [a b c]=a·(b×c), volume of parallelepiped | Coplanar condition [a b c]=0 | Projection of a on b=(a·b)/|b| | Section formula vector form | P&C: nPr nCr formulas | Circular arrangements (n-1)! | Distribution into groups | Pascal rule nCr+nCr-1=(n+1)Cr',id:'ma-2'},
+ s2:{subj:'Chemistry',ch:'CH-1: Atomic Structure ⭐ | Quantum numbers n,l,m,s — allowed combinations, max e per shell | Orbital shapes: s sphere, p dumbbell, d double-dumbbell | Aufbau+Pauli+Hund rules for filling | Exceptions: Cr=[Ar]3d⁵4s¹, Cu=[Ar]3d¹⁰4s¹ | Photoelectric: KE=hν-φ, threshold freq ν₀=φ/h | de Broglie λ=h/mv; Heisenberg Δx·Δp≥h/4π | H-spectrum ν̄=R(1/n₁²-1/n₂²), all series | Radial nodes=n-l-1, angular=l, total=n-1',id:'ch-1'}},
+{d:3,date:'Mar 8',
+ s1:{subj:'Maths',ch:'MA-3: Sequences & Series ⭐⭐ 5.74% + MA-4: Complex Numbers ⭐ 4.75% | AP: aₙ=a+(n-1)d, Sₙ=n/2[2a+(n-1)d] | GP: aₙ=arⁿ⁻¹, S∞=a/(1-r) | HP: 1/a,1/b,1/c in AP | AM≥GM≥HM, AM·HM=GM² | Σn Σn² Σn³ | AGP: multiply by r subtract | Telescoping via partial fractions | aₙ=Sₙ-Sₙ₋₁ | Complex: z=a+ib, |z|, conjugate | Polar z=re^iθ, De Moivre theorem | Cube roots 1+ω+ω²=0 | Rotation: multiply by e^iα | Locus: |z-a|=r circle, |z-a|=|z-b| perp bisector | Triangle inequality',id:'ma-3'},
+ s2:{subj:'Physics',ch:'PH-2: Atoms & Nuclei 5.60% | Bohr: L=nℏ, Eₙ=-13.6/n² eV, rₙ=n²×0.529 Å | H-spectrum: Rydberg 1/λ=R(1/n₁²-1/n₂²), all series | α β γ decay — changes in Z and A | Radioactive: N=N₀e^-λt | Half-life T½=0.693/λ, Activity A=λN | Mass defect, BE per nucleon curve | Nuclear reactions Q-value | Binding energy — stability peaks at Fe-56',id:'ph-2'},
+ test:'Comeback Test (Online)'},
+{d:4,date:'Mar 9',
+ s1:{subj:'Maths',ch:'MA-5: Probability ⭐ ~6% + MA-6: Matrices & Determinants 7.46% | Prob: P(A∪B)=P(A)+P(B)-P(A∩B) | Conditional P(A|B)=P(A∩B)/P(B) | Bayes theorem P(Ai|B)=P(B|Ai)P(Ai)/Σ | Binomial P(X=r)=ⁿCr·pʳ·qⁿ⁻ʳ, mean=np, var=npq | E(X)=Σx·P(x), Var=E(X²)-[E(X)]² | Mean Median Mode | Matrices: operations transpose adjoint | Inverse A⁻¹=adj(A)/|A|, |AB|=|A||B| | Det properties (row ops) | Cramer rule | Consistency via ranks | Area of triangle=½|det|',id:'ma-4'},
+ s2:{subj:'Chemistry',ch:'CH-2: Mole Concept ⭐ + CH-3: Periodic Properties | Mole=6.022×10²³; STP 22.4 L/mol | Molarity M=n/V(L), Molality m=n/kg, Mole fraction xₐ=nₐ/n_total | Limiting reagent: smallest moles/coeff | % yield=(actual/theoretical)×100 | n-factor: acid/base=H⁺, redox=ΔON×atoms | Normality N=n-factor×M; meq₁=meq₂ at equivalence | Atomic radius ↓ across period ↑ down group | Ionic radius: cation<parent, isoelectronic higher Z = smaller | IE anomaly: N>O half-filled 2p; Be>B 2s vs 2p | EN: F highest | EA: Cl>F, O<S | Diagonal relations Li≈Mg, Be≈Al | Inert pair effect',id:'ch-2'}},
+{d:5,date:'Mar 10',
+ s1:{subj:'Maths',ch:'MA-7: Binomial Theorem ⭐ 5.05% | General term Tᵣ₊₁=ⁿCr·aⁿ⁻ʳ·bʳ | Middle term: n even→(n/2+1)th, n odd→two middle terms | Term independent of x: set power of x=0 and solve | Numerically greatest term | Sum of coefficients=2ⁿ (a=b=1) | Sum of even/odd coefficients=2ⁿ⁻¹ | Negative & fractional index expansion (1+x)ⁿ for |x|<1',id:'ma-5'},
+ s2:{subj:'Physics',ch:'PH-3: Ray Optics ⭐⭐ 5.04% + PH-6: EMW 2.96% | Mirror: 1/v+1/u=1/f, m=-v/u | Lensmaker: 1/f=(n-1)(1/R₁-1/R₂) | Thin lens: 1/v-1/u=1/f, P=1/f, m=v/u | Combination: 1/F=1/f₁+1/f₂ | TIR: sinθc=1/n | Prism: δmin, n=sin((A+dm)/2)/sin(A/2) | Microscope, telescope magnification | Refraction at spherical surface | EMW: displacement current iD=ε₀dΦE/dt | c=1/√(μ₀ε₀), E₀=cB₀ | EM spectrum order γ→X→UV→Vis→IR→MW→Radio | Energy density, radiation pressure | Uses of each EM band',id:'ph-3'},
+ test:'Mastery 2.8 (Offline)'},
+{d:6,date:'Mar 11',
+ s1:{subj:'Maths',ch:'MA-9: Straight Lines & Circles 5.95% | All forms of line: slope-point, two-point, intercept, normal | Distance from point to line |ax+by+c|/√(a²+b²) | Angle between lines tanθ=(m1-m2)/(1+m1m2) | Pair of lines: ax²+2hxy+by²=0 | Circle: x²+y²+2gx+2fy+c=0, centre(-g,-f) | Tangent at point, equation | Chord of contact: T=0 | Length of tangent √S₁ | Radical axis S₁-S₂=0, radical centre | Family of circles S₁+λS₂=0',id:'ma-6'},
+ s2:{subj:'Chemistry',ch:'CH-4: Chemical Bonding ⭐⭐ | VSEPR: (BP+LP) count → geometry: linear/angular/trigonal/pyramidal/tetrahedral | Bond angles: NH₃>H₂O; NF₃<NH₃ (EN lowers angles); PCl₃<NCl₃ | Hybridisation: sp→linear, sp²→trigonal, sp³→tetrahedral, sp³d, sp³d² | MO theory bond order=(Nb-Na)/2; N₂=3 O₂=2 F₂=1 NO=2.5 O₂⁺=2.5 | O₂ paramagnetic (2 unpaired π*) | Formal charge=V-NB-B/2; minimise for best structure | Dipole moment: HF>H₂O>NH₃>HCl; CO₂=0 SO₂≠0 | H-bonding inter vs intra; raises bp, viscosity, solubility | Resonance: delocalisation lowers energy; benzene NO₃⁻ CO₃²⁻',id:'ch-3'}},
+{d:7,date:'Mar 12',
+ s1:{subj:'Maths',ch:'MA-10: Conics ⭐ 6.20% | Parabola y²=4ax: focus(a,0), directrix x=-a, parametric (at²,2at) | Tangent ty=x+at², Normal y=-tx+2at+at³ | Ellipse x²/a²+y²/b²=1: b²=a²(1-e²), foci (±ae,0) | Sum of focal radii=2a | Hyperbola x²/a²-y²/b²=1: b²=a²(e²-1), asymptotes y=±(b/a)x | Rectangular hyperbola xy=c²: parametric (ct,c/t) | Tangent condition: c²=a²m²-b² (ellipse) | Chord of contact T=S₁ | Director circle',id:'ma-7'},
+ s2:{subj:'Physics',ch:'PH-4: Wave Optics 2.30% | YDSE: β=λD/d fringe width | Bright nλ, dark (2n+1)λ/2 path diff | Intensity I=4I₀cos²(φ/2) | Fringe shift with glass slab: (n-1)t/λ fringes | Single slit: central max width=2λD/a | Minima: a·sinθ=nλ | Malus law I=I₀cos²θ | Brewster angle tanθB=n | Thin film interference (constructive/destructive conditions)',id:'ph-4'},
+ test:'Mastery 2.9 (Offline)'},
+{d:8,date:'Mar 13',
+ s1:{subj:'Maths',ch:'MA-11: Limits+LCD ⭐ 5.50% + MA-12: AOD ⭐ 4.75% | LCD: sinx/x=1, tanx/x=1 (x→0) | (eˣ-1)/x=1, (aˣ-1)/x=lna | (1+1/n)ⁿ=e | LHopital for 0/0 or ∞/∞ | 1^inf form: e^[lim(f-1)*g] | Continuity: LHL=RHL=f(a) | LHD=RHD for differentiability | Rolle MVT | AOD: tangent slope=dy/dx, normal=-1/(dy/dx) | Increasing f(x)>0, decreasing f(x)<0 | 2nd derivative test for max/min | Critical points + closed interval endpoints | Rate of change chain rule | AM-GM for optimisation',id:'ma-8'},
+ s2:{subj:'Chemistry',ch:'CH-5: Thermodynamics ⭐⭐ + CH-6: Chemical Equilibrium ⭐ | ΔH=ΔU+ΔngRT; Δng=moles gas(P)-moles gas(R) | Hess law: ΔH path-independent | Bond enthalpy: ΔH=Σbroken-Σformed | Entropy ΔS>0 solid→liq→gas | ΔG=ΔH-TΔS; ΔG<0 spontaneous; T=ΔH/ΔS crossover | ΔG°=-RTlnK=-nFE° | Cp-Cv=R; adiabatic q=0; isothermal ΔU=0 | Kp=Kc(RT)^Δng | Le Chatelier: P↑→fewer moles gas, T↑→endothermic | Degree of dissociation α from Kp/Kc | Q vs K direction | K=1/K reverse; K^n if multiply equation',id:'ch-4'}},
+{d:9,date:'Mar 14',
+ s1:{subj:'Maths',ch:'MA-13: Definite Integration ⭐⭐ 8.05% | Newton-Leibniz F(b)-F(a) | KING RULE: ∫₀ᵃf(x)dx=∫₀ᵃf(a-x)dx ← use ALWAYS first | Even/odd: (-a,a) odd→0, even→2∫₀ᵃ | Periodic: ∫₀ⁿᵀf=n∫₀ᵀf | Wallis ∫sinⁿx(0 to π/2) | Leibniz rule: d/dx∫(u,v)f(t)dt | Riemann sum: (1/n)Σf(r/n)=∫₀¹f(x)dx | Area between curves: ∫|f-g|dx, split at intersections',id:'ma-9'},
+ s2:{subj:'Physics',ch:'PH-10: Electric Charges & Fields 3.18% + PH-11: Electrostatic Potential & Capacitance ⭐ 4.49% | Coulomb F=kq₁q₂/r², k=9×10⁹ | E field E=kq/r² superposition principle | Dipole: torque τ=pEsinθ, E_axial=2kp/r³ E_equatorial=kp/r³ | Gauss law ΦE=q_enc/ε₀ | E for infinite plane σ/2ε₀, line λ/2πε₀r, sphere | V=kq/r, E=-dV/dr | C=Q/V, parallel plate C=ε₀A/d | Series 1/C_eq=Σ1/Cᵢ, parallel C_eq=ΣCᵢ | Energy U=CV²/2=Q²/2C | Dielectric: C_new=KC₀, energy density eps0*K*E^2/2 | Charge redistribution when connected',id:'ph-5'}},
+{d:10,date:'Mar 15',
+ s1:{subj:'Maths',ch:'MA-14: Differential Equations + Inverse Trig + Sets 5.16% | Variable separable DE | Homogeneous DE: y=vx substitution | Linear DE: dy/dx+Py=Q, IF=e^∫P then y·IF=∫Q·IF dx | Inverse trig: domains, principal value branches | sin⁻¹x+cos⁻¹x=π/2; tan⁻¹x+cot⁻¹x=π/2 | tan⁻¹x+tan⁻¹y=tan⁻¹(x+y/1-xy) (|xy|<1) | Sets: De Morgan laws, Venn diagrams, n(A∪B)=n(A)+n(B)-n(A∩B) | Relations: reflexive, symmetric, transitive, equivalence',id:'ma-10'},
+ s2:{subj:'Chemistry',ch:'CH-7: Ionic Equilibrium ⭐ + CH-8: Redox + CH-9: Electrochemistry ⭐⭐ | Ostwald Ka=Cα²/(1-α); weak acid pH=½(pKa-logC) | pH+pOH=14; Kw=10⁻¹⁴ | Buffer pH=pKa+log([A⁻]/[HA]) | Salt hydrolysis: pH=7+½(pKa-pKb) | Ksp, common ion effect | Indicators pH=pKIn±1 | ON rules: F=-1, O=-2(peroxide-1), H=+1 | Half-reaction balancing acid/base medium | n-factor, meq | E°cell=E°cath-E°anode; ΔG°=-nFE° | Nernst E=E°-(0.0591/n)logQ | Kohlrausch Λ°m=Σν±λ°± | Faraday: w=MIt/nF | Discharge order: Cu²⁺>H⁺>Na⁺ cathode; Cl⁻>OH⁻ anode',id:'ch-5'}},
+// ══════════════════════════════════════════════════════════════════════════
+// PHASE 2 — DAYS 11–20 | CHEMISTRY COMPLETE SYLLABUS
+// All remaining CH chapters covered | Physics every day | ⚡ +2hr Maths timed PYQs
+// ══════════════════════════════════════════════════════════════════════════
+{d:11,date:'Mar 16',
+ s1:{subj:'Chemistry',ch:'CH-10: Chemical Kinetics ⭐ + CH-11: Solid State ⭐ | Rate=k[A]^m[B]^n; order from initial rate data | Zero order: [A]=[A]₀-kt, t½=[A]₀/2k | First order: t½=0.693/k (conc-independent) [A]=[A]₀e^-kt | Arrhenius k=Ae^-Ea/RT; ln(k₂/k₁)=(Ea/R)(1/T₁-1/T₂) | Pseudo first order | Solid: SC(1,52.4%) BCC(2,68%) FCC(4,74%) | Radius ratio tet=0.225 oct=0.414 | NaCl: FCC Cl⁻+oct Na⁺, CN=6:6, 4 formula units | ZnS: FCC S²⁻+tet Zn²⁺, CN=4:4 | Schottky(vacancy ↓density) Frenkel(interstitial same density) | n-type donor, p-type acceptor',id:'ch-6'},
+ s2:{subj:'Physics',ch:'PH-7: Current Electricity ⭐⭐ #1 (6.57%) | V=IR, R=ρL/A, drift velocity vd=eEτ/m | Resistivity ρ=ρ₀(1+αΔT) | EMF: V=ε-Ir, terminal voltage | Cells series E_eq=ΣE r_eq=Σr; cells parallel formula | KCL: ΣI=0 at junction | KVL: ΣV=0 in loop | Wheatstone P/Q=R/S | Metre bridge unknown R | Potentiometer E₁/E₂=l₁/l₂; find internal resistance | Power P=VI=I²R=V²/R | RC circuit τ=RC charging Q=Q₀(1-e^-t/RC)',id:'ph-6'},
+ note:'⚡ +2hr Maths: 25 timed PYQs — 3D Geometry + Vectors (weakest chapter drill)'},
+{d:12,date:'Mar 17',
+ s1:{subj:'Chemistry',ch:'CH-12: Solutions ⭐ + CH-13: Surface Chemistry | Henry law p=KH·x (solubility↑ with P, ↓ with T) | Raoult P=xA·P°A; ΔP/P°=x_solute | ΔTb=iKbm, ΔTf=iKfm, π=iMRT | van t Hoff i>1 dissociation, i<1 association | Abnormal MM=MM/i | Non-ideal: +ve deviation (A-B weaker), azeotropes | Surface chem: physisorption(reversible low ΔH multilayer) vs chemisorption(irreversible monolayer) | Freundlich: x/m=kP^(1/n); log plot straight line | Tyndall effect in colloids | Brownian motion, electrophoresis, coagulation | Hardy-Schulze: Al³⁺>Ca²⁺>Na⁺ | Emulsion: oil-in-water(milk) vs water-in-oil(butter)',id:'ch-7'},
+ s2:{subj:'Physics',ch:'PH-8: Moving Charges & Magnetism 2.89% | Lorentz F=q(v×B) | Circular motion r=mv/qB; cyclotron f=qB/2πm | Biot-Savart dB=μ₀I dl sinθ/4πr² | B at centre of loop=μ₀I/2R | Ampere law ∮B·dl=μ₀I_enc | Solenoid B=μ₀nI | Torque on loop τ=NIAB sinθ | Galvanometer→ammeter (shunt S=Ig·G/(I-Ig)) → voltmeter (series R)',id:'ph-7'},
+ note:'⚡ +2hr Maths: 25 timed PYQs — Sequences+Series + Complex Numbers'},
+{d:13,date:'Mar 18',
+ s1:{subj:'Chemistry',ch:'CH-14: s-Block ⭐ + CH-15: p-Block Gr 13&14 ⭐ | s-Block: anomalous Li: LiF sparingly soluble, Li₂O(not peroxide), Li₃N | Na₂O₂+H₂O→NaOH+H₂O₂ bleaching | KO₂ submarines: 4KO₂+2CO₂→2K₂CO₃+3O₂ | Plaster of Paris CaSO₄·½H₂O sets→gypsum | Na₂CO₃ vs NaHCO₃: NaHCO₃→CO₂ on heat | Flame: Li red Na yellow K violet Ca brick-red Sr crimson Ba green | Diagonal Li≈Mg | B₂H₆: two 3c-2e banana bonds; hydrolysis→B(OH)₃+H₂ | BF₃ Lewis acid (incomplete octet) | Borax bead test | Al amphoteric: +NaOH→NaAlO₂; thermite Al+Fe₂O₃ | C allotropes: diamond(sp³) graphite(sp² conductor) fullerene C₆₀ | CO reducer blast furnace | SiO₂+HF only; silicones Si-O-Si backbone water-repellent',id:'ch-8'},
+ s2:{subj:'Physics',ch:'PH-9: Magnetism+Matter+EMI+AC 5.88% | Dia/Para/Ferro properties, susceptibility, permeability | Hysteresis: retentivity, coercivity | Faraday EMF=-dΦ/dt; Lenz law (direction) | Motional EMF ε=Bvl | Self-inductance ε=-L(dI/dt), L of solenoid=μ₀n²V | Energy in inductor U=LI²/2 | LCR: Z=√(R²+(XL-XC)²); resonance f₀=1/(2π√LC) Z=R | Power factor cosφ=R/Z | Transformer V₂/V₁=N₂/N₁=I₁/I₂',id:'ph-8'},
+ test:'PYQ 2024 Test (Offline)',
+ note:'⚡ +2hr Maths: 25 timed PYQs — Matrices + Binomial + P&C'},
+{d:14,date:'Mar 19',
+ s1:{subj:'Chemistry',ch:'CH-16: p-Block Gr 15-18 ⭐⭐ + CH-17: d&f Block ⭐ | N₂ triple bond; NH₃ pyramidal sp³; HNO₃ conc oxidising | PCl₃(sp³) vs PCl₅(sp³d); axial bonds longer | Ozone: O₃+KI+H₂SO₄→I₂; O₃ depletion by CFC Cl• | H₂SO₄: dehydrating+oxidising+sulphonating; contact V₂O₅ | Halogen reactivity F₂>Cl₂>Br₂>I₂; bond energy Cl>Br>F>I (anomaly) | ClF₃(T-shape) BrF₅(sq pyr) IF₇(pentag bipyr) | HF weakest hydroacid(H-bond); HI strongest; HF etches glass | XeF₂(linear sp³d) XeF₄(sq planar sp³d²) XeF₆(distorted oct) XeO₃ | d-Block: variable OS Mn+2to+7 Cr+2to+6 | KMnO₄: acid→Mn²⁺, neutral→Mn⁴⁺, base→Mn⁶⁺ | CrO₄²⁻(yellow)⇌Cr₂O₇²⁻(orange) pH-dependent | Magnetic moment μ=√[n(n+2)] BM | Lanthanoid contraction (poor 4f shielding) | d-d transition→colour',id:'ch-9'},
+ s2:{subj:'Physics',ch:'PH-12: Units, Dimensions & Error Analysis 4.24% + PH-13: Thermodynamics+KTG 5.94% | 7 fundamental SI units | Dimensional formulae: [G]=M⁻¹L³T⁻² [h]=ML²T⁻¹ | Checking formula by dimensions | Error: absolute, relative, % error | Error in sum/diff, product/quotient, power aⁿbᵐ/cᵖ | Significant figures rules | Screw gauge & vernier LC | KTG: PV=nRT, KE per molecule=3/2kT | vrms=√(3RT/M), vavg=√(8RT/πM), vmp=√(2RT/M) | DoF: mono=3 di=5 poly=6; Cv=(f/2)R Cp=Cv+R γ=Cp/Cv | 1st law ΔU=Q-W | Isothermal, Isochoric, Isobaric, Adiabatic PVᵞ=const | Carnot η=1-TL/TH',id:'ph-9'},
+ note:'⚡ +2hr Maths: 25 timed PYQs — Probability + Statistics'},
+{d:15,date:'Mar 20',
+ s1:{subj:'Chemistry',ch:'CH-18: Coordination Compounds ⭐⭐ #1 Inorganic + CH-19: Metallurgy+Env | IUPAC: ligands alphabetical before metal; anionic complex ends -ate; OS in () | Geometric isomers: cis/trans sq planar(MA₂B₂) and octahedral | Optical: [Co(en)₃]³⁺ chiral, non-superimposable | Ionisation: [Co(NH₃)₅Br]SO₄ vs [Co(NH₃)₅SO₄]Br | VBT: dsp² sq planar, sp³d² octahedral, sp³ tetrahedral | CFT: Δo>Δt; Δt=4/9Δo; high/low spin for d⁴-d⁷ | Spectrochemical: I⁻<Br⁻<Cl⁻<F⁻<OH⁻<H₂O<py<NH₃<en<CN⁻<CO | EAN/18e: Ni(CO)₄ Fe(CO)₅ Cr(CO)₆ | Metallurgy: froth flotation(sulphide), magnetic separation, leaching Au/Ag NaCN | Ellingham: lower=better reducer; C beats Fe below ~950°C | Al extraction: cryolite+electrolysis | Refining: electrolytic(Cu) zone(Ge Si) vapour(Ti via TiI₄) | Env: smog acid rain CFCs BOD eutrophication',id:'ch-10'},
+ s2:{subj:'Physics',ch:'PH-14: Rotational Motion ⭐ 4.31% | Torque τ=Iα, angular momentum L=Iω | MOI: Ring=MR² Disc=MR²/2 Solid sphere=2MR²/5 Hollow=2MR²/3 Rod centre=ML²/12 Rod end=ML²/3 | Parallel axis I=Icm+Md² | Perpendicular axis Iz=Ix+Iy (lamina) | Rolling: v=Rω; total KE=½mv²(1+k²/R²) | Rolling down incline: a=gsinθ/(1+I/MR²) | Angular impulse = ΔL',id:'ph-10'},
+ test:'PYQ 2025 Test (Offline)',
+ note:'⚡ +2hr Maths: 25 timed PYQs — Straight Lines + Circles + Conics'},
+{d:16,date:'Mar 21',
+ s1:{subj:'Chemistry',ch:'CH-20: GOC ⭐ + CH-21: Hydrocarbons ⭐ | Inductive -I: F>Cl>Br>I; EWG destabilises carbanion | Resonance: same connectivity required; delocalisation lowers energy | Hyperconjugation: α-H stabilises C⁺ and radicals | Carbocation: 3°>2°>1°>CH₃⁺; benzylic≈allylic | Carbanion: EWG stabilises; opposite to carbocation | IUPAC: alphabetical substituents, lowest locant, principal group | E/Z CIP priority rules; R/S for chiral centres | Alkanes: free radical; Cl₂ less selective Br₂ highly selective | Alkenes: Markovnikov(HX,H₂O) anti-Markovnikov(HBr+peroxide) | Br₂/CCl₄ anti-addition→trans | Ozonolysis: Zn/H₂O→aldehyde/ketone or H₂O₂→acid | Benzene EAS: nitration Friedel-Crafts halogenation | Directing: OH,NH₂,alkyl o/p activating; NO₂,CN,COOH meta deactivating | Birch reduction: Na/liq.NH₃ unsubstituted positions reduced',id:'ch-11'},
+ s2:{subj:'Physics',ch:'PH-15: Gravitation + Mechanics Review 4.49% | F=Gm₁m₂/r², g=GM/R² | Orbital v₀=√(GM/r) | Escape ve=√(2GM/R)=11.2 km/s | Kepler 3rd T²∝r³ | Geostationary: T=24h, r≈36000km | g variation: altitude g=g₀(1-2h/R), depth g=g₀(1-d/R) | Kinematics: v=u+at s=ut+½at² v²=u²+2as | Projectile R=u²sin2θ/g H=u²sin²θ/2g T=2usinθ/g | NLM: Atwood machine, connected blocks, pseudo force | Friction: static f≤μsN, kinetic f=μkN | WEP: W=F·d, work-energy theorem | COM: r_com=Σmiri/M | Elastic v₁=(m₁-m₂)u₁/(m₁+m₂) | Impulse=FΔt=Δp',id:'ph-11'},
+ note:'⚡ +2hr Maths: 25 timed PYQs — Limits + AOD'},
+{d:17,date:'Mar 22',
+ s1:{subj:'Chemistry',ch:'CH-22: Haloalkanes ⭐ + CH-23: Alcohols, Phenols & Ethers ⭐ | SN2: bimolecular inversion primary substrate polar aprotic | SN1: unimolecular racemisation tertiary polar protic | Nucleophilicity protic: I⁻>Br⁻>Cl⁻>F⁻ | E2: anti-periplanar Zaitsev (more substituted alkene) with strong base | Aryl halides: C-X by resonance; nucleophilic only with EWG | Grignard RMgX dry ether: H₂O CO₂ RCHO R₂CO reactions | Alcohols: Lucas test 3°immediate 2°slow 1°no turbidity | Phenol acidity: resonance stabilises PhO⁻; EWG increases EA | Phenol+Br₂→2,4,6-tribromophenol (no catalyst) | Williamson synthesis RO⁻+R-X→ether (SN2 use primary X) | Ether cleavage: HI>HBr; 3° via SN1 | Kolbe: phenol+CO₂/NaOH→salicylic acid(ortho) | Reimer-Tiemann: phenol+CHCl₃/NaOH→salicylaldehyde',id:'ch-12'},
+ s2:{subj:'Physics',ch:'PH-3 revisit: SHM 4.49% (within Gravitation block) | SHM: a=-ω²x, x=A cos(ωt+φ) | ω=√(k/m) spring, ω=√(g/L) simple pendulum | v=ω√(A²-x²), vmax=Aω at x=0 | Energy: KE=½mω²(A²-x²) PE=½mω²x² Total=½mω²A² | Spring combinations: series 1/k_eq=1/k₁+1/k₂; parallel k_eq=k₁+k₂ | Waves: v=fλ | Standing waves: nodes antinodes | Open pipe fₙ=nv/2L; closed pipe fₙ=(2n-1)v/4L | Beats |f₁-f₂| | Doppler: f_obs=f_src(v+v_obs)/(v+v_src) cases',id:'ph-12'},
+ test:'Mastery 2.11 (Offline)',
+ note:'⚡ +2hr Maths: 25 timed PYQs — Definite Integration King rule practice'},
+{d:18,date:'Mar 23',
+ s1:{subj:'Chemistry',ch:'CH-24: Aldehydes, Ketones & Carboxylic Acids ⭐⭐ HIGHEST ORGANIC | Nucleophilic addition: RCHO>R₂CO (less steric more electrophilic) | Aldol: base+α-H→β-hydroxy carbonyl→dehydration | Cannizzaro: no α-H + conc NaOH → 50% alcohol + 50% acid (disproportionation) | Tollens(Ag mirror) + Fehling(brick-red Cu₂O): aldehydes only (not ketones) | Iodoform: CH₃CO- or CH₃CHOH → CHI₃ yellow ppt | Carboxylic: EWG adjacent increases acidity (-I > -R) | Acidity order: acyl Cl > anhydride > ester > amide | Esterification: RCOOH+ROH⇌RCOOR+H₂O Fischer H⁺ cat | HVZ: α-halogenation RCOOH with X₂/P catalyst | Claisen condensation: 2 esters+base(α-H)→β-keto ester | Reformatsky: α-bromo ester+Zn+RCHO→β-hydroxy ester',id:'ch-13'},
+ s2:{subj:'Physics',ch:'PH-9 revisit: Fluids (within Mechanics block) | Pressure P=ρgh, Pascal law, hydrostatic pressure | Archimedes F_buoy=ρ_fluid·V_sub·g | Continuity: A₁v₁=A₂v₂ | Bernoulli: P+½ρv²+ρgh=constant | Venturimeter, Torricelli v=√(2gh) | Stokes: F=6πηrv, terminal velocity | Surface tension T=F/l; excess pressure bubble 4T/r drop 2T/r | Capillary h=2Tcosθ/(ρgr) | Units error: significant figures, % error propagation in lab formulas',id:'ph-13'},
+ note:'⚡ +2hr Maths: 25 timed PYQs — Differential Equations + Inverse Trig + Sets'},
+{d:19,date:'Mar 24',
+ s1:{subj:'Chemistry',ch:'CH-25: Amines ⭐ + CH-26: Biomolecules | Basicity: aliphatic amine>NH₃>aniline | 2°>1°>3° in aqueous (solvation) | EWG on ring(NO₂ p/o) reduces aniline basicity drastically | Hinsberg: 1°(sulfonamide NaOH soluble) 2°(insoluble) 3°(no rxn) | Diazotisation: ArNH₂+NaNO₂+HCl 0-5°C→ArN₂⁺Cl⁻ | Sandmeyer: CuCN→ArCN, CuCl→ArCl, CuBr→ArBr | Gattermann: Cu powder variant | Coupling: ArN₂⁺+phenol(alkaline)/aniline→azo dye | Gabriel synthesis: phthalimide→primary amine only | Biomolecules: glucose CHO-(CHOH)₄-CH₂OH; D-glucose OH at C5 right | α vs β: C1-OH axial(α) equatorial(β); mutarotation | Reducing: glucose fructose maltose lactose (free hemiacetal) | Sucrose non-reducing (α-D-gluc+β-D-fruc), invertase | Amino acid: zwitterion, peptide bond -CO-NH- N to C terminal | Protein: 1°(seq) 2°(α-helix/β-sheet H-bond) 3°(globular) 4°(quaternary)',id:'ch-14'},
+ s2:{subj:'Physics',ch:'PH-2 revisit: Dual Nature 4.05% + semiconductor review | Photoelectric: KE=hν-φ stopping potential eV₀=hν-φ | Effect of intensity (↑current not KE) vs frequency (↑KE not current) | de Broglie for electrons λ=h/√(2meV) | Davisson-Germer experiment | Heisenberg Δx·Δp≥ℏ/2 | p-n junction IV characteristics: forward bias (threshold 0.7V Si) reverse bias | Full-wave rectifier: PIV and efficiency | Zener: breakdown voltage; regulator circuit calculation | Transistor: common-emitter β=IC/IB; amplifier gain',id:'ph-14'},
+ test:'AITS-18 (Offline)',
+ note:'⚡ +2hr Maths: 25 mixed PYQs from all 10 Maths topics — weakest first'},
+{d:20,date:'Mar 25',
+ s1:{subj:'Chemistry',ch:'CH-27: Polymers + Everyday Life + CH-28: States of Matter [Adv level — know for awareness] | Polymers: addition (PVC Teflon polythene polystyrene — identify monomers) | Condensation: Nylon-6,6(hexamethylenediamine+adipic acid) Dacron Bakelite(phenol+HCHO thermosetting) | Natural rubber=cis-1,4-polyisoprene; vulcanisation with S→cross-linked | Biodegradable: PHBV nylon-2-nylon-6; non-biod: PVC polythene | Drugs: analgesics(aspirin paracetamol) antibiotics(penicillin) antiseptics(Dettol) | Detergents vs soaps: work in hard water | States of Matter (Adv): vdW eq (P+an²/V²)(V-nb)=nRT | Compressibility Z=PV/nRT; critical constants Tc=8a/27Rb | vrms:vavg:vmp = √3:√(8/π):√2 = 1.73:1.60:1.41',id:'ch-15'},
+ s2:{subj:'Physics',ch:'Full Physics Mains Rapid Consolidation | Quick run: all 15 PH chapter formula sheets in sequence | Special focus: Current Electricity (6.57%) Kinetic Theory+Thermo (5.94%) Atoms+Nuclei (5.60%) Ray Optics (5.04%) Rotation (4.31%) — highest weightage chapters | Write all key formulas from memory; check blanks',id:'ph-15'},
+ test:'Mock Test 2 (Online)',
+ note:'⚡ +2hr Maths: weakest 2 chapters — 30 targeted problems'},
+// ══════════════════════════════════════════════════════════════════════════
+// PHASE 3 — DAYS 21–28 | FULL REVISION + RAPID-FIRE PRACTICE
+// Physics PYQ sweep | Maths timed drills | Chemistry rapid-fire formula recall
+// ══════════════════════════════════════════════════════════════════════════
+{d:21,date:'Mar 26',
+ s1:{subj:'Physics',ch:'P-REV1: Mechanics+Rotation+Fluids+Gravitation | 25 PYQs timed strictly 45 min | Focus: Atwood machine, projectile, rolling down incline, satellite energy, Bernoulli | Formula sheet: write all equations from memory before starting',id:'ph-r1'},
+ s2:{subj:'Maths',ch:'M-REV1: 3D Geometry+Vectors+Sequences+P&C | 30 timed problems 45 min | Focus: shortest distance between skew lines, triple product, AGP sum, circular arrangements | Target 100% accuracy not speed',id:'ma-r1'},
+ test:'Final Mock (Online)'},
+{d:22,date:'Mar 27',
+ s1:{subj:'Physics',ch:'P-REV2: Ray Optics+Wave Optics+Modern Physics+EMW | 25 PYQs timed 45 min | Focus: lens-mirror combos 1/F=1/f₁+1/f₂, YDSE fringe shift, photoelectric stopping potential, logic gate truth tables | Write formula sheet',id:'ph-r2'},
+ s2:{subj:'Chemistry',ch:'C-REV1: Physical Chem rapid fire | Key formulas only — 5 min per topic: ΔG=-RTlnK, buffer pH, Nernst, t-half, ΔTf=iKfm, Faraday w=MIt/nF | 15 PYQs timed 30 min',id:'ch-r1'}},
+{d:23,date:'Mar 28',
+ s1:{subj:'Physics',ch:'P-REV3: Current Electricity+Magnetism+EMI+AC | 25 PYQs timed 45 min | Focus: Kirchhoff mesh analysis, LCR resonance f₀=1/2π√LC, motional EMF ε=Bvl, transformer ratio, potentiometer | Write formula sheet',id:'ph-r3'},
+ s2:{subj:'Maths',ch:'M-REV2: Complex Numbers+Matrices+Conics+Binomial | 30 timed problems 45 min | Focus: rotation trick z₂=z₁+|z|e^iθ, Cramer rule, conic tangent condition, term independent of x | Write all from memory',id:'ma-r2'}},
+{d:24,date:'Mar 29',
+ s1:{subj:'Physics',ch:'P-REV4: Thermodynamics+KTG+SHM+Waves+Sound | 25 PYQs timed 45 min | Focus: Carnot efficiency, adiabatic PVᵞ=const, vrms formula, SHM energy at x=A/2, Doppler all 4 cases | Write formula sheet',id:'ph-r4'},
+ s2:{subj:'Chemistry',ch:'C-REV2: Inorganic rapid fire | s-Block: Na₂O₂ reactions, flame colours | p-Block: XeF₂/XeF₄, PCl₅ geometry, H₂SO₄ uses | d-Block: KMnO₄ in acid/base, μ formula | Coordination: spectrochemical series, IUPAC | 15 PYQs timed 30 min',id:'ch-r2'},
+ test:'AITS Final (Offline)'},
+{d:25,date:'Mar 30',
+ s1:{subj:'Physics',ch:'P-REV5: Full Physics mixed | 30 hardest PYQs 2020-2025 all chapters random | Timed 50 min | Mark wrong answers — revise those chapter formulas immediately after',id:'ph-r5'},
+ s2:{subj:'Chemistry',ch:'C-REV3: Organic rapid fire | Stability orders: carbocation, radical, carbanion | SN1/SN2 conditions table | Aldol/Cannizzaro trigger conditions | Tollens vs Fehling | Sandmeyer reactions | Iodoform test groups | 15 PYQs timed 30 min',id:'ch-r3'}},
+{d:26,date:'Mar 31',
+ s1:{subj:'Maths',ch:'M-REV3: Calculus+Probability+Statistics | 30 timed problems 45 min | Focus: King rule ∫f(x)=∫f(a-x), Bayes theorem with tree diagram, maxima-minima with AM-GM, Linear DE IF method | Write all formulas from memory',id:'ma-r3'},
+ s2:{subj:'Chemistry',ch:'C-REV4: Full Chemistry — pick your 3 weakest chapters only | 15 min per chapter: write key reactions+formulas from memory | Then solve 5 PYQs per chapter',id:'ch-r4'}},
+{d:27,date:'Apr 1',
+ s1:{subj:'ALL',ch:'🎯 Grand Revision — From mock test error logs: list top 3 wrong topics per subject | Solve 10 fresh problems per weak topic | No new chapters today',id:'rev1'},
+ s2:{subj:'ALL',ch:'📋 Formula Sheet Final — write 1 page Physics (all key formulas) + 1 page Maths + 1 page Chemistry from memory | Check against notes | Sleep 8 hours tonight',id:'rev2'}},
+{d:28,date:'Apr 2',
+ s1:{subj:'ALL',ch:'🔥 Light 90-min revision — read formula sheets only, glance at key reaction notes | No problem solving today | Eat well, hydrate',id:'rev'},
+ s2:{subj:'ALL',ch:'🎯 JEE MAINS BEGINS TODAY! You covered every chapter. Trust your preparation. 🚀',id:'exam'}},
 ];
 const MAINS_TESTS=[
- {id:'m1',date:'2026-03-05',name:'Mastery 2.7',type:'Offline',desc:'12th Syllabus focus',maxPh:100,maxCh:100,maxMa:100},
  {id:'m2',date:'2026-03-08',name:'Comeback Test',type:'Online',desc:'11th/12th Part',maxPh:100,maxCh:100,maxMa:100},
  {id:'m3',date:'2026-03-10',name:'Mastery 2.8',type:'Offline',desc:'Full Syllabus',maxPh:100,maxCh:100,maxMa:100},
  {id:'m4',date:'2026-03-12',name:'Mastery 2.9',type:'Offline',desc:'Full Syllabus',maxPh:100,maxCh:100,maxMa:100},
@@ -1066,44 +1133,141 @@ const ADV_TESTS=[
 
 // ADVANCED PLAN (Apr 11 – May 16, 36 days, 2 subjects/day)
 const ADV_PLAN_DATA=[
- {d:1,date:'Apr 11',s1:{subj:'Physics',ch:'Newton\'s Laws Advanced (Constraint motion)'},s2:{subj:'Chemistry',ch:'Organic Synthesis Pathways'}},
- {d:2,date:'Apr 12',s1:{subj:'Maths',ch:'3D Geometry — Advanced Level'},s2:{subj:'Chemistry',ch:'Coordination: Isomerism Deep Dive'}},
- {d:3,date:'Apr 13',s1:{subj:'Physics',ch:'Work, Energy, Power (Advanced)'},s2:{subj:'Chemistry',ch:'Named Reactions Compilation'}},
- {d:4,date:'Apr 14',s1:{subj:'Maths',ch:'Calculus — Advanced Integration Tricks'},s2:{subj:'Chemistry',ch:'Inorganic Reactions Blitz'}},
- {d:5,date:'Apr 15',s1:{subj:'Physics',ch:'Center of Mass & Collision (Advanced)'},s2:{subj:'Chemistry',ch:'Physical Chem: Thermodynamics JEE Adv level'}},
- {d:6,date:'Apr 16',s1:{subj:'Maths',ch:'Complex Numbers Advanced + Geometry'},s2:{subj:'Chemistry',ch:'p-Block Deep Dive'}},
- {d:7,date:'Apr 17',s1:{subj:'Physics',ch:'Rotational Motion Advanced Problems'},s2:{subj:'Chemistry',ch:'Electrochemistry Advanced'}},
- {d:8,date:'Apr 18',s1:{subj:'Maths',ch:'Probability: Conditional & Geometric'},s2:{subj:'Chemistry',ch:'Chemical Equilibrium Advanced'}},
- {d:9,date:'Apr 19',s1:{subj:'Physics',ch:'Simple Harmonic Motion (Full)'},s2:{subj:'Chemistry',ch:'Stereochemistry Deep Dive'},test:'Advanced Full Test 1'},
- {d:10,date:'Apr 20',s1:{subj:'Maths',ch:'Matrices: Advanced Applications'},s2:{subj:'Chemistry',ch:'Transition Metal Chemistry'}},
- {d:11,date:'Apr 21',s1:{subj:'Physics',ch:'Waves & Sound (full chapter)'},s2:{subj:'Chemistry',ch:'Reaction Mechanisms Advanced'}},
- {d:12,date:'Apr 22',s1:{subj:'Maths',ch:'Conics Advanced Level Problems'},s2:{subj:'Chemistry',ch:'Chemical Kinetics Advanced'},test:'Advanced Full Test 2'},
- {d:13,date:'Apr 23',s1:{subj:'Physics',ch:'Fluids + Viscosity + Surface Tension'},s2:{subj:'Chemistry',ch:'Organic Compounds Analysis'}},
- {d:14,date:'Apr 24',s1:{subj:'Maths',ch:'Sequences Advanced: Telescoping + AGP'},s2:{subj:'Chemistry',ch:'Spectroscopy: IR, NMR (conceptual)'}},
- {d:15,date:'Apr 25',s1:{subj:'Physics',ch:'Optics Advanced: Interference, Thin Films'},s2:{subj:'Chemistry',ch:'Polymers Advanced: Condensation'}},
- {d:16,date:'Apr 26',s1:{subj:'Maths',ch:'Trigonometry: Equations & Inverse'},s2:{subj:'Chemistry',ch:'Biomolecules Advanced'},test:'Advanced Full Test 3'},
- {d:17,date:'Apr 27',s1:{subj:'Physics',ch:'Electrostatics Advanced (Conductors)'},s2:{subj:'Chemistry',ch:'D-Block Advanced Problems'}},
- {d:18,date:'Apr 28',s1:{subj:'Maths',ch:'Number Theory & Inequalities'},s2:{subj:'Chemistry',ch:'s-Block and Solutions Revision'}},
- {d:19,date:'Apr 29',s1:{subj:'Physics',ch:'Electromagnetism Advanced Circuits'},s2:{subj:'Chemistry',ch:'Atomic Structure JEE Adv Level'},test:'Advanced Full Test 4'},
- {d:20,date:'Apr 30',s1:{subj:'Maths',ch:'Differential Equations Advanced'},s2:{subj:'Chemistry',ch:'Redox Advanced Balancing'}},
- {d:21,date:'May 1',s1:{subj:'Physics',ch:'Modern Physics Advanced (QM basics)'},s2:{subj:'Chemistry',ch:'Surface Chemistry Advanced'}},
- {d:22,date:'May 2',s1:{subj:'Maths',ch:'Vectors 3D Integration'},s2:{subj:'Chemistry',ch:'Solid State Advanced Problems'}},
- {d:23,date:'May 3',s1:{subj:'Physics',ch:'Nuclear Physics: Fission, Fusion Advanced'},s2:{subj:'Chemistry',ch:'Full Revision: Weak Organic'},test:'AITS Advanced'},
- {d:24,date:'May 4',s1:{subj:'Maths',ch:'Graph Theory + Functions Advanced'},s2:{subj:'Chemistry',ch:'Full Revision: Weak Inorganic'}},
- {d:25,date:'May 5',s1:{subj:'Physics',ch:'Mixed: 15 previous year hard Qs'},s2:{subj:'Chemistry',ch:'Mixed: 15 previous year hard Qs'},test:'Advanced Simulation'},
- {d:26,date:'May 6',s1:{subj:'Maths',ch:'Definite Integration: Hard Level'},s2:{subj:'Physics',ch:'Thermodynamics + KTG Advanced'},test:'Speed & Depth Test'},
- {d:27,date:'May 7',s1:{subj:'Physics',ch:'All Important Formulas Revision'},s2:{subj:'Maths',ch:'All Important Formulas Revision'},test:'Final Concept Check'},
- {d:28,date:'May 8',s1:{subj:'Chemistry',ch:'All Important Reactions Sheet'},s2:{subj:'ALL',ch:'Solve 30 PYQ Advanced Qs'}},
- {d:29,date:'May 9',s1:{subj:'Physics',ch:'Full Mock Analysis — Correct Mistakes'},s2:{subj:'Maths',ch:'Full Mock Analysis'}},
- {d:30,date:'May 10',s1:{subj:'Chemistry',ch:'Full Mock Analysis'},s2:{subj:'ALL',ch:'Weak Chapter Targeted Blitz'},test:'Grand Mock 1'},
- {d:31,date:'May 11',s1:{subj:'Physics',ch:'Light Rest + Formula Quick Read'},s2:{subj:'Chemistry',ch:'Light Rest + Key Facts'}},
- {d:32,date:'May 12',s1:{subj:'Maths',ch:'Key Theorem Quick Revision'},s2:{subj:'Physics',ch:'Mock Paper Analysis'},test:'Grand Mock 2'},
- {d:33,date:'May 13',s1:{subj:'Chemistry',ch:'Formula Sheet + Reactions'},s2:{subj:'Maths',ch:'Formula Sheet Rapid Revision'},test:'Formula & Error Drill'},
- {d:34,date:'May 14',s1:{subj:'ALL',ch:'Very Light: Only read notes'},s2:{subj:'ALL',ch:'Sleep early, exam tomorrow!'},test:'Final Warm-up'},
- {d:35,date:'May 15',s1:{subj:'REST',ch:'Relax, Light Exercise, Good Sleep'},s2:{subj:'REST',ch:'No Heavy Studying — Warm Up Only'}},
- {d:36,date:'May 16',s1:{subj:'REST',ch:'Pre-exam day — logistics check'},s2:{subj:'REST',ch:'Early sleep — JEE Advanced Tomorrow!'},},
+// ════════════════════════════════════════════════════════════════════════════
+// PHASE 1 — DAYS 1-15 | ALL [A] CHEMISTRY SUBTOPICS + PHYSICS ADVANCED
+// Every single [A] subtopic from CH array covered in this phase
+// Maths Advanced problems alongside each day
+// ════════════════════════════════════════════════════════════════════════════
+{d:1,date:'Apr 11',
+ s1:{subj:'Chemistry [A]',ch:'CH-1 Atomic Structure [A] + CH-2 Mole Concept [A] | Slater rules: shielding sigma for each group; Zeff=Z-sigma for each orbital | Penetrating power s>p>d>f and effect on energy | Radial distribution function: most probable radius for 1s, 2s, 2p | Wave function psi-squared = probability density; radial nodes = n-l-1 | Mole [A]: Back-titration — excess reagent method; double indicator (Na2CO3+NaHCO3 mixture with HCl) | POAC: Principle of Atom Conservation for multi-step stoichiometry chains',id:'ch-a1'},
+ s2:{subj:'Physics [A]',ch:'Advanced Constraint Motion + Pseudo forces | Constraint relation: differentiate geometry to get acceleration relation | Wedge-block system: acceleration using constraint | Non-inertial frame: pseudo force = -ma (frame) acts on all objects | String constraint: pulley with multiple blocks | Variable mass rocket: thrust = -v_rel * dm/dt | Friction on inclined plane: static vs kinetic, angle of repose',id:'ph-a1'}},
+{d:2,date:'Apr 12',
+ s1:{subj:'Chemistry [A]',ch:'CH-3 Periodic Table [A] + CH-4 Chemical Bonding [A] | Periodic [A]: Relativistic effects — Au colour (5d-6s gap), Hg liquid (6s² inert), Pb4+ unstable | Metallic character trends; EA anomaly group 16 vs 17 | Bonding [A]: Back bonding pi-d: BF3 shorter B-F than expected; PCl3 pi-acceptor | Full MO diagram: N2 vs O2 — orbital sequence switch at N2 (sigma2p BELOW pi2p for B2-N2) | Draw complete MO diagrams for N2 O2 F2 NO CO and find bond order + magnetic properties | VSEPR exceptions: XeF4 sq planar (2 LP equatorial), ClF3 T-shape (2 LP equatorial)',id:'ch-a2'},
+ s2:{subj:'Maths [A]',ch:'3D Geometry Advanced | Foot of perpendicular from point to line: parametric method | Image of point in plane: A + 2*proj formula | Angle bisector planes | Coplanar lines condition: verify using determinant | Section formula in 3D for internal/external division | Family of planes through line of intersection S1+lambda*S2=0 | Shortest distance between two skew lines using cross product formula',id:'ma-a1'}},
+{d:3,date:'Apr 13',
+ s1:{subj:'Chemistry [A]',ch:'CH-5 Thermodynamics [A] | Kirchhoff equation: delta-H(T2) = delta-H(T1) + delta-Cp*(T2-T1) for small delta-T; integrate for exact: delta-H(T2)=delta-H(T1)+integral(delta-Cp dT, T1, T2) | Entropy integrals: delta-S = nCv*ln(T2/T1) + nR*ln(V2/V1) | delta-S = nCp*ln(T2/T1) - nR*ln(P2/P1) | Born-Haber cycle: lattice enthalpy for NaCl using ionisation energy, electron affinity, sublimation, dissociation | Trouton rule: delta-Svap approx 88 J/mol/K for most liquids | Residual entropy concept',id:'ch-a3'},
+ s2:{subj:'Physics [A]',ch:'Advanced Work Energy Power | Variable force: W = integral(F dx) for spring, gravity variation | Spring combination energy: series and parallel | Collision with spring: find maximum compression (KE converts to PE) | Conservative force from potential: F = -dU/dr | Potential energy diagrams: equilibrium, stable/unstable, turning points | Power in rotational motion: P = tau*omega | Non-conservative force (friction): work-energy theorem with Wf',id:'ph-a2'}},
+{d:4,date:'Apr 14',
+ s1:{subj:'Chemistry [A]',ch:'CH-6 Chemical Equilibrium [A] + CH-7 Ionic Equilibrium [A] | Equilibrium [A]: Simultaneous equilibria — solve coupled Kc/Kp expressions step by step | Vapour pressure of solids: CaCO3(s) -> CaO(s)+CO2(g); Kp=P(CO2) only; effect of temperature | Ionic [A]: Polyprotic acids — H2SO4 (Ka1 very large, Ka2=0.012), H3PO4 (Ka1>>Ka2>>Ka3) | Isoelectric point pI=(pKa1+pKa2)/2 for amino acids; migration direction in electric field | Titration curves: strong acid-strong base (equivalence pH=7) | Weak acid-strong base: buffer region; Henderson at half-equivalence pH=pKa | Titration of Na2CO3 with HCl: first equivalence pH approx 8.3; second pH approx 4',id:'ch-a4'},
+ s2:{subj:'Maths [A]',ch:'Complex Numbers Advanced | Geometry in Argand plane: |z-a|=|z-b| perpendicular bisector; arg(z-a/z-b)=theta arc of circle | Ptolemy theorem using complex numbers | Rotation: if z3 is obtained by rotating z2 about z1 by angle theta: (z3-z1)/(z2-z1) = e^(i*theta) | Sum of nth roots of unity = 0; product = (-1)^(n+1) | Application: equilateral triangle z1+z2+z3=0 and z1^2+z2^2+z3^2=0 | Finding real/imaginary part of complex expressions | Modulus-argument form for nth power',id:'ma-a2'}},
+{d:5,date:'Apr 15',
+ s1:{subj:'Chemistry [A]',ch:'CH-8 Redox [A] + CH-9 Electrochemistry [A] | Redox [A]: Comproportionation (reverse disproportionation): two different OS of same element → one intermediate OS; example Fe3++Fe->2Fe2+ | KMnO4 titrations — acid medium (Mn+7->+2, n-factor=5), alkaline medium (->MnO4^2- n=1), neutral (->MnO2 n=3) | Electrochem [A]: Concentration cells: E = -(0.0591/n)*log(C1/C2); determine which electrode is anode | Fuel cells: H2-O2; anode 2H2+4OH^-->4H2O+4e-; cathode O2+2H2O+4e^-->4OH- | Transference number t+ and t-; Hittorf method — change in equivalents at each electrode | Corrosion electrochemistry: Fe anode->Fe2++2e-; O2+2H2O+4e->>4OH-; rust formation',id:'ch-a5'},
+ s2:{subj:'Physics [A]',ch:'Advanced Centre of Mass and Collisions | Oblique collision (2D): resolve velocities, conservation of momentum (both x and y), e = relative velocity of separation/approach along line of contact | Variable mass: rocket thrust equation F_net=ma+v_rel*(dm/dt); find velocity as function of mass | Explosion problems: internal forces — COM does not move; find velocity of each piece | Impulse-momentum for variable force | Collision of ball with fixed wall: e coefficient, impulse | Two-body reduced mass problem: mu = m1*m2/(m1+m2)',id:'ph-a3'}},
+{d:6,date:'Apr 16',
+ s1:{subj:'Chemistry [A]',ch:'CH-10 Chemical Kinetics [A] | Rate-determining step: slowest step gives rate law; test with intermediates (use pre-equilibrium or steady-state) | Parallel reactions: A -> B (k1) and A -> C (k2); k_total=k1+k2; product ratio = k1/k2 (independent of concentration or time) | Consecutive reactions: A->B->C; B accumulates then depletes; time for max [B] = ln(k2/k1)/(k2-k1) | Steady-state approximation: d[intermediate]/dt = 0 | Lindemann mechanism: unimolecular at high P (bimolecular activation) -> first order; at low P -> bimolecular (second order) | Photo-chemical reactions: quantum yield phi = molecules reacted / photons absorbed',id:'ch-a6'},
+ s2:{subj:'Maths [A]',ch:'Sequences Advanced + Number Theory | Method of differences for finding nth term when differences are in AP or GP | AGP derivation: S=a+(a+d)r+(a+2d)r^2...; multiply by r subtract — full derivation not just formula | Sum of infinite AGP: S_inf=a/(1-r)+dr/(1-r)^2 | Cauchy-Schwarz inequality: (a1^2+a2^2+...)(b1^2+....) >= (a1b1+a2b2+...)^2 | AM-GM proof for n terms | Applications: find min of x^2+1/x for x>0; min of a/b+b/a',id:'ma-a3'}},
+{d:7,date:'Apr 17',
+ s1:{subj:'Chemistry [A]',ch:'CH-11 Solid State [A] + CH-12 Solutions [A] | Solid [A]: CsCl structure: simple cubic Cl^- at corners + Cs^+ at body centre; CN=8:8; 1 formula unit | Density calculation d=ZM/(Na*a^3); given unit cell edge a, find density or vice versa | Band theory: conductor (overlapping bands), semiconductor (small gap ~1eV, thermally overcome), insulator (large gap >5eV) | Diamond cubic: 8 atoms/cell; FCC + 4 tetrahedral voids filled; CN=4, sp3 hybridised | Solutions [A]: Osmometry for polymer MW determination: pi=CRT/M, find M_polymer | Reverse osmosis: applied P > osmotic P | Azeotropes: min BP (ethanol-water, +ve deviation); max BP (HCl-water, -ve deviation); cannot be separated by distillation',id:'ch-a7'},
+ s2:{subj:'Physics [A]',ch:'Rotational Motion Advanced | Rolling on inclined plane: acceleration a=g*sin(theta)/(1+I/MR^2); which shape wins? sphere > disc > ring | Toppling condition: COM must cross pivot point; normal reaction shifts | Angular momentum conservation when no external torque: I1*w1=I2*w2 (skater example) | Instantaneous axis of rotation for rolling body | Spinning top (gyroscopic): precession omega_precession = Mgd/L | Angular impulse = change in L | Rolling with slipping: friction acts until v_cm = R*omega | Angular momentum of particle about origin: L = m*(r x v)',id:'ph-a4'}},
+{d:8,date:'Apr 18',
+ s1:{subj:'Chemistry [A]',ch:'CH-14 s-Block [A] + CH-15 p-Block Gr 13&14 [A] | s-Block [A]: Solubility trends — LiF < NaF < KF < RbF (lattice energy > hydration for small Li+) | But LiCl > NaCl > KCl (hydration dominates for Cl-); opposite trend | Be anomaly: BeO and Be(OH)2 both amphoteric; Be+NaOH -> [Be(OH)4]^2- + H2 | BeSO4 soluble unlike other group 2 sulphates (small Be2+ high hydration) | p-Block 13&14 [A]: Lewis acidity order of B halides: BF3 < BCl3 < BBr3 (back bonding F>Cl>Br decreases, so less Lewis acid character increases down) | Inert pair effect: Tl+ > Tl3+; Pb2+ > Pb4+; Sn2+ > Sn4+ — heavier element prefers lower OS due to 6s2 inertness',id:'ch-a8'},
+ s2:{subj:'Maths [A]',ch:'Probability Advanced | Geometric probability: continuous sample space — use length/area/volume ratio | Negative binomial distribution: number of trials to get rth success | Conditional probability chains: P(A1 and A2 and A3) = P(A1)*P(A2|A1)*P(A3|A1A2) | Expected value proofs: E(X+Y)=E(X)+E(Y); E(aX+b)=a*E(X)+b | Variance: Var(X+Y)=Var(X)+Var(Y) if independent | Variance derivation Var=E(X^2)-[E(X)]^2 | Probability generating functions: G(t)=E(t^X) | JEE Advanced type: balls in boxes, inclusion-exclusion principle',id:'ma-a4'}},
+{d:9,date:'Apr 19',
+ s1:{subj:'Chemistry [A]',ch:'CH-16 p-Block Gr 15-18 [A] | Oxoacids of P: H3PO4 (tribasic, sp3, pyramidal, 3 OH groups); H3PO3 (dibasic, has P-H bond, cannot ionise P-H, only 2 OH groups); H3PO2 (monobasic, 2 P-H bonds, only 1 OH) | Rule: basicity = number of OH groups only (not P-H bonds) | Oxoacids of S: H2SO3 (SO3^2- pyramidal); H2S2O7 oleum (pyrosulphuric); H2S2O8 peroxodisulphuric (Marshall acid, has O-O bond); H2SO5 Caro acid | Oxoacids of Cl: HClO (hypochlorous) < HClO2 (chlorous) < HClO3 (chloric) < HClO4 (perchloric) — acidity increases with OS (more O atoms withdraw electron density from O-H)',id:'ch-a9'},
+ s2:{subj:'Physics [A]',ch:'SHM Advanced | SHM on inclined plane: equilibrium position shifts; oscillation parameters unchanged (same omega) | Superposition of SHM: x1=A1*sin(wt) + x2=A2*sin(wt+phi) -> resultant R=sqrt(A1^2+A2^2+2A1A2*cos(phi)) | Coupled oscillators: normal modes; in-phase and out-of-phase frequencies | Damped oscillations: x=A*e^(-bt/2m)*cos(wt+phi); underdamped overdamped critically damped | Driven oscillations: resonance when omega_drive = omega_natural | Q factor = omega0*m/b | Spring: when spring is cut to length L/n, k_new = n*k | LC oscillation analogy: q<->x, 1/C<->k, L<->m',id:'ph-a5'},
+ test:'Advanced Full Test 1'},
+{d:10,date:'Apr 20',
+ s1:{subj:'Chemistry [A]',ch:'CH-17 d&f Block [A] + CH-18 Coordination [A] | d-Block [A]: Actinoids vs lanthanoids — actinoids use 5f orbitals more in bonding (variable OS +3 to +7) vs lanthanoids (mostly +3); 5f more diffuse | 3d series config anomalies: Cr=[Ar]3d54s1 Cu=[Ar]3d104s1; also Ti to Zn full configs | Spin-only vs spin+orbital: for 1st row spin-only valid; 2nd/3rd row spin+orbital contribution matters | Coordination [A]: CFSE = -0.4*x*Delta_o (for x electrons in t2g) - 0 (for eg); subtract pairing energy if needed | High-spin vs low-spin CFSE values for d1 to d10 | Jahn-Teller: Cu2+(d9) and high-spin Mn3+(d4) in octahedral -> elongated along z-axis -> 2 long + 4 short bonds | Trans effect series: CO>CN->NO2->I->Br->Cl->py>NH3>OH->H2O | Pi-backbonding: CO sigma-donates to metal + metal d donates to CO pi*(antibonding) -> synergic bond; stabilises M(0) complexes',id:'ch-a10'},
+ s2:{subj:'Maths [A]',ch:'Matrices Advanced | Cayley-Hamilton theorem: every matrix satisfies its own characteristic equation | Find A^n using Cayley-Hamilton: express A^2 in terms of A and I, then find higher powers | Eigenvalues: det(A-lambda*I)=0; eigenvectors from (A-lambda*I)x=0 | System of linear equations: unique solution (det != 0), infinite solutions (det=0 and consistent), no solution (inconsistent) | Test consistency using augmented matrix [A|b] | Rank method: rank(A)=rank([A|b]) for consistency | Symmetric matrix properties; skew-symmetric A+A^T vs A-A^T',id:'ma-a5'}},
+{d:11,date:'Apr 21',
+ s1:{subj:'Chemistry [A]',ch:'CH-20 GOC [A] + CH-21 Hydrocarbons [A] | GOC [A]: Huckel aromaticity: (4n+2) pi electrons, planar, cyclic, fully conjugated | n=0 (2e- benzene analogue), n=1 (6e- benzene), n=2 (10e- azulene) | Antiaromatic: 4n pi electrons (cyclobutadiene 4e-, COT 8e-) | Cyclopentadienyl anion (6pi, aromatic) vs cation (4pi, antiaromatic) | Ambident nucleophiles: CN- attacks via C (in SN2, polar aprotic) to give nitrile or via N (in SN1/AgNO3) to give isonitrile | SCN- : attacks via S (thiocyanate) or N (isothiocyanate) | Steric vs electronic: ortho attack sterically hindered; ratio analysis for monosubstitution products | Hydrocarbons [A]: Carbene :CH2 — singlet (concerted stereospecific addition) + alkene -> cyclopropane with retention | Alkynes ozonolysis: terminal RC=CH -> RCOOH + CO2; internal RC=CR -> 2 carboxylic acids | Free radical stability: 3>2>1>methyl; explained by hyperconjugation + steric factors',id:'ch-a11'},
+ s2:{subj:'Physics [A]',ch:'Waves and Sound Advanced | Stationary waves in detail: all harmonics in open pipe (f=nv/2L); only odd harmonics in closed pipe (f=(2n-1)v/4L) | End correction for pipes | Doppler for moving medium (wind blowing): effective sound speed = v+vw or v-vw depending on direction | Beats: phase analysis — after n beats/sec the waves go in and out of phase | Resonance column experiment: L1=lambda/4-e; L2=3lambda/4-e; speed = 2f(L2-L1) | Melde experiment: transverse vibrations in string; v=sqrt(T/mu) | Interference of sound waves: same source, path difference determines loud/soft | Acoustics: reverberation time, acoustic intensity',id:'ph-a6'}},
+{d:12,date:'Apr 22',
+ s1:{subj:'Chemistry [A]',ch:'CH-22 Haloalkanes [A] + CH-23 Alcohols Phenols [A] | Haloalkanes [A]: Neighbouring group participation (NGP/anchimeric assistance): internal nucleophile attacks — retention of configuration (inverted twice) | Example: 2-bromoethanol — OH acts as NGP -> epoxide intermediate -> product | Benzyne (aryne) mechanism: strong base abstracts H adjacent to C-X -> 1,2-elimination forming triple bond (aryne) -> nucleophile adds to either carbon | Evidence: labelled carbon studies show mixture of products | Allylic halides: resonance-stabilised allylic cation gives mixture of products (attack at both ends) | Phenols [A]: Kolbe reaction: PhONa + CO2 (high T, P) -> sodium salicylate (ortho product) -- ortho major at 125C | Reimer-Tiemann: PhOH + CHCl3 + NaOH -> salicylaldehyde (ortho) -- via dichlorocarbene | Fries rearrangement: PhOOCR + Lewis acid -> ortho/para hydroxy aryl ketone',id:'ch-a12'},
+ s2:{subj:'Maths [A]',ch:'Conics Advanced | Auxiliary circle of ellipse: x^2+y^2=a^2; eccentric angle phi; P=(a*cos(phi), b*sin(phi)) | Director circle: locus of point from which tangents to ellipse/circle are perpendicular | Polar of a point w.r.t. conic: if point P, polar is T=0 | Conjugate diameters of ellipse: if slope product = -b^2/a^2 | Asymptotes of hyperbola: y = +/-(b/a)x; hyperbola-asymptote area = ab | Rectangular hyperbola properties: eccentricity sqrt(2); reflections | Chord with given midpoint: T=S1 | Normal to conics: passes through focus for parabola at specific points',id:'ma-a6'},
+ test:'Advanced Full Test 2'},
+{d:13,date:'Apr 23',
+ s1:{subj:'Chemistry [A]',ch:'CH-24 Aldehydes Ketones Acids [A] | Claisen condensation: 2 ester molecules (both need alpha-H) + strong base -> beta-keto ester; Dieckmann (intramolecular Claisen) | Michael addition: nucleophile (Michael donor: malonate, beta-keto ester) adds to beta-carbon of alpha-beta-unsaturated carbonyl (1,4-addition) -- products; distinguish from direct addition (1,2) | Reformatsky reaction: alpha-bromo ester + Zn + RCHO -> (in one pot) -> beta-hydroxy ester; Zn inserts into C-Br bond; organozinc then adds to aldehyde | Hell-Volhard-Zelinsky (HVZ): RCOOH + X2 + P -> RCH(X)COOH; mechanism via acid chloride enol | Robinson annulation: Michael addition + aldol condensation in one pot -> cyclohexenone ring',id:'ch-a13'},
+ s2:{subj:'Physics [A]',ch:'Fluids Advanced | Poiseuille equation: Q = pi*r^4*delta-P / (8*eta*L); flow rate in tube | Surface tension: energy method -- excess pressure inside bubble 4T/r (2 surfaces); drop 2T/r | Angle of contact determines meniscus; capillary rise h=2T*cos(theta)/(rho*g*r) | Stokes law for sphere: F=6*pi*eta*r*v | Terminal velocity: mg = F_buoy + F_Stokes; v_t = 2r^2(rho-rho_f)g / 9*eta | Reynolds number Re = rho*v*D/eta; Re<1000 laminar, Re>3000 turbulent | Surface energy = T * area; work to blow soap bubble = 8*pi*r^2*T | Pressure in a soap film spanning a frame',id:'ph-a7'}},
+{d:14,date:'Apr 24',
+ s1:{subj:'Chemistry [A]',ch:'CH-25 Amines [A] + CH-26 Biomolecules [A] | Amines [A]: Hoffmann bromamide degradation: RCONH2 + Br2 + NaOH -> RNH2 (one carbon less; N migrates with bonding pair) | Mechanism: N-bromination -> base removes H -> Br migrates -> isocyanate + H2O -> RNH2 | Curtius rearrangement: acyl azide (RCON3) -> heat -> isocyanate RN=C=O -> +H2O -> amine | Gas phase basicity order: 3 > 2 > 1 > NH3 (no solvation; more alkyl groups = more electron density on N) | This is OPPOSITE to aqueous for tertiary amines | Biomolecules [A]: DNA base pairs: A-T (2 H-bonds) G-C (3 H-bonds); G-C requires more energy to denature | Antiparallel double helix; 5->3 direction | RNA: ribose (OH at 2 position) vs DNA deoxyribose; uracil replaces thymine in RNA | Osazone formation: glucose + 3 phenylhydrazine -> osazone (C1 and C2 affected); glucose and fructose give SAME osazone (same osazone = same C3-C6)',id:'ch-a14'},
+ s2:{subj:'Maths [A]',ch:'Differential Equations Advanced | Exact DE: M dx + N dy = 0 is exact if dM/dy = dN/dx; solution: F(x,y)=C | Integrating factor method for non-exact: IF = e^integral(P dx) or e^integral(Q dy) | Bernoulli DE: dy/dx + Py = Qy^n; substitute v=y^(1-n) -> linear DE | Clairaut equation: y = px + f(p); solution: y = cx + f(c) (family) + singular solution | Orthogonal trajectories: replace dy/dx by -dx/dy; solve the new DE | Applications: population growth, radioactive decay, cooling (Newton), circuit (RL)',id:'ma-a7'}},
+{d:15,date:'Apr 25',
+ s1:{subj:'Chemistry [A]',ch:'CH-28 States of Matter [A ONLY CHAPTER — Full] | van der Waals: (P + an^2/V^2)(V-nb) = nRT; a = intermolecular attraction (larger for polar/large molecules); b = excluded volume (4 * actual molecular volume) | Compressibility factor Z = PV/nRT; ideal Z=1; Z>1 repulsion dominates (high P); Z<1 attraction dominates (moderate P) | Boyle temperature Tb = a/Rb: temperature at which Z=1 at all pressures (gas behaves ideally) | Critical constants: Tc=8a/27Rb; Pc=a/27b^2; Vc=3nb; Zc=PcVc/RTc=3/8 | KMT speeds: vrms=sqrt(3RT/M), vavg=sqrt(8RT/piM), vmp=sqrt(2RT/M); ratio vrms:vavg:vmp = 1.73:1.60:1.41 = sqrt3:sqrt(8/pi):sqrt2 | Mean free path: lambda=1/(sqrt2*pi*d^2*n); increases with T, decreases with P | Maxwell-Boltzmann distribution: bell curve; T increases -> peak shifts right, broader, lower peak; area under curve = constant (total molecules) | Joule-Thomson effect: ideal gas no temperature change; real gas cools BELOW inversion temperature (Ti=2a/Rb); above Ti warms up | Liquefaction: must be below Tc; use Joule-Thomson or adiabatic expansion | Andrew isotherms: above Tc no liquefaction regardless of pressure; critical isotherm has inflection point',id:'ch-a15'},
+ s2:{subj:'Physics [A]',ch:'Optics Advanced | Interference in thin films: path diff = 2*mu*t*cos(r); for reflected ray: constructive 2mu*t=(2n-1)lambda/2 | Wedge-shaped film: fringes separated by lambda/2*mu*theta | Newton rings: dark rings at r^2=n*lambda*R | Fresnel diffraction (qualitative): near-field; Fraunhofer far-field | Resolving power: Rayleigh criterion delta-theta = 1.22*lambda/D | Telescope resolving power = D/1.22*lambda | Microscope: delta = 1.22*lambda/2*mu*sin(theta) | Fibre optics: TIR condition; numerical aperture NA=sqrt(n1^2-n2^2) | Brewster angle between two media: mu=tan(ip); reflected ray is completely plane polarised',id:'ph-a8'}},
+// ════════════════════════════════════════════════════════════════════════════
+// PHASE 2 — DAYS 16-27 | ADVANCED PROBLEM-SOLVING
+// JEE Advanced PYQ-level hard problems — all chapters mixed
+// Full numerical + paragraph + matrix-match type questions
+// ════════════════════════════════════════════════════════════════════════════
+{d:16,date:'Apr 26',
+ s1:{subj:'Physics [A]',ch:'Electrostatics Advanced | Conductors with cavity: charge on inner surface = -Q (for charge Q inside); outer surface = Q_total + Q | Method of images: point charge near grounded conducting plane — image charge approach | Dielectric polarisation: P=epsilon0*(K-1)*E; bound charge density sigma_b=P*n_hat | Energy of system of charges: U=sum(qi*Vj)/2 for i!=j | Self energy of sphere: 3Q^2/(20*pi*epsilon0*R) | Van de Graaff generator: principle; maximum voltage | Distribution of charge on two connected spheres: equal potential -> V=kQ/R -> Q proportional R',id:'ph-a9'},
+ s2:{subj:'Chemistry [A]',ch:'Advanced Organic Synthesis Problems | Multi-step retrosynthesis: work backwards from target molecule | Identifying functional group transformations: oxidation states of C | Protecting groups: -OH protected as ether (THP or benzyl); amino as acetamide; carbonyl as acetal | Selectivity in reactions: primary vs secondary vs tertiary; chemoselectivity (which FG reacts) | Regioselectivity: which end of ambident system reacts | Stereoselectivity: syn vs anti addition; inversion vs retention | JEE Advanced style: give product with stereochemistry; identify reagents from given conversions',id:'ch-ap1'},
+ test:'Advanced Full Test 3'},
+{d:17,date:'Apr 27',
+ s1:{subj:'Maths [A]',ch:'Definite Integration Hard Level | Reduction formulae: derive In = (n-1)/n * I(n-2) for integral(sin^n x, 0, pi/2) | Wallis formula: pi/2 = product((2n)^2/(2n-1)(2n+1)) | Improper integrals: convergence divergence | Frullani integral: integral(f(ax)-f(bx)/x, 0, inf) = [f(0)-f(inf)]*ln(b/a) | Beta function: B(m,n)=integral(x^(m-1)*(1-x)^(n-1), 0, 1) = Gamma(m)*Gamma(n)/Gamma(m+n) | JEE Advanced style: limit of sum as Riemann integral; differentiation under integral sign',id:'ma-ap1'},
+ s2:{subj:'Physics [A]',ch:'Modern Physics Advanced | X-rays: Moseley law sqrt(f) = a(Z-b); characteristic vs bremsstrahlung | Bragg law: 2d*sin(theta) = n*lambda for crystal diffraction | de Broglie in Bohr atom: n*lambda = 2*pi*r_n (standing wave condition) | Uncertainty applied: delta-x*delta-p >= hbar/2; min KE from confinement | Nuclear: Q-value = (mass of reactants - products)*c^2; endothermic vs exothermic | Fission: U235+n -> Ba+Kr+3n; chain reaction; critical mass | Fusion: D+T -> He4+n; conditions (plasma); mass defect | Pair production and annihilation: E=2*mc^2 | Mossbauer effect (qualitative)',id:'ph-ap1'}},
+{d:18,date:'Apr 28',
+ s1:{subj:'Chemistry [A]',ch:'Advanced Inorganic Problems | Coordination chemistry problems: given magnetic moment find n; find config; find hybridisation | CFSE calculation for specific d^n complexes: d3 (strong field) CFSE = -1.2*Delta_o | Isomerism identification: given formula list all isomers with names | Redox titrations: KMnO4 vs oxalate — calculate n-factor and molarity | Interhalogen compounds: geometry prediction using VSEPR for ClF5 (sq pyramidal) ClF3 (T-shape) | Advanced p-block: write balanced equations for thermal decomposition of nitrates (metal type determines product) | Silicate structures: ortho Si04^4-, pyro Si2O7^6-, chain (SiO3)n^2n-, ring Si3O9^6-, sheet (Si4O10)n^4n-, 3D (SiO2)n',id:'ch-ap2'},
+ s2:{subj:'Maths [A]',ch:'Vectors and 3D Integration Advanced | Vector triple product: a x (b x c) = b(a.c) - c(a.b) -- BAC-CAB rule | Scalar triple product: [a b c] = a.(b x c); volume of tetrahedron = 1/6|[a b c]| | Reciprocal vectors: a* = b x c / [a b c]; applications | Projection of line segment on a plane | Angle between a line and a plane: sin(theta) = |n.b|/(|n||b|) | Distance between two parallel planes: d = |d1-d2|/sqrt(a^2+b^2+c^2) | Locus problems in 3D: sphere locus, cone locus | JEE Advanced paragraph type: given 3 planes find line of intersection; find angle',id:'ma-ap2'}},
+{d:19,date:'Apr 29',
+ s1:{subj:'Physics [A]',ch:'Electromagnetism Advanced | Moving conductor in magnetic field: all charges separated; equilibrium when qE=qvB | Hall effect: V_H = IB/ned; find carrier density | Mutual inductance calculation for two coaxial solenoids | Self inductance of toroid: L = mu0*N^2*A/(2*pi*r) | Energy stored in magnetic field: u = B^2/(2*mu0) | LC oscillations: q = Q*cos(omega*t); omega=1/sqrt(LC); analogy with SHM | Charged particle in E and B: crossed fields for velocity selector v=E/B | Cyclotron: r=mv/qB; period independent of v (non-relativistic) | EM induction: flux change through rotating coil in B field',id:'ph-a10'},
+ s2:{subj:'Chemistry [A]',ch:'Advanced Physical Chemistry Problems | Thermodynamics: calculate delta-G for non-standard conditions using Nernst-like formula; Clausius-Clapeyron for vapour pressure variation with T | Kinetics hard problems: consecutive reaction [B]_max calculation; determine order graphically | Electrochemistry: cell with different concentrations on each side; find EMF and equilibrium concentration | Solid state: given X-ray data (d-spacing, lambda) find unit cell parameter a using Bragg law | Solutions hard: van t Hoff factor from freezing point depression; calculate degree of dissociation; identify salt type',id:'ch-ap3'},
+ test:'Advanced Full Test 4'},
+{d:20,date:'Apr 30',
+ s1:{subj:'Maths [A]',ch:'Advanced Functions and Calculus | Functional equations: f(x+y)=f(x)+f(y) -> f(x)=kx; f(xy)=f(x)+f(y) -> f(x)=k*log(x) | Period of combined functions: LCM of individual periods | Even/odd composition: even*even=even; odd*odd=odd | Differentiation of implicit functions of two variables | Parametric differentiation: d2y/dx2 = (d/dt(dy/dx)) / (dx/dt) | Mean value theorem applications: prove inequality using MVT | Cauchy MVT: f(b)-f(a)/g(b)-g(a) = f(c)/g(c) | Approximation using differentials: f(x+dx) approx f(x)+f(x)*dx',id:'ma-ap3'},
+ s2:{subj:'Chemistry [A]',ch:'Advanced Organic Mechanisms Deep Dive | Neighbouring group participation: draw mechanism for 2-bromoethanol with NaOH; acetolysis of 2-bromobutane | Benzyne mechanism: isotope labelling experiments; which carbon gets nucleophile | Free radical chain mechanism: initiation propagation termination; halogenation kinetics | E1cb mechanism: carbanion intermediate; base removes H; then X leaves | SNi mechanism: thionyl chloride with alcohol; retention of configuration | Carbene insertion into C-H bonds: carbenoid reactions | Wolff rearrangement: alpha-diazo ketone -> ketene on UV irradiation',id:'ch-ap4'}},
+{d:21,date:'May 1',
+ s1:{subj:'Physics [A]',ch:'Advanced Modern Physics + Nuclear | Radioactive equilibrium: A1*N1 = A2*N2 (secular equilibrium); when T_half(parent) >> T_half(daughter) | Alpha decay: tunnelling probability; Geiger-Nuttall law | Beta decay: neutrino; conservation of lepton number | Gamma decay: nuclear excited state; no change in A or Z | X-ray production: minimum wavelength lambda_min = hc/eV | Compton scattering: delta-lambda = (h/mc)(1-cos(theta)); wavelength change | Photo-nuclear reactions: threshold energy calculation | Pair production: minimum gamma energy = 2*mc^2 = 1.02 MeV | Radiocarbon dating: know that C-14 t_half = 5730 years',id:'ph-ap2'},
+ s2:{subj:'Chemistry [A]',ch:'Complete Inorganic [A] Revision | Write out ALL named reactions in inorganic: Baeyer reagent test; Victor Meyer test; Brown ring test for NO3- | d-Block: write electronic configurations of all 3d elements from memory; identify anomalies | Coordination: solve 5 CFSE calculation problems; determine high/low spin | p-Block: all oxoacids structures drawn from memory (P, S, Cl) | s-Block: all anomalous properties of Li and Be explained with reasons | Compare Lanthanoids vs Actinoids: 10 key differences table',id:'ch-ap5'}},
+{d:22,date:'May 2',
+ s1:{subj:'Maths [A]',ch:'Advanced Algebra: Inequalities + P&C Hard | AM-GM-HM chain applications to optimization | Cauchy-Schwarz in various forms | Chebyshev inequality (statement level) | P&C: Distribution of n distinct objects into r distinct groups (r^n) | Distribution of n identical objects into r distinct groups (C(n+r-1,r-1)) | Dearrangements: D_n = n!*(1 - 1/1! + 1/2! - 1/3! + ... + (-1)^n/n!) | Number of non-negative integral solutions: x1+x2+...+xr=n is C(n+r-1,r-1) | Inclusion-exclusion for atleast/exactly type problems',id:'ma-ap4'},
+ s2:{subj:'Physics [A]',ch:'Complete Physics [A] Rapid Revision | Thermodynamics: entropy of ideal gas, Clausius inequality, irreversibility | KTG: mean free path calculation; collision frequency derivation | Fluid advanced: derive Bernoulli from work-energy; derive Stokes from dimensional analysis | Elasticity: Young modulus, shear modulus, bulk modulus, Poisson ratio | Viscosity: coefficient definition; temperature dependence (liquids vs gases) | Sound: intensity level in dB; normal threshold 10^-12 W/m^2; +10dB = 10x intensity | Doppler for light: red shift (z = delta-lambda/lambda)',id:'ph-ap3'}},
+{d:23,date:'May 3',
+ s1:{subj:'ALL',ch:'Full Paper Mixed Problems — JEE Advanced 2019-2024 PYQs | 20 Chemistry + 20 Physics + 20 Maths questions | Timed: 3 hours strict | No hints; replicate actual exam conditions | Use rough paper only | After: analyse every wrong answer — write correct concept',id:'full-pyq1'},
+ s2:{subj:'ALL',ch:'Analysis session (2 hours): Go through wrong answers | Identify patterns: which topic and which type (numerical/MCQ/paragraph) | Update weak chapter list | Redo 5 similar problems from the same topic',id:'analysis1'},
+ test:'AITS Advanced'},
+{d:24,date:'May 4',
+ s1:{subj:'Maths [A]',ch:'Complete Maths [A] Rapid Revision | Advanced integration: all reduction formulae from memory | Complex numbers: rotation, locus, nth roots -- 10 hard problems | 3D: image in plane, foot of perp, SD between skew lines -- 10 hard problems | Conics: tangent condition for all 3 conics, director circle -- 10 hard problems | DE: exact, Bernoulli, orthogonal trajectory -- 5 problems each',id:'ma-rev1'},
+ s2:{subj:'Chemistry [A]',ch:'Complete Organic [A] Rapid Revision | Write all named reactions in organic from memory: Claisen, Michael, Reformatsky, HVZ, Hoffmann, Curtius, Reimer-Tiemann, Kolbe, Fries, NGP, Benzyne | Write mechanism for each | Aromaticity: test 8 cyclic compounds for aromatic/antiaromatic/non-aromatic | Stereochemistry: assign R/S to 5 structures; predict retention/inversion for 5 reactions',id:'ch-rev-org'}},
+// ════════════════════════════════════════════════════════════════════════════
+// PHASE 3 — DAYS 25-36 | GRAND MOCKS + FINAL REVISION + REST
+// Full simulation papers | Targeted weak chapter attack | Pre-exam winding down
+// ════════════════════════════════════════════════════════════════════════════
+{d:25,date:'May 5',
+ s1:{subj:'ALL',ch:'Grand Mock 1 — Full JEE Advanced simulation | Paper 1: Physics+Chemistry+Maths 3 hours strict | All question types: MCQ single, MCQ multiple, numerical, paragraph, matrix | Follow marking scheme: +4/-2 for single; +4/0 for multiple correct',id:'mock-1a'},
+ s2:{subj:'ALL',ch:'Mock Analysis: calculate score, compare with previous mocks | List: which chapters gave most wrong answers | Priority list for tomorrow revision',id:'mock-1b'},
+ test:'Advanced Simulation'},
+{d:26,date:'May 6',
+ s1:{subj:'ALL',ch:'Grand Mock 2 — Paper 2 pattern | 3 hours strict | Focus on accuracy in numerical answer type (no negative marking) | Paragraph type: read carefully; do not carry errors between parts | Matrix match: eliminate and verify',id:'mock-2a'},
+ s2:{subj:'ALL',ch:'Post-mock: targeted revision of top 3 weakest topics identified from both mock papers | 45 min per topic: concept review + 5 hard problems',id:'mock-2b'},
+ test:'Speed & Depth Test'},
+{d:27,date:'May 7',
+ s1:{subj:'Physics',ch:'P-REV FINAL: All formula sheets written from memory | Key derivations: Biot-Savart, Bernoulli, SHM energy, Doppler | 15 hardest Physics PYQs from 2018-2024 — timed 45 min | Mark any blank formula spots and revise immediately',id:'ph-rev-f'},
+ s2:{subj:'Maths',ch:'M-REV FINAL: All formula sheets written from memory | 15 hardest Maths PYQs from 2018-2024 — timed 45 min | Focus: definite integration, 3D geometry, complex numbers',id:'ma-rev-f'},
+ test:'Final Concept Check'},
+{d:28,date:'May 8',
+ s1:{subj:'Chemistry',ch:'C-REV FINAL: All chemistry written from memory | Physical: thermodynamics, electrochemistry, kinetics key equations | Inorganic: p-block oxoacids drawn, d-block KMnO4 products, coordination spectrochemical series | Organic: all named reactions written with mechanism arrows',id:'ch-rev-f'},
+ s2:{subj:'ALL',ch:'30 mixed PYQ Advanced Qs (10 per subject) — timed 45 min | Review weak spots | No new concepts today',id:'mix-r1'}},
+{d:29,date:'May 9',
+ s1:{subj:'ALL',ch:'Full mock analysis deep dive — go through every single wrong answer from all mock papers | Write the correct concept in your own words | Make a 1-page error log: chapter + type + what went wrong',id:'analysis-deep'},
+ s2:{subj:'ALL',ch:'20 targeted problems on the 2 weakest topics per subject (6 topics total) | Time yourself: 5 min per problem max | If stuck, mark and move on',id:'targeted'}},
+{d:30,date:'May 10',
+ s1:{subj:'ALL',ch:'Light revision day | Read your personal formula sheets (that you wrote) — 30 min per subject | No textbook reading | No new problems | Just mental walkthrough of all [A] subtopics',id:'light-rev'},
+ s2:{subj:'ALL',ch:'Weak chapter final targeted blitz — 1 chapter maximum | 15 min concept + 10 problems only | After this, no more new material',id:'blitz'},
+ test:'Grand Mock 1 (result analysis)'},
+{d:31,date:'May 11',
+ s1:{subj:'Physics',ch:'Physics formula sheet read-only — 30 min | Pick 5 favourite physics problems (that you solved well) and redo them for confidence | No new problems today',id:'ph-conf'},
+ s2:{subj:'Chemistry',ch:'Chemistry key reactions read-only — 30 min | Organic named reactions: just read your own notes | No new reactions today',id:'ch-conf'}},
+{d:32,date:'May 12',
+ s1:{subj:'Maths',ch:'Maths formula sheet read-only — 30 min | Pick 5 favourite problems and redo for confidence | Integration King rule practice: 5 quick problems',id:'ma-conf'},
+ s2:{subj:'ALL',ch:'Last mock paper review — only look at questions you got right | Reinforce confidence | Do NOT revisit wrong answers today — it will shake confidence',id:'conf-rev'},
+ test:'Grand Mock 2 (result analysis)'},
+{d:33,date:'May 13',
+ s1:{subj:'ALL',ch:'30-minute total revision: glance at formula sheets only | Chemistry: reaction sheet glance | Physics: formula sheet glance | Maths: formula sheet glance | Total 90 min maximum study today',id:'light-33'},
+ s2:{subj:'ALL',ch:'Exam logistics: verify admit card, stationery, travel route, reporting time | Pack bag tonight | Set 2 alarms | Light dinner, no heavy food | Sleep by 10 pm',id:'logistics'},
+ test:'Formula & Error Drill'},
+{d:34,date:'May 14',
+ s1:{subj:'ALL',ch:'Very light morning: read only your own handwritten notes — not textbook | 45 min maximum | Eat good breakfast | Do light physical activity (walk)',id:'pre-exam-light'},
+ s2:{subj:'ALL',ch:'Rest completely from afternoon | Sleep early tonight — your brain needs rest more than study now | You have covered every [A] subtopic. Trust yourself.',id:'pre-exam-rest'},
+ test:'Final Warm-up'},
+{d:35,date:'May 15',
+ s1:{subj:'REST',ch:'Relax completely | Light walk in morning | Good nutritious food | Hydrate well | No studying — brain consolidates overnight | Brief 10-minute glance at formula sheet if anxiety strikes — then put it away',id:'rest-1'},
+ s2:{subj:'REST',ch:'Early dinner | Sleep by 9:30 pm | JEE Advanced is TOMORROW | You studied every [A] subtopic. Your preparation is complete. Trust it.',id:'rest-2'}},
+{d:36,date:'May 16',
+ s1:{subj:'REST',ch:'Pre-exam morning: light breakfast | Arrive at venue early | Keep calm — you know the material | Read every question fully before answering | Time management: do not spend more than 5 min on any one question',id:'exam-day'},
+ s2:{subj:'REST',ch:'JEE ADVANCED TODAY! Every [A] subtopic covered. Every concept mastered. Go show what you know. All the best! 🏆',id:'exam-day-msg'}},
 ];
-
 // ═══ ANALYSIS DATA ═══
 const PH_ANAL=[
  {ch:'Current Electricity',avg:2.4,yr:[2,2,2,3,2,3,2,3,3,3],c:'#ffd700',t:'↑'},

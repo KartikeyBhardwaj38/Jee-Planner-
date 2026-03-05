@@ -242,26 +242,22 @@ body{font-family:'Crimson Pro',Georgia,serif;background:var(--bg0);color:var(--t
     <div class="logo-s">Ultimate Tracker</div>
   </div>
   <div class="nl">Mission</div>
-  <div class="ni ac" onclick="gTab('countdown',this)"><span class="ni-ico">⏱</span>Countdown<span class="ni-badge" id="nb-days" style="background:rgba(255,71,87,.15);color:var(--re2)">–d</span></div>
-  <div class="ni" onclick="gTab('plan',this)"><span class="ni-ico">📅</span>Study Plan</div>
+  <div class="ni ac" onclick="ST('countdown',this)"><span class="ni-ico">⏱</span>Countdown<span class="ni-badge" id="nb-days" style="background:rgba(255,71,87,.15);color:var(--re2)">–d</span></div>
+  <div class="ni" onclick="ST('plan',this)"><span class="ni-ico">📅</span>Study Plan</div>
   <div class="nl">Daily Study</div>
-  <div class="ni" onclick="gTab('physics',this)"><span class="ni-ico">⚛️</span>Physics<span class="ni-badge" style="background:rgba(79,195,247,.1);color:var(--ph)">15d</span></div>
-  <div class="ni" onclick="gTab('maths',this)"><span class="ni-ico">📐</span>Maths<span class="ni-badge" style="background:rgba(255,183,77,.1);color:var(--ma)">14d</span></div>
-  <div class="ni" onclick="gTab('chemistry',this)"><span class="ni-ico">🧪</span>Chemistry<span class="ni-badge" style="background:rgba(129,199,132,.1);color:var(--ch)">25d</span></div>
+  <div class="ni" onclick="ST('physics',this)"><span class="ni-ico">⚛️</span>Physics<span class="ni-badge" style="background:rgba(79,195,247,.1);color:var(--ph)">15d</span></div>
+  <div class="ni" onclick="ST('maths',this)"><span class="ni-ico">📐</span>Maths<span class="ni-badge" style="background:rgba(255,183,77,.1);color:var(--ma)">14d</span></div>
+  <div class="ni" onclick="ST('chemistry',this)"><span class="ni-ico">🧪</span>Chemistry<span class="ni-badge" style="background:rgba(129,199,132,.1);color:var(--ch)">25d</span></div>
   <div class="nl">Tests</div>
-  <div class="ni" onclick="gTab('tests-mains',this)"><span class="ni-ico">📝</span>Mains Tests<span class="ni-badge" style="background:rgba(255,165,2,.12);color:var(--or)">14</span></div>
-  <div class="ni" onclick="gTab('tests-adv',this)"><span class="ni-ico">⚡</span>Adv Tests<span class="ni-badge" style="background:rgba(162,155,254,.12);color:var(--pu)">14</span></div>
+  <div class="ni" onclick="ST('tests-mains',this)"><span class="ni-ico">📝</span>Mains Tests<span class="ni-badge" style="background:rgba(255,165,2,.12);color:var(--or)">14</span></div>
+  <div class="ni" onclick="ST('tests-adv',this)"><span class="ni-ico">⚡</span>Adv Tests<span class="ni-badge" style="background:rgba(162,155,254,.12);color:var(--pu)">14</span></div>
   <div class="nl">Advanced Prep</div>
-  <div class="ni" onclick="gTab('adv-plan',this)"><span class="ni-ico">🎯</span>Adv Plan</div>
-  <div class="nl">Intelligence</div>
-  <div class="ni" onclick="gTab('analysis-mains',this)"><span class="ni-ico">📊</span>Mains Analysis</div>
-  <div class="ni" onclick="gTab('analysis-adv',this)"><span class="ni-ico">🔬</span>Adv Analysis</div>
-  <div class="ni" onclick="gTab('predict-mains',this)"><span class="ni-ico">🎯</span>Mains Predict</div>
-  <div class="ni" onclick="gTab('predict-adv',this)"><span class="ni-ico">🔮</span>Adv Predict</div>
-  <div class="ni" onclick="gTab('focus',this)"><span class="ni-ico">🔥</span>Last-Day Focus</div>
-  <div class="nl">Progress</div>
-  <div class="ni" onclick="gTab('tracker',this)"><span class="ni-ico">📋</span>Full Tracker</div>
-  <div class="ni" onclick="gTab('github',this)"><span class="ni-ico">📈</span>Activity</div>
+  <div class="ni" onclick="ST('adv-plan',this)"><span class="ni-ico">🎯</span>Adv Plan</div>
+  <div class="nl">Analysis</div>
+  <div class="ni" onclick="ST('analysis',this)"><span class="ni-ico">📊</span>10yr Analysis</div>
+  <div class="ni" onclick="ST('predict',this)"><span class="ni-ico">🔮</span>April Predict</div>
+  <div class="ni" onclick="ST('tracker',this)"><span class="ni-ico">📋</span>Full Tracker</div>
+  <div class="ni" onclick="ST('github',this)"><span class="ni-ico">📈</span>Activity</div>
   <div class="sb-foot">
     <div class="exam-mini" style="background:rgba(255,71,87,.08);border:1px solid rgba(255,71,87,.25);color:var(--re2)">📝 Mains: Apr 2–10, 2026</div>
     <div class="exam-mini" style="background:rgba(162,155,254,.08);border:1px solid rgba(162,155,254,.25);color:var(--pu)">⚡ Advanced: May 17, 2026</div>
@@ -493,56 +489,10 @@ body{font-family:'Crimson Pro',Georgia,serif;background:var(--bg0);color:var(--t
   </div>
 </div>
 
-<!-- ════ FOCUS (injected) ════ -->
-<div class="tab-pane" id="tab-focus">
-  <div class="focus-banner">
-    <div class="focus-banner-title">🔥 LAST 2–3 DAY MARKS BOOSTER</div>
-    <div style="font-size:15px;color:var(--t2);line-height:1.6">Highest probability topics that are fastest to revise. ONLY focus on these in final 48 hours.</div>
-  </div>
-  <div id="focus-content"></div>
-</div>
-
-<!-- ════ ANALYSIS MAINS (injected) ════ -->
-<div class="tab-pane" id="tab-analysis-mains">
-  <div class="card-g mb20">
-    <div class="section-t">📊 JEE Mains — 10 Year Analysis (2015–2024)</div>
-    <div class="section-s">January attempt question frequency · Chapter-wise average across 10 years</div>
-  </div>
-  <div class="g3 mb16" id="mains-analysis-charts"></div>
-  <div class="card"><div class="chart-title">📅 Year-wise Pattern</div><div id="mains-yr-heatmap"></div></div>
-</div>
-
-<!-- ════ ANALYSIS ADV (injected) ════ -->
-<div class="tab-pane" id="tab-analysis-adv">
-  <div class="card-pu mb20">
-    <div class="section-t" style="color:var(--pu)">🔬 JEE Advanced — 10 Year Analysis (2014–2023)</div>
-    <div class="section-s">Chapter-wise frequency from actual JEE Advanced papers · P1+P2 combined</div>
-  </div>
-  <div class="g3 mb16" id="adv-analysis-charts"></div>
-  <div class="card"><div class="chart-title">📅 JEE Advanced Year-wise Pattern</div><div id="adv-yr-heatmap"></div></div>
-</div>
-
-<!-- ════ PREDICT MAINS (injected) ════ -->
-<div class="tab-pane" id="tab-predict-mains">
-  <div class="card-g mb20" style="animation:bGlow 3s ease-in-out infinite">
-    <div class="section-t">🎯 April 2026 Mains Prediction</div>
-    <div class="section-s">Most likely subtopics · Probability to appear · Question types</div>
-  </div>
-  <div id="pred-mains-content"></div>
-</div>
-
-<!-- ════ PREDICT ADV (injected) ════ -->
-<div class="tab-pane" id="tab-predict-adv">
-  <div class="card-pu mb20">
-    <div class="section-t" style="color:var(--pu)">🔮 JEE Advanced 2026 Prediction</div>
-    <div class="section-s">Paragraph problems · Multi-correct patterns · High-value subtopics</div>
-  </div>
-  <div id="pred-adv-content"></div>
-</div>
-
 </div></div></div><!-- /content /main /app -->
 
 <script>
+
 // ═══════════════════════════════════════════════════
 // STORAGE
 // ═══════════════════════════════════════════════════
@@ -661,84 +611,430 @@ const MA=[
 
 // CHEMISTRY (Independent high-value first, then physical, then linked)
 const CH=[
-{day:1,title:'Coordination Compounds ⭐⭐ #2 Chemistry',pct:'5.33%',wt:10,pri:'SS',color:'#81c784',
- subs:[{t:'Ligands: mono,bi,hexa-dentate, chelate',imp:1},{t:'IUPAC: ligands alphabetical, anionic -ate',imp:1},{t:'Coordination number, oxidation state',imp:1},{t:'CFT: Δo splitting, t₂g and eg',imp:1},{t:'Spectrochemical series: I⁻<Cl⁻<F⁻<OH⁻<H₂O<NH₃<en<CN⁻',imp:1},{t:'High spin (weak field) vs low spin (strong)',imp:1},{t:'Magnetic moment μ=√(n(n+2)) BM',imp:1},{t:'Geometric isomerism: cis/trans',imp:1},{t:'Optical isomerism: ΔΛΔΛ [Co(en)₃]³⁺',imp:1}],
- note:'2-3 Qs EVERY exam! IUPAC + CFT + isomerism = easy 10 marks.'},
-{day:2,title:'Aldehydes, Ketones & Acids ⭐⭐ #1',pct:'5.95%',wt:10,pri:'SS',color:'#81c784',
- subs:[{t:'Nucleophilic addition to C=O',imp:1},{t:'Reactivity: HCHO>RCHO>ketones',imp:1},{t:'Aldol condensation: base+α-H',imp:1},{t:'Cannizzaro: no α-H, disproportionation',imp:1},{t:'Clemmensen: Zn-Hg/HCl → CH₂',imp:1},{t:'Wolff-Kishner: NH₂NH₂/KOH',imp:1},{t:'Tollens: [Ag(NH₃)₂]⁺ → silver mirror',imp:1},{t:'Fehling: Cu²⁺→Cu₂O (aldehydes only)',imp:1},{t:'2,4-DNP: both aldehyde AND ketone',imp:1},{t:'Iodoform: CH₃COR gives CHI₃',imp:1}],
- note:'Guaranteed 2-3 Qs. Tollens vs Fehling distinction every year.'},
-{day:3,title:'Chemical Equilibrium & Ionic Eq',pct:'4.44%',wt:9,pri:'S',color:'#81c784',
- subs:[{t:'Kc=[products]/[reactants], Kp=Kc(RT)^Δn',imp:1},{t:'Le Chatelier: conc, pressure, temperature',imp:1},{t:'pH=−log[H⁺], pH+pOH=14',imp:1},{t:'Weak acid [H⁺]=√(KaCa)',imp:1},{t:'Ka×Kb=Kw=10⁻¹⁴',imp:1},{t:'Buffer pH=pKa+log[A⁻]/[HA]',imp:1},{t:'Common ion effect',imp:1},{t:'Ksp: IP>Ksp → precipitate',imp:1}],
- note:'Buffer pH calculation + Kp-Kc relation numericals every paper.'},
-{day:4,title:'Solutions & Colligative Properties',pct:'4.54%',wt:9,pri:'S',color:'#81c784',
- subs:[{t:'Raoult law: P=xA·PA°',imp:1},{t:'Relative VP lowering: (P°−P)/P°=xB',imp:1},{t:'ΔTb=Kb·m (boiling elevation)',imp:1},{t:'ΔTf=Kf·m (freezing depression)',imp:1},{t:'Osmotic pressure π=CRT',imp:1},{t:'Van\'t Hoff i: dissociation α=(i−1)/(n−1)',imp:1},{t:'For association formula',imp:1}],
- note:'Van\'t Hoff factor + osmotic pressure numericals every exam.'},
-{day:5,title:'Amines & Diazonium Salts',pct:'4.40%',wt:9,pri:'S',color:'#81c784',
- subs:[{t:'Basicity: aqueous 2°>1°>3°>NH₃',imp:1},{t:'Aromatic less basic than aliphatic',imp:1},{t:'EWG on ring decreases basicity',imp:1},{t:'Hoffmann bromamide: RCONH₂→RNH₂',imp:1},{t:'Gabriel phthalimide: 1° amines only',imp:1},{t:'Diazotisation: 0−5°C, ArN₂⁺Cl⁻',imp:1},{t:'Sandmeyer: CuCl→ArCl, CuBr→ArBr',imp:1},{t:'Gattermann: HBF₄→ArF',imp:1}],
- note:'Basicity order + Sandmeyer/Gattermann reactions every year.'},
-{day:6,title:'Mole Concept & Stoichiometry',pct:'2.82%',wt:5,pri:'A',color:'#81c784',
- subs:[{t:'1 mole=6.022×10²³, STP 22.4L',imp:1},{t:'Molarity, Molality, Mole fraction',imp:1},{t:'Limiting reagent: divide by stoich coeff',imp:1},{t:'% yield = actual/theoretical × 100',imp:1},{t:'Empirical vs molecular formula',imp:1}],
- note:'Foundation chapter — used in every other topic.'},
-{day:7,title:'Chemical Kinetics',pct:'3.61%',wt:8,pri:'A',color:'#81c784',
- subs:[{t:'Rate=k[A]^m[B]^n (from experiment)',imp:1},{t:'Zero order: t₁/₂=[A₀]/2k',imp:1},{t:'1st order: t₁/₂=0.693/k',imp:1},{t:'Arrhenius k=Ae^(−Ea/RT)',imp:1},{t:'lnk=lnA−Ea/RT (graph slope=−Ea/R)',imp:1},{t:'Molecularity ≠ order',imp:1}],
- note:'First order kinetics + Arrhenius equation calculations.'},
-{day:8,title:'Alcohols, Phenols & Ethers',pct:'3.54%',wt:6,pri:'B',color:'#81c784',
- subs:[{t:'Lucas test: 3°>2°>1° reactivity',imp:1},{t:'Iodoform test: CH₃CHOH → CHI₃',imp:1},{t:'Oxidation: 1°→CHO→COOH, 2°→ketone',imp:1},{t:'Phenol acidity pKa≈10',imp:1},{t:'Kolbe: phenol+CO₂→salicylic acid',imp:1},{t:'Reimer-Tiemann: CHCl₃→salicylaldehyde',imp:1},{t:'Williamson synthesis: RO⁻+R\'X→ether',imp:1}],
- note:'Lucas test + phenol EAS reactions come regularly.'},
-{day:9,title:'Electrochemistry',pct:'3.30%',wt:7,pri:'A',color:'#81c784',
- subs:[{t:'EMF=E°cathode−E°anode',imp:1},{t:'Nernst: E=E°−(0.0591/n)logQ at 25°C',imp:1},{t:'Faraday 1st law: m=ZIt',imp:1},{t:'Faraday 2nd law: m₁/m₂=Eq.wt₁/Eq.wt₂',imp:1},{t:'ΔG°=−nFE°, K=e^(nFE°/RT)',imp:1},{t:'Molar conductance Λm=κ×1000/M',imp:1},{t:'Kohlrausch law',imp:1}],
- note:'Nernst equation + Faraday law numericals every paper.'},
-{day:10,title:'p-Block Elements (Gr 15,16,17,18)',pct:'3.68%',wt:8,pri:'A',color:'#81c784',
- subs:[{t:'NH₃: pyramidal, sp³, lone pair, basic',imp:1},{t:'Oxoacids of N: HNO₂ (nitrous), HNO₃',imp:1},{t:'Ozone O₃: angular 117°, strong oxidizer',imp:1},{t:'H₂SO₄: contact process, dehydrating',imp:1},{t:'Halogens reactivity: F>Cl>Br>I',imp:1},{t:'XeF₂ linear, XeF₄ sq.planar, XeF₆ distorted',imp:1},{t:'Interhalogen compounds',imp:1}],
- note:'p-Block oxoacids + halogen properties frequently tested.'},
-{day:11,title:'d & f Block Elements',pct:'4.69%',wt:9,pri:'S',color:'#81c784',
- subs:[{t:'Electronic config exceptions: Cr,Cu',imp:1},{t:'Variable oxidation states',imp:1},{t:'Colour: d-d transition & charge transfer',imp:1},{t:'KMnO₄: acidic (Mn²⁺), neutral, basic',imp:1},{t:'K₂Cr₂O₇ strong oxidiser, colour change',imp:1},{t:'Lanthanide contraction',imp:1},{t:'Magnetic properties: unpaired d electrons',imp:1}],
- note:'Colour + oxidation states of transition metals always in JEE.'},
-{day:12,title:'Chemical Thermodynamics',pct:'3.65%',wt:8,pri:'A',color:'#81c784',
- subs:[{t:'H=U+PV, ΔH, 1st Law ΔU=q+w',imp:1},{t:'Hess\'s law: ΔH path independent',imp:1},{t:'Bond enthalpy: ΔH=broken−formed',imp:1},{t:'ΔG=ΔH−TΔS, spontaneous if ΔG<0',imp:1},{t:'ΔG°=−RTlnK=−nFE°',imp:1},{t:'Standard enthalpies: formation,combustion',imp:1}],
- note:'Hess\'s law + Gibbs energy sign problems.'},
-{day:13,title:'Haloalkanes & Haloarenes',pct:'2.65%',wt:6,pri:'B',color:'#81c784',
- subs:[{t:'SN1: carbocation, 3°>2°>1°, racemisation',imp:1},{t:'SN2: backside attack, inversion, 1°>2°>3°',imp:1},{t:'E2: Zaitsev rule, anti-periplanar',imp:1},{t:'Reactivity: I>Br>Cl>F for SN',imp:1},{t:'Aryl halides: no SN1/SN2 (resonance)',imp:1},{t:'Optical activity: R/S configuration',imp:1}],
- note:'SN1 vs SN2 factors + stereochemistry in products.'},
-{day:14,title:'Atomic Structure & Chemical Bonding',pct:'6.68%',wt:7,pri:'A',color:'#81c784',
- subs:[{t:'Quantum numbers n,l,m,s allowed values',imp:1},{t:'Aufbau, Pauli, Hund\'s rules',imp:1},{t:'Exceptions: Cr=[Ar]3d⁵4s¹, Cu=[Ar]3d¹⁰4s¹',imp:1},{t:'VSEPR geometry from electron pairs',imp:1},{t:'Hybridisation: sp,sp²,sp³',imp:1},{t:'MO theory: bond order for O₂,N₂,F₂',imp:1},{t:'H-bonding: F-H...F strongest',imp:1}],
- note:'Quantum numbers + VSEPR very frequently tested.'},
-{day:15,title:'s-Block Elements & Hydrogen',pct:'6.98%',wt:7,pri:'A',color:'#81c784',
- subs:[{t:'Li anomaly: diagonal to Mg',imp:1},{t:'Na₂CO₃ Solvay process steps',imp:1},{t:'Plaster of Paris: CaSO₄·½H₂O',imp:1},{t:'Be anomaly: resembles Al',imp:1},{t:'H₂O₂: bleaching, weak acid, volume strength',imp:1},{t:'Lime water test: CO₂ milky, excess clear',imp:1}],
- note:'Solvay process + H₂O₂ properties come often.'},
-{day:16,title:'GOC — Mechanisms & IUPAC',pct:'~2%',wt:6,pri:'B',color:'#81c784',
- subs:[{t:'IUPAC: longest chain, lowest locants',imp:1},{t:'Priority: COOH>CHO>OH>NH₂>C=C',imp:1},{t:'E/Z isomerism: CIP priority rules',imp:1},{t:'R/S: lowest priority away, CW=R',imp:1},{t:'Inductive +I and −I effects',imp:1},{t:'Mesomeric +M and −M effects',imp:1},{t:'Carbocation stability: 3°>2°>1°',imp:1}],
- note:'E/Z + R/S + stability order questions.'},
-{day:17,title:'Hydrocarbons & Aromatic Chemistry',pct:'3.03%',wt:7,pri:'B',color:'#81c784',
- subs:[{t:'Alkene EAS addition, Markovnikov rule',imp:1},{t:'Anti-Markovnikov: peroxide, free radical',imp:1},{t:'Ozonolysis: oxidative vs reductive',imp:1},{t:'Alkyne: Lindlar (cis) vs Na/liq.NH₃ (trans)',imp:1},{t:'Aromaticity: Hückel (4n+2)π',imp:1},{t:'Benzene EAS: halogenation, nitration, F-C',imp:1},{t:'Activating (o/p): OH,OR,NH₂,alkyl',imp:1},{t:'Deactivating (meta): NO₂,CHO,COOH',imp:1}],
- note:'Markovnikov/anti + benzene EAS orientation.'},
-{day:18,title:'Solid State',pct:'1.72%',wt:4,pri:'C',color:'#81c784',
- subs:[{t:'SC=1 atom, BCC=2, FCC=4 per cell',imp:1},{t:'SC CN=6, BCC CN=8, FCC CN=12',imp:1},{t:'Packing: SC=52.4%, BCC=68%, FCC=74%',imp:1},{t:'NaCl rock salt structure',imp:1},{t:'Schottky (anion+cation) vs Frenkel defect',imp:1}],
- note:'Unit cell atoms and packing efficiency formulas.'},
-{day:19,title:'Surface Chemistry',pct:'2.99%',wt:5,pri:'C',color:'#81c784',
- subs:[{t:'Physisorption vs chemisorption',imp:1},{t:'Tyndall effect, Brownian motion',imp:1},{t:'Hardy-Schulze rule for coagulation',imp:1},{t:'O/W and W/O emulsions',imp:1},{t:'Freundlich isotherm x/m=kP^(1/n)',imp:1}],
- note:'Tyndall effect + Hardy-Schulze rule.'},
-{day:20,title:'Biomolecules',pct:'3.99%',wt:7,pri:'A',color:'#81c784',
- subs:[{t:'Glucose: aldohexose, α/β forms, mutarotation',imp:1},{t:'Reducing vs non-reducing (sucrose non-red.)',imp:1},{t:'Amino acids: zwitterion form',imp:1},{t:'DNA: A-T (2H bonds), G-C (3H bonds)',imp:1},{t:'Vitamins: fat-soluble A,D,E,K; water B,C',imp:1}],
- note:'DNA base pairing + reducing/non-reducing sugar distinction.'},
-{day:21,title:'Polymers & Everyday Chemistry',pct:'4.26%',wt:4,pri:'C',color:'#81c784',
- subs:[{t:'Addition: polyethylene, PVC, teflon',imp:1},{t:'Condensation: nylon-6,6; polyester',imp:1},{t:'Thermoplastic vs thermosetting',imp:1},{t:'Analgesics, antipyretics, antibiotics',imp:1},{t:'Aspirin (analgesic+antipyretic)',imp:1}],
- note:'Polymer types + drug classification = direct marks.'},
-{day:22,title:'Redox & Environmental Chemistry',pct:'4.74%',wt:5,pri:'B',color:'#81c784',
- subs:[{t:'Oxidation number rules: O=−2,H=+1,F=−1',imp:1},{t:'Balancing: oxidation number method',imp:1},{t:'Disproportionation reactions',imp:1},{t:'Photochemical smog, acid rain (SO₂,NOₓ)',imp:1},{t:'Greenhouse gases: CO₂,CH₄,N₂O,CFCs',imp:1},{t:'Ozone depletion: Cl• radical from CFCs',imp:1}],
- note:'Oxidation number calculations + environmental chemistry facts.'},
-{day:23,title:'Periodic Table & Properties',pct:'1.93%',wt:5,pri:'B',color:'#81c784',
- subs:[{t:'Atomic radius: ↑ down, ↓ across period',imp:1},{t:'IE: ↓ down, ↑ across; exceptions Be>B, N>O',imp:1},{t:'Electronegativity: F highest, Cs lowest',imp:1},{t:'Diagonal relationships: Li-Mg, Be-Al',imp:1}],
- note:'IE exceptions (Be>B, N>O) come every year!'},
-{day:24,title:'Metallurgy & p-Block Gr 13-14',pct:'5.16%',wt:5,pri:'B',color:'#81c784',
- subs:[{t:'Froth flotation, magnetic separation',imp:1},{t:'Roasting vs calcination',imp:1},{t:'Hall process for Al, blast furnace for Fe',imp:1},{t:'Carbon allotropes: diamond, graphite, C₆₀',imp:1},{t:'Borax bead test',imp:0}],
- note:'Froth flotation + Hall process questions.'},
-{day:25,title:'Gases, States & Final Revision',pct:'1.89%',wt:4,pri:'C',color:'#81c784',
- subs:[{t:'van der Waals: (P+an²/V²)(V−nb)=nRT',imp:1},{t:'a: intermolecular forces, b: volume',imp:1},{t:'Graham law: rate ∝ 1/√M',imp:1},{t:'Z=PV/nRT: Z<1 attractive, Z>1 repulsive',imp:1},{t:'REVISION: weak topic blitz',imp:1}],
- note:'Final day: van der Waals + Z factor + revision.'},
+// ─── PHYSICAL CHEMISTRY ───────────────────────────────────────────────────
+{day:1,title:'Atomic Structure ⭐ [M+A]',pct:'~3%',wt:8,pri:'S',col:'#81c784',
+ subs:[
+  {t:'[M] Quantum numbers n,l,m,s — allowed combinations, max electrons per shell',imp:1},
+  {t:'[M] Orbital shapes: s(sphere), p(dumbbell), d(double-dumbbell/cloverleaf)',imp:1},
+  {t:'[M] Aufbau, Pauli exclusion, Hund\'s rule — filling order',imp:1},
+  {t:'[M] Exceptions: Cr=[Ar]3d⁵4s¹, Cu=[Ar]3d¹⁰4s¹ — half-filled/full stability',imp:1},
+  {t:'[M] Photoelectric effect: KE=hν−φ; threshold frequency ν₀=φ/h',imp:1},
+  {t:'[M] de Broglie λ=h/mv; Heisenberg Δx·Δp≥h/4π',imp:1},
+  {t:'[M] H-spectrum: ν̄=R(1/n₁²−1/n₂²); Lyman/Balmer/Paschen series',imp:1},
+  {t:'[M] Radial nodes=n−l−1, angular nodes=l, total nodes=n−1',imp:1},
+  {t:'[A] Penetrating power s>p>d>f; shielding constants (Slater rules)',imp:0},
+  {t:'[A] Effective nuclear charge Zeff=Z−σ; multi-electron atoms',imp:0},
+  {t:'[A] Wave function ψ², radial distribution function; probability density',imp:0},
+ ],
+ note:'[M] Quantum numbers + config exceptions + Bohr model = 1-2 Qs. [A] Slater rules, RDF, wave functions.'},
+{day:2,title:'Mole Concept & Stoichiometry ⭐ [M+A]',pct:'~3%',wt:8,pri:'S',col:'#81c784',
+ subs:[
+  {t:'[M] 1 mole=6.022×10²³; STP (0°C, 1 atm): 22.4 L/mol; new IUPAC STP: 22.7 L',imp:1},
+  {t:'[M] Molarity M=n/V(L); Molality m=n/kg; Mole fraction xₐ=nₐ/n_total',imp:1},
+  {t:'[M] Limiting reagent: divide moles by stoichiometric coefficient — smallest wins',imp:1},
+  {t:'[M] % yield=(actual/theoretical)×100; % atom economy=desired MW/total MW×100',imp:1},
+  {t:'[M] Empirical vs molecular formula: n=MW/EW',imp:1},
+  {t:'[M] n-factor: acid/base=H⁺/OH⁻ furnished; redox=ΔON×atoms',imp:1},
+  {t:'[M] Normality N=n-factor×Molarity; at equivalence: meq(acid)=meq(base)',imp:1},
+  {t:'[A] Back-titration; double indicator titration — multi-step calculations',imp:0},
+  {t:'[A] POAC (Principle of Atom Conservation) for complex stoichiometry',imp:0},
+ ],
+ note:'[M] Limiting reagent + molarity/normality numericals = 1-2 Qs. [A] Complex stoichiometry chains.'},
+{day:3,title:'Periodic Table & Periodic Properties ⭐ [M+A]',pct:'~3%',wt:7,pri:'A',col:'#81c784',
+ subs:[
+  {t:'[M] Atomic radius: decreases across period (↑Zeff), increases down group',imp:1},
+  {t:'[M] Ionic radius: cation < parent; anion > parent; isoelectronic: higher Z = smaller',imp:1},
+  {t:'[M] IE trends + anomalies: IE₁(N>O) half-filled 2p; IE₁(Be>B) 2s vs 2p',imp:1},
+  {t:'[M] Electronegativity Pauling: F highest; increases across, decreases down group',imp:1},
+  {t:'[M] Electron affinity: Cl>F (F too small); O<S (electron repulsion in O)',imp:1},
+  {t:'[M] Diagonal relationship: Li≈Mg, Be≈Al, B≈Si',imp:1},
+  {t:'[M] Inert pair effect: heavier p-block prefers lower OS (Tl⁺ > Tl³⁺)',imp:1},
+  {t:'[A] Relativistic effects: Au colour, Hg liquid state, Pb⁴⁺ unstable',imp:0},
+  {t:'[A] Metallic character trends; exceptions in EA for group 16 vs 17',imp:0},
+ ],
+ note:'[M] IE anomalies + EA order + ionic radius comparisons = 1-2 Qs. [A] Relativistic effects.'},
+{day:4,title:'Chemical Bonding & Molecular Structure ⭐⭐ [M+A]',pct:'~5%',wt:9,pri:'SS',col:'#81c784',
+ subs:[
+  {t:'[M] VSEPR: geometry from (BP+LP) count — linear/angular/trigonal/pyramidal/tetrahedral',imp:1},
+  {t:'[M] Bond angle comparisons: NH₃>H₂O; NF₃<NH₃ (EN effect); PCl₃<NCl₃',imp:1},
+  {t:'[M] Hybridisation: sp→linear, sp²→trigonal, sp³→tetrahedral, sp³d, sp³d²',imp:1},
+  {t:'[M] MO theory: bond order=(Nb−Na)/2; N₂=3, O₂=2, F₂=1, NO=2.5, O₂⁺=2.5',imp:1},
+  {t:'[M] Paramagnetic if unpaired e⁻; O₂ paramagnetic (2 unpaired in π* orbitals)',imp:1},
+  {t:'[M] Formal charge=V−NB−½B; minimise for best Lewis structure',imp:1},
+  {t:'[M] Dipole moment: HF>H₂O>NH₃>HCl; CO₂=0(linear), SO₂≠0(bent)',imp:1},
+  {t:'[M] H-bonding: intermolecular vs intramolecular; raises bp, viscosity, solubility',imp:1},
+  {t:'[M] Resonance: delocalisation lowers energy; benzene, NO₃⁻, CO₃²⁻',imp:1},
+  {t:'[A] Back bonding pπ−dπ: BF₃ has shorter B−F than expected; PCl₃ acceptor',imp:0},
+  {t:'[A] MO diagram: N₂/O₂/F₂/NO/CO — orbital sequence changes at N₂',imp:0},
+  {t:'[A] VSEPR exceptions: XeF₄ square planar (2 LP), ClF₃ T-shape (2 LP)',imp:0},
+ ],
+ note:'[M] VSEPR+hybridisation+MO bond order+dipole = 2-3 Qs every paper. [A] Full MO diagrams.'},
+{day:5,title:'Chemical Thermodynamics ⭐⭐ [M+A]',pct:'~4%',wt:9,pri:'SS',col:'#81c784',
+ subs:[
+  {t:'[M] ΔH=ΔU+ΔngRT; Δng=moles gas(products)−moles gas(reactants)',imp:1},
+  {t:'[M] Hess\'s law: ΔH path-independent; algebraic combination of equations',imp:1},
+  {t:'[M] Bond enthalpy: ΔH=Σ(bonds broken)−Σ(bonds formed)',imp:1},
+  {t:'[M] Entropy: ΔS>0 solid→liquid→gas; ΔSuniverse>0 for spontaneous',imp:1},
+  {t:'[M] ΔG=ΔH−TΔS; spontaneous ΔG<0; T crossover=ΔH/ΔS',imp:1},
+  {t:'[M] ΔG°=−RTlnK=−nFE°cell; linking thermo, equilibrium, electrochemistry',imp:1},
+  {t:'[M] Cp−Cv=R (ideal gas); adiabatic q=0; isothermal ΔU=0',imp:1},
+  {t:'[A] Kirchhoff: ΔH(T₂)=ΔH(T₁)+ΔCp·ΔT',imp:0},
+  {t:'[A] Entropy calculation: ΔS=nCvln(T₂/T₁)+nRln(V₂/V₁)',imp:0},
+  {t:'[A] Born-Haber cycle for lattice enthalpy calculation',imp:0},
+ ],
+ note:'[M] ΔG sign + Hess + bond enthalpy = 2 Qs. [A] Kirchhoff, entropy integrals, Born-Haber.'},
+{day:6,title:'Chemical Equilibrium ⭐ [M+A]',pct:'~3%',wt:8,pri:'S',col:'#81c784',
+ subs:[
+  {t:'[M] Kc & Kp: Kp=Kc(RT)^Δng; units depend on Δng',imp:1},
+  {t:'[M] Le Chatelier: P↑ favours fewer moles gas; T↑ favours endothermic',imp:1},
+  {t:'[M] Degree of dissociation α from Kc/Kp; inert gas at const V (no effect) vs const P',imp:1},
+  {t:'[M] Q vs K: Q<K forward, Q>K backward, Q=K equilibrium',imp:1},
+  {t:'[M] Reverse: K\'=1/K; multiply equation ×n → K^n',imp:1},
+  {t:'[M] Pure solids/liquids excluded from K expression (heterogeneous equilibria)',imp:1},
+  {t:'[A] Simultaneous equilibria: solve coupled Kc/Kp expressions',imp:0},
+  {t:'[A] Vapour pressure of solids: CaCO₃ → CaO+CO₂; Kp=P(CO₂)',imp:0},
+ ],
+ note:'[M] Le Chatelier + Kp/Kc + α = 1-2 Qs every paper. [A] Coupled equilibria.'},
+{day:7,title:'Ionic Equilibrium ⭐ [M+A]',pct:'~3%',wt:8,pri:'S',col:'#81c784',
+ subs:[
+  {t:'[M] Ostwald: Ka=Cα²/(1−α); weak acid pH=½(pKa−logC)',imp:1},
+  {t:'[M] pH scale: pH+pOH=14 at 25°C; Kw=[H⁺][OH⁻]=10⁻¹⁴',imp:1},
+  {t:'[M] Buffer Henderson-Hasselbalch: pH=pKa+log([A⁻]/[HA])',imp:1},
+  {t:'[M] Salt hydrolysis: acidic/basic/neutral salts; pH=7+½(pKa−pKb)',imp:1},
+  {t:'[M] Ksp and solubility product; common ion effect reduces solubility',imp:1},
+  {t:'[M] Indicators: colour at pH=pKIn±1; methyl orange (acid), phenolphthalein (alkali)',imp:1},
+  {t:'[A] Polyprotic acids: H₂SO₄, H₃PO₄ — Ka₁>>Ka₂>>Ka₃',imp:0},
+  {t:'[A] Isoelectric point of amino acids; zwitterion form',imp:0},
+  {t:'[A] Titration curves: inflection at equivalence; buffer region analysis',imp:0},
+ ],
+ note:'[M] Buffer pH + Ksp + hydrolysis = 1-2 Qs. [A] Polyprotic acids, titration curves.'},
+{day:8,title:'Redox Reactions ⭐ [M+A]',pct:'~2%',wt:7,pri:'A',col:'#81c784',
+ subs:[
+  {t:'[M] ON rules: F always −1; O usually −2 (peroxide −1, OF₂ +2); H usually +1',imp:1},
+  {t:'[M] Half-reaction method: balance in acidic (H₂O/H⁺) or basic (H₂O/OH⁻)',imp:1},
+  {t:'[M] Disproportionation: same element oxidised + reduced (Cl₂, H₂O₂, P)',imp:1},
+  {t:'[M] n-factor: acid/base=H⁺ furnished; redox=ΔON per formula unit',imp:1},
+  {t:'[M] meq=n-factor×mmol; equivalence: meq₁=meq₂',imp:1},
+  {t:'[A] Comproportionation (reverse disproportionation)',imp:0},
+  {t:'[A] KMnO₄ titrations in acid (Mn+7→+2), alkaline (→+6), neutral (→+4)',imp:0},
+ ],
+ note:'[M] ON assignment + balancing + n-factor = 1 Q. Foundation for electrochemistry.'},
+{day:9,title:'Electrochemistry ⭐⭐ [M+A]',pct:'~4%',wt:9,pri:'SS',col:'#81c784',
+ subs:[
+  {t:'[M] SHE=0V; reduction potential; E°cell=E°cathode−E°anode; ΔG°=−nFE°',imp:1},
+  {t:'[M] Nernst: E=E°−(0.0591/n)logQ at 25°C',imp:1},
+  {t:'[M] Kohlrausch law: Λ°m=Σν±λ°±; find Ka of weak acid from conductance',imp:1},
+  {t:'[M] Faraday 1st: w=ZIt=MIt/nF; 2nd: w₁/w₂=E₁/E₂',imp:1},
+  {t:'[M] Electrolytic cell: Cu²⁺>H⁺>Na⁺ at cathode; Cl⁻>OH⁻ at anode (discharge order)',imp:1},
+  {t:'[M] Conductance G=1/R; Λm=κ×1000/C',imp:1},
+  {t:'[A] Concentration cells: E=−(0.0591/n)log(C₁/C₂)',imp:0},
+  {t:'[A] Fuel cells: H₂−O₂; anode H₂→2H⁺+2e⁻; cathode O₂+4H⁺+4e⁻→2H₂O',imp:0},
+  {t:'[A] Transference number; Hittorf method; transport number',imp:0},
+  {t:'[A] Corrosion: electrochemical; Fe anode→Fe²⁺; O₂ at cathode',imp:0},
+ ],
+ note:'[M] Nernst + EMF + Faraday = 1-2 Qs. [A] Concentration cells, transference numbers.'},
+{day:10,title:'Chemical Kinetics ⭐ [M+A]',pct:'~3%',wt:8,pri:'S',col:'#81c784',
+ subs:[
+  {t:'[M] Rate=k[A]^m[B]^n; determine order from initial rate experiments',imp:1},
+  {t:'[M] Zero order: [A]=[A]₀−kt; t½=[A]₀/2k',imp:1},
+  {t:'[M] First order: t½=0.693/k; [A]=[A]₀e^−kt; concentration-independent t½',imp:1},
+  {t:'[M] Arrhenius: k=Ae^−Ea/RT; ln(k₂/k₁)=(Ea/R)(1/T₁−1/T₂)',imp:1},
+  {t:'[M] Pseudo first order: excess of one reactant (e.g. hydrolysis of ester)',imp:1},
+  {t:'[A] Rate-determining step: slowest step governs rate law',imp:0},
+  {t:'[A] Parallel reactions: product ratio=k₁/k₂ (independent of concentration)',imp:0},
+  {t:'[A] Consecutive reactions: intermediate accumulates then depletes',imp:0},
+  {t:'[A] Lindemann mechanism: unimolecular at high P → bimolecular at low P',imp:0},
+ ],
+ note:'[M] First-order t½ + Arrhenius Ea = 1-2 Qs. [A] Mechanisms, parallel/consecutive reactions.'},
+{day:11,title:'Solid State ⭐ [M+A]',pct:'~2%',wt:7,pri:'A',col:'#81c784',
+ subs:[
+  {t:'[M] Unit cells: SC (1 atom, 52.4%), BCC (2, 68%), FCC/CCP (4, 74% PE)',imp:1},
+  {t:'[M] Radius ratio: tetrahedral void r/R=0.225; octahedral void r/R=0.414',imp:1},
+  {t:'[M] NaCl: FCC Cl⁻ + octahedral Na⁺; CN=6:6; 4 formula units per cell',imp:1},
+  {t:'[M] ZnS (zinc blende): FCC S²⁻ + tetrahedral Zn²⁺; CN=4:4',imp:1},
+  {t:'[M] Schottky defect (vacancies, density ↓); Frenkel defect (interstitial, density same)',imp:1},
+  {t:'[M] n-type (donor extra e⁻), p-type (acceptor, creates hole)',imp:1},
+  {t:'[A] CsCl: simple cubic Cl⁻ + BCC Cs⁺; CN=8:8',imp:0},
+  {t:'[A] Density: d=ZM/(Nₐ·a³); calculate from unit cell parameters',imp:0},
+  {t:'[A] Band theory: conductor (no gap), semiconductor (small gap), insulator (large gap)',imp:0},
+  {t:'[A] Diamond cubic: 8 atoms/cell; FCC + 4 tetrahedral; CN=4, sp³',imp:0},
+ ],
+ note:'[M] PE + NaCl/ZnS + defects = 1 Q. [A] Density calc, CsCl, band theory.'},
+{day:12,title:'Solutions & Colligative Properties ⭐ [M+A]',pct:'~4%',wt:9,pri:'SS',col:'#81c784',
+ subs:[
+  {t:'[M] Henry law: p=K_H·x; gas solubility ↑ with P ↓ with T',imp:1},
+  {t:'[M] Raoult: P=x_A·P°_A; relative lowering ΔP/P°=x_solute',imp:1},
+  {t:'[M] ΔTb=iKbm; ΔTf=iKfm; osmotic pressure π=iMRT',imp:1},
+  {t:"[M] Van't Hoff factor i>1 (dissociation), i<1 (association like acetic acid dimer)",imp:1},
+  {t:'[M] Abnormal molar mass=MM/i; calculate for strong/weak electrolytes',imp:1},
+  {t:'[M] Non-ideal solutions: +ve deviation (ΔHmix>0, vapour P > Raoult); −ve deviation',imp:1},
+  {t:'[A] Degree of dissociation α from van\'t Hoff factor: i=1+(n−1)α',imp:0},
+  {t:'[A] Osmometry for polymer MW; reverse osmosis applications',imp:0},
+  {t:'[A] Azeotropes: min BP (ethanol+water) and max BP (HCl+water)',imp:0},
+ ],
+ note:'[M] ΔTf/ΔTb numericals with i factor = 1-2 Qs each paper.'},
+{day:13,title:'Surface Chemistry [M]',pct:'~2%',wt:5,pri:'C',col:'#81c784',
+ subs:[
+  {t:'[M] Physisorption (reversible, low ΔH, multilayer) vs chemisorption (irreversible, monolayer)',imp:1},
+  {t:'[M] Freundlich: x/m=kP^(1/n); log plot gives straight line',imp:1},
+  {t:'[M] Tyndall effect: light scattering in colloids (not in true solutions)',imp:1},
+  {t:'[M] Brownian motion; electrophoresis (charge on colloid); coagulation',imp:1},
+  {t:'[M] Hardy-Schulze rule: Al³⁺>Ca²⁺>Na⁺ coagulates negative sol',imp:1},
+  {t:'[M] Enzyme catalysis: active site; competitive inhibition (same site as substrate)',imp:1},
+  {t:'[M] Emulsion: oil-in-water (milk, cream) vs water-in-oil (butter)',imp:1},
+ ],
+ note:'[M] Tyndall + Hardy-Schulze + adsorption type = 1 Q. Not in JEE Advanced syllabus typically.'},
+// ─── INORGANIC CHEMISTRY ──────────────────────────────────────────────────
+{day:14,title:'s-Block Elements ⭐ [M+A]',pct:'~3%',wt:7,pri:'A',col:'#4db6ac',
+ subs:[
+  {t:'[M] Anomalous Li: LiF sparingly soluble; Li₂O (not peroxide); Li₃N direct with N₂',imp:1},
+  {t:'[M] Na₂O₂ + H₂O → NaOH + H₂O₂; bleaching action of peroxide',imp:1},
+  {t:'[M] KO₂ (superoxide) reacts CO₂+H₂O→KOH+O₂; used in breathing apparatus',imp:1},
+  {t:'[M] Plaster of Paris CaSO₄·½H₂O; sets by absorbing water → gypsum CaSO₄·2H₂O',imp:1},
+  {t:'[M] Na₂CO₃ vs NaHCO₃: NaHCO₃ gives CO₂ on heating; Na₂CO₃ does not',imp:1},
+  {t:'[M] Flame colours: Li(red), Na(yellow), K(violet), Ca(brick-red), Sr(crimson), Ba(green)',imp:1},
+  {t:'[M] Diagonal Li≈Mg: both form nitride, both have no stable peroxide',imp:1},
+  {t:'[A] Solubility trends: LiF < NaF < KF (lattice > hydration); opposite for chlorides',imp:0},
+  {t:'[A] Be anomaly: BeO and Be(OH)₂ amphoteric; forms [Be(OH)₄]²⁻ with NaOH',imp:0},
+ ],
+ note:'[M] Na/Ca compounds + flame test + anomalous Li/Be = 1-2 Qs.'},
+{day:15,title:'p-Block — Group 13 & 14 ⭐ [M+A]',pct:'~4%',wt:7,pri:'A',col:'#4db6ac',
+ subs:[
+  {t:'[M] B₂H₆: two 3c-2e banana bonds; B−H−B bridges; hydrolysis gives B(OH)₃+H₂',imp:1},
+  {t:'[M] BF₃ Lewis acid (incomplete octet); BF₃·NH₃ Lewis acid-base adduct',imp:1},
+  {t:'[M] Borax bead test: colours identify metal ions in flame',imp:1},
+  {t:'[M] Al amphoteric: Al₂O₃+NaOH→NaAlO₂; thermite Al+Fe₂O₃→Al₂O₃+Fe',imp:1},
+  {t:'[M] C allotropes: diamond (sp³, hardest), graphite (sp², conductor), fullerene C₆₀',imp:1},
+  {t:'[M] CO reducing agent in blast furnace; CO is toxic (binds haemoglobin)',imp:1},
+  {t:'[M] SiO₂ covalent solid; reacts with HF only; silicate chain/ring structures',imp:1},
+  {t:'[M] Silicones: Si−O−Si backbone; water-repellent, high thermal stability',imp:1},
+  {t:'[A] Lewis acidity of B halides: BF₃<BCl₃<BBr₃ (back bonding decreases)',imp:0},
+  {t:'[A] Inert pair effect: Tl⁺>Tl³⁺, Pb²⁺>Pb⁴⁺, Sn²⁺>Sn⁴⁺ stability down group',imp:0},
+ ],
+ note:'[M] B₂H₆ + Al compounds + C allotropes + SiO₂ = 1-2 Qs. [A] Lewis acidity order.'},
+{day:16,title:'p-Block — Group 15, 16, 17, 18 ⭐⭐ [M+A]',pct:'~5%',wt:9,pri:'SS',col:'#4db6ac',
+ subs:[
+  {t:'[M] N₂ triple bond; NH₃ pyramidal sp³; HNO₃ conc (oxidising), dilute (reducing with metals)',imp:1},
+  {t:'[M] PCl₃ (sp³) vs PCl₅ (sp³d); PCl₅ axial bonds longer; +H₂O→POCl₃→H₃PO₄',imp:1},
+  {t:'[M] Ozone: O₃+KI+H₂SO₄→I₂ (identification); O₃ depletion via CFC Cl• radicals',imp:1},
+  {t:'[M] H₂SO₄: dehydrating, oxidising, sulphonating; contact process V₂O₅ catalyst',imp:1},
+  {t:'[M] Halogen reactivity F₂>Cl₂>Br₂>I₂; bond energy anomaly: Cl₂>Br₂>F₂>I₂',imp:1},
+  {t:'[M] Interhalogen: ClF₃ T-shape, BrF₅ square pyramidal, IF₇ pentagonal bipyramidal',imp:1},
+  {t:'[M] HF weakest hydroacid (H-bonding); HI strongest; HF etches glass via SiO₂+4HF',imp:1},
+  {t:'[M] Xe: XeF₂(linear,sp³d), XeF₄(sq planar,sp³d²), XeF₆(distorted oct), XeO₃',imp:1},
+  {t:'[A] Oxoacids of P: H₃PO₄ tribasic, H₃PO₃ dibasic, H₃PO₂ monobasic (has P−H bond)',imp:0},
+  {t:'[A] Oxoacids of S: H₂SO₃, oleum H₂S₂O₇, peroxodisulphuric H₂S₂O₈ (Marshall acid)',imp:0},
+  {t:'[A] Oxoacids of Cl: HClO<HClO₂<HClO₃<HClO₄ (acidity ↑ with OS)',imp:0},
+ ],
+ note:'[M] Ozone+XeF+PCl₅+HX = 2-3 Qs highest inorganic. [A] Oxoacids of P, S, halogens.'},
+{day:17,title:'d & f Block Elements ⭐ [M+A]',pct:'~4%',wt:9,pri:'S',col:'#4db6ac',
+ subs:[
+  {t:'[M] Variable OS: (n-1)d and ns close in energy; Mn+2 to +7; Cr+2 to +6',imp:1},
+  {t:'[M] KMnO₄: acid→Mn²⁺(colourless); neutral→Mn⁴⁺(MnO₂ brown); base→Mn⁶⁺(green)',imp:1},
+  {t:'[M] CrO₄²⁻(yellow) ⇌ Cr₂O₇²⁻(orange): acidic→dichromate; basic→chromate',imp:1},
+  {t:'[M] Magnetic moment μ=√[n(n+2)] BM; Fe³⁺ d⁵ 5 unpaired = 5.92 BM',imp:1},
+  {t:'[M] Lanthanoid contraction: similar La-Lu radii due to poor 4f shielding',imp:1},
+  {t:'[M] d-d transition responsible for colour; [Ti(H₂O)₆]³⁺ purple',imp:1},
+  {t:'[A] Actinoids vs lanthanoids: actinoids +3 to +7 OS; 5f vs 4f orbital involvement',imp:0},
+  {t:'[A] Electronic config of 3d series; anomalies at Cr, Cu, Mn',imp:0},
+  {t:'[A] Spin-only vs spin+orbital magnetic moment for heavier transition metals',imp:0},
+ ],
+ note:'[M] Mn/Cr chemistry + magnetic moment + lanthanoid contraction = 1-2 Qs. [A] Config details.'},
+{day:18,title:'Coordination Compounds ⭐⭐ #1 Inorganic [M+A]',pct:'~5%',wt:10,pri:'SS',col:'#4db6ac',
+ subs:[
+  {t:'[M] IUPAC: ligands alphabetical before metal; anionic complex ends −ate; OS in ()',imp:1},
+  {t:'[M] Geometric isomerism: cis/trans in square planar (MA₂B₂) and octahedral',imp:1},
+  {t:'[M] Optical isomerism: non-superimposable mirror images; [Co(en)₃]³⁺ chiral',imp:1},
+  {t:'[M] Ionisation isomers: [Co(NH₃)₅Br]SO₄ vs [Co(NH₃)₅SO₄]Br',imp:1},
+  {t:'[M] VBT: dsp² square planar, sp³d² octahedral, sp³ tetrahedral',imp:1},
+  {t:'[M] CFT: Δo>Δt; Δt=4/9 Δo; high spin (weak field) vs low spin (strong field)',imp:1},
+  {t:'[M] Spectrochemical series: I⁻<Br⁻<Cl⁻<F⁻<OH⁻<H₂O<py<NH₃<en<CN⁻<CO',imp:1},
+  {t:'[M] EAN/18e rule: Ni(CO)₄, Fe(CO)₅, Cr(CO)₆',imp:1},
+  {t:'[A] CFSE calculation: d^n in Oh/Td; pairing energy P; CFSE=−0.4×n_t2g×Δo',imp:0},
+  {t:'[A] Jahn-Teller distortion: elongated octahedron for Cu²⁺(d⁹), high-spin Mn³⁺(d⁴)',imp:0},
+  {t:'[A] Trans effect order: CO>CN⁻>NO₂⁻>Cl⁻>NH₃; labilises trans ligand in Pt complexes',imp:0},
+  {t:'[A] π-backbonding (synergic): CO donates σ + accepts π from filled d-orbitals',imp:0},
+ ],
+ note:'[M] IUPAC+isomerism+CFT+EAN = 2-3 Qs. [A] CFSE calc, Jahn-Teller, trans effect.'},
+{day:19,title:'Metallurgy & Environmental Chemistry [M]',pct:'~3%',wt:5,pri:'C',col:'#4db6ac',
+ subs:[
+  {t:'[M] Froth flotation (sulphide ores); magnetic separation; leaching Au/Ag with NaCN',imp:1},
+  {t:'[M] Ellingham diagram: lower position = better reducing agent; C beats Fe below ~950°C',imp:1},
+  {t:'[M] Al extraction: electrolysis of molten Al₂O₃ in cryolite (lowers mp to 950°C)',imp:1},
+  {t:'[M] Refining: electrolytic (Cu), zone (Ge,Si), vapour phase (Ti via TiI₄)',imp:1},
+  {t:'[M] Photochemical smog: HC+NOₓ+O₃; acid rain pH<5.6 (H₂SO₄+HNO₃)',imp:1},
+  {t:'[M] CFCs destroy O₃ via Cl• radicals; BOD — higher BOD = more pollution',imp:1},
+ ],
+ note:'[M] Ellingham + froth flotation + pollution = 1 Q. Mostly factual/theory.'},
+// ─── ORGANIC CHEMISTRY ────────────────────────────────────────────────────
+{day:20,title:'GOC — General Organic Chemistry ⭐ [M+A]',pct:'~3%',wt:8,pri:'S',col:'#ffcc80',
+ subs:[
+  {t:'[M] Inductive −I: F>Cl>Br>I; EWG destabilises carbanion; EDG stabilises carbocation',imp:1},
+  {t:'[M] Resonance: same connectivity required; delocalisation lowers energy',imp:1},
+  {t:'[M] Hyperconjugation: α-H stabilises C⁺ and radicals; more α-H = more stable',imp:1},
+  {t:'[M] Carbocation: 3°>2°>1°>CH₃⁺; benzylic≈allylic stable via resonance',imp:1},
+  {t:'[M] Carbanion: EWG (NO₂,CN,COOH) adjacent stabilises; opposite to carbocation',imp:1},
+  {t:'[M] IUPAC: substituents alphabetical, lowest locant, principal functional group first',imp:1},
+  {t:'[M] E/Z nomenclature: CIP priority rules; R/S for chiral centres',imp:1},
+  {t:'[A] Hückel aromaticity: 4n+2 π electrons; antiaromatic 4n; test cyclopentadienyl',imp:0},
+  {t:'[A] Steric vs electronic effects in directing: ortho:para ratio analysis',imp:0},
+  {t:'[A] Ambident nucleophiles: CN⁻ attacks via C or N depending on conditions',imp:0},
+ ],
+ note:'[M] Stability orders + IUPAC + E/Z + R/S = 1-2 Qs. [A] Aromaticity, stereochemistry depth.'},
+{day:21,title:'Hydrocarbons ⭐ [M+A]',pct:'~3%',wt:7,pri:'A',col:'#ffcc80',
+ subs:[
+  {t:'[M] Alkanes: free radical; Cl₂ less selective, Br₂ highly selective (3°>>2°>1°)',imp:1},
+  {t:'[M] Alkenes: Markovnikov (HX, H₂O/H₂SO₄); anti-Markovnikov with HBr+peroxide',imp:1},
+  {t:'[M] Electrophilic addition: Br₂/CCl₄ anti-addition → trans product (anti-periplanar)',imp:1},
+  {t:'[M] Ozonolysis: O₃ then Zn/H₂O (→aldehyde/ketone) or H₂O₂ (→acid)',imp:1},
+  {t:'[M] Benzene EAS: nitration HNO₃/H₂SO₄; Friedel-Crafts (AlCl₃); halogenation',imp:1},
+  {t:'[M] Directing: OH,NH₂,alkyl → o/p activating; NO₂,CN,COOH → m deactivating',imp:1},
+  {t:'[M] Birch reduction: Na/liq.NH₃+alcohol; unsubstituted positions reduced preferentially',imp:1},
+  {t:'[A] Carbene :CH₂ reactions: singlet (stereospecific) + alkene → cyclopropane',imp:0},
+  {t:'[A] Alkynes ozonolysis: terminal →RCOOH+CO₂; internal→two carboxylic acids',imp:0},
+  {t:'[A] Free radical stability: tertiary>secondary>primary>methyl; steric + hyperconjugation',imp:0},
+ ],
+ note:'[M] Markovnikov + ozonolysis + EAS direction = 1-2 Qs. [A] Mechanisms in depth.'},
+{day:22,title:'Haloalkanes & Haloarenes ⭐ [M+A]',pct:'~3%',wt:7,pri:'A',col:'#ffcc80',
+ subs:[
+  {t:'[M] SN2: bimolecular, inversion of configuration (Walden), primary substrate',imp:1},
+  {t:'[M] SN1: unimolecular, racemisation, tertiary, polar protic solvent',imp:1},
+  {t:'[M] Nucleophilicity in protic solvent: I⁻>Br⁻>Cl⁻>F⁻',imp:1},
+  {t:'[M] E2: anti-periplanar, Zaitsev (more substituted alkene) with strong base',imp:1},
+  {t:'[M] Aryl halides: C−X strengthened by resonance; only react with EWG (nucleophilic)',imp:1},
+  {t:'[M] Grignard RMgX: formed in dry ether; reacts with H₂O, CO₂, RCHO, R₂CO',imp:1},
+  {t:'[A] Neighbouring group participation: anchimeric assistance → retention of config',imp:0},
+  {t:'[A] Benzyne (aryne) mechanism: elimination then addition for aryl halides',imp:0},
+  {t:'[A] Allylic halides: SN1 via resonance-stabilised allylic cation; mixture of products',imp:0},
+ ],
+ note:'[M] SN1/SN2 conditions + Zaitsev = 1-2 Qs. [A] Benzyne, NGP, stereochemistry.'},
+{day:23,title:'Alcohols, Phenols & Ethers [M+A]',pct:'~3%',wt:7,pri:'A',col:'#ffcc80',
+ subs:[
+  {t:'[M] Acidity: phenol > H₂O > alcohol > alkane; resonance stabilises PhO⁻',imp:1},
+  {t:'[M] EWG (NO₂, p/o) ↑ acidity of phenol; EDG (CH₃) ↓ acidity',imp:1},
+  {t:'[M] Lucas test: ZnCl₂/conc HCl; 3° immediate turbidity, 2° slow, 1° no reaction',imp:1},
+  {t:'[M] Victor Meyer test: 1°→red, 2°→blue, 3°→colourless',imp:1},
+  {t:'[M] Esterification: RCOOH + ROH ⇌ RCOOR\'+ H₂O (Fischer, H⁺ cat)',imp:1},
+  {t:'[M] Phenol bromination: no catalyst needed; 2,4,6-tribromophenol precipitate',imp:1},
+  {t:'[M] Williamson: R-X + RO⁻ → ether (SN2; use primary R-X to avoid E2)',imp:1},
+  {t:'[A] Kolbe reaction: phenol + CO₂/NaOH → salicylic acid (ortho product)',imp:0},
+  {t:'[A] Reimer-Tiemann: phenol + CHCl₃/NaOH → salicylaldehyde',imp:0},
+  {t:'[A] Fries rearrangement: phenol ester + Lewis acid → ortho/para hydroxy ketone',imp:0},
+ ],
+ note:'[M] Lucas + phenol reactions + acidity order = 1-2 Qs. [A] Named reactions of phenol.'},
+{day:24,title:'Aldehydes, Ketones & Carboxylic Acids ⭐⭐ Highest Organic [M+A]',pct:'~6%',wt:10,pri:'SS',col:'#ffcc80',
+ subs:[
+  {t:'[M] Nucleophilic addition: RCHO > R₂CO (less steric, +I effect of alkyl decreases E)',imp:1},
+  {t:'[M] Aldol condensation: base + α-H → β-hydroxy carbonyl → dehydration to enone',imp:1},
+  {t:'[M] Cannizzaro: no α-H + conc NaOH → 50% alcohol + 50% carboxylate',imp:1},
+  {t:'[M] Tollens (silver mirror) and Fehling (brick-red Cu₂O): aldehydes only',imp:1},
+  {t:'[M] Iodoform test: CH₃CO− group → CHI₃ (yellow ppt); acetaldehyde, ethanol positive',imp:1},
+  {t:'[M] Carboxylic acids: EWG adjacent → ↑ acidity (−I effect > −R effect)',imp:1},
+  {t:'[M] Reactivity of derivatives: acyl chloride > anhydride > ester > amide',imp:1},
+  {t:'[A] Claisen condensation: 2 ester molecules + base (α-H) → β-keto ester',imp:0},
+  {t:'[A] Michael addition: nucleophile adds to β-carbon of α,β-unsaturated carbonyl (1,4-addition)',imp:0},
+  {t:'[A] Reformatsky reaction: α-bromo ester + Zn + RCHO → β-hydroxy ester',imp:0},
+  {t:'[A] Hell-Volhard-Zelinsky (HVZ): α-halogenation of RCOOH with X₂/P catalyst',imp:0},
+ ],
+ note:'[M] Aldol+Tollens+Cannizzaro+iodoform = 2-3 Qs. Highest organic chapter! [A] Named condensations.'},
+{day:25,title:'Amines & Diazonium Salts ⭐ [M+A]',pct:'~4%',wt:9,pri:'S',col:'#ffcc80',
+ subs:[
+  {t:'[M] Basicity: aliphatic amine > NH₃ > aniline; 2° aliphatic > 1° > 3° in aqueous solution',imp:1},
+  {t:'[M] EWG on ring (NO₂ at p/o) decreases aniline basicity drastically',imp:1},
+  {t:'[M] Hinsberg test: 1° sulfonamide (NaOH soluble), 2° insoluble, 3° no reaction',imp:1},
+  {t:'[M] Diazotisation: ArNH₂ + NaNO₂ + HCl, 0−5°C → ArN₂⁺Cl⁻',imp:1},
+  {t:'[M] Sandmeyer: CuCN→ArCN, CuCl→ArCl, CuBr→ArBr',imp:1},
+  {t:'[M] Coupling: ArN₂⁺ + phenol (alkaline) or amine → azo dye',imp:1},
+  {t:'[M] Gabriel synthesis: phthalimide → primary amine only',imp:1},
+  {t:'[A] Hoffmann bromamide: RCONH₂ + Br₂ + NaOH → RNH₂ (one C less)',imp:0},
+  {t:'[A] Curtius rearrangement: acyl azide → isocyanate → amine',imp:0},
+  {t:'[A] Basicity: in gas phase 3°>2°>1° amine (no solvation effect)',imp:0},
+ ],
+ note:'[M] Basicity order + Sandmeyer + coupling = 1-2 Qs. [A] Rearrangements.'},
+{day:26,title:'Biomolecules [M+A]',pct:'~3%',wt:6,pri:'B',col:'#ffcc80',
+ subs:[
+  {t:'[M] Glucose open chain: CHO−(CHOH)₄−CH₂OH; 4 chiral centres; D-glucose OH at C5 right',imp:1},
+  {t:'[M] α vs β glucose: C1 OH axial(α) vs equatorial(β); mutarotation in solution',imp:1},
+  {t:'[M] Reducing sugars: glucose, fructose, maltose, lactose (free hemiacetal/hemiketal)',imp:1},
+  {t:'[M] Sucrose non-reducing; invertase hydrolyses → glucose+fructose (invert sugar)',imp:1},
+  {t:'[M] Amino acids: zwitterion; peptide bond −CO−NH−; N-terminal to C-terminal',imp:1},
+  {t:'[M] Protein: 1°(peptide seq), 2°(α-helix/β-sheet H-bond), 3°(globular fold), 4°(quaternary)',imp:1},
+  {t:'[A] DNA base pairs: A−T (2 H-bonds), G−C (3 H-bonds); antiparallel double helix',imp:0},
+  {t:'[A] RNA vs DNA: ribose (RNA) vs deoxyribose (DNA); uracil (RNA) vs thymine (DNA)',imp:0},
+  {t:'[A] Osazone formation: glucose+phenylhydrazine → same osazone as fructose',imp:0},
+ ],
+ note:'[M] Glucose structure + reducing sugars + protein levels = 1-2 Qs. [A] DNA/RNA.'},
+{day:27,title:'Polymers & Chemistry in Everyday Life [M]',pct:'~3%',wt:5,pri:'C',col:'#ffcc80',
+ subs:[
+  {t:'[M] Addition polymers: PVC, Teflon, polythene, polystyrene (identify monomers)',imp:1},
+  {t:'[M] Condensation polymers: Nylon-6,6 (diamine+diacid), Dacron, Bakelite (phenol+HCHO)',imp:1},
+  {t:'[M] Natural rubber = cis-1,4-polyisoprene; vulcanisation with S → cross-linked',imp:1},
+  {t:'[M] Biodegradable: PHBV, nylon-2-nylon-6; non-biodegradable: PVC, polythene',imp:1},
+  {t:'[M] Drugs: analgesics (aspirin, paracetamol), antibiotics (penicillin), antiseptics (Dettol)',imp:1},
+  {t:'[M] Detergents vs soaps: detergents work in hard water (no scum)',imp:1},
+ ],
+ note:'[M] Polymer classification + monomer + drug category = 1 Q. Easy guaranteed marks!'},
+// ─── JEE ADVANCED ONLY CHAPTER ───────────────────────────────────────────
+{day:28,title:'States of Matter — Gases & Liquids [A ONLY] ⭐',pct:'~2% Adv',wt:7,pri:'A',col:'#a29bfe',
+ subs:[
+  {t:'[A] van der Waals: (P+an²/V²)(V−nb)=nRT; a=attraction constant, b=excluded volume',imp:1},
+  {t:'[A] Critical constants: Tc=8a/27Rb; Pc=a/27b²; Vc=3nb',imp:1},
+  {t:'[A] Z=PV/nRT; Z>1 repulsion dominates; Z<1 attraction dominates',imp:1},
+  {t:'[A] Boyle temperature Tb=a/Rb: Z=1 at all pressures (ideal behaviour)',imp:1},
+  {t:'[A] KMT speeds: vrms=√(3RT/M), vavg=√(8RT/πM), vmp=√(2RT/M); ratio 1.22:1.13:1',imp:1},
+  {t:'[A] Graham\'s law of effusion: rate ∝ 1/√M; effusion(hole) vs diffusion(area)',imp:1},
+  {t:'[A] Mean free path: λ=1/(√2·πd²·n); collision freq Z∝P, T⁻½',imp:1},
+  {t:'[A] Maxwell-Boltzmann distribution: T↑ shifts curve right; area under curve = constant',imp:0},
+  {t:'[A] Joule-Thomson effect: real gas cools on expansion (below inversion temperature)',imp:0},
+  {t:'[A] Liquefaction: below Tc and Pc; Joule-Thomson used industrially',imp:0},
+ ],
+ note:'[A ONLY] States of Matter is primarily JEE Advanced topic. Focus on vdW eq + critical constants + KMT speed ratios.'},
 ];
 
-// ═══ TEST SCHEDULES ═══
+const MAINS_DAILY=[
+ // ══════════════════════════════════════════════════════════════════
+ // PHASE 1 — DAYS 1-10: MATHS INTENSIVE (Full Mains Syllabus)
+ // Physics on odd days, Chemistry on even days (alternating)
+ // Goal: Every important Maths subtopic — most weightage chapters first
+ // ══════════════════════════════════════════════════════════════════
+ {d:1,date:'Mar 6',s1:{subj:'Maths',ch:'M1: 3D Geometry ⭐⭐ (7.35%) — direction cosines, lines, planes, shortest distance',id:'ma-1'},s2:{subj:'Physics',ch:'P1: Modern Physics — Dual Nature, Photoelectric effect, de Broglie ⭐',id:'ph-1'}},
+ {d:2,date:'Mar 7',s1:{subj:'Maths',ch:'M2: Vectors ⭐ — dot/cross product, scalar triple product, coplanar condition',id:'ma-2'},s2:{subj:'Chemistry',ch:'C1: Atomic Structure ⭐ — quantum numbers, config exceptions, photoelectric, spectrum',id:'ch-1'}},
+ {d:3,date:'Mar 8',s1:{subj:'Maths',ch:'M3: Sequences & Series ⭐⭐ (5.74%) — AP/GP/HP, AM-GM, AGP formula, telescoping',id:'ma-3'},s2:{subj:'Physics',ch:'P2: Modern Physics — Atoms, Nuclei, Bohr model, radioactive decay ⭐',id:'ph-2'},test:'Comeback Test (Online)'},
+ {d:4,date:'Mar 9',s1:{subj:'Maths',ch:'M4: Complex Numbers ⭐ — polar form, De Moivre theorem, nth roots of unity, rotation trick',id:'ma-4'},s2:{subj:'Chemistry',ch:'C2: Mole Concept ⭐ + Periodic Properties — limiting reagent, n-factor, IE/EN anomalies',id:'ch-2'}},
+ {d:5,date:'Mar 10',s1:{subj:'Maths',ch:'M5: Matrices & Determinants — inverse, Cramer rule, determinant properties, consistency',id:'ma-5'},s2:{subj:'Physics',ch:'P3: Ray Optics ⭐⭐ — mirror/lens formula, refraction at sphere, TIR, prism, optical instruments',id:'ph-3'},test:'Mastery 2.8 (Offline)'},
+ {d:6,date:'Mar 11',s1:{subj:'Maths',ch:'M6: Binomial Theorem ⭐ + P&C — general term, independent of x, circular permutation',id:'ma-6'},s2:{subj:'Chemistry',ch:'C3: Chemical Bonding ⭐⭐ — VSEPR, hybridisation, MO bond order, dipole moment, H-bonding',id:'ch-3'}},
+ {d:7,date:'Mar 12',s1:{subj:'Maths',ch:'M7: Probability ⭐ + Statistics — Bayes theorem, binomial distribution, mean, variance, E(X)',id:'ma-7'},s2:{subj:'Physics',ch:'P4: Wave Optics ⭐ — YDSE fringe width, single slit diffraction, polarisation, Brewster',id:'ph-4'},test:'Mastery 2.9 (Offline)'},
+ {d:8,date:'Mar 13',s1:{subj:'Maths',ch:'M8: Straight Lines & Circles — distance, family of lines, tangent from point, radical axis',id:'ma-8'},s2:{subj:'Chemistry',ch:'C4: Thermodynamics ⭐⭐ + Equilibrium ⭐ — delta-G, Hess law, Le Chatelier, Kp/Kc conversion',id:'ch-4'}},
+ {d:9,date:'Mar 14',s1:{subj:'Maths',ch:'M9: Conics ⭐ — parabola/ellipse/hyperbola tangent condition, parametric forms, eccentricity',id:'ma-9'},s2:{subj:'Physics',ch:'P5: EMW ⭐ + Electrostatics & Potential ⭐⭐ — Gauss law, field/potential, capacitor energy',id:'ph-5'}},
+ {d:10,date:'Mar 15',s1:{subj:'Maths',ch:'M10: Limits+AOD ⭐ + Definite Integration ⭐⭐ + DE — King rule, maxima-minima, linear DE',id:'ma-10'},s2:{subj:'Chemistry',ch:'C5: Ionic Equilibrium ⭐ + Redox + Electrochemistry ⭐⭐ — pH, buffer, Nernst equation',id:'ch-5'}},
+ // ══════════════════════════════════════════════════════════════════
+ // PHASE 2 — DAYS 11-20: CHEMISTRY INTENSIVE (Full Mains Syllabus)
+ // Physics every day (secondary) | ⚡ +2hr Maths revision & practice each day
+ // Goal: All remaining Chemistry — most important subtopics only
+ // ══════════════════════════════════════════════════════════════════
+ {d:11,date:'Mar 16',s1:{subj:'Chemistry',ch:'C6: Chemical Kinetics ⭐ + Solid State ⭐ — first-order t-half, Arrhenius, BCC/FCC packing, NaCl/ZnS',id:'ch-6'},s2:{subj:'Physics',ch:'P6: Current Electricity ⭐⭐ + Capacitance + AC — Kirchhoff, Wheatstone, AC impedance',id:'ph-6'},note:'⚡ +2hr Maths: timed PYQs on 3D Geom + Vectors'},
+ {d:12,date:'Mar 17',s1:{subj:'Chemistry',ch:'C7: Solutions ⭐ + Surface Chemistry — colligative props, van t Hoff factor, Tyndall, Hardy-Schulze rule',id:'ch-7'},s2:{subj:'Physics',ch:'P7: Moving Charges & Magnetism ⭐ — Biot-Savart, Ampere law, force on conductor, cyclotron',id:'ph-7'},note:'⚡ +2hr Maths: Sequences + Complex Numbers problems'},
+ {d:13,date:'Mar 18',s1:{subj:'Chemistry',ch:'C8: s-Block ⭐ + p-Block Gr 13&14 ⭐ — Na2O2, KO2, B2H6 banana bonds, BF3 Lewis acid, C allotropes',id:'ch-8'},s2:{subj:'Physics',ch:'P8: Magnetism & EMI ⭐ — Faraday, Lenz law, self/mutual inductance, transformer',id:'ph-8'},test:'PYQ 2024 Test (Offline)',note:'⚡ +2hr Maths: Matrices + Binomial + P&C problems'},
+ {d:14,date:'Mar 19',s1:{subj:'Chemistry',ch:'C9: p-Block Gr 15-18 ⭐⭐ + d&f Block ⭐ — XeF2/XeF4, oxoacids, Mn/Cr chemistry, magnetic moment',id:'ch-9'},s2:{subj:'Physics',ch:'P9: KTG & Thermodynamics ⭐ — rms/avg/mp speed ratios, Cp-Cv=R, adiabatic, Carnot',id:'ph-9'},note:'⚡ +2hr Maths: Probability + Statistics drill'},
+ {d:15,date:'Mar 20',s1:{subj:'Chemistry',ch:'C10: Coordination Compounds ⭐⭐ + Metallurgy — IUPAC, CFT high/low spin, spectrochemical series, Ellingham',id:'ch-10'},s2:{subj:'Physics',ch:'P10: Mechanics — Newton laws, WEP, COM, collision, friction ⭐',id:'ph-10'},test:'PYQ 2025 Test (Offline)',note:'⚡ +2hr Maths: Coordinate Geometry + Conics practice'},
+ {d:16,date:'Mar 21',s1:{subj:'Chemistry',ch:'C11: GOC ⭐ + Hydrocarbons ⭐ — carbocation stability, hyperconjugation, Markovnikov, EAS directing effects',id:'ch-11'},s2:{subj:'Physics',ch:'P11: Gravitation + SHM ⭐ — Kepler laws, orbital velocity, SHM energy, simple pendulum',id:'ph-11'},note:'⚡ +2hr Maths: Limits + AOD timed problems'},
+ {d:17,date:'Mar 22',s1:{subj:'Chemistry',ch:'C12: Haloalkanes ⭐ + Alcohols & Phenols ⭐ — SN1/SN2 conditions, Lucas test, phenol acidity, Kolbe reaction',id:'ch-12'},s2:{subj:'Physics',ch:'P12: Fluids ⭐ — Bernoulli equation, viscosity, surface tension, capillary rise',id:'ph-12'},test:'Mastery 2.11 (Offline)',note:'⚡ +2hr Maths: Definite Integration King rule practice'},
+ {d:18,date:'Mar 23',s1:{subj:'Chemistry',ch:'C13: Aldehydes, Ketones & Acids ⭐⭐ — Aldol, Cannizzaro, Tollens, Fehling, iodoform test, HVZ',id:'ch-13'},s2:{subj:'Physics',ch:'P13: Rotational Motion ⭐ — torque, MOI parallel axis, rolling without slipping',id:'ph-13'},note:'⚡ +2hr Maths: Differential Equations + Inverse Trig'},
+ {d:19,date:'Mar 24',s1:{subj:'Chemistry',ch:'C14: Amines ⭐ + Biomolecules — basicity order, Sandmeyer, Gattermann, diazo coupling, glucose anomers',id:'ch-14'},s2:{subj:'Physics',ch:'P14: Waves & Sound — standing waves, beats, Doppler effect ⭐',id:'ph-14'},test:'AITS-18 (Offline)',note:'⚡ +2hr Maths: Mixed PYQs from all 10 Maths topics'},
+ {d:20,date:'Mar 25',s1:{subj:'Chemistry',ch:'C15: Polymers + Env Chem + States of Matter [Adv only] — vdW equation, critical constants, polymer types',id:'ch-15'},s2:{subj:'Physics',ch:'P15: Electrostatics deep dive ⭐ + Error Analysis — Gauss, dipole, error propagation formulas',id:'ph-15'},test:'Mock Test 2 (Online)',note:'⚡ +2hr Maths: weakest chapter targeted revision'},
+ // ══════════════════════════════════════════════════════════════════
+ // PHASE 3 — DAYS 21-28: FULL REVISION + PHYSICS SWEEP
+ // All subjects targeted | PYQ papers + formula sheets
+ // ══════════════════════════════════════════════════════════════════
+ {d:21,date:'Mar 26',s1:{subj:'Physics',ch:'P-REV1: Mechanics + Rotation + Fluids — 20 PYQs rapid fire + formula sheet drill',id:'ph-r1'},s2:{subj:'Maths',ch:'M-REV1: 3D Geom + Vectors + Sequences — 30 timed problems in 45 min',id:'ma-r1'},test:'Final Mock (Online)'},
+ {d:22,date:'Mar 27',s1:{subj:'Physics',ch:'P-REV2: Optics + Modern Physics + EMW — 20 PYQs rapid + formula sheet',id:'ph-r2'},s2:{subj:'Chemistry',ch:'C-REV1: Physical Chem rapid fire — Thermo, Equilibrium, Kinetics, Electrochem key formulas',id:'ch-r1'}},
+ {d:23,date:'Mar 28',s1:{subj:'Physics',ch:'P-REV3: Electricity + Magnetism + EMI — 20 PYQs rapid + formula sheet',id:'ph-r3'},s2:{subj:'Maths',ch:'M-REV2: Calculus (Limits+AOD+Integration) + Conics — 30 timed problems 45 min',id:'ma-r2'}},
+ {d:24,date:'Mar 29',s1:{subj:'Physics',ch:'P-REV4: Thermodynamics + Waves + Gravitation + SHM — 20 PYQs rapid fire',id:'ph-r4'},s2:{subj:'Chemistry',ch:'C-REV2: Inorganic rapid fire — s/p/d-Block, Coordination Compounds key reactions',id:'ch-r2'},test:'AITS Final (Offline)'},
+ {d:25,date:'Mar 30',s1:{subj:'Physics',ch:'P-REV5: Full Physics — hardest PYQs 2020-2025 mixed, 30 questions timed',id:'ph-r5'},s2:{subj:'Chemistry',ch:'C-REV3: Organic rapid fire — GOC, named reactions, mechanisms flash card recall',id:'ch-r3'}},
+ {d:26,date:'Mar 31',s1:{subj:'Maths',ch:'M-REV3: Algebra — Binomial, P&C, Probability, Matrices timed 30 problems',id:'ma-r3'},s2:{subj:'Chemistry',ch:'C-REV4: Full Chemistry — attack 3 weakest chapters, 15 min each targeted',id:'ch-r4'}},
+ {d:27,date:'Apr 1',s1:{subj:'ALL',ch:'🎯 Grand Revision — top 5 weak topics from each subject from mock test analysis',id:'rev1'},s2:{subj:'ALL',ch:'📋 Formula Sheet review — 1 page Physics + 1 page Maths + 1 page Chemistry',id:'rev2'}},
+ {d:28,date:'Apr 2',s1:{subj:'ALL',ch:'🔥 Light revision morning — formulas and key points only, no new topics',id:'rev'},s2:{subj:'ALL',ch:'🎯 JEE MAINS BEGINS TODAY! Trust your preparation! 🚀',id:'exam'}},
+];
 const MAINS_TESTS=[
  {id:'m1',date:'2026-03-05',name:'Mastery 2.7',type:'Offline',desc:'12th Syllabus focus',maxPh:100,maxCh:100,maxMa:100},
  {id:'m2',date:'2026-03-08',name:'Comeback Test',type:'Online',desc:'11th/12th Part',maxPh:100,maxCh:100,maxMa:100},
@@ -751,6 +1047,7 @@ const MAINS_TESTS=[
  {id:'m9',date:'2026-03-30',name:'Mock Test 2',type:'Online',desc:'Full Simulation',maxPh:100,maxCh:100,maxMa:100},
  {id:'m10',date:'2026-03-31',name:'Final Mock',type:'Online',desc:'Last Full Mock Before Mains',maxPh:100,maxCh:100,maxMa:100},
 ];
+
 const ADV_TESTS=[
  {id:'a1',date:'2026-04-05',name:'Post-Mains Reality Check',type:'Online',desc:'Identify weak chapters',maxPh:120,maxCh:120,maxMa:120},
  {id:'a2',date:'2026-04-19',name:'Advanced Full Test 1',type:'Online',desc:'Full JEE Adv pattern',maxPh:120,maxCh:120,maxMa:120},
@@ -765,42 +1062,6 @@ const ADV_TESTS=[
  {id:'a11',date:'2026-05-12',name:'Grand Mock 2',type:'Online',desc:'Grand mock round 2',maxPh:120,maxCh:120,maxMa:120},
  {id:'a12',date:'2026-05-13',name:'Formula & Error Drill',type:'Online',desc:'Speed revision test',maxPh:120,maxCh:120,maxMa:120},
  {id:'a13',date:'2026-05-14',name:'Final Warm-up',type:'Online',desc:'Last test before Advanced',maxPh:120,maxCh:120,maxMa:120},
-];
-
-// ═══ 28-DAY STUDY PLAN (2 subjects/day, 1 chapter each) ═══
-const MAINS_DAILY=[
- // Week 1
- {d:1,date:'Mar 5',s1:{subj:'Physics',ch:'D1: Semiconductor & Logic Gates',id:'ph-1'},s2:{subj:'Chemistry',ch:'D1: Coordination Compounds ★',id:'ch-1'},test:'Mastery 2.7 (Offline) — Today!'},
- {d:2,date:'Mar 6',s1:{subj:'Maths',ch:'D1: 3D Geometry ★★',id:'ma-1'},s2:{subj:'Chemistry',ch:'D2: Aldehydes & Ketones ★★',id:'ch-2'}},
- {d:3,date:'Mar 7',s1:{subj:'Physics',ch:'D2: Dual Nature',id:'ph-2'},s2:{subj:'Chemistry',ch:'D3: Equilibrium',id:'ch-3'}},
- {d:4,date:'Mar 8',s1:{subj:'Maths',ch:'D2: Vectors ★',id:'ma-2'},s2:{subj:'Chemistry',ch:'D4: Solutions & Colligative',id:'ch-4'},test:'Comeback Test (Online)'},
- {d:5,date:'Mar 9',s1:{subj:'Physics',ch:'D3: Atoms & Nuclei',id:'ph-3'},s2:{subj:'Chemistry',ch:'D5: Amines & Diazonium',id:'ch-5'}},
- {d:6,date:'Mar 10',s1:{subj:'Maths',ch:'D3: Sequences & Series ★★',id:'ma-3'},s2:{subj:'Chemistry',ch:'D6: Mole Concept (Foundation)',id:'ch-6'},test:'Mastery 2.8 (Offline)'},
- {d:7,date:'Mar 11',s1:{subj:'Physics',ch:'D4: Ray Optics ★',id:'ph-4'},s2:{subj:'Chemistry',ch:'D7: Kinetics',id:'ch-7'}},
- // Week 2
- {d:8,date:'Mar 12',s1:{subj:'Maths',ch:'D4: Complex Numbers ★',id:'ma-4'},s2:{subj:'Chemistry',ch:'D8: Alcohols & Phenols',id:'ch-8'},test:'Mastery 2.9 (Offline)'},
- {d:9,date:'Mar 13',s1:{subj:'Physics',ch:'D5: Wave Optics',id:'ph-5'},s2:{subj:'Chemistry',ch:'D9: Electrochemistry',id:'ch-9'}},
- {d:10,date:'Mar 14',s1:{subj:'Maths',ch:'D5: Probability & Statistics',id:'ma-5'},s2:{subj:'Chemistry',ch:'D10: p-Block Elements',id:'ch-10'}},
- {d:11,date:'Mar 15',s1:{subj:'Physics',ch:'D6: Electromagnetic Waves',id:'ph-6'},s2:{subj:'Chemistry',ch:'D11: d & f Block ★',id:'ch-11'}},
- {d:12,date:'Mar 16',s1:{subj:'Maths',ch:'D6: Matrices & Determinants',id:'ma-6'},s2:{subj:'Chemistry',ch:'D12: Chemical Thermodynamics',id:'ch-12'}},
- {d:13,date:'Mar 17',s1:{subj:'Physics',ch:'D7: Current Electricity ★★ #1',id:'ph-7'},s2:{subj:'Chemistry',ch:'D13: Haloalkanes',id:'ch-13'}},
- {d:14,date:'Mar 18',s1:{subj:'Maths',ch:'D7: Binomial Theorem ★',id:'ma-7'},s2:{subj:'Chemistry',ch:'D14: Atomic Structure & Bonding',id:'ch-14'}},
- // Week 3
- {d:15,date:'Mar 19',s1:{subj:'Physics',ch:'D8: Moving Charges',id:'ph-8'},s2:{subj:'Chemistry',ch:'D15: s-Block & Hydrogen',id:'ch-15'},test:'PYQ 2024 Test (Offline)'},
- {d:16,date:'Mar 20',s1:{subj:'Maths',ch:'D8: P & C',id:'ma-8'},s2:{subj:'Chemistry',ch:'D16: GOC Mechanisms',id:'ch-16'}},
- {d:17,date:'Mar 21',s1:{subj:'Physics',ch:'D9: Magnetism + EMI + AC',id:'ph-9'},s2:{subj:'Chemistry',ch:'D17: Hydrocarbons & Aromatic',id:'ch-17'}},
- {d:18,date:'Mar 22',s1:{subj:'Maths',ch:'D9: Straight Lines & Circles',id:'ma-9'},s2:{subj:'Chemistry',ch:'D18: Solid State',id:'ch-18'}},
- {d:19,date:'Mar 23',s1:{subj:'Physics',ch:'D10: Electric Charges & Fields',id:'ph-10'},s2:{subj:'Chemistry',ch:'D19: Surface Chemistry',id:'ch-19'}},
- {d:20,date:'Mar 24',s1:{subj:'Maths',ch:'D10: Parabola, Ellipse, Hyperbola ★',id:'ma-10'},s2:{subj:'Chemistry',ch:'D20: Biomolecules',id:'ch-20'},test:'PYQ 2025 Test (Offline)'},
- {d:21,date:'Mar 25',s1:{subj:'Physics',ch:'D11: Electrostatics & Capacitance ★',id:'ph-11'},s2:{subj:'Chemistry',ch:'D21: Polymers',id:'ch-21'}},
- // Week 4
- {d:22,date:'Mar 26',s1:{subj:'Maths',ch:'D11: LCD — Limits, Continuity ★',id:'ma-11'},s2:{subj:'Chemistry',ch:'D22: Redox & Environment',id:'ch-22'},test:'Mastery 2.11 (Offline)'},
- {d:23,date:'Mar 27',s1:{subj:'Physics',ch:'D12: Units & Dimensions (Revision)',id:'ph-12'},s2:{subj:'Chemistry',ch:'D23: Periodic Properties',id:'ch-23'}},
- {d:24,date:'Mar 28',s1:{subj:'Maths',ch:'D12: Application of Derivatives ★',id:'ma-12'},s2:{subj:'Chemistry',ch:'D24: Metallurgy & p-Block',id:'ch-24'}},
- {d:25,date:'Mar 29',s1:{subj:'Physics',ch:'D13: Thermodynamics & KTG',id:'ph-13'},s2:{subj:'Chemistry',ch:'D25: Gases & Revision',id:'ch-25'},test:'AITS-18 (Offline)'},
- {d:26,date:'Mar 30',s1:{subj:'Maths',ch:'D13: Definite Integration ★★ #1',id:'ma-13'},s2:{subj:'Physics',ch:'D14: Rotational Motion ★',id:'ph-14'},test:'Mock Test 2 (Online)'},
- {d:27,date:'Mar 31',s1:{subj:'Physics',ch:'D15: Gravitation + Mechanics',id:'ph-15'},s2:{subj:'Maths',ch:'D14: Diff Eq + Trig + Sets',id:'ma-14'},test:'Final Mock (Online)'},
- {d:28,date:'Apr 1',s1:{subj:'ALL',ch:'Full Revision: Weak Chapters',id:'rev'},s2:{subj:'ALL',ch:'PYQ Practice + Formula Sheet',id:'rev2'},test:'JEE Mains Starts Tomorrow!'},
 ];
 
 // ADVANCED PLAN (Apr 11 – May 16, 36 days, 2 subjects/day)
@@ -1731,5 +1992,6 @@ function init(){
  renderTests('adv');
 }
 init();
+
 </script>
 </body></html>

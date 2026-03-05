@@ -242,22 +242,26 @@ body{font-family:'Crimson Pro',Georgia,serif;background:var(--bg0);color:var(--t
     <div class="logo-s">Ultimate Tracker</div>
   </div>
   <div class="nl">Mission</div>
-  <div class="ni ac" onclick="ST('countdown',this)"><span class="ni-ico">⏱</span>Countdown<span class="ni-badge" id="nb-days" style="background:rgba(255,71,87,.15);color:var(--re2)">–d</span></div>
-  <div class="ni" onclick="ST('plan',this)"><span class="ni-ico">📅</span>Study Plan</div>
+  <div class="ni ac" onclick="gTab('countdown',this)"><span class="ni-ico">⏱</span>Countdown<span class="ni-badge" id="nb-days" style="background:rgba(255,71,87,.15);color:var(--re2)">–d</span></div>
+  <div class="ni" onclick="gTab('plan',this)"><span class="ni-ico">📅</span>Study Plan</div>
   <div class="nl">Daily Study</div>
-  <div class="ni" onclick="ST('physics',this)"><span class="ni-ico">⚛️</span>Physics<span class="ni-badge" style="background:rgba(79,195,247,.1);color:var(--ph)">15d</span></div>
-  <div class="ni" onclick="ST('maths',this)"><span class="ni-ico">📐</span>Maths<span class="ni-badge" style="background:rgba(255,183,77,.1);color:var(--ma)">14d</span></div>
-  <div class="ni" onclick="ST('chemistry',this)"><span class="ni-ico">🧪</span>Chemistry<span class="ni-badge" style="background:rgba(129,199,132,.1);color:var(--ch)">25d</span></div>
+  <div class="ni" onclick="gTab('physics',this)"><span class="ni-ico">⚛️</span>Physics<span class="ni-badge" style="background:rgba(79,195,247,.1);color:var(--ph)">15d</span></div>
+  <div class="ni" onclick="gTab('maths',this)"><span class="ni-ico">📐</span>Maths<span class="ni-badge" style="background:rgba(255,183,77,.1);color:var(--ma)">14d</span></div>
+  <div class="ni" onclick="gTab('chemistry',this)"><span class="ni-ico">🧪</span>Chemistry<span class="ni-badge" style="background:rgba(129,199,132,.1);color:var(--ch)">25d</span></div>
   <div class="nl">Tests</div>
-  <div class="ni" onclick="ST('tests-mains',this)"><span class="ni-ico">📝</span>Mains Tests<span class="ni-badge" style="background:rgba(255,165,2,.12);color:var(--or)">14</span></div>
-  <div class="ni" onclick="ST('tests-adv',this)"><span class="ni-ico">⚡</span>Adv Tests<span class="ni-badge" style="background:rgba(162,155,254,.12);color:var(--pu)">14</span></div>
+  <div class="ni" onclick="gTab('tests-mains',this)"><span class="ni-ico">📝</span>Mains Tests<span class="ni-badge" style="background:rgba(255,165,2,.12);color:var(--or)">14</span></div>
+  <div class="ni" onclick="gTab('tests-adv',this)"><span class="ni-ico">⚡</span>Adv Tests<span class="ni-badge" style="background:rgba(162,155,254,.12);color:var(--pu)">14</span></div>
   <div class="nl">Advanced Prep</div>
-  <div class="ni" onclick="ST('adv-plan',this)"><span class="ni-ico">🎯</span>Adv Plan</div>
-  <div class="nl">Analysis</div>
-  <div class="ni" onclick="ST('analysis',this)"><span class="ni-ico">📊</span>10yr Analysis</div>
-  <div class="ni" onclick="ST('predict',this)"><span class="ni-ico">🔮</span>April Predict</div>
-  <div class="ni" onclick="ST('tracker',this)"><span class="ni-ico">📋</span>Full Tracker</div>
-  <div class="ni" onclick="ST('github',this)"><span class="ni-ico">📈</span>Activity</div>
+  <div class="ni" onclick="gTab('adv-plan',this)"><span class="ni-ico">🎯</span>Adv Plan</div>
+  <div class="nl">Intelligence</div>
+  <div class="ni" onclick="gTab('analysis-mains',this)"><span class="ni-ico">📊</span>Mains Analysis</div>
+  <div class="ni" onclick="gTab('analysis-adv',this)"><span class="ni-ico">🔬</span>Adv Analysis</div>
+  <div class="ni" onclick="gTab('predict-mains',this)"><span class="ni-ico">🎯</span>Mains Predict</div>
+  <div class="ni" onclick="gTab('predict-adv',this)"><span class="ni-ico">🔮</span>Adv Predict</div>
+  <div class="ni" onclick="gTab('focus',this)"><span class="ni-ico">🔥</span>Last-Day Focus</div>
+  <div class="nl">Progress</div>
+  <div class="ni" onclick="gTab('tracker',this)"><span class="ni-ico">📋</span>Full Tracker</div>
+  <div class="ni" onclick="gTab('github',this)"><span class="ni-ico">📈</span>Activity</div>
   <div class="sb-foot">
     <div class="exam-mini" style="background:rgba(255,71,87,.08);border:1px solid rgba(255,71,87,.25);color:var(--re2)">📝 Mains: Apr 2–10, 2026</div>
     <div class="exam-mini" style="background:rgba(162,155,254,.08);border:1px solid rgba(162,155,254,.25);color:var(--pu)">⚡ Advanced: May 17, 2026</div>
@@ -487,6 +491,53 @@ body{font-family:'Crimson Pro',Georgia,serif;background:var(--bg0);color:var(--t
     <div class="card" style="text-align:center"><div class="stat-v" style="font-size:44px;color:var(--gr)" id="gh-tot">0</div><div class="stat-l">✅ Total Days</div></div>
     <div class="card" style="text-align:center"><div class="stat-v" style="font-size:44px;color:var(--gold)" id="gh-best">0</div><div class="stat-l">🏆 Best Streak</div></div>
   </div>
+</div>
+
+<!-- ════ FOCUS (injected) ════ -->
+<div class="tab-pane" id="tab-focus">
+  <div class="focus-banner">
+    <div class="focus-banner-title">🔥 LAST 2–3 DAY MARKS BOOSTER</div>
+    <div style="font-size:15px;color:var(--t2);line-height:1.6">Highest probability topics that are fastest to revise. ONLY focus on these in final 48 hours.</div>
+  </div>
+  <div id="focus-content"></div>
+</div>
+
+<!-- ════ ANALYSIS MAINS (injected) ════ -->
+<div class="tab-pane" id="tab-analysis-mains">
+  <div class="card-g mb20">
+    <div class="section-t">📊 JEE Mains — 10 Year Analysis (2015–2024)</div>
+    <div class="section-s">January attempt question frequency · Chapter-wise average across 10 years</div>
+  </div>
+  <div class="g3 mb16" id="mains-analysis-charts"></div>
+  <div class="card"><div class="chart-title">📅 Year-wise Pattern</div><div id="mains-yr-heatmap"></div></div>
+</div>
+
+<!-- ════ ANALYSIS ADV (injected) ════ -->
+<div class="tab-pane" id="tab-analysis-adv">
+  <div class="card-pu mb20">
+    <div class="section-t" style="color:var(--pu)">🔬 JEE Advanced — 10 Year Analysis (2014–2023)</div>
+    <div class="section-s">Chapter-wise frequency from actual JEE Advanced papers · P1+P2 combined</div>
+  </div>
+  <div class="g3 mb16" id="adv-analysis-charts"></div>
+  <div class="card"><div class="chart-title">📅 JEE Advanced Year-wise Pattern</div><div id="adv-yr-heatmap"></div></div>
+</div>
+
+<!-- ════ PREDICT MAINS (injected) ════ -->
+<div class="tab-pane" id="tab-predict-mains">
+  <div class="card-g mb20" style="animation:bGlow 3s ease-in-out infinite">
+    <div class="section-t">🎯 April 2026 Mains Prediction</div>
+    <div class="section-s">Most likely subtopics · Probability to appear · Question types</div>
+  </div>
+  <div id="pred-mains-content"></div>
+</div>
+
+<!-- ════ PREDICT ADV (injected) ════ -->
+<div class="tab-pane" id="tab-predict-adv">
+  <div class="card-pu mb20">
+    <div class="section-t" style="color:var(--pu)">🔮 JEE Advanced 2026 Prediction</div>
+    <div class="section-s">Paragraph problems · Multi-correct patterns · High-value subtopics</div>
+  </div>
+  <div id="pred-adv-content"></div>
 </div>
 
 </div></div></div><!-- /content /main /app -->
@@ -827,6 +878,38 @@ const MA_ANAL=[
  {ch:'Vectors',avg:1.5,yr:[1,2,2,1,2,1,2,2,1,2],c:'#ffb74d',t:'→'},
 ];
 const YEARS=[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024];
+const YEARS_M=YEARS;
+const YEARS_A=[2014,2015,2016,2017,2018,2019,2020,2021,2022,2023];
+// ═══════════════════════════════════════════════════
+// JEE ADVANCED ANALYSIS DATA (2014–2023)
+// ═══════════════════════════════════════════════════
+const PH_ADV_ANAL=[
+ {ch:'Mechanics (NLM+CoM+WEP)',avg:6.2,yr:[6,6,6,7,6,6,6,6,6,7],c:'#ff7675',t:'↑'},
+ {ch:'Electrostatics+Cap+Current',avg:5.8,yr:[6,5,6,6,6,5,6,6,6,6],c:'#4fc3f7',t:'→'},
+ {ch:'Rotational+Gravitation',avg:4.2,yr:[4,4,4,4,4,4,4,4,5,5],c:'#ff7675',t:'↑'},
+ {ch:'Modern Physics',avg:3.8,yr:[4,4,4,3,4,4,4,4,4,3],c:'#4fc3f7',t:'→'},
+ {ch:'Thermodynamics+KTG+Waves',avg:4.5,yr:[4,5,4,5,4,5,4,5,4,5],c:'#ff7675',t:'→'},
+ {ch:'Electromagnetism(EMI+AC)',avg:3.5,yr:[3,4,3,4,3,4,3,4,4,3],c:'#4fc3f7',t:'→'},
+ {ch:'Optics (Ray+Wave+Modern)',avg:3.2,yr:[3,3,4,3,3,3,3,3,3,4],c:'#4fc3f7',t:'→'},
+ {ch:'SHM+Fluids+Surface Tension',avg:3.0,yr:[3,2,3,3,3,3,3,3,3,3],c:'#ff7675',t:'→'},
+];
+const CH_ADV_ANAL=[
+ {ch:'Organic Chemistry (all)',avg:9.5,yr:[9,10,9,10,9,10,10,9,10,9],c:'#ffd700',t:'→'},
+ {ch:'Physical Chemistry(Thermo+Eq)',avg:6.0,yr:[6,6,6,6,6,6,6,6,6,6],c:'#81c784',t:'→'},
+ {ch:'Inorganic (d-block+coord)',avg:5.5,yr:[5,5,6,5,6,5,5,6,5,6],c:'#81c784',t:'→'},
+ {ch:'Electrochemistry+Kinetics',avg:3.0,yr:[3,3,3,3,3,3,3,3,3,3],c:'#81c784',t:'→'},
+ {ch:'Atomic Str+Bonding',avg:2.5,yr:[3,2,3,2,3,2,3,2,2,3],c:'#81c784',t:'→'},
+ {ch:'Solutions+Solid State',avg:1.5,yr:[2,1,2,1,1,2,1,2,1,2],c:'#81c784',t:'→'},
+];
+const MA_ADV_ANAL=[
+ {ch:'Calculus (Integration+DE)',avg:7.5,yr:[7,8,7,8,7,8,7,8,8,7],c:'#ffd700',t:'→'},
+ {ch:'Algebra (Matrix+Complex+P&C)',avg:6.0,yr:[6,6,6,6,6,6,6,6,6,6],c:'#a29bfe',t:'→'},
+ {ch:'Coordinate+3D+Vectors',avg:5.5,yr:[5,5,6,5,6,5,6,5,6,6],c:'#ffb74d',t:'↑'},
+ {ch:'Trigonometry',avg:2.5,yr:[3,2,3,2,3,2,2,3,2,3],c:'#ffb74d',t:'→'},
+ {ch:'Probability+Statistics',avg:2.0,yr:[2,2,2,2,2,2,2,2,2,2],c:'#ffb74d',t:'→'},
+ {ch:'Sequences+Series',avg:2.0,yr:[2,2,2,2,2,2,2,2,2,2],c:'#ffb74d',t:'→'},
+];
+
 
 // PREDICTION
 const PRED={
@@ -884,10 +967,7 @@ const PG={
  focus:'🔥 LAST-DAY MARKS BOOSTER', tracker:'FULL CHAPTER TRACKER', github:'STUDY ACTIVITY GRAPH'
 };
 function gTab(tab,el){
- // Handle legacy tab names
- if(tab==='analysis'){tab='analysis-mains';}
- if(tab==='predict'){tab='predict-mains';}
- if(tab==='focus-board'){tab='focus';}
+
  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('ac'));
  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('ac'));
  document.getElementById('tab-'+tab)?.classList.add('ac');
@@ -1187,8 +1267,8 @@ function renderPlanWeek(){
  const sCol={Physics:'var(--ph)',Maths:'var(--ma)',Chemistry:'var(--ch)',ALL:'var(--gold)',REST:'var(--gr)'};
  const sIco={Physics:'⚛️',Maths:'📐',Chemistry:'🧪',ALL:'📚',REST:'😴'};
  el.innerHTML=days.map(d=>{
-  const sc1=sCol[d.s1.s]||'var(--t3)';
-  const sc2=sCol[d.s2.s]||'var(--t3)';
+  const sc1=sCol[d.s1.subj]||'var(--t3)';
+  const sc2=sCol[d.s2.subj]||'var(--t3)';
   const startD=new Date('2026-03-05');startD.setDate(startD.getDate()+d.d-1);
   const isToday=new Date().toDateString()===startD.toDateString();
   const isPast=startD<new Date()&&!isToday;
@@ -1203,12 +1283,12 @@ function renderPlanWeek(){
     <div style="flex:1;min-width:0">
      <div class="dual-day">
       <div class="dual-subj" style="border-color:${sc1}30;background:${sc1}06">
-       <div style="font-size:10px;font-weight:700;color:${sc1};letter-spacing:1px;margin-bottom:4px">${sIco[d.s1.s]||'📚'} ${d.s1.s.toUpperCase()}</div>
-       <div style="font-size:13px;font-weight:600;color:var(--t1);line-height:1.3">${d.s1.c}</div>
+       <div style="font-size:10px;font-weight:700;color:${sc1};letter-spacing:1px;margin-bottom:4px">${sIco[d.s1.subj]||'📚'} ${d.s1.subj.toUpperCase()}</div>
+       <div style="font-size:13px;font-weight:600;color:var(--t1);line-height:1.3">${d.s1.ch}</div>
       </div>
       <div class="dual-subj" style="border-color:${sc2}30;background:${sc2}06">
-       <div style="font-size:10px;font-weight:700;color:${sc2};letter-spacing:1px;margin-bottom:4px">${sIco[d.s2.s]||'📚'} ${d.s2.s.toUpperCase()}</div>
-       <div style="font-size:13px;font-weight:600;color:var(--t1);line-height:1.3">${d.s2.c}</div>
+       <div style="font-size:10px;font-weight:700;color:${sc2};letter-spacing:1px;margin-bottom:4px">${sIco[d.s2.subj]||'📚'} ${d.s2.subj.toUpperCase()}</div>
+       <div style="font-size:13px;font-weight:600;color:var(--t1);line-height:1.3">${d.s2.ch}</div>
       </div>
      </div>
      ${d.test?`<div style="margin-top:8px;background:rgba(255,71,87,.07);border:1px solid rgba(255,71,87,.25);border-radius:8px;padding:7px 12px;font-size:12px;color:var(--re2);display:flex;align-items:center;gap:6px">📝 <b>${d.test}</b></div>`:''}
@@ -1227,8 +1307,8 @@ function renderAdvPlan(){
  const sCol={Physics:'var(--ph)',Maths:'var(--ma)',Chemistry:'var(--ch)',ALL:'var(--gold)',REST:'var(--gr)'};
  const sIco={Physics:'⚛️',Maths:'📐',Chemistry:'🧪',ALL:'📚',REST:'😴'};
  el.innerHTML=ADV_PLAN.map(d=>{
-  const sc1=sCol[d.s1.s]||'var(--t3)';
-  const sc2=sCol[d.s2.s]||'var(--t3)';
+  const sc1=sCol[d.s1.subj]||'var(--t3)';
+  const sc2=sCol[d.s2.subj]||'var(--t3)';
   const startD=new Date('2026-04-11');startD.setDate(startD.getDate()+d.d-1);
   const isToday=new Date().toDateString()===startD.toDateString();
   return`<div class="card mb10" style="${isToday?'border-color:rgba(162,155,254,.45);box-shadow:0 0 20px rgba(162,155,254,.06)':''}">
@@ -1241,12 +1321,12 @@ function renderAdvPlan(){
     <div style="flex:1;min-width:0">
      <div class="dual-day">
       <div class="dual-subj" style="border-color:${sc1}30;background:${sc1}06">
-       <div style="font-size:10px;font-weight:700;color:${sc1};letter-spacing:1px;margin-bottom:4px">${sIco[d.s1.s]||'📚'} ${d.s1.s.toUpperCase()}</div>
-       <div style="font-size:13px;color:var(--t1);line-height:1.3">${d.s1.c}</div>
+       <div style="font-size:10px;font-weight:700;color:${sc1};letter-spacing:1px;margin-bottom:4px">${sIco[d.s1.subj]||'📚'} ${d.s1.subj.toUpperCase()}</div>
+       <div style="font-size:13px;color:var(--t1);line-height:1.3">${d.s1.ch}</div>
       </div>
       <div class="dual-subj" style="border-color:${sc2}30;background:${sc2}06">
-       <div style="font-size:10px;font-weight:700;color:${sc2};letter-spacing:1px;margin-bottom:4px">${sIco[d.s2.s]||'📚'} ${d.s2.s.toUpperCase()}</div>
-       <div style="font-size:13px;color:var(--t1);line-height:1.3">${d.s2.c}</div>
+       <div style="font-size:10px;font-weight:700;color:${sc2};letter-spacing:1px;margin-bottom:4px">${sIco[d.s2.subj]||'📚'} ${d.s2.subj.toUpperCase()}</div>
+       <div style="font-size:13px;color:var(--t1);line-height:1.3">${d.s2.ch}</div>
       </div>
      </div>
      ${d.test?`<div style="margin-top:8px;background:rgba(162,155,254,.07);border:1px solid rgba(162,155,254,.25);border-radius:8px;padding:7px 12px;font-size:12px;color:var(--pu)">⚡ <b>${d.test}</b></div>`:''}
@@ -1570,19 +1650,19 @@ function renderCountdownPage(){
  const todayInfo=MAINS_DAILY.find(d=>d.d===dayNum)||MAINS_DAILY[27];
  const sCol={Physics:'var(--ph)',Maths:'var(--ma)',Chemistry:'var(--ch)',ALL:'var(--gold)',REST:'var(--gr)'};
  const sIco={Physics:'⚛️',Maths:'📐',Chemistry:'🧪',ALL:'📚',REST:'😴'};
- const sc1=sCol[todayInfo.s1.s]||'var(--t3)';
- const sc2=sCol[todayInfo.s2.s]||'var(--t3)';
+ const sc1=sCol[todayInfo.s1.subj]||'var(--t3)';
+ const sc2=sCol[todayInfo.s2.subj]||'var(--t3)';
  const todayEl=document.getElementById('today-chapters');
  if(todayEl)todayEl.innerHTML=`
   <div style="font-size:11px;color:var(--t4);margin-bottom:10px;font-family:'JetBrains Mono',monospace">Day ${dayNum} of 28 — ${today.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'short'})}</div>
   <div style="display:flex;flex-direction:column;gap:8px">
    <div style="background:${sc1}08;border:1px solid ${sc1}22;border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:12px">
-    <div style="font-size:28px">${sIco[todayInfo.s1.s]||'📚'}</div>
-    <div><div style="font-size:10px;color:${sc1};font-weight:800;letter-spacing:1px;font-family:'JetBrains Mono',monospace">${todayInfo.s1.s.toUpperCase()}</div><div style="font-size:14px;font-weight:700;margin-top:2px;line-height:1.3">${todayInfo.s1.c}</div></div>
+    <div style="font-size:28px">${sIco[todayInfo.s1.subj]||'📚'}</div>
+    <div><div style="font-size:10px;color:${sc1};font-weight:800;letter-spacing:1px;font-family:'JetBrains Mono',monospace">${todayInfo.s1.subj.toUpperCase()}</div><div style="font-size:14px;font-weight:700;margin-top:2px;line-height:1.3">${todayInfo.s1.ch}</div></div>
    </div>
    <div style="background:${sc2}08;border:1px solid ${sc2}22;border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:12px">
-    <div style="font-size:28px">${sIco[todayInfo.s2.s]||'📚'}</div>
-    <div><div style="font-size:10px;color:${sc2};font-weight:800;letter-spacing:1px;font-family:'JetBrains Mono',monospace">${todayInfo.s2.s.toUpperCase()}</div><div style="font-size:14px;font-weight:700;margin-top:2px;line-height:1.3">${todayInfo.s2.c}</div></div>
+    <div style="font-size:28px">${sIco[todayInfo.s2.subj]||'📚'}</div>
+    <div><div style="font-size:10px;color:${sc2};font-weight:800;letter-spacing:1px;font-family:'JetBrains Mono',monospace">${todayInfo.s2.subj.toUpperCase()}</div><div style="font-size:14px;font-weight:700;margin-top:2px;line-height:1.3">${todayInfo.s2.ch}</div></div>
    </div>
    ${todayInfo.test?`<div style="background:rgba(255,71,87,.07);border:1px solid rgba(255,71,87,.25);border-radius:10px;padding:10px 14px;font-size:13px;color:var(--re2);font-weight:600">📝 ${todayInfo.test}</div>`:''}
   </div>`;

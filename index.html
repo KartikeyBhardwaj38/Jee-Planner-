@@ -685,7 +685,7 @@ body{font-family:'Crimson Pro',Georgia,serif;background:var(--bg0);color:var(--t
 
   <div class="g2 mb16">
     <div class="card">
-      <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;margin-bottom:14px;">📋 Today's Study — 2 Chapters</div>
+      <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;margin-bottom:14px;">📋 Today's Study Plan</div>
       <div id="today-chapters"></div>
     </div>
     <div class="card">
@@ -703,13 +703,18 @@ body{font-family:'Crimson Pro',Georgia,serif;background:var(--bg0);color:var(--t
 <!-- ══ STUDY PLAN ══ -->
 <div class="tab-pane" id="tab-plan">
   <div class="card-g mb16">
-    <div class="section-t">📅 28-Day Mains Plan</div>
-    <div class="section-s">2 subjects/day · 1 chapter each · Chemistry daily (alternates) · Independent chapters first</div>
+    <div class="section-t">📅 23-Day Mains Sprint Plan</div>
+    <div class="section-s">Mar 10–20: Physics 8hr + Maths 8hr (Days 1–9) → Days 10–11 add Physical Chemistry → Mar 21–Apr 1: Chemistry 12hr + Physics 2hr + Maths 2hr</div>
+    <div style="display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap">
+      <div style="background:rgba(79,195,247,.08);border:1px solid rgba(79,195,247,.25);border-radius:8px;padding:6px 14px;font-size:12px;color:var(--ph);font-weight:700">⚛️ Phase 1 Days 1–9: 8hr Physics + 8hr Maths</div>
+      <div style="background:rgba(255,71,87,.08);border:1px solid rgba(255,71,87,.25);border-radius:8px;padding:6px 14px;font-size:12px;color:var(--re2);font-weight:700">⚗️ Days 10–11: + Physical Chemistry Intro</div>
+      <div style="background:rgba(129,199,132,.08);border:1px solid rgba(129,199,132,.25);border-radius:8px;padding:6px 14px;font-size:12px;color:var(--ch);font-weight:700">🧪 Phase 2 Days 12–23: 12hr Chem + 2hr Phy + 2hr Maths</div>
+    </div>
     <div class="pill-tabs" id="plan-phase-tabs">
-      <div class="pill-tab ac" onclick="switchPlanPhase('week1',this)">Week 1 (Mar 5–11)</div>
-      <div class="pill-tab" onclick="switchPlanPhase('week2',this)">Week 2 (Mar 12–18)</div>
-      <div class="pill-tab" onclick="switchPlanPhase('week3',this)">Week 3 (Mar 19–25)</div>
-      <div class="pill-tab" onclick="switchPlanPhase('week4',this)">Week 4 (Mar 26–Apr 1)</div>
+      <div class="pill-tab ac" onclick="switchPlanPhase('week1',this)">Phase 1A — Mar 10–14 (Days 1–5)</div>
+      <div class="pill-tab" onclick="switchPlanPhase('week2',this)">Phase 1B — Mar 15–20 (Days 6–11)</div>
+      <div class="pill-tab" onclick="switchPlanPhase('week3',this)">Phase 2A — Mar 21–27 (Days 12–18)</div>
+      <div class="pill-tab" onclick="switchPlanPhase('week4',this)">Phase 2B — Mar 28–Apr 2 (Days 19–24)</div>
     </div>
   </div>
   <div id="plan-week-content"></div>
@@ -792,9 +797,15 @@ body{font-family:'Crimson Pro',Georgia,serif;background:var(--bg0);color:var(--t
 <div class="tab-pane" id="tab-adv-plan">
   <div class="card-g mb16" style="border-color:rgba(162,155,254,.3)">
     <div class="section-t" style="color:var(--pu)">🎯 JEE Advanced Plan — Apr 7 → May 16 (40 Days)</div>
-    <div class="section-s">40 days · 2 subjects/day · Full Advanced syllabus coverage · 4 Full Tests + 2 Grand Mocks</div>
+    <div class="section-s">Full syllabus · 40 days · 16hr/day · 2 subjects × 8hr each · [ 2hr Theory + 5hr Practice + 1hr Error Analysis ] · 6 Full Tests + 4 Grand Mocks</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+      <span style="font-size:10px;font-weight:700;padding:3px 10px;border-radius:6px;background:rgba(79,195,247,.1);color:#4fc3f7;font-family:'JetBrains Mono',monospace">🧠 2hr — Advanced Theory</span>
+      <span style="font-size:10px;font-weight:700;padding:3px 10px;border-radius:6px;background:rgba(255,165,2,.1);color:#ffa502;font-family:'JetBrains Mono',monospace">⚔️ 5hr — Hard Practice (50+ Qs)</span>
+      <span style="font-size:10px;font-weight:700;padding:3px 10px;border-radius:6px;background:rgba(255,71,87,.1);color:#ff4757;font-family:'JetBrains Mono',monospace">🔍 1hr — Error Analysis</span>
+      <span style="font-size:10px;font-weight:700;padding:3px 10px;border-radius:6px;background:rgba(255,165,2,.1);color:#ffa502;font-family:'JetBrains Mono',monospace">⏱ 16hr Total/Day</span>
+    </div>
   </div>
-  <div style="background:rgba(255,71,87,.06);border:1px solid rgba(255,71,87,.25);border-radius:10px;padding:10px 14px;margin-bottom:14px;font-size:12.5px;color:var(--re2);display:flex;align-items:center;gap:8px">🚫 <strong>Apr 2–6 = JEE Mains Exam + REST.</strong> No studying. Recover fully before Advanced prep begins.</div>
+  <div style="background:rgba(255,71,87,.06);border:1px solid rgba(255,71,87,.25);border-radius:10px;padding:10px 14px;margin-bottom:14px;font-size:12.5px;color:var(--re2);display:flex;align-items:center;gap:8px">🚫 <strong>Apr 2–6 = JEE Mains Exam + REST.</strong> No studying. Recover fully before Advanced prep begins Apr 7.</div>
   <div id="adv-plan-content"></div>
 </div>
 
@@ -1332,91 +1343,452 @@ const ADV_TESTS=[
  {id:'a13',date:'2026-05-14',name:'Final Warm-up',type:'Online',desc:'Last test before Advanced',maxPh:120,maxCh:120,maxMa:120},
 ];
 
-// ═══ 28-DAY STUDY PLAN (2 subjects/day, 1 chapter each) ═══
+// ═══ 23-DAY STUDY PLAN (Mar 10 – Apr 1, 2026) ═══
+// Phase 1 (Days 1–11): Physics 8hr + Maths 8hr | Days 10–11 add Physical Chemistry
+// Phase 2 (Days 12–23): Chemistry 12hr + Physics 2hr + Maths 2hr
 const MAINS_DAILY=[
- // === PHASE 1: Days 1-10 | Daily Maths + Chemistry/Physics Alternating ===
- {d:1,date:'Mar 6',s1:{subj:'Maths',ch:'Basic Maths — Logs, Quadratics, Inequalities',id:'ma-1'},s2:{subj:'Chemistry',ch:'Atomic Structure ★★',id:'ch-1'}},
- {d:2,date:'Mar 7',s1:{subj:'Maths',ch:'2D Geometry — Straight Lines & Circles',id:'ma-2'},s2:{subj:'Physics',ch:'Modern Physics + Semiconductors ★★',id:'ph-1'}},
- {d:3,date:'Mar 8',s1:{subj:'Maths',ch:'2D Geometry — Parabola, Ellipse, Hyperbola ★',id:'ma-3'},s2:{subj:'Chemistry',ch:'Periodic Table & Properties ★',id:'ch-2'}},
- {d:4,date:'Mar 9',s1:{subj:'Maths',ch:'Differential Calculus — Limits, Continuity, Derivatives',id:'ma-4'},s2:{subj:'Physics',ch:'Electrostatics & Electric Potential ★★',id:'ph-2'}},
- {d:5,date:'Mar 10',s1:{subj:'Maths',ch:'Differential Calculus — AOD, Maxima & Minima ★★',id:'ma-5'},s2:{subj:'Chemistry',ch:'Chemical Bonding & Molecular Structure ★★',id:'ch-3'}},
- {d:6,date:'Mar 11',s1:{subj:'Maths',ch:'Integral Calculus — Indefinite Integration ★',id:'ma-6'},s2:{subj:'Physics',ch:'Current Electricity + Capacitors + AC ★★',id:'ph-3'}},
- {d:7,date:'Mar 12',s1:{subj:'Maths',ch:'Integral Calculus — Definite Integration & Area ★★',id:'ma-7'},s2:{subj:'Chemistry',ch:'Coordination Compounds ★★',id:'ch-4'}},
- {d:8,date:'Mar 13',s1:{subj:'Maths',ch:'Vectors — 3D Geometry & Vector Algebra ★',id:'ma-8'},s2:{subj:'Physics',ch:'Magnetic Effects + EMI + Magnetism ★★',id:'ph-4'}},
- {d:9,date:'Mar 14',s1:{subj:'Maths',ch:'Algebra — Complex Numbers, Matrices, Sequences ★',id:'ma-9'},s2:{subj:'Chemistry',ch:'d & f Block Elements ★',id:'ch-5'}},
- {d:10,date:'Mar 15',s1:{subj:'Maths',ch:'Combination, Probability & Statistics ★',id:'ma-10'},s2:{subj:'Physics',ch:'Mechanics 1 — Laws of Motion, Work & Energy ★★',id:'ph-5'}},
- // === PHASE 2: Days 11-14 | Finish Physics + Chemistry | Maths 2hr Revision ===
- {d:11,date:'Mar 16',s1:{subj:'Chemistry',ch:'p-Block Elements ★★',id:'ch-6'},s2:{subj:'Physics',ch:'Mechanics 2 — Rotation, COM, Momentum ★★',id:'ph-6'},s3:{subj:'Maths',ch:'[2hr Revision] Weak Chapters',id:'ma-rev1'}},
- {d:12,date:'Mar 17',s1:{subj:'Physics',ch:'Mechanics 3 — Gravitation + Oscillations + Waves ★',id:'ph-7'},s2:{subj:'Chemistry',ch:'Salt Analysis (Qualitative) ★',id:'ch-7'},s3:{subj:'Maths',ch:'[2hr Revision] Calculus PYQs',id:'ma-rev2'}},
- {d:13,date:'Mar 18',s1:{subj:'Chemistry',ch:'Salt Analysis (cont.) ★',id:'ch-8'},s2:{subj:'Physics',ch:'KTG + Thermodynamics + Thermal Properties ★★',id:'ph-8'},s3:{subj:'Maths',ch:'[2hr Revision] Geometry & Vectors',id:'ma-rev3'}},
- {d:14,date:'Mar 19',s1:{subj:'Chemistry',ch:'IUPAC Nomenclature ★',id:'ch-9'},s2:{subj:'Physics',ch:'Ray Optics + Wave Optics ★★ [HIGH PRIORITY — 3-5 Qs every Mains]',id:'ph-10'},test:'⚡ Physics + Maths Syllabus COMPLETE'},
- // === PHASE 3: Days 15-22 | Chemistry Organic | Physics Practice ===
- {d:15,date:'Mar 20',s1:{subj:'Chemistry',ch:'Isomerism + Mole Concept & Redox ★★',id:'ch-10'},s2:{subj:'Physics',ch:'Mechanical Properties of Solids & Fluids ★ [moved from Day 14]',id:'ph-9'}},
- {d:16,date:'Mar 21',s1:{subj:'Chemistry',ch:'GOC (General Organic Chemistry) + Solutions ★★',id:'ch-11'},s2:{subj:'Physics+Maths',ch:'[5hr Practice — 2.5+2.5] Chapter Tests',id:'pm-2'}},
- {d:17,date:'Mar 22',s1:{subj:'Chemistry',ch:'Hydrocarbons & Arenes + Electrochemistry ★★',id:'ch-12'},s2:{subj:'Physics+Maths',ch:'[5hr Practice — 2.5+2.5] Mock Paper',id:'pm-3'}},
- {d:18,date:'Mar 23',s1:{subj:'Chemistry',ch:'Haloalkanes & Aryl Halides + Chemical Kinetics ★★',id:'ch-13'},s2:{subj:'Physics+Maths',ch:'[5hr Practice — 2.5+2.5] Weak Topic Drill',id:'pm-4'}},
- {d:19,date:'Mar 24',s1:{subj:'Chemistry',ch:'Alcohols, Phenols & Ethers + Thermodynamics ★',id:'ch-14'},s2:{subj:'Physics+Maths',ch:'[5hr Practice — 2.5+2.5] PYQ 2023-24',id:'pm-5'}},
- {d:20,date:'Mar 25',s1:{subj:'Chemistry',ch:'Aldehydes & Ketones + Carboxylic Acids + Chemical Equilibrium ★★',id:'ch-15'},s2:{subj:'Physics+Maths',ch:'[5hr Practice — 2.5+2.5] Full Mock',id:'pm-6'}},
- {d:21,date:'Mar 26',s1:{subj:'Chemistry',ch:'Amines + Ionic Equilibrium ★★',id:'ch-16'},s2:{subj:'Physics+Maths',ch:'[5hr Practice — 2.5+2.5] Error Analysis',id:'pm-7'}},
- {d:22,date:'Mar 27',s1:{subj:'Chemistry',ch:'Biomolecules + Polymers + Everyday Chemistry ★',id:'ch-17'},s2:{subj:'Physics+Maths',ch:'[5hr Practice — 2.5+2.5] Final Chapter Sweep',id:'pm-8'},test:'⚡ Chemistry Syllabus COMPLETE'},
- // === PHASE 4: Days 23-27 | FULL REVISION + MOCK TESTS ===
- {d:23,date:'Mar 28',s1:{subj:'ALL',ch:'Full Mock Test (3hr) — Analyse Mistakes (2hr)',id:'rev-1'},s2:{subj:'ALL',ch:'Formula Sheets + Short Notes',id:'rev-2'}},
- {d:24,date:'Mar 29',s1:{subj:'ALL',ch:'PYQ Practice: Phys+Chem (3hr)',id:'rev-3'},s2:{subj:'ALL',ch:'PYQ Practice: Maths (3hr)',id:'rev-4'}},
- {d:25,date:'Mar 30',s1:{subj:'ALL',ch:'Full Mock Test (3hr) — Analyse Mistakes (2hr)',id:'rev-5'},s2:{subj:'ALL',ch:'Weak Chapter Targeted Revision',id:'rev-6'}},
- {d:26,date:'Mar 31',s1:{subj:'ALL',ch:'High Value Chapter Drill: All 3 Subjects',id:'rev-7'},s2:{subj:'ALL',ch:'Speed Practice — 90 Qs in 90 min',id:'rev-8'}},
- {d:27,date:'Apr 1',s1:{subj:'ALL',ch:'Final Revision — Formula Flash + Mock 1hr',id:'rev-9'},s2:{subj:'ALL',ch:'Relax + Sleep Early + Exam Prep',id:'rev-10'},test:'🎯 JEE Mains Exam — Apr 2, 2026'},
+ // ══ PHASE 1: Days 1–9 | Physics 8hr + Maths 8hr ══
+ {d:1,date:'Mar 10',
+  s1:{subj:'Physics',ch:'Ray Optics + Wave Optics ★★ — Mirrors, Lenses, Interference, Diffraction (8 hrs)',id:'ph-1',hours:8},
+  s2:{subj:'Maths',ch:'Sequence & Series ★★ + Binomial Theorem ★★ + Thermodynamics intro (8 hrs)',id:'ma-1',hours:8}},
+ {d:2,date:'Mar 11',
+  s1:{subj:'Physics',ch:'Modern Physics ★★ (Photoelectric, Nuclear, Semi) + Electrostatics ★★ (Coulomb→Gauss→Potential) (8 hrs)',id:'ph-2',hours:8},
+  s2:{subj:'Maths',ch:'Vectors & 3D Geometry ★★ + Straight Lines ★★ (8 hrs)',id:'ma-2',hours:8}},
+ {d:3,date:'Mar 12',
+  s1:{subj:'Physics',ch:'Current Electricity ★★ + Capacitors ★★ + AC Circuits ★ — Full Chapter (8 hrs)',id:'ph-3',hours:8},
+  s2:{subj:'Maths',ch:'Circles ★★ + Conic Sections ★★ (Parabola, Ellipse, Hyperbola) (8 hrs)',id:'ma-3',hours:8}},
+ {d:4,date:'Mar 13',
+  s1:{subj:'Physics',ch:'Magnetism (Magnets + Magnetism) ★★ + EMI ★★ — Faraday, Lenz, Self/Mutual Inductance (8 hrs)',id:'ph-4',hours:8},
+  s2:{subj:'Maths',ch:'Determinants & Matrices ★★ + Complex Numbers ★★ (8 hrs)',id:'ma-4',hours:8}},
+ {d:5,date:'Mar 14',
+  s1:{subj:'Physics',ch:'⚠️ Mechanics Part 1 — NLM ★★, Work-Energy ★★, Basic Maths [NOTE: Extra Significant Figures practice] (8 hrs)',id:'ph-5',hours:8},
+  s2:{subj:'Maths',ch:'Basic Maths ★ + Trigonometry ★★ + Quadratic Equations ★★ (8 hrs)',id:'ma-5',hours:8}},
+ {d:6,date:'Mar 15',
+  s1:{subj:'Physics',ch:'Mechanics Part 2 — Rotation ★★, COM ★★, Momentum & Collisions ★★ (8 hrs)',id:'ph-6',hours:8},
+  s2:{subj:'Maths',ch:'Sets, Relations & Functions ★★ (8 hrs)',id:'ma-6',hours:8}},
+ {d:7,date:'Mar 16',
+  s1:{subj:'Physics',ch:'Mechanics Part 3 — Gravitation ★, Oscillations ★★ (SHM), Waves ★★ (8 hrs)',id:'ph-7',hours:8},
+  s2:{subj:'Maths',ch:'Inverse Trig Functions ★ + Limits ★★ + Continuity & Differentiability ★★ (8 hrs)',id:'ma-7',hours:8}},
+ {d:8,date:'Mar 17',
+  s1:{subj:'Physics',ch:'KTG ★★ + Thermodynamics ★★ + Thermal Properties ★ (8 hrs)',id:'ph-8',hours:8},
+  s2:{subj:'Maths',ch:'MOD ★ + AOD ★★ (Maxima/Minima) + Indefinite Integration ★★ (8 hrs)',id:'ma-8',hours:8}},
+ {d:9,date:'Mar 18',
+  s1:{subj:'Physics',ch:'Mechanical Properties of Solids ★ + Fluids ★★ (Bernoulli, Viscosity, Surface Tension) (8 hrs)',id:'ph-9',hours:8},
+  s2:{subj:'Maths',ch:'Definite Integration ★★ + Area Under Curves ★★ (8 hrs)',id:'ma-9',hours:8}},
+ // ══ PHASE 1 DAYS 10–11: Physics + Maths + Physical Chemistry (Intro) ══
+ {d:10,date:'Mar 19',
+  s1:{subj:'Physics',ch:'[3hr Practice] Mixed PYQ Physics — High-value chapters drill',id:'ph-p1',hours:3},
+  s2:{subj:'Maths',ch:'[4hr] P&C ★★ (Permutations & Combinations) — Complete Chapter',id:'ma-10',hours:4},
+  s3:{subj:'Chemistry',ch:'[12hr] ⚗️ Physical Chem: Electrochemistry ★★ + Atomic Structure ★★ — Full chapters',id:'ch-pc1',hours:12,phyChemDay:true},
+  test:'⚡ Physical Chemistry Block 1 — Electrochemistry + Atomic Structure'},
+ {d:11,date:'Mar 20',
+  s1:{subj:'Physics',ch:'[2hr Practice] Physics Weak Spots — Targeted PYQ drill',id:'ph-p2',hours:2},
+  s2:{subj:'Maths',ch:'[6hr] Probability ★★ + Statistics ★ — Complete Chapters',id:'ma-11',hours:6},
+  s3:{subj:'Chemistry',ch:'[8hr] ⚗️ Physical Chem: Chemical Kinetics ★★ + Chemical Thermodynamics ★★',id:'ch-pc2',hours:8,phyChemDay:true},
+  test:'⚡ Physical Chemistry Block 2 — Kinetics + Thermodynamics'},
+ // ══ PHASE 2: Days 12–23 | Detailed Subject-wise Timetable ══
+
+ // ─── Day 12 ─ Mar 21 ─ IOC + GOC + Phy + Maths ───────────────────
+ {d:12,date:'Mar 21',
+  s1:{subj:'Chemistry',ch:'⚗️ Periodic Table & Properties ★★ [7hr — IOC] + GOC Part 1 ★★ [5hr] — Total 12hr',id:'ch-d12-1',hours:12,tags:['IOC','GOC']},
+  s2:{subj:'Physics',ch:'⚛️ Modern Physics ★★ — 60 Questions Practice [2hr]',id:'ph-d12',hours:2,qcount:60},
+  s3:{subj:'Maths',ch:'📐 Vectors & 3D Geometry ★★ — 45+ Questions [2hr]',id:'ma-d12',hours:2,qcount:45}},
+
+ // ─── Day 13 ─ Mar 22 ─ Bonding + GOC2 + IUPAC + Maths only ──────
+ {d:13,date:'Mar 22',
+  s1:{subj:'Chemistry',ch:'⚗️ Chemical Bonding ★★ [9hr] + GOC Part 2 ★★ [3hr] + IUPAC Nomenclature ★ [2hr] — Total 14hr',id:'ch-d13-1',hours:14,tags:['Bonding','GOC2','IUPAC']},
+  s2:{subj:'Maths',ch:'📐 Coordinate Geometry — Circles + Straight Lines — 50 Questions [2hr]',id:'ma-d13',hours:2,qcount:50},
+  note:'⚠️ NO Physics today — Focus 100% on Chemistry + Maths'},
+
+ // ─── Day 14 ─ Mar 23 ─ Coord Cpd + IUPAC + Isomerism + Phy + Maths
+ {d:14,date:'Mar 23',
+  s1:{subj:'Chemistry',ch:'⚗️ Coordination Compounds ★★ [8hr] + IUPAC cont. [3hr] + Isomerism ★★ [2hr] — Total 13hr',id:'ch-d14-1',hours:13,tags:['Coord','IUPAC','Isomerism']},
+  s2:{subj:'Physics',ch:'⚛️ Optics Part 1 ★★ — Ray Optics — 60 Questions [2hr]',id:'ph-d14',hours:2,qcount:60},
+  s3:{subj:'Maths',ch:'📐 Basic Maths + Trigo + Quadratic Equations — 30 Questions [1hr]',id:'ma-d14',hours:1,qcount:30}},
+
+ // ─── Day 15 ─ Mar 24 ─ p-Block + Isomerism + Optics2 + Matrices ──
+ {d:15,date:'Mar 24',
+  s1:{subj:'Chemistry',ch:'⚗️ p-Block Elements ★★ [6hr] + Isomerism cont. [4.5hr] — Total 10.5hr',id:'ch-d15-1',hours:10.5,tags:['pBlock','Isomerism']},
+  s2:{subj:'Physics',ch:'⚛️ Optics Part 2 ★★ — Wave Optics — min 100 Questions [3hr]',id:'ph-d15',hours:3,qcount:100},
+  s3:{subj:'Maths',ch:'📐 Determinants & Matrices ★★ — 50 Questions [2hr]',id:'ma-d15',hours:2,qcount:50}},
+
+ // ─── Day 16 ─ Mar 25 ─ d&f Block + Hydrocarbons + Mechanics 1 ────
+ {d:16,date:'Mar 25',
+  s1:{subj:'Chemistry',ch:'⚗️ d & f Block ★ + Hydrocarbons ★★ — Full Chapters [13.5hr]',id:'ch-d16-1',hours:13.5,tags:['dBlock','Hydrocarbons']},
+  s2:{subj:'Physics',ch:'⚛️ Mechanics 1 ★★ — NLM + Work-Energy — ~90 Questions [2.5hr]',id:'ph-d16',hours:2.5,qcount:90},
+  note:'📐 No Maths today — All-in on Chemistry + Mechanics'},
+
+ // ─── Day 17 ─ Mar 26 ─ Salt + Haloalkanes + Mechanics 2 + Calculus
+ {d:17,date:'Mar 26',
+  s1:{subj:'Chemistry',ch:'⚗️ Salt Analysis ★ + Haloalkanes & Arenes ★★ [12hr]',id:'ch-d17-1',hours:12,tags:['SaltAnalysis','Haloalkanes']},
+  s2:{subj:'Physics',ch:'⚛️ Mechanics 2 ★★ — Rotation + COM — 60 Questions [2hr]',id:'ph-d17',hours:2,qcount:60},
+  s3:{subj:'Maths',ch:'📐 Calculus — Indefinite + Definite Integration PYQ Practice [2hr]',id:'ma-d17',hours:2}},
+
+ // ─── Day 18 ─ Mar 27 ─ Mole/Redox + Alcohol + Mechanics 2 + Calculus
+ {d:18,date:'Mar 27',
+  s1:{subj:'Chemistry',ch:'⚗️ Mole Concept & Redox ★★ + Alcohols, Phenols & Ethers ★★ [12hr]',id:'ch-d18-1',hours:12,tags:['Mole','Redox','APE']},
+  s2:{subj:'Physics',ch:'⚛️ Mechanics 2 ★★ — Momentum + Collisions — 60 Questions [2hr]',id:'ph-d18',hours:2,qcount:60},
+  s3:{subj:'Maths',ch:'📐 Calculus — AOD + Limits + Continuity PYQ Practice [2hr]',id:'ma-d18',hours:2}},
+
+ // ─── Day 19 ─ Mar 28 ─ Solutions/Redox + Ald/Ket + Mechanics 3 + Calculus
+ {d:19,date:'Mar 28',
+  s1:{subj:'Chemistry',ch:'⚗️ Solutions ★★ + Redox cont. [5hr] + Aldehydes & Ketones ★★ [7hr] — Total 12hr',id:'ch-d19-1',hours:12,tags:['Solutions','AldKet']},
+  s2:{subj:'Physics',ch:'⚛️ Mechanics 3 ★★ — Gravitation + SHM + Waves — 60 Questions [2hr]',id:'ph-d19',hours:2,qcount:60},
+  s3:{subj:'Maths',ch:'📐 Calculus Full — Definite + Area + MOD/AOD PYQ Practice [2hr]',id:'ma-d19',hours:2}},
+
+ // ─── Day 20 ─ Mar 29 ─ PhyChem Rev + Amines + P&C/Prob + KTG/Thermo
+ {d:20,date:'Mar 29',
+  s1:{subj:'Chemistry',ch:'⚗️ Physical Chemistry Full Revision ★★ [5hr] + Amines ★★ [4hr] — Total 9hr',id:'ch-d20-1',hours:9,tags:['PhyChemRev','Amines']},
+  s2:{subj:'Physics',ch:'⚛️ KTG + Thermodynamics + Thermal ★★ — ~120 Questions [3.5hr]',id:'ph-d20',hours:3.5,qcount:120},
+  s3:{subj:'Maths',ch:'📐 P&C ★★ + Probability ★★ — 90 Questions [3.5hr]',id:'ma-d20',hours:3.5,qcount:90}},
+
+ // ─── Day 21 ─ Mar 30 ─ GRAND REVISION DAY ─ MARKERS ON ────────────
+ {d:21,date:'Mar 30',
+  s1:{subj:'Physics',ch:'⚛️ Full Physics Revision ★★ — All chapters rapid sweep + weak spots [4.5hr]',id:'ph-d21',hours:4.5},
+  s2:{subj:'Chemistry',ch:'⚗️ Physical Chemistry Rev + IOC Full Revision ★★ + Statistics Maths [1hr stats] [~8hr total]',id:'ch-d21',hours:8,tags:['PhyChem','IOC']},
+  s3:{subj:'Maths',ch:'📐 Maths Full Revision + Statistics [1hr] (~4.5hr) + Biomolecules [2.5hr] — Total ~7hr',id:'ma-d21',hours:7},
+  markerDay:true,
+  test:'⚡ Total ~16hr — Grand Revision Day'},
+
+ // ─── Day 22 ─ Mar 31 ─ EDUINITI TOP 100 PRACTICE ─ MARKERS ON ────
+ {d:22,date:'Mar 31',
+  s1:{subj:'Physics',ch:'⚛️ Eduiniti Top 100+ Physics Questions — Full Practice Series [8hr]',id:'ph-d22',hours:8,eduiniti:true},
+  s2:{subj:'Chemistry',ch:'⚗️ Full Organic Chemistry Revision — All chapters, reactions, named rxns [8hr]',id:'ch-d22',hours:8},
+  markerDay:true,
+  test:'🔥 Eduiniti Physics + Full OC Revision'},
+
+ // ─── Day 23 ─ Apr 1 ─ FINAL BLITZ + REST ─ MARKERS ON ───────────
+ {d:23,date:'Apr 1',
+  s1:{subj:'Maths',ch:'📐 Eduiniti Top 100 + PYQ Maths [Q25/Q26 pattern focus] — 8hr Full Practice',id:'ma-d23',hours:8,eduiniti:true},
+  s2:{subj:'Chemistry',ch:'⚗️ Chemistry — Top 100 Qs + Full PYQ Set + One-time NCERT Revision [8hr]',id:'ch-d23',hours:8,ncert:true},
+  markerDay:true,
+  test:'🎯 JEE Mains — Apr 2 (rest day) or Apr 3/4 your exam — Trust your prep! 🔥'},
+
+ // ─── Day 24 ─ Apr 2 ─ EXAM / REST DAY ───────────────────────────
+ {d:24,date:'Apr 2',
+  s1:{subj:'ALL',ch:'🏆 JEE Mains Exam Day — or Rest if exam is Apr 3/4. No new topics.',id:'exam-1',hours:0},
+  s2:{subj:'ALL',ch:'💤 Rest + Light formula glance only — Trust 23 days of hard work!',id:'exam-2',hours:0},
+  test:'🎯 JEE MAINS 2026 — Apr 2–10'},
 ];
 
 // ADVANCED PLAN (Apr 7 – May 16, 40 days | JEE Adv exam May 17, 2026)
 // NOTE: Apr 2 = JEE Mains Exam | Apr 2–6 = EXAM + REST (no studying)
+// DAILY SCHEDULE: 16hr total → 2 subjects × 8hr each
+//   Each 8hr block = [2hr Advanced Theory] + [5hr Practice PYQs/Hard Qs] + [1hr Error Analysis]
 const ADV_PLAN_DATA=[
- // === DAYS 1-4: Missing JEE Advanced chapters (newly added) ===
- {d:1,date:'Apr 7',s1:{subj:'Physics',ch:'Gravitation Advanced — Kepler\'s Laws, Orbital Energy, Satellite Motion, Escape Velocity'},s2:{subj:'Chemistry',ch:'Organic Synthesis Pathways — Retrosynthesis + Multi-step'}},
- {d:2,date:'Apr 8',s1:{subj:'Physics',ch:'Current Electricity Advanced — Kirchhoff Complex Networks, Thevenin, Norton, Max Power'},s2:{subj:'Chemistry',ch:'Coordination: Isomerism Deep Dive — CFT, Spectrochemical Series'}},
- {d:3,date:'Apr 9',s1:{subj:'Physics',ch:'Magnetism + EMI Advanced — LC Circuits, Self/Mutual Inductance, Faraday\'s Law deep'},s2:{subj:'Chemistry',ch:'Named Reactions Compilation — All 25 key named reactions'}},
- {d:4,date:'Apr 10',s1:{subj:'Maths',ch:'Permutations & Combinations Advanced + Binomial Theorem — JEE Adv level Qs'},s2:{subj:'Chemistry',ch:'Inorganic Reactions Blitz — s,p,d block reactions compilation'}},
- // === DAYS 5-12: Core Advanced Topics ===
- {d:5,date:'Apr 11',s1:{subj:'Physics',ch:'Newton\'s Laws Advanced — Constraint Motion, Pseudo Force, Wedge Problems'},s2:{subj:'Chemistry',ch:'Physical Chem: Thermodynamics JEE Adv Level — Hess, Entropy, Gibbs'}},
- {d:6,date:'Apr 12',s1:{subj:'Maths',ch:'3D Geometry — Advanced Level (Skew Lines, Angle Bisectors, Family of Planes)'},s2:{subj:'Chemistry',ch:'p-Block Deep Dive — Group 15-18 advanced reactions + structures'}},
- {d:7,date:'Apr 13',s1:{subj:'Physics',ch:'Work, Energy, Power Advanced — Variable Force, Spring, Non-conservative systems'},s2:{subj:'Chemistry',ch:'Electrochemistry Advanced — Nernst Equation, Electrolysis, Faraday\'s Laws'}},
- {d:8,date:'Apr 14',s1:{subj:'Maths',ch:'Calculus — Advanced Integration Tricks (Partial fractions, Walli\'s, King Rule)'},s2:{subj:'Chemistry',ch:'Chemical Equilibrium Advanced — Le Chatelier, Kp/Kc hard problems'}},
- {d:9,date:'Apr 15',s1:{subj:'Physics',ch:'Center of Mass & Collision Advanced — Variable mass, Rocket propulsion, 2D collisions'},s2:{subj:'Chemistry',ch:'Stereochemistry Deep Dive — R/S, E/Z, Optical activity, Enantiomers'},test:'Advanced Full Test 1'},
- {d:10,date:'Apr 16',s1:{subj:'Maths',ch:'Complex Numbers Advanced — De Moivre, Geometry on Argand plane, Roots of unity'},s2:{subj:'Chemistry',ch:'Transition Metal Chemistry — Crystal field, Spectra, Magnetic properties'}},
- {d:11,date:'Apr 17',s1:{subj:'Physics',ch:'Rotational Motion Advanced — Moment of inertia by integration, Rolling + Slipping, Angular momentum'},s2:{subj:'Chemistry',ch:'Reaction Mechanisms Advanced — SN1/SN2, E1/E2, Rearrangements'}},
- {d:12,date:'Apr 18',s1:{subj:'Maths',ch:'Probability: Conditional, Bayes, Geometric, Expectation — JEE Adv level'},s2:{subj:'Chemistry',ch:'Chemical Kinetics Advanced — Arrhenius, Complex reactions, Rate laws'},test:'Advanced Full Test 2'},
- // === DAYS 13-19: Mid Phase ===
- {d:13,date:'Apr 19',s1:{subj:'Physics',ch:'Simple Harmonic Motion — Full (Energy, Combination, Pendulums, Damped)'},s2:{subj:'Chemistry',ch:'Organic Compounds Analysis — Identification, Conversions, Multi-step'}},
- {d:14,date:'Apr 20',s1:{subj:'Maths',ch:'Matrices Advanced — Cayley-Hamilton, Eigenvalues, System of Equations, Rank'},s2:{subj:'Chemistry',ch:'Spectroscopy: IR, NMR — Conceptual identification, Splitting patterns'}},
- {d:15,date:'Apr 21',s1:{subj:'Physics',ch:'Waves & Sound — Full Chapter (Doppler advanced, Interference of sound, Beats, Resonance)'},s2:{subj:'Chemistry',ch:'Polymers Advanced — Condensation, Addition, Degree of polymerisation'}},
- {d:16,date:'Apr 22',s1:{subj:'Maths',ch:'Conics Advanced — Chord of contact, Director circle, Normals, Parametric hard Qs'},s2:{subj:'Chemistry',ch:'Biomolecules Advanced — Protein structure, Anomers, Nucleic acids'},test:'Advanced Full Test 3'},
- {d:17,date:'Apr 23',s1:{subj:'Physics',ch:'Fluids + Viscosity + Surface Tension — Bernoulli advanced, Viscosity coefficient, Capillary'},s2:{subj:'Chemistry',ch:'D-Block Advanced — Variable valency, Complex stability, Extraction of metals'}},
- {d:18,date:'Apr 24',s1:{subj:'Maths',ch:'Sequences Advanced — Telescoping, AGP, Vn method, Summation of series'},s2:{subj:'Chemistry',ch:'s-Block and Solutions Revision — Colligative properties advanced, Van\'t Hoff'}},
- {d:19,date:'Apr 25',s1:{subj:'Physics',ch:'Optics Advanced: Ray + Wave — Interference, Diffraction, Thin Films, Polarization (Brewster)'},s2:{subj:'Chemistry',ch:'Atomic Structure JEE Adv Level — Quantum numbers, Orbitals, Photoelectric advanced'},test:'Advanced Full Test 4'},
- // === DAYS 20-26: Deep Revision + Hard Qs ===
- {d:20,date:'Apr 26',s1:{subj:'Maths',ch:'Trigonometry: Equations, Inverse Trig, Functional Equations'},s2:{subj:'Chemistry',ch:'Redox Advanced Balancing — Half-reaction method, Disproportionation'}},
- {d:21,date:'Apr 27',s1:{subj:'Physics',ch:'Electrostatics Advanced — Conductors in detail, Gauss Law hard, Energy methods'},s2:{subj:'Chemistry',ch:'Surface Chemistry Advanced — Adsorption isotherms, Colloids, Catalysis'}},
- {d:22,date:'Apr 28',s1:{subj:'Maths',ch:'Number Theory & Inequalities — AM-GM, Cauchy-Schwarz, Modular arithmetic'},s2:{subj:'Chemistry',ch:'Solid State Advanced — Packing efficiency, Defects, Radius ratio hard Qs'}},
- {d:23,date:'Apr 29',s1:{subj:'Physics',ch:'Capacitors Advanced — Energy methods, Force on plates, Dielectric slab insertion'},s2:{subj:'Chemistry',ch:'Full Revision: Weak Organic — Identify and drill weak reactions'},test:'AITS Advanced'},
- {d:24,date:'Apr 30',s1:{subj:'Maths',ch:'Graph Theory + Functions Advanced — Functional equations, Piecewise, Composite'},s2:{subj:'Chemistry',ch:'Full Revision: Weak Inorganic — p-block, d-block gaps'}},
- {d:25,date:'May 1',s1:{subj:'Physics',ch:'Mixed: 15 previous year Advanced hard Qs (Physics)'},s2:{subj:'Chemistry',ch:'Mixed: 15 previous year Advanced hard Qs (Chemistry)'},test:'Advanced Simulation'},
- {d:26,date:'May 2',s1:{subj:'Maths',ch:'Definite Integration: Hard Level — Leibnitz rule, Feynman technique, Bounds'},s2:{subj:'Physics',ch:'Thermodynamics + KTG Advanced — Cycles (Carnot, Otto), Real gas, Vander Waals'},test:'Speed & Depth Test'},
- // === DAYS 27-30: Final New Topics + PYQ ===
- {d:27,date:'May 3',s1:{subj:'Physics',ch:'Modern Physics Advanced — QM basics, Compton effect, Pair production, de Broglie'},s2:{subj:'Maths',ch:'Differential Equations Advanced — Exact, Linear, Bernoulli, Applications'}},
- {d:28,date:'May 4',s1:{subj:'Physics',ch:'Nuclear Physics Advanced — Fission, Fusion, Q-value, Binding energy curve, Decay chains'},s2:{subj:'Maths',ch:'Vectors 3D Integration — Line integrals, Advanced dot/cross applications'}},
- {d:29,date:'May 5',s1:{subj:'Physics',ch:'All Important Physics Formulas Revision — Chapter by chapter flash'},s2:{subj:'Maths',ch:'All Important Maths Formulas Revision — All chapters rapid read'},test:'Final Concept Check'},
- {d:30,date:'May 6',s1:{subj:'Chemistry',ch:'All Important Reactions Sheet — Organic + Inorganic master list'},s2:{subj:'ALL',ch:'Solve 30 PYQ Advanced Qs — Mixed 3 subjects'}},
- // === DAYS 31-35: Grand Mocks + Analysis ===
- {d:31,date:'May 7',s1:{subj:'Physics',ch:'Full Mock Analysis — Correct all mistakes, note patterns'},s2:{subj:'Maths',ch:'Full Mock Analysis — Correct all mistakes'}},
- {d:32,date:'May 8',s1:{subj:'Chemistry',ch:'Full Mock Analysis — Correct all mistakes'},s2:{subj:'ALL',ch:'Weak Chapter Targeted Blitz — Last focused drill'},test:'Grand Mock 1'},
- {d:33,date:'May 9',s1:{subj:'Physics',ch:'Light Rest + Formula Quick Read — No new topics'},s2:{subj:'Chemistry',ch:'Light Rest + Key Facts Review'}},
- {d:34,date:'May 10',s1:{subj:'Maths',ch:'Key Theorem Quick Revision — Top 30 results'},s2:{subj:'Physics',ch:'Mock Paper Analysis — Revisit errors'},test:'Grand Mock 2'},
- {d:35,date:'May 11',s1:{subj:'Chemistry',ch:'Formula Sheet + All Reactions Rapid Read'},s2:{subj:'Maths',ch:'Formula Sheet Rapid Revision'},test:'Formula & Error Drill'},
- // === DAYS 36-40: Final 5 days ===
- {d:36,date:'May 12',s1:{subj:'ALL',ch:'Very Light: Read notes only, no problem solving'},s2:{subj:'ALL',ch:'Sleep early — JEE Advanced day after tomorrow!'},test:'Final Warm-up'},
- {d:37,date:'May 13',s1:{subj:'ALL',ch:'30 min: Glance at formula sheets only'},s2:{subj:'ALL',ch:'Rest + Good food + Light walk — no heavy studying'}},
- {d:38,date:'May 14',s1:{subj:'REST',ch:'Full Rest Day — Relax completely, light exercise, good sleep'},s2:{subj:'REST',ch:'No studying at all — just stay calm and confident'}},
- {d:39,date:'May 15',s1:{subj:'REST',ch:'Pre-exam day — Check admit card, stationery, centre location'},s2:{subj:'REST',ch:'Light dinner, sleep by 10 PM — Early start tomorrow!'}},
- {d:40,date:'May 16',s1:{subj:'REST',ch:'Wake up early — JEE Advanced Exam Day! You\'ve got this 🔥'},s2:{subj:'REST',ch:'Trust your preparation. Execute what you\'ve practised.'},test:'🏆 JEE ADVANCED 2026 — MAY 17, 2026'},
+
+ // ════════════════════════════════════════════
+ // PHASE 1 — Days 1–10 (Apr 7–16) | MECHANICS + PHYSICAL CHEM + ALGEBRA
+ // ════════════════════════════════════════════
+
+ {d:1,date:'Apr 7',
+  s1:{subj:'Physics',
+   ch:'Mechanics 1 — NLM ★★ | 2hr: Constraint motion, pseudo force, wedge-pulley systems | 5hr: 50+ hard PYQ Qs on NLM+friction+WEP | 1hr: Error log + formula sheet',
+   theory:'Constraint motion, pseudo force, wedge-pulley, NLM advanced',practice:'50+ NLM+WEP hard Qs',errlog:true},
+  s2:{subj:'Maths',
+   ch:'Complex Numbers ★★ | 2hr: De Moivre theorem, roots of unity filter, geometry on Argand plane | 5hr: 50+ hard Qs incl. rotation, modulus-argument | 1hr: Error log',
+   theory:'De Moivre, roots of unity, rotation trick',practice:'50+ Qs',errlog:true}},
+
+ {d:2,date:'Apr 8',
+  s1:{subj:'Physics',
+   ch:'Mechanics 2 — Rotation ★★ | 2hr: MOI by integration, rolling+slipping on incline, angular momentum conservation | 5hr: 50+ Rotation+COM PYQ hard Qs | 1hr: Error log',
+   theory:'MOI integration, rolling, angular impulse',practice:'50+ Qs',errlog:true},
+  s2:{subj:'Chemistry',
+   ch:'Atomic Structure ★★ | 2hr: Quantum numbers deep, de Broglie, Heisenberg, orbital shapes, Zeeman effect | 5hr: 50+ hard Qs from JEE Adv papers | 1hr: Error log',
+   theory:'Quantum numbers, wave functions, photoelectric adv',practice:'50+ Qs',errlog:true}},
+
+ {d:3,date:'Apr 9',
+  s1:{subj:'Physics',
+   ch:'Mechanics 3 — Gravitation + SHM ★★ | 2hr: Kepler laws deep, orbital energy, SHM combinations, pendulums, damped | 5hr: 50+ Gravitation+SHM hard Qs | 1hr: Error log',
+   theory:'Kepler, orbital energy, SHM energy, damped oscillations',practice:'50+ Qs',errlog:true},
+  s2:{subj:'Maths',
+   ch:'Quadratic Equations + Theory of Equations ★★ | 2hr: Location of roots, Descartes rule, symmetric functions, common roots | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'Root location, Descartes, Vieta advanced',practice:'50+ Qs',errlog:true}},
+
+ {d:4,date:'Apr 10',
+  s1:{subj:'Chemistry',
+   ch:'Chemical Thermodynamics ★★ | 2hr: Hess law, entropy, Gibbs energy, spontaneity, Carnot cycle, Kirchhoff eq | 5hr: 50+ hard Adv-level Qs | 1hr: Error log',
+   theory:'Hess, entropy, Gibbs, Kirchhoff equation',practice:'50+ Qs',errlog:true},
+  s2:{subj:'Maths',
+   ch:'Sequences & Series ★★ | 2hr: Telescoping, AGP, Vn method, summation of series, method of differences | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'AGP, Vn method, method of differences, telescoping',practice:'50+ Qs',errlog:true}},
+
+ {d:5,date:'Apr 11',
+  s1:{subj:'Physics',
+   ch:'Mechanics 4 — Waves + Sound ★★ | 2hr: Doppler advanced, standing waves, beats, resonance column, intensity | 5hr: 50+ hard PYQ Qs | 1hr: Error log',
+   theory:'Doppler advanced, superposition, interference of sound',practice:'50+ Qs',errlog:true},
+  s2:{subj:'Chemistry',
+   ch:'Chemical Kinetics ★★ | 2hr: Arrhenius deep, complex reaction mechanisms, steady state, rate laws advanced | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'Arrhenius, steady-state approx, photochemistry',practice:'50+ Qs',errlog:true}},
+
+ {d:6,date:'Apr 12',
+  s1:{subj:'Maths',
+   ch:'Binomial Theorem ★★ | 2hr: Advanced identities, coeff extraction, multinomial, greatest term, sum of series | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'Multinomial, sum of binomial coeff, partial sums',practice:'50+ Qs',errlog:true},
+  s2:{subj:'Chemistry',
+   ch:'Chemical Equilibrium ★★ | 2hr: Kp/Kc deep, Le Chatelier analysis, degree of dissociation, Ksp, simultaneous equilibria | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'Kp/Kc, simultaneous equilibria, Ksp advanced',practice:'50+ Qs',errlog:true}},
+
+ {d:7,date:'Apr 13',
+  s1:{subj:'Physics',
+   ch:'Fluids + Viscosity + Thermal Properties ★★ | 2hr: Bernoulli advanced, Poiseuille, terminal velocity, viscosity coefficient, capillary rise | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'Poiseuille, viscosity, surface tension advanced',practice:'50+ Qs',errlog:true},
+  s2:{subj:'Maths',
+   ch:'Permutations & Combinations ★★ | 2hr: Catalan numbers, Burnside lemma, inclusion-exclusion advanced, derangements | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'Catalan, Burnside, derangements, necklace problems',practice:'50+ Qs',errlog:true}},
+
+ {d:8,date:'Apr 14',
+  s1:{subj:'Chemistry',
+   ch:'Ionic Equilibrium ★★ | 2hr: pH of weak acids/bases/salts, buffer Henderson-Hasselbalch, hydrolysis, solubility product | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'Henderson-Hasselbalch, hydrolysis, buffer capacity',practice:'50+ Qs',errlog:true},
+  s2:{subj:'Maths',
+   ch:'Probability ★★ | 2hr: Conditional, Bayes theorem, geometric probability, expected value, distributions | 5hr: 50+ hard Adv Qs | 1hr: Error log',
+   theory:'Bayes, geometric probability, expectation, variance',practice:'50+ Qs',errlog:true},
+  test:'⚡ FULL TEST 1 — After Day 8 revision'},
+
+ {d:9,date:'Apr 15',
+  s1:{subj:'Physics',
+   ch:'KTG + Thermodynamics (Cycles) ★★ | 2hr: Carnot/Otto/Diesel efficiency, real gas Van der Waals, equipartition, mean free path | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'Thermodynamic cycles, real gas, equipartition theorem',practice:'50+ Qs',errlog:true},
+  s2:{subj:'Chemistry',
+   ch:'Electrochemistry ★★ | 2hr: Nernst equation deep, cell EMF, electrolysis (Faraday), concentration cells, corrosion | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'Nernst, concentration cell, Faraday laws, corrosion',practice:'50+ Qs',errlog:true}},
+
+ {d:10,date:'Apr 16',
+  s1:{subj:'Maths',
+   ch:'Matrices + Determinants ★★ | 2hr: Cayley-Hamilton, rank, system of equations (Rouché-Capelli), eigenvalues, adjoint | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'Cayley-Hamilton, rank, Cramer rule, eigenvalues',practice:'50+ Qs',errlog:true},
+  s2:{subj:'Chemistry',
+   ch:'Solutions + Colligative Properties ★★ | 2hr: Van\'t Hoff factor, osmotic pressure, abnormal colligative, association/dissociation | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'Van\'t Hoff, osmosis, association, Raoult deviations',practice:'50+ Qs',errlog:true}},
+
+ // ════════════════════════════════════════════
+ // PHASE 2 — Days 11–20 (Apr 17–26) | ELECTRICITY + INORGANIC + COORDINATE
+ // ════════════════════════════════════════════
+
+ {d:11,date:'Apr 17',
+  s1:{subj:'Physics',
+   ch:'Electrostatics ★★ | 2hr: Gauss law hard shells, energy methods, force on charged surfaces, conductors in detail, dipole advanced | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'Gauss law conductors, energy density, dipole',practice:'50+ Qs',errlog:true},
+  s2:{subj:'Maths',
+   ch:'Trigonometry — Equations + Properties ★★ | 2hr: General solutions, sin/cos range problems, product-to-sum, conditional identities | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'General solutions, conditional identities, sin-cos range',practice:'50+ Qs',errlog:true}},
+
+ {d:12,date:'Apr 18',
+  s1:{subj:'Chemistry',
+   ch:'Solid State ★★ | 2hr: Packing efficiency deep, radius ratio, defects (Schottky/Frenkel), crystal systems, electrical properties | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'Packing, radius ratio, defects, semiconducting solids',practice:'50+ Qs',errlog:true},
+  s2:{subj:'Maths',
+   ch:'Inverse Trigonometric Functions ★★ | 2hr: Domain-range, composition of ITF, graphs, solving equations, sum of series | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'ITF composition, range, series sum of arctan',practice:'50+ Qs',errlog:true},
+  test:'⚡ FULL TEST 2 — After Day 12 revision'},
+
+ {d:13,date:'Apr 19',
+  s1:{subj:'Physics',
+   ch:'Current Electricity + Capacitors ★★ | 2hr: Kirchhoff complex networks, Wheatstone, Thevenin, Norton, RC circuits transient, energy in capacitors | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'Thevenin-Norton, RC transient, complex networks',practice:'50+ Qs',errlog:true},
+  s2:{subj:'Chemistry',
+   ch:'Surface Chemistry ★★ | 2hr: Adsorption isotherms (Freundlich/Langmuir), colloids, emulsions, micelles, catalysis mechanisms | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'Freundlich, Langmuir, colloid preparation, catalysis',practice:'50+ Qs',errlog:true}},
+
+ {d:14,date:'Apr 20',
+  s1:{subj:'Maths',
+   ch:'Straight Lines + Pair of Straight Lines ★★ | 2hr: Angle bisectors, family of lines, pair of lines (homogeneous), distance between lines | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'Family of lines, homogeneous eq, pair of lines',practice:'50+ Qs',errlog:true},
+  s2:{subj:'Chemistry',
+   ch:'Nuclear Chemistry + Radioactivity ★★ | 2hr: Decay law, half-life, Q-value, binding energy curve, fission/fusion, carbon dating | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'Decay series, Q-value, binding energy, radiocarbon',practice:'50+ Qs',errlog:true}},
+
+ {d:15,date:'Apr 21',
+  s1:{subj:'Physics',
+   ch:'Magnetism — Biot-Savart + Ampere + Force ★★ | 2hr: Biot-Savart hard configurations, Ampere loops, force between conductors, magnetic dipole | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'Biot-Savart hard configs, Ampere law, torque on dipole',practice:'50+ Qs',errlog:true},
+  s2:{subj:'Maths',
+   ch:'Circles — Advanced ★★ | 2hr: Radical axis, coaxial circles, orthogonal circles, power of a point, family of circles | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'Radical axis, coaxial, orthogonal circles, power',practice:'50+ Qs',errlog:true}},
+
+ {d:16,date:'Apr 22',
+  s1:{subj:'Chemistry',
+   ch:'Periodic Table + Periodic Trends ★★ | 2hr: Diagonal relationship, anomalous behaviour, effective nuclear charge, exceptions in config | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'ENC, shielding, diagonal relation, config exceptions',practice:'50+ Qs',errlog:true},
+  s2:{subj:'Maths',
+   ch:'Parabola — Advanced ★★ | 2hr: Normals (cubic in t), chord of contact, tangent-normal properties, concyclic points | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'Normal cubic, chord of contact, concyclic points',practice:'50+ Qs',errlog:true},
+  test:'⚡ FULL TEST 3 — After Day 16 revision'},
+
+ {d:17,date:'Apr 23',
+  s1:{subj:'Physics',
+   ch:'EMI + AC Circuits ★★ | 2hr: LC oscillations, self/mutual inductance, transient LR, AC impedance (series-parallel RLC), resonance | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'LC oscillation, LR transient, phasor, resonance',practice:'50+ Qs',errlog:true},
+  s2:{subj:'Chemistry',
+   ch:'Chemical Bonding — MOT + Advanced ★★ | 2hr: MO theory for diatomics, bond order, hybridization advanced, VSEPR hard cases, resonance | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'MO diagrams, bond order, hyperconjugation, VSEPR',practice:'50+ Qs',errlog:true}},
+
+ {d:18,date:'Apr 24',
+  s1:{subj:'Maths',
+   ch:'Ellipse + Hyperbola — Advanced ★★ | 2hr: Director circle, conjugate diameters, asymptotes, rectangular hyperbola, auxiliary circle | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'Director circle, asymptotes, conjugate diameters',practice:'50+ Qs',errlog:true},
+  s2:{subj:'Chemistry',
+   ch:'p-Block Elements — Advanced ★★ | 2hr: Groups 15-18 deep — reactions, structures, allotropes, oxyacids, interhalogen, noble gas cpds | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'Oxyacids, interhalogen, noble gas compounds, allotropes',practice:'50+ Qs',errlog:true}},
+
+ {d:19,date:'Apr 25',
+  s1:{subj:'Physics',
+   ch:'Ray Optics — Complete ★★ | 2hr: Refraction at curved surfaces, lens-maker, combination of lenses, optical instruments advanced | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'Lens-maker, combination lenses, optical instruments',practice:'50+ Qs',errlog:true},
+  s2:{subj:'Maths',
+   ch:'3D Geometry — Advanced ★★ | 2hr: Skew lines distance, plane family, angle bisector planes, shortest distance, foot of perpendicular | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'Skew lines, plane family, angle bisector planes',practice:'50+ Qs',errlog:true},
+  test:'⚡ FULL TEST 4 — After Day 19 revision'},
+
+ {d:20,date:'Apr 26',
+  s1:{subj:'Chemistry',
+   ch:'d & f Block + Coordination Compounds ★★ | 2hr: Crystal field theory, spectrochemical series, isomerism in coord cpds, VBT/CFT comparison | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'CFT, VBT, CFSE, isomerism types, spectrochemical',practice:'50+ Qs',errlog:true},
+  s2:{subj:'Maths',
+   ch:'Vectors — Advanced ★★ | 2hr: Scalar triple product, vector triple product, line+plane using vectors, coplanarity conditions | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'Triple product, reciprocal vectors, coplanarity',practice:'50+ Qs',errlog:true}},
+
+ // ════════════════════════════════════════════
+ // PHASE 3 — Days 21–30 (Apr 27–May 6) | OPTICS + ORGANIC + CALCULUS
+ // ════════════════════════════════════════════
+
+ {d:21,date:'Apr 27',
+  s1:{subj:'Physics',
+   ch:'Wave Optics — Complete ★★ | 2hr: YDSE advanced (oblique, thin film in slit), diffraction (single slit hard), Brewster angle, polarization | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'YDSE oblique, thin film colours, Brewster, diffraction',practice:'50+ Qs',errlog:true},
+  s2:{subj:'Chemistry',
+   ch:'GOC + Stereochemistry ★★ | 2hr: R/S configuration, E/Z, optical activity, Fischer projection, meso compounds, DL notation | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'R/S, E/Z, meso compounds, Fischer, enantiomers',practice:'50+ Qs',errlog:true}},
+
+ {d:22,date:'Apr 28',
+  s1:{subj:'Maths',
+   ch:'Limits + Continuity + Differentiability ★★ | 2hr: L\'Hôpital hard cases, sandwich theorem, discontinuity types, differentiability at corner/cusp | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'L\'Hôpital deep, types of discontinuity, differentiability',practice:'50+ Qs',errlog:true},
+  s2:{subj:'Chemistry',
+   ch:'Reaction Mechanisms — Named Reactions ★★ | 2hr: SN1/SN2/E1/E2 mechanism deep, carbocation rearrangements, all 25 named reactions | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'Rearrangements, SN1/SN2 factors, 25 named reactions',practice:'50+ Qs',errlog:true}},
+
+ {d:23,date:'Apr 29',
+  s1:{subj:'Physics',
+   ch:'Modern Physics ★★ | 2hr: Compton effect, pair production, de Broglie, Heisenberg in context, energy levels (H + multi-electron), X-ray | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'Compton, de Broglie, Heisenberg, X-ray, energy levels',practice:'50+ Qs',errlog:true},
+  s2:{subj:'Maths',
+   ch:'Differentiation — Advanced ★★ | 2hr: Leibniz rule for nth derivative, parametric second derivative, implicit differentiation hard, functional equations | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'Leibniz nth deriv, parametric, implicit advanced',practice:'50+ Qs',errlog:true},
+  test:'⚡ FULL TEST 5 — After Day 23 revision'},
+
+ {d:24,date:'Apr 30',
+  s1:{subj:'Chemistry',
+   ch:'Hydrocarbons — Advanced ★★ | 2hr: Aliphatic + aromatic reactions deep, aromaticity (Hückel), electrophilic aromatic substitution mechanisms | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'Hückel rule, EAS mechanism, Markovnikov, ozonolysis',practice:'50+ Qs',errlog:true},
+  s2:{subj:'Maths',
+   ch:'Application of Derivatives — Advanced ★★ | 2hr: Rolle\'s + LMVT applications, monotonicity hard cases, inflection, optimisation tricks | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'Rolle, LMVT, monotonicity, optimisation advanced',practice:'50+ Qs',errlog:true}},
+
+ {d:25,date:'May 1',
+  s1:{subj:'Physics',
+   ch:'Semiconductors + Communication ★★ | 2hr: Junction diode (Zener, LED, photodiode), transistor biasing, logic gates, AM/FM modulation | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'Transistor biasing, logic gates, modulation',practice:'50+ Qs',errlog:true},
+  s2:{subj:'Chemistry',
+   ch:'Haloalkanes + Aryl Halides ★★ | 2hr: SN1/SN2 stereochemistry, Walden inversion, Grignard deep, aryl halides coupling | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'Walden inversion, Grignard reagent, Ullmann coupling',practice:'50+ Qs',errlog:true}},
+
+ {d:26,date:'May 2',
+  s1:{subj:'Maths',
+   ch:'Indefinite Integration — Advanced ★★ | 2hr: Partial fractions hard, Wallis formula, reduction formulae, integration by parts (Bernoulli) | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'Wallis, reduction formulae, Bernoulli method',practice:'50+ Qs',errlog:true},
+  s2:{subj:'Chemistry',
+   ch:'Alcohols + Phenols + Ethers + Carbonyl ★★ | 2hr: Lucas test deep, phenol reactions, ether cleavage, Williamson synthesis, Tollen\'s/Fehling | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'Lucas, phenol reactions, Tollens, Fehling, Fehling',practice:'50+ Qs',errlog:true}},
+
+ {d:27,date:'May 3',
+  s1:{subj:'Physics',
+   ch:'Physics PYQ Hard Qs — Mixed ★★ | 2hr: Identify weak chapters from tests | 5hr: 30 PYQ JEE Adv hard Qs mixed all chapters | 1hr: Deep error analysis + pattern study',
+   theory:'Weak chapter identification + targeted theory',practice:'30 PYQ hard mixed',errlog:true},
+  s2:{subj:'Maths',
+   ch:'Definite Integration — Advanced ★★ | 2hr: King property, Leibniz rule, Feynman technique, periodic functions, beta-gamma | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'King, Leibniz, Feynman, beta-gamma functions',practice:'50+ Qs',errlog:true},
+  test:'⚡ FULL TEST 6 — After Day 27 revision'},
+
+ {d:28,date:'May 4',
+  s1:{subj:'Chemistry',
+   ch:'Aldehydes + Ketones + Carboxylic Acids ★★ | 2hr: Aldol condensation, Cannizzaro, cross-aldol, Wolf-Kishner, Clemmensen, Hell-Volhard | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'Aldol, Cannizzaro, Wolf-Kishner, HVZ reaction',practice:'50+ Qs',errlog:true},
+  s2:{subj:'Maths',
+   ch:'Area Under Curves + Differential Equations ★★ | 2hr: Area between curves hard, Clairaut DE, Bernoulli DE, exact DE, orthogonal trajectories | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'Clairaut, Bernoulli DE, exact DE, singular solutions',practice:'50+ Qs',errlog:true}},
+
+ {d:29,date:'May 5',
+  s1:{subj:'Physics',
+   ch:'Full Physics Revision — Round 1 ★★ | 2hr: Mechanics 1+2+3+4 formula + theory sweep | 5hr: 40 PYQ mixed Physics hard Qs (all chapters) | 1hr: Error log + weak chapter mark',
+   theory:'Mechanics full sweep + formula consolidation',practice:'40 PYQ mixed',errlog:true},
+  s2:{subj:'Chemistry',
+   ch:'Amines + Biomolecules + Polymers ★★ | 2hr: Hinsberg test, Gabriel, Hofmann bromamide, biomolecule structures, amino acids, nucleotides | 5hr: 50+ hard Qs | 1hr: Error log',
+   theory:'Hofmann bromamide, biomolecule structures, polymers',practice:'50+ Qs',errlog:true}},
+
+ {d:30,date:'May 6',
+  s1:{subj:'Maths',
+   ch:'Full Maths Revision — All Chapters ★★ | 2hr: Algebra + Trigonometry + Coordinate formula sweep | 5hr: 40 mixed PYQ hard Qs | 1hr: Error log + weak chapter mark',
+   theory:'All chapters formula sweep',practice:'40 PYQ mixed',errlog:true},
+  s2:{subj:'Chemistry',
+   ch:'Full Chemistry Revision — Physical + Inorganic ★★ | 2hr: Physical Chem all formulas + Inorganic key reactions | 5hr: 40 mixed PYQ hard Qs | 1hr: Error log + weak chapter mark',
+   theory:'PhyChem + Inorganic full sweep',practice:'40 PYQ mixed',errlog:true}},
+
+ // ════════════════════════════════════════════
+ // PHASE 4 — Days 31–35 (May 7–11) | GRAND MOCKS + DEEP ANALYSIS
+ // ════════════════════════════════════════════
+
+ {d:31,date:'May 7',
+  s1:{subj:'Physics',ch:'Full Mock Analysis — Physics mistakes: root-cause each error, re-do all wrong Qs, note pattern weaknesses'},
+  s2:{subj:'Maths',ch:'Full Mock Analysis — Maths mistakes: re-do all wrong Qs, formula gaps, speed analysis'},
+  test:'🔥 Grand Mock 1 (Full 3hr Advanced Paper)'},
+
+ {d:32,date:'May 8',
+  s1:{subj:'Chemistry',ch:'Full Mock Analysis — Chemistry mistakes: organic mechanism gaps, inorganic reactions missed, numerical errors'},
+  s2:{subj:'ALL',ch:'Weak Chapter Targeted Blitz — Last focused drill on identified weak chapters from all tests'},
+  test:'🔥 Grand Mock 2 (Full 3hr Advanced Paper)'},
+
+ {d:33,date:'May 9',
+  s1:{subj:'Physics',ch:'Physics Revision — Top 50 formulas flash + Hard Qs from error log only'},
+  s2:{subj:'Chemistry',ch:'Chemistry Revision — All named reactions + key inorganic facts + physical chem formula sweep'},
+  test:'🔥 Grand Mock 3 (Full 3hr Advanced Paper)'},
+
+ {d:34,date:'May 10',
+  s1:{subj:'Maths',ch:'Maths Revision — Key theorems (top 30) + formula sheet rapid read + error log re-do'},
+  s2:{subj:'ALL',ch:'Mixed PYQ JEE Advanced — 20 Qs from each subject (60 total) under timed conditions'},
+  test:'🔥 Grand Mock 4 (Full 3hr Advanced Paper)'},
+
+ {d:35,date:'May 11',
+  s1:{subj:'Chemistry',ch:'Chemistry Formula Sheet + All Reactions — Organic master list + Inorganic reactions rapid read'},
+  s2:{subj:'Maths',ch:'Maths Formula Sheet Rapid Revision — All chapter key results in one sweep'},
+  test:'📊 Formula & Error Drill — Final targeted practice'},
+
+ // ════════════════════════════════════════════
+ // PHASE 5 — Days 36–40 (May 12–16) | FINAL PREP + REST
+ // ════════════════════════════════════════════
+
+ {d:36,date:'May 12',
+  s1:{subj:'ALL',ch:'Very Light: Read notes + formula sheets only — No problem solving. Rest your brain.'},
+  s2:{subj:'ALL',ch:'Sleep early by 10 PM — JEE Advanced is Day after tomorrow. You are ready.'},
+  test:'✅ Final Warm-up Day'},
+
+ {d:37,date:'May 13',
+  s1:{subj:'ALL',ch:'30–45 min: Glance at formula sheets only — Quick confidence read. No new topics.'},
+  s2:{subj:'ALL',ch:'Rest + Good food + Light walk — No heavy studying. Trust the 40 days of work.'}},
+
+ {d:38,date:'May 14',
+  s1:{subj:'REST',ch:'Full Rest Day — Relax completely. Light exercise, good food, good sleep.'},
+  s2:{subj:'REST',ch:'No studying at all — just stay calm and confident. You have done everything.'}},
+
+ {d:39,date:'May 15',
+  s1:{subj:'REST',ch:'Pre-exam day — Check admit card, stationery, pencil, pen, centre location, route.'},
+  s2:{subj:'REST',ch:'Light dinner, sleep by 10 PM — Wake up fresh. Early start tomorrow for JEE Adv!'}},
+
+ {d:40,date:'May 16',
+  s1:{subj:'REST',ch:'⚡ Wake up early — JEE Advanced Exam Day! You have got this. 40 days. 16hr/day. Trust it.'},
+  s2:{subj:'REST',ch:'Trust your preparation. Execute what you have practised. Stay calm. Be clinical.'},
+  test:'🏆 JEE ADVANCED 2026 — MAY 17, 2026'},
 ];
 
 
@@ -2417,35 +2789,95 @@ function switchPlanPhase(ph,el){
  el.classList.add('ac');renderPlanWeek();
 }
 function renderPlanWeek(){
- const phaseMap={week1:[0,6],week2:[7,13],week3:[14,20],week4:[21,27]};
- const [s,e]=phaseMap[S.planPhase]||[0,6];
+ const phaseMap={week1:[0,4],week2:[5,10],week3:[11,17],week4:[18,23]};
+ const [s,e]=phaseMap[S.planPhase]||[0,4];
  const days=MAINS_DAILY.slice(s,e+1);
  const el=document.getElementById('plan-week-content');
  const SC={Physics:'var(--ph)',Maths:'var(--ma)',Chemistry:'var(--ch)',ALL:'var(--gold)','Physics+Maths':'#a29bfe',REST:'var(--gr)'};
  const EMO={Physics:'⚛️',Maths:'📐',Chemistry:'🧪',ALL:'📚','Physics+Maths':'⚡'};
+
+ function loadMk(k){try{const r=localStorage.getItem('marker_day_'+k);return r?JSON.parse(r):{lecture:false,dpp:false,hw:false,jeejan:false,mustdo:false};}catch(e){return{lecture:false,dpp:false,hw:false,jeejan:false,mustdo:false};}}
+
+ function markerHtml(d,subj,fiveMode){
+  const mk=loadMk(d.d+'_'+subj);
+  const baseItems=[
+   {k:'lecture',label:'Lecture',col:'#4fc3f7',ico:'🎓'},
+   {k:'dpp',label:'DPP',col:'#ffb74d',ico:'📝'},
+   {k:'hw',label:'HW',col:'#a29bfe',ico:'📚'},
+   {k:'mustdo',label:'Must Do',col:'#ff4757',ico:'⚡'},
+  ];
+  const fiveItems=[
+   {k:'lecture',label:'Lecture',col:'#4fc3f7',ico:'🎓'},
+   {k:'dpp',label:'DPP',col:'#ffb74d',ico:'📝'},
+   {k:'hw',label:'HW',col:'#a29bfe',ico:'📚'},
+   {k:'jeejan',label:'JEE Jan',col:'#fd79a8',ico:'🎯'},
+   {k:'mustdo',label:'Must Do',col:'#ff4757',ico:'⚡'},
+  ];
+  const items=fiveMode?fiveItems:baseItems;
+  return`<div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:4px;align-items:center">
+   <span style="font-size:11px;color:var(--t4);letter-spacing:2px;font-weight:800;margin-right:4px">TRACK →</span>
+   ${items.map(it=>`<button onclick="toggleMarker(${d.d},'${subj}','${it.k}',this)"
+    style="font-size:13px;font-weight:700;padding:5px 12px;border-radius:8px;border:1.5px solid ${it.col}40;background:${mk[it.k]?it.col+'22':'transparent'};color:${mk[it.k]?it.col:'var(--t4)'};cursor:pointer;transition:all .15s;font-family:'Crimson Pro',serif"
+    data-day="${d.d}" data-subj="${subj}" data-key="${it.k}">
+    ${it.ico} ${it.label}${mk[it.k]?' ✓':''}
+   </button>`).join('')}
+  </div>`;
+ }
+
  el.innerHTML=days.map(d=>{
   const sc1=SC[d.s1.subj]||'var(--t3)';
-  const sc2=SC[d.s2.subj]||'var(--t3)';
+  const sc2=d.s2?SC[d.s2.subj]||'var(--t3)':'';
   const sc3=d.s3?SC[d.s3.subj]||'var(--t3)':'';
-  const startD=new Date('2026-03-06');startD.setDate(startD.getDate()+d.d-1);
+  const startD=new Date('2026-03-10');startD.setDate(startD.getDate()+d.d-1);
   const isToday=new Date().toDateString()===startD.toDateString();
-  const subjCard=(sx,sc)=>`<div class="dual-subj" style="border-color:${sc}30;background:${sc}06">
-       <div style="font-size:10px;font-weight:700;color:${sc};letter-spacing:1px;margin-bottom:4px">${EMO[sx.subj]||'📚'} ${sx.subj.toUpperCase()}</div>
-       <div style="font-size:13px;font-weight:600;color:var(--t1)">${sx.ch}</div>
-      </div>`;
+  const phase1=d.d<=9;const phyChem=d.d>=10&&d.d<=11;const phase2=d.d>=12&&d.d<=20;const finalBlitz=d.d>=21;
+  const phaseBadge=phase1
+   ?`<span style="font-size:9px;background:rgba(79,195,247,.12);color:var(--ph);border-radius:5px;padding:2px 6px;font-weight:700;font-family:'JetBrains Mono',monospace">⚛️ 8HR+📐 8HR</span>`
+   :phyChem
+   ?`<span style="font-size:9px;background:rgba(255,71,87,.12);color:var(--re2);border-radius:5px;padding:2px 6px;font-weight:700;font-family:'JetBrains Mono',monospace">⚗️ PHYS CHEM</span>`
+   :finalBlitz
+   ?`<span style="font-size:9px;background:rgba(201,168,76,.15);color:var(--gold);border-radius:5px;padding:2px 6px;font-weight:700;font-family:'JetBrains Mono',monospace">🔥 BLITZ</span>`
+   :`<span style="font-size:9px;background:rgba(129,199,132,.12);color:var(--ch);border-radius:5px;padding:2px 6px;font-weight:700;font-family:'JetBrains Mono',monospace">🧪 12HR+2+2</span>`;
+
+  // Compute col count for grid
+  const colCount=[d.s1,d.s2,d.s3].filter(Boolean).length;
+  const colCss=colCount===3?'grid-template-columns:1fr 1fr 1fr':colCount===2?'grid-template-columns:1fr 1fr':'grid-template-columns:1fr';
+
+  const subjCard=(sx,sc,sid)=>{
+   if(!sx)return'';
+   const showMk4=d.s3&&d.s3.phyChemDay;
+   const showMk5=d.markerDay;
+   const tagBadges=sx.tags?sx.tags.map(t=>`<span style="font-size:9px;padding:1px 6px;border-radius:5px;background:${sc}15;color:${sc};font-weight:700;font-family:'JetBrains Mono',monospace;margin-right:3px">${t}</span>`).join(''):'';
+   const qBadge=sx.qcount?`<span style="font-size:11px;background:rgba(255,165,2,.12);color:#ffa502;border-radius:5px;padding:2px 8px;font-weight:700;font-family:'JetBrains Mono',monospace">📊 ${sx.qcount}Q</span>`:'';
+   const hrBadge=sx.hours?`<span style="font-size:11px;background:${sc}10;color:${sc};border-radius:5px;padding:2px 8px;font-weight:700;font-family:'JetBrains Mono',monospace">${sx.hours}hr</span>`:'';
+   const ncertBadge=sx.ncert?`<span style="font-size:11px;background:rgba(46,213,115,.12);color:var(--gr);border-radius:5px;padding:2px 8px;font-weight:700;font-family:'JetBrains Mono',monospace">📗 NCERT</span>`:'';
+   const eduBadge=sx.eduiniti?`<span style="font-size:11px;background:rgba(162,155,254,.12);color:var(--pu);border-radius:5px;padding:2px 8px;font-weight:700;font-family:'JetBrains Mono',monospace">🏆 EDUINITI</span>`:'';
+   return`<div class="dual-subj" style="border-color:${sc}30;background:${sc}06">
+    <div style="font-size:13px;font-weight:800;color:${sc};letter-spacing:1.5px;margin-bottom:6px">${EMO[sx.subj]||'📚'} ${sx.subj.toUpperCase()}</div>
+    <div style="display:flex;flex-wrap:wrap;gap:3px;margin-bottom:6px">${hrBadge}${qBadge}${tagBadges}${ncertBadge}${eduBadge}</div>
+    <div style="font-size:15px;font-weight:700;color:var(--t1);line-height:1.45">${sx.ch}</div>
+    ${showMk4||showMk5?markerHtml(d,sid||sx.id,showMk5):''}
+   </div>`;
+  };
+
+  // Note banner (for "no physics today" etc)
+  const noteBanner=d.note?`<div style="margin-top:8px;background:rgba(255,165,2,.06);border:1px solid rgba(255,165,2,.2);border-radius:7px;padding:6px 10px;font-size:11.5px;color:#ffa502">${d.note}</div>`:'';
+
   return`<div class="card mb12 ${isToday?'today-card':''}" style="${isToday?'border-color:rgba(255,71,87,.4)':''}">
    <div style="display:flex;gap:12px;align-items:flex-start">
     <div style="background:var(--bg4);border-radius:10px;padding:10px 12px;text-align:center;min-width:64px;flex-shrink:0;border:1px solid ${isToday?'rgba(255,71,87,.3)':'var(--b1)'}">
      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t4)">Day ${d.d}</div>
      <div style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:${isToday?'var(--re2)':'var(--t2)'};">${d.date}</div>
      ${isToday?'<div style="font-size:9px;color:var(--re2);font-weight:700;margin-top:3px">TODAY</div>':''}
+     <div style="margin-top:5px">${phaseBadge}</div>
     </div>
     <div style="flex:1;min-width:0">
-     <div class="dual-day" style="${d.s3?'grid-template-columns:1fr 1fr 1fr':''}">
-      ${subjCard(d.s1,sc1)}
-      ${subjCard(d.s2,sc2)}
-      ${d.s3?subjCard(d.s3,sc3):''}
+     <div class="dual-day" style="${colCss}">
+      ${subjCard(d.s1,sc1,d.s1&&d.s1.id)}
+      ${d.s2?subjCard(d.s2,sc2,d.s2.id):''}
+      ${d.s3?subjCard(d.s3,sc3,d.s3.id):''}
      </div>
+     ${noteBanner}
      ${d.test?`<div style="margin-top:8px;background:rgba(255,71,87,.07);border:1px solid rgba(255,71,87,.2);border-radius:8px;padding:7px 10px;font-size:12px;color:var(--re2);display:flex;align-items:center;gap:6px">📝 ${d.test}</div>`:''}
     </div>
    </div>
@@ -2453,37 +2885,162 @@ function renderPlanWeek(){
  }).join('');
 }
 
+// ═══ MARKER TOGGLE ═══
+function toggleMarker(day,subj,key,btn){
+ const k='marker_day_'+day+'_'+subj;
+ let mk={lecture:false,dpp:false,hw:false,jeejan:false,mustdo:false};
+ try{const r=localStorage.getItem(k);if(r)mk={...mk,...JSON.parse(r)};}catch(e){}
+ mk[key]=!mk[key];
+ try{localStorage.setItem(k,JSON.stringify(mk));}catch(e){}
+ const icons={lecture:'🎓',dpp:'📝',hw:'📚',jeejan:'🎯',mustdo:'⚡'};
+ const labels={lecture:'Lecture',dpp:'DPP',hw:'HW',jeejan:'JEE Jan',mustdo:'Must Do'};
+ const cols={lecture:'#4fc3f7',dpp:'#ffb74d',hw:'#a29bfe',jeejan:'#fd79a8',mustdo:'#ff4757'};
+ const c=cols[key]||'var(--gold)';
+ btn.style.background=mk[key]?c+'22':'transparent';
+ btn.style.color=mk[key]?c:'var(--t4)';
+ btn.style.borderColor=c+'40';
+ btn.innerHTML=`${icons[key]||''} ${labels[key]||key}${mk[key]?' ✓':''}`;
+}
+
 // ═══ ADVANCED PLAN ═══
 function renderAdvPlan(){
  const el=document.getElementById('adv-plan-content');
  if(!el)return;
+ const SC={Physics:'var(--ph)',Maths:'var(--ma)',Chemistry:'var(--ch)',ALL:'var(--gold)',REST:'var(--gr)'};
+ const EMO={Physics:'⚛️',Maths:'📐',Chemistry:'🧪',ALL:'📚',REST:'😴'};
+
+ function phaseBadge(d){
+  if(d<=10) return{label:'PHASE 1 — Mechanics + PhyChem + Algebra',col:'#4fc3f7'};
+  if(d<=20) return{label:'PHASE 2 — Electricity + Inorganic + Coordinate',col:'#ffb74d'};
+  if(d<=30) return{label:'PHASE 3 — Optics + Organic + Calculus',col:'#a29bfe'};
+  if(d<=35) return{label:'PHASE 4 — Grand Mocks + Deep Analysis',col:'#ff4757'};
+  return{label:'PHASE 5 — Final Prep + Rest',col:'#2ed573'};
+ }
+
+ // ── Load marker state from localStorage ──
+ function loadAdvMk(dayNum,subjId){
+  try{
+   const r=localStorage.getItem('adv_mk_'+dayNum+'_'+subjId);
+   return r?JSON.parse(r):{lecture:false,dpp:false,hw:false,jeejan:false,mustdo:false};
+  }catch(e){return{lecture:false,dpp:false,hw:false,jeejan:false,mustdo:false};}
+ }
+
+ // ── 5-button marker row ──
+ const MKIT=[
+  {k:'lecture', label:'Lecture',  col:'#4fc3f7', ico:'🎓'},
+  {k:'dpp',     label:'DPP',      col:'#ffb74d', ico:'📝'},
+  {k:'hw',      label:'HW',       col:'#a29bfe', ico:'📚'},
+  {k:'jeejan',  label:'JEE Jan',  col:'#fd79a8', ico:'🎯'},
+  {k:'mustdo',  label:'Must Do',  col:'#ff4757', ico:'⚡'},
+ ];
+ function mkRow(dayNum,subjId){
+  const mk=loadAdvMk(dayNum,subjId);
+  return`<div style="margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,.06)">
+   <div style="font-size:10px;font-weight:800;color:var(--t4);letter-spacing:2px;margin-bottom:7px">TRACK COMPLETION</div>
+   <div style="display:flex;flex-wrap:wrap;gap:6px">
+    ${MKIT.map(it=>`<button
+     onclick="toggleAdvMk(${dayNum},'${subjId}','${it.k}',this)"
+     style="font-size:12px;font-weight:700;padding:5px 12px;border-radius:8px;
+      border:1.5px solid ${mk[it.k]?it.col:it.col+'35'};
+      background:${mk[it.k]?it.col+'20':'transparent'};
+      color:${mk[it.k]?it.col:'var(--t4)'};
+      cursor:pointer;transition:all .18s;font-family:'Crimson Pro',serif;
+      display:flex;align-items:center;gap:5px">
+     ${it.ico} ${it.label}${mk[it.k]?' <span style=\'font-size:13px\'>✓</span>':''}
+    </button>`).join('')}
+   </div>
+  </div>`;
+ }
+
+ // ── Schedule breakdown pills ──
+ function schedPills(sx,sc){
+  if(!sx||!sx.theory)return'';
+  return`<div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px">
+   <span style="font-size:11px;font-weight:800;padding:3px 10px;border-radius:6px;background:rgba(79,195,247,.12);color:#4fc3f7;font-family:'JetBrains Mono',monospace">🧠 2hr Theory</span>
+   <span style="font-size:11px;font-weight:800;padding:3px 10px;border-radius:6px;background:rgba(255,165,2,.12);color:#ffa502;font-family:'JetBrains Mono',monospace">⚔️ 5hr Practice</span>
+   <span style="font-size:11px;font-weight:800;padding:3px 10px;border-radius:6px;background:rgba(255,71,87,.12);color:#ff4757;font-family:'JetBrains Mono',monospace">🔍 1hr Error Log</span>
+   <span style="font-size:11px;font-weight:800;padding:3px 10px;border-radius:6px;background:${sc}18;color:${sc};font-family:'JetBrains Mono',monospace">⏱ 8hr</span>
+  </div>`;
+ }
+
+ // ── Chapter card ──
+ function chCard(sx,sc,dayNum){
+  if(!sx)return'';
+  const parts=sx.ch.split(' | ');
+  const title=parts[0];
+  const rest=parts.slice(1);
+  const sid=sx.id||(sx.subj+dayNum);
+  return`<div class="dual-subj" style="border-color:${sc}35;background:${sc}06;padding:16px">
+   <div style="font-size:12px;font-weight:800;color:${sc};letter-spacing:2px;margin-bottom:8px">${EMO[sx.subj]||'📚'} ${sx.subj.toUpperCase()}</div>
+   ${schedPills(sx,sc)}
+   <div style="font-size:16px;font-weight:800;color:var(--t1);margin-bottom:10px;line-height:1.4">${title}</div>
+   ${rest.map(r=>{
+    const ico=r.startsWith('2hr')?'🧠':r.startsWith('5hr')?'⚔️':r.startsWith('1hr')?'🔍':'📌';
+    const bg=r.startsWith('2hr')?'rgba(79,195,247,.07)':r.startsWith('5hr')?'rgba(255,165,2,.07)':r.startsWith('1hr')?'rgba(255,71,87,.07)':'rgba(255,255,255,.03)';
+    const bc=r.startsWith('2hr')?'#4fc3f740':r.startsWith('5hr')?'#ffa50240':r.startsWith('1hr')?'#ff475740':'#ffffff20';
+    return`<div style="font-size:12.5px;color:var(--t2);padding:5px 10px;border-left:3px solid ${bc};background:${bg};border-radius:0 6px 6px 0;margin-bottom:4px;line-height:1.55">${ico} ${r}</div>`;
+   }).join('')}
+   ${sx.subj!=='REST'&&sx.subj!=='ALL'?mkRow(dayNum,sid):''}
+  </div>`;
+ }
+
  el.innerHTML=ADV_PLAN_DATA.map(d=>{
-  const sc1={Physics:'var(--ph)',Maths:'var(--ma)',Chemistry:'var(--ch)',ALL:'var(--gold)',REST:'var(--gr)'}[d.s1.subj]||'var(--t3)';
-  const sc2={Physics:'var(--ph)',Maths:'var(--ma)',Chemistry:'var(--ch)',ALL:'var(--gold)',REST:'var(--gr)'}[d.s2.subj]||'var(--t3)';
+  const sc1=SC[d.s1.subj]||'var(--t3)';
+  const sc2=SC[d.s2.subj]||'var(--t3)';
   const startD=new Date('2026-04-07');startD.setDate(startD.getDate()+d.d-1);
   const isToday=new Date().toDateString()===startD.toDateString();
-  return`<div class="card mb12 ${isToday?'today-card':''}" style="${isToday?'border-color:rgba(162,155,254,.4)':''}">
-   <div style="display:flex;gap:12px;align-items:flex-start">
-    <div style="background:var(--bg4);border-radius:10px;padding:10px 12px;text-align:center;min-width:64px;flex-shrink:0;border:1px solid ${isToday?'rgba(162,155,254,.3)':'var(--b1)'}">
-     <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t4)">Adv Day ${d.d}</div>
-     <div style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:${isToday?'var(--pu)':'var(--t2)'};">${d.date}</div>
-    </div>
-    <div style="flex:1;min-width:0">
-     <div class="dual-day">
-      <div class="dual-subj" style="border-color:${sc1}30;background:${sc1}06">
-       <div style="font-size:10px;font-weight:700;color:${sc1};letter-spacing:1px;margin-bottom:4px">${d.s1.subj.toUpperCase()}</div>
-       <div style="font-size:13px;color:var(--t1)">${d.s1.ch}</div>
-      </div>
-      <div class="dual-subj" style="border-color:${sc2}30;background:${sc2}06">
-       <div style="font-size:10px;font-weight:700;color:${sc2};letter-spacing:1px;margin-bottom:4px">${d.s2.subj.toUpperCase()}</div>
-       <div style="font-size:13px;color:var(--t1)">${d.s2.ch}</div>
-      </div>
+  const pb=phaseBadge(d.d);
+  const isRestDay=d.d>=36;
+
+  return`<div class="card mb12 ${isToday?'today-card':''}"
+   style="border-left:4px solid ${pb.col}50;padding:0;overflow:hidden;${isToday?'border-color:rgba(162,155,254,.5);box-shadow:0 0 30px rgba(162,155,254,.1)':''}">
+
+   <!-- ── Day Header Bar ── -->
+   <div style="background:linear-gradient(135deg,${pb.col}10,transparent);border-bottom:1px solid ${pb.col}25;padding:14px 18px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+    <div style="display:flex;align-items:baseline;gap:8px">
+     <span style="font-family:'Bebas Neue',sans-serif;font-size:42px;line-height:1;color:${isToday?'var(--pu)':pb.col}">${d.d}</span>
+     <div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--t4);letter-spacing:1px">ADV DAY</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:800;color:${isToday?'var(--pu)':'var(--t1)'}">${d.date}</div>
      </div>
-     ${d.test?`<div style="margin-top:8px;background:rgba(162,155,254,.07);border:1px solid rgba(162,155,254,.25);border-radius:8px;padding:7px 10px;font-size:12px;color:var(--pu);display:flex;align-items:center;gap:6px">⚡ ${d.test}</div>`:''}
     </div>
+    <div style="flex:1;min-width:120px">
+     <span style="font-size:11px;font-weight:700;padding:3px 12px;border-radius:99px;background:${pb.col}18;color:${pb.col};font-family:'JetBrains Mono',monospace">${pb.label}</span>
+     ${isToday?'<span style="margin-left:8px;font-size:11px;font-weight:800;color:var(--re2);animation:pulse .8s infinite">● TODAY</span>':''}
+    </div>
+    ${!isRestDay?`<div style="display:flex;gap:6px;align-items:center">
+     <span style="font-size:11px;font-weight:800;padding:4px 12px;border-radius:8px;background:rgba(255,165,2,.12);color:#ffa502;font-family:'JetBrains Mono',monospace">⏱ 16hr Total</span>
+     <span style="font-size:11px;font-weight:800;padding:4px 12px;border-radius:8px;background:rgba(46,213,115,.08);color:var(--gr);font-family:'JetBrains Mono',monospace">× 2 Subjects</span>
+    </div>`:''}
+   </div>
+
+   <!-- ── Subject Cards ── -->
+   <div style="padding:14px 18px">
+    <div class="dual-day" style="gap:12px">
+     ${chCard(d.s1,sc1,d.d)}
+     ${chCard(d.s2,sc2,d.d)}
+    </div>
+    ${d.test?`<div style="margin-top:12px;background:rgba(162,155,254,.08);border:1px solid rgba(162,155,254,.35);border-radius:10px;padding:10px 16px;font-size:14px;font-weight:700;color:var(--pu);display:flex;align-items:center;gap:8px">⚡ ${d.test}</div>`:''}
    </div>
   </div>`;
  }).join('');
+}
+
+// ── Advanced marker toggle (separate key namespace from Mains) ──
+function toggleAdvMk(day,subjId,key,btn){
+ const k='adv_mk_'+day+'_'+subjId;
+ let mk={lecture:false,dpp:false,hw:false,jeejan:false,mustdo:false};
+ try{const r=localStorage.getItem(k);if(r)mk={...mk,...JSON.parse(r)};}catch(e){}
+ mk[key]=!mk[key];
+ try{localStorage.setItem(k,JSON.stringify(mk));}catch(e){}
+ const icons={lecture:'🎓',dpp:'📝',hw:'📚',jeejan:'🎯',mustdo:'⚡'};
+ const labels={lecture:'Lecture',dpp:'DPP',hw:'HW',jeejan:'JEE Jan',mustdo:'Must Do'};
+ const cols={lecture:'#4fc3f7',dpp:'#ffb74d',hw:'#a29bfe',jeejan:'#fd79a8',mustdo:'#ff4757'};
+ const c=cols[key]||'#ffa502';
+ btn.style.background=mk[key]?c+'20':'transparent';
+ btn.style.color=mk[key]?c:'var(--t4)';
+ btn.style.borderColor=mk[key]?c:c+'35';
+ btn.innerHTML=`${icons[key]} ${labels[key]}${mk[key]?' <span style="font-size:13px">✓</span>':''}`;
 }
 
 // ═══ ANALYSIS ═══
@@ -3894,23 +4451,24 @@ function togStudy(ds){const i=S.study.indexOf(ds);if(i>=0)S.study.splice(i,1);el
 
 // ═══ TODAY / COUNTDOWN ═══
 function renderCountdownPage(){
- const startD=new Date('2026-03-05');const today=new Date();
+ const startD=new Date('2026-03-10');const today=new Date();
  const dayNum=Math.max(1,Math.floor((today-startD)/86400000)+1);
- const todayInfo=MAINS_DAILY.find(d=>d.d===Math.min(dayNum,28))||MAINS_DAILY[27];
- // Today's 2 chapters
+ const todayInfo=MAINS_DAILY.find(d=>d.d===Math.min(dayNum,24))||MAINS_DAILY[23];
+ // Today's chapters
  const sc1={Physics:'var(--ph)',Maths:'var(--ma)',Chemistry:'var(--ch)',ALL:'var(--gold)',REST:'var(--gr)'}[todayInfo.s1.subj]||'var(--t3)';
  const sc2={Physics:'var(--ph)',Maths:'var(--ma)',Chemistry:'var(--ch)',ALL:'var(--gold)',REST:'var(--gr)'}[todayInfo.s2.subj]||'var(--t3)';
  const todayEl=document.getElementById('today-chapters');
- if(todayEl)todayEl.innerHTML=`<div style="margin-bottom:8px"><div style="font-size:11px;color:var(--t4);margin-bottom:6px;font-family:'JetBrains Mono',monospace">Day ${dayNum} of 28 — ${today.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'short'})}</div>
+ if(todayEl)todayEl.innerHTML=`<div style="margin-bottom:8px"><div style="font-size:11px;color:var(--t4);margin-bottom:6px;font-family:'JetBrains Mono',monospace">Day ${dayNum} of 24 — ${today.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'short'})}</div>
   <div style="display:flex;flex-direction:column;gap:8px">
    <div style="background:${sc1}08;border:1px solid ${sc1}25;border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:12px">
     <div style="font-size:24px">${todayInfo.s1.subj==='Physics'?'⚛️':todayInfo.s1.subj==='Maths'?'📐':'🧪'}</div>
-    <div><div style="font-size:11px;color:${sc1};font-weight:700;letter-spacing:1px">${todayInfo.s1.subj.toUpperCase()}</div><div style="font-size:14px;font-weight:700">${todayInfo.s1.ch}</div></div>
+    <div><div style="font-size:11px;color:${sc1};font-weight:700;letter-spacing:1px">${todayInfo.s1.subj.toUpperCase()}${todayInfo.s1.hours?' · '+todayInfo.s1.hours+'hr':''}</div><div style="font-size:14px;font-weight:700">${todayInfo.s1.ch}</div></div>
    </div>
    <div style="background:${sc2}08;border:1px solid ${sc2}25;border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:12px">
     <div style="font-size:24px">${todayInfo.s2.subj==='Physics'?'⚛️':todayInfo.s2.subj==='Maths'?'📐':'🧪'}</div>
-    <div><div style="font-size:11px;color:${sc2};font-weight:700;letter-spacing:1px">${todayInfo.s2.subj.toUpperCase()}</div><div style="font-size:14px;font-weight:700">${todayInfo.s2.ch}</div></div>
+    <div><div style="font-size:11px;color:${sc2};font-weight:700;letter-spacing:1px">${todayInfo.s2.subj.toUpperCase()}${todayInfo.s2.hours?' · '+todayInfo.s2.hours+'hr':''}</div><div style="font-size:14px;font-weight:700">${todayInfo.s2.ch}</div></div>
    </div>
+   ${todayInfo.s3?`<div style="background:rgba(129,199,132,.08);border:1px solid rgba(129,199,132,.25);border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:12px"><div style="font-size:24px">🧪</div><div><div style="font-size:11px;color:var(--ch);font-weight:700;letter-spacing:1px">CHEMISTRY${todayInfo.s3.hours?' · '+todayInfo.s3.hours+'hr':''}</div><div style="font-size:14px;font-weight:700">${todayInfo.s3.ch}</div></div></div>`:''}
    ${todayInfo.test?`<div style="background:rgba(255,71,87,.06);border:1px solid rgba(255,71,87,.2);border-radius:10px;padding:10px 14px;font-size:13px;color:var(--re2)">📝 ${todayInfo.test}</div>`:''}
   </div>
  </div>`;
@@ -3921,7 +4479,7 @@ function renderCountdownPage(){
  const sEl=document.getElementById('cd-stats');
  if(sEl)sEl.innerHTML=[
   [allPh.pct+'%','Physics','var(--ph)'],[allMa.pct+'%','Maths','var(--ma)'],[allCh.pct+'%','Chem','var(--ch)'],
-  [pct+'%','Overall','var(--gold)'],[dayNum+'/28','Study Day','var(--re2)'],
+  [pct+'%','Overall','var(--gold)'],[dayNum+'/24','Study Day','var(--re2)'],
  ].map(([v,l,c])=>`<div class="stat-p"><div class="stat-v" style="color:${c}">${v}</div><div class="stat-l">${l}</div></div>`).join('');
  // Next test
  const ntEl=document.getElementById('next-test-card');

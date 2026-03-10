@@ -905,44 +905,80 @@ body{font-family:'Crimson Pro',Georgia,serif;background:var(--bg0);color:var(--t
 <!-- ══ TRACKER ══ -->
 <div class="tab-pane" id="tab-tracker">
   <div class="card-g mb16">
-    <div class="section-t">📋 Full Chapter Tracker</div>
-    <div class="section-s">Confidence ratings + subtopic progress for every chapter</div>
+    <div class="section-t">📋 Study Plan Tracker — Mar 10 → Apr 1</div>
+    <div class="section-s">Day-by-day progress · Mark Lecture / DPP / HW / JEE Jan / Must Do for each subject · All 24 days</div>
+    <!-- Overall progress bar -->
+    <div style="margin-top:14px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px">
+        <span style="font-size:13px;font-weight:700;color:var(--t2)">Overall Completion</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:800;color:var(--gold)" id="tr-overall-pct">0%</span>
+      </div>
+      <div style="height:8px;background:rgba(255,255,255,.05);border-radius:99px;overflow:hidden">
+        <div id="tr-overall-bar" style="height:100%;border-radius:99px;background:linear-gradient(90deg,var(--gold),var(--or));transition:width .4s ease;width:0%"></div>
+      </div>
+    </div>
+    <!-- Per-phase progress -->
+    <div class="g3" style="margin-top:14px" id="tr-phase-bars"></div>
   </div>
-  <div class="pill-tabs" id="tr-subj-tabs"></div>
-  <div class="pill-tabs" id="tr-filt-tabs"></div>
-  <div class="card" style="padding:0;overflow:hidden"><table class="tr-table"><thead><tr>
-    <th>#</th><th>Chapter</th><th>Pri</th><th>Wt</th><th>Confidence</th><th>Subs</th><th>Done</th>
-  </tr></thead><tbody id="tr-tbody"></tbody></table></div>
+  <!-- Filter pills -->
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px" id="tr-filter-pills">
+    <button class="pill-tab ac" onclick="trFilter('all',this)">All Days</button>
+    <button class="pill-tab" onclick="trFilter('p1',this)">Phase 1 (Mar 10–18)</button>
+    <button class="pill-tab" onclick="trFilter('p1b',this)">Days 10–11 (Phy Chem)</button>
+    <button class="pill-tab" onclick="trFilter('p2',this)">Phase 2 (Mar 21–Apr 1)</button>
+    <button class="pill-tab" onclick="trFilter('done',this)">✅ Done</button>
+    <button class="pill-tab" onclick="trFilter('pending',this)">⏳ Pending</button>
+  </div>
+  <div id="tr-plan-content"></div>
 </div>
 
 <!-- ══ GITHUB ══ -->
 <div class="tab-pane" id="tab-github">
   <div class="card-g mb16">
-    <div class="section-t">📈 Study Activity</div>
-    <div class="section-s">GitHub-style heatmap. Click day to toggle. Mark today to build streak.</div>
+    <div class="section-t">📅 Study Activity — Mar 10 → Apr 1, 2026</div>
+    <div class="section-s">Fixed 24-day plan heatmap. Each cell = one study day. Colour = marker completion %. Click to mark studied.</div>
   </div>
+
+  <!-- ══ Overall progress strip ══ -->
   <div class="card mb16">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-      <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700">90-Day Heatmap</div>
-      <button class="btn btn-gold btn-sm" onclick="markStudyToday()">✓ Mark Today</button>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+      <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700">🗓️ Mar 10 → Apr 1 · 24 Study Days</div>
+      <button class="btn btn-gold btn-sm" onclick="markStudyToday()">✓ Mark Today Done</button>
     </div>
-    <div id="gh-month-labels" style="font-size:9px;color:var(--t4);font-family:'JetBrains Mono',monospace;margin-bottom:4px;padding-left:18px;display:flex;gap:0"></div>
-    <div style="display:flex;gap:6px">
-      <div style="display:flex;flex-direction:column;gap:3px;font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--t4);padding-top:2px">
-        <span style="height:13px;line-height:13px">Mo</span><span style="height:13px"></span><span style="height:13px;line-height:13px">We</span><span style="height:13px"></span><span style="height:13px;line-height:13px">Fr</span><span style="height:13px"></span><span style="height:13px;line-height:13px">Su</span>
+    <!-- Weekday header -->
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:6px;text-align:center">
+      <div style="font-size:11px;font-weight:700;color:var(--t4);font-family:'JetBrains Mono',monospace">MON</div>
+      <div style="font-size:11px;font-weight:700;color:var(--t4);font-family:'JetBrains Mono',monospace">TUE</div>
+      <div style="font-size:11px;font-weight:700;color:var(--t4);font-family:'JetBrains Mono',monospace">WED</div>
+      <div style="font-size:11px;font-weight:700;color:var(--t4);font-family:'JetBrains Mono',monospace">THU</div>
+      <div style="font-size:11px;font-weight:700;color:var(--t4);font-family:'JetBrains Mono',monospace">FRI</div>
+      <div style="font-size:11px;font-weight:700;color:var(--t4);font-family:'JetBrains Mono',monospace">SAT</div>
+      <div style="font-size:11px;font-weight:700;color:var(--t4);font-family:'JetBrains Mono',monospace">SUN</div>
+    </div>
+    <!-- Calendar cells (filled by JS) -->
+    <div id="plan-cal-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:16px"></div>
+    <!-- Colour legend -->
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:6px">
+      <span style="font-size:12px;color:var(--t4)">Completion →</span>
+      <div style="display:flex;gap:5px;align-items:center">
+        <div style="width:20px;height:20px;border-radius:5px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1)"></div><span style="font-size:11px;color:var(--t4)">0%</span>
+        <div style="width:20px;height:20px;border-radius:5px;background:#1a3a20"></div><span style="font-size:11px;color:var(--t4)">1–40%</span>
+        <div style="width:20px;height:20px;border-radius:5px;background:#1e6b2a"></div><span style="font-size:11px;color:var(--t4)">41–70%</span>
+        <div style="width:20px;height:20px;border-radius:5px;background:#26a641"></div><span style="font-size:11px;color:var(--t4)">71–99%</span>
+        <div style="width:20px;height:20px;border-radius:5px;background:#39d353;box-shadow:0 0 8px #39d35370"></div><span style="font-size:11px;color:#39d353">100% ✅</span>
+        <div style="width:20px;height:20px;border-radius:5px;background:rgba(201,168,76,.25);border:2px solid var(--gold)"></div><span style="font-size:11px;color:var(--gold)">TODAY</span>
+        <div style="width:20px;height:20px;border-radius:5px;background:rgba(255,71,87,.15);border:1px solid rgba(255,71,87,.4)"></div><span style="font-size:11px;color:var(--re2)">PAST</span>
       </div>
-      <div class="gh-grid" id="gh-grid"></div>
-    </div>
-    <div style="display:flex;align-items:center;gap:5px;margin-top:8px;font-size:11px;color:var(--t3)">
-      <span>Less</span>
-      <div style="display:flex;gap:3px">${['rgba(255,255,255,.04)','#0d4429','#006d32','#26a641','#39d353'].map(c=>`<div style="width:11px;height:11px;border-radius:2px;background:${c}"></div>`).join('')}</div>
-      <span>More</span>
-      <span style="margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold)" id="gh-streak-txt"></span>
     </div>
   </div>
+
+  <!-- ══ Stats row ══ -->
+  <div class="g4 mb16" id="gh-plan-stats"></div>
+
+  <!-- ══ Streak stats ══ -->
   <div class="g3">
     <div class="card" style="text-align:center"><div class="stat-v" style="font-size:44px;color:var(--or)" id="gh-cur">0</div><div class="stat-l">🔥 Current Streak</div></div>
-    <div class="card" style="text-align:center"><div class="stat-v" style="font-size:44px;color:var(--gr)" id="gh-tot">0</div><div class="stat-l">✅ Total Days</div></div>
+    <div class="card" style="text-align:center"><div class="stat-v" style="font-size:44px;color:var(--gr)" id="gh-tot">0</div><div class="stat-l">✅ Days Studied</div></div>
     <div class="card" style="text-align:center"><div class="stat-v" style="font-size:44px;color:var(--gold)" id="gh-best">0</div><div class="stat-l">🏆 Best Streak</div></div>
   </div>
 </div>
@@ -2856,7 +2892,7 @@ function renderPlanWeek(){
     <div style="font-size:13px;font-weight:800;color:${sc};letter-spacing:1.5px;margin-bottom:6px">${EMO[sx.subj]||'📚'} ${sx.subj.toUpperCase()}</div>
     <div style="display:flex;flex-wrap:wrap;gap:3px;margin-bottom:6px">${hrBadge}${qBadge}${tagBadges}${ncertBadge}${eduBadge}</div>
     <div style="font-size:15px;font-weight:700;color:var(--t1);line-height:1.45">${sx.ch}</div>
-    ${showMk4||showMk5?markerHtml(d,sid||sx.id,showMk5):''}
+    ${markerHtml(d,sid||sx.id,showMk5)}
    </div>`;
   };
 
@@ -4396,58 +4432,409 @@ function showAdvSylSubj(subj, el){
  ['Physics','Chemistry','Maths'].forEach(s=>{const el2=document.getElementById('asyl-'+s);if(el2)el2.style.display=s===subj?'block':'none';});
 }
 
-function renderTracker(){
- const tabs=document.getElementById('tr-subj-tabs');
- if(tabs)tabs.innerHTML=['Physics','Maths','Chemistry'].map(s=>{const col=s==='Physics'?'var(--ph)':s==='Maths'?'var(--ma)':'var(--ch)';const ac=S.trSubj===s;return`<button class="pill-tab ${ac?'ac':''}" onclick="S.trSubj='${s}';renderTracker()" style="${ac?`border-color:${col}40;background:${col}08;color:${col}`:''}">
-  ${s==='Physics'?'⚛️':s==='Maths'?'📐':'🧪'} ${s}</button>`;}).join('');
- const filts=document.getElementById('tr-filt-tabs');
- if(filts)filts.innerHTML=[['all','All'],['weak','Weak'],['review','Review'],['strong','Good+'],['ss','S-Priority']].map(([v,l])=>`<button class="pill-tab ${S.trFilt===v?'ac':''}" onclick="S.trFilt='${v}';renderTracker()">${l}</button>`).join('');
- const pk=S.trSubj==='Physics'?'ph':S.trSubj==='Maths'?'ma':'ch';
- const data=pk==='ph'?PH:pk==='ma'?MA:CH;
- const filtered=S.trFilt==='all'?data:S.trFilt==='weak'?data.filter(c=>(S.conf[`${pk}-${c.day}`]??-1)<=0):S.trFilt==='review'?data.filter(c=>(S.conf[`${pk}-${c.day}`]??-1)===2):S.trFilt==='strong'?data.filter(c=>(S.conf[`${pk}-${c.day}`]??-1)>=3):S.trFilt==='ss'?data.filter(c=>c.pri==='SS'||c.pri==='S'):data;
- const col=pk==='ph'?'#4fc3f7':pk==='ma'?'#ffb74d':'#81c784';
- const CLBL=['🆕','📖','🔄','👍','⭐'];const CCOL=['#636e72','#f87171','#fb923c','#5b9cf6','#2ed573'];
- const tb=document.getElementById('tr-tbody');
- tb.innerHTML=filtered.map(c=>{
-  const clv=(S.conf[`${pk}-${c.day}`]??-1);
-  const dt=data.find(d=>d.day===c.day);
-  const dsubs=dt?dt.subs.filter((_,i)=>S.subs[`${pk}-${c.day}-${i}`]).length:0;
-  const tsubs=dt?.subs.length||1;
-  const pc={'SS':'#ffd700','S':col,'A':'#a29bfe','B':'#636e72','C':'#444460'}[c.pri]||'#636e72';
-  return`<tr>
-   <td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t4)">D${c.day}</td>
-   <td><div style="font-size:13px;font-weight:600">${c.title.replace(/⭐[⭐]?/g,'').trim()}</div><div style="font-size:10px;color:var(--t4)">${c.pct}</div></td>
-   <td><span class="pri-badge" style="background:${pc}20;color:${pc}">${c.pri}</span></td>
-   <td><span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:${col}">${c.wt}/10</span></td>
-   <td><div class="mini-conf">${CLBL.map((l,ci)=>`<button class="mc-btn" onclick="S.conf['${pk}-${c.day}']=${ci};save();renderTracker()" style="border-color:${clv>=ci?CCOL[ci]:'var(--b2)'};background:${clv===ci?CCOL[ci]+'25':'transparent'};color:${clv>=ci?CCOL[ci]:'var(--t4)'}">${l}</button>`).join('')}</div></td>
-   <td><div class="prog-mini"><div class="prog-fill" style="width:${Math.round(dsubs/tsubs*100)}%;background:${col}"></div></div><div style="font-size:9px;color:var(--t4);font-family:'JetBrains Mono',monospace">${dsubs}/${tsubs}</div></td>
-   <td><div style="width:22px;height:22px;border-radius:6px;border:1.5px solid ${S.dayDone[`${pk}-${c.day}`]?'#2ed573':'var(--b2)'};background:${S.dayDone[`${pk}-${c.day}`]?'rgba(46,213,115,.15)':'transparent'};cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;color:#2ed573" onclick="togDay('${pk}',${c.day});renderTracker()">${S.dayDone[`${pk}-${c.day}`]?'✓':''}</div></td>
-  </tr>`;}).join('');
+// ══════════════════════════════════════════════════════
+// STUDY PLAN TRACKER — Mar 10 → Apr 1 (24 Days)
+// Each day × each subject × 5 markers
+// ══════════════════════════════════════════════════════
+let TRF='all'; // current filter
+
+function trFilter(f,btn){
+ TRF=f;
+ document.querySelectorAll('#tr-filter-pills .pill-tab').forEach(b=>b.classList.remove('ac'));
+ if(btn)btn.classList.add('ac');
+ renderTracker();
 }
 
-// ═══ GITHUB ═══
-function markStudyToday(){const t=new Date().toDateString();if(!S.study.includes(t)){S.study.push(t);save();}renderGithub();}
-function renderGithub(){
- const days=Array.from({length:91},(_,i)=>{const d=new Date();d.setDate(d.getDate()-90+i);return d;});
- const weeks=[];let wk=[];
- const fd=days[0].getDay();for(let i=0;i<fd;i++)wk.push(null);
- days.forEach(d=>{wk.push(d);if(wk.length===7){weeks.push(wk);wk=[];}});if(wk.length)weeks.push(wk);
- const today=new Date().toDateString();
- const mn=['Jan','Feb','Mar','Apr','May'];
- const mlEl=document.getElementById('gh-month-labels');
- if(mlEl){let ml='';weeks.forEach((w,wi)=>{const fn=w.find(d=>d);if(fn&&(wi===0||fn.getDate()<=7)){ml+=`<span style="flex:1;min-width:16px">${mn[fn.getMonth()]||''}</span>`;}else{ml+=`<span style="flex:1;min-width:16px"></span>`;}});mlEl.innerHTML=ml;}
- const grid=document.getElementById('gh-grid');
- if(grid)grid.innerHTML=weeks.map(w=>`<div class="gh-week">${w.map(d=>{if(!d)return'<div style="width:13px;height:13px"></div>';const ds=d.toDateString();const done=S.study.includes(ds);const it=ds===today;const bg=done?'#26a641':it?'rgba(201,168,76,.3)':'rgba(255,255,255,.04)';return`<div class="gh-cell" style="background:${bg};border:${it?'1px solid var(--gold)':'none'}" data-tip="${ds}${done?' ✓':''}" onclick="togStudy('${ds}')"></div>`;}).join('')}</div>`).join('');
- // Streak calc
- let cur=0,best=0,st=0;const srt=[...S.study].sort();
- for(let i=srt.length-1;i>=0;i--){if(i===srt.length-1){if((new Date()-new Date(srt[i]))/86400000>1.5)break;cur=1;}else{const a=new Date(srt[i+1]),b=new Date(srt[i]);if((a-b)/86400000<=1.5)cur++;else break;}}
- srt.forEach((s,i)=>{if(i===0)st=1;else{const a=new Date(srt[i]),b=new Date(srt[i-1]);if((a-b)/86400000<=1.5)st++;else st=1;}best=Math.max(best,st);});
- document.getElementById('gh-cur').textContent=cur;
- document.getElementById('gh-tot').textContent=S.study.length;
- document.getElementById('gh-best').textContent=best;
- document.getElementById('gh-streak-txt').textContent=cur+'d streak · '+S.study.length+' total';
+// Key: tr_[day]_[subjId]_[markerKey]
+function getTrMk(day,subjId){
+ try{const r=localStorage.getItem('tr_mk_'+day+'_'+subjId);
+  return r?JSON.parse(r):{lecture:false,dpp:false,hw:false,jeejan:false,mustdo:false};}
+ catch(e){return{lecture:false,dpp:false,hw:false,jeejan:false,mustdo:false};}
 }
-function togStudy(ds){const i=S.study.indexOf(ds);if(i>=0)S.study.splice(i,1);else S.study.push(ds);save();renderGithub();}
+function setTrMk(day,subjId,mk){
+ try{localStorage.setItem('tr_mk_'+day+'_'+subjId,JSON.stringify(mk));}catch(e){}
+}
+function toggleTrMk(day,subjId,key,btn){
+ const mk=getTrMk(day,subjId);
+ mk[key]=!mk[key];
+ setTrMk(day,subjId,mk);
+ const cols={lecture:'#4fc3f7',dpp:'#ffb74d',hw:'#a29bfe',jeejan:'#fd79a8',mustdo:'#ff4757'};
+ const icons={lecture:'🎓',dpp:'📝',hw:'📚',jeejan:'🎯',mustdo:'⚡'};
+ const labels={lecture:'Lecture',dpp:'DPP',hw:'HW',jeejan:'JEE Jan',mustdo:'Must Do'};
+ const c=cols[key];
+ btn.style.background=mk[key]?c+'22':'transparent';
+ btn.style.color=mk[key]?c:'var(--t4)';
+ btn.style.borderColor=mk[key]?c:c+'40';
+ btn.innerHTML=`${icons[key]} ${labels[key]}${mk[key]?' ✓':''}`;
+ renderTrStats();
+}
+
+// Day fully done = all markers of all subjects ticked
+function isDayDone(d){
+ const subjs=[d.s1,d.s2,d.s3].filter(Boolean).filter(s=>s.subj!=='ALL'&&s.subj!=='REST');
+ if(!subjs.length)return false;
+ return subjs.every(sx=>{
+  const mk=getTrMk(d.d,sx.id||sx.subj+d.d);
+  return mk.lecture&&mk.dpp&&mk.hw&&mk.mustdo;
+ });
+}
+// Count done markers for a subject
+function subjDonePct(d,sx){
+ const mk=getTrMk(d.d,sx.id||sx.subj+d.d);
+ const total=5;const done=[mk.lecture,mk.dpp,mk.hw,mk.jeejan,mk.mustdo].filter(Boolean).length;
+ return{done,total,pct:Math.round(done/total*100)};
+}
+
+function renderTrStats(){
+ // Overall
+ const allDays=MAINS_DAILY;
+ let totalMk=0,doneMk=0;
+ allDays.forEach(d=>{
+  [d.s1,d.s2,d.s3].filter(Boolean).filter(s=>s.subj!=='ALL'&&s.subj!=='REST').forEach(sx=>{
+   const mk=getTrMk(d.d,sx.id||sx.subj+d.d);
+   totalMk+=5;doneMk+=[mk.lecture,mk.dpp,mk.hw,mk.jeejan,mk.mustdo].filter(Boolean).length;
+  });
+ });
+ const pct=totalMk?Math.round(doneMk/totalMk*100):0;
+ const bar=document.getElementById('tr-overall-bar');
+ const pctEl=document.getElementById('tr-overall-pct');
+ if(bar)bar.style.width=pct+'%';
+ if(pctEl)pctEl.textContent=pct+'%';
+
+ // Phase bars
+ const phases=[
+  {label:'Phase 1A — Days 1–9',days:allDays.filter(d=>d.d<=9),col:'#4fc3f7'},
+  {label:'Days 10–11 (Phy Chem)',days:allDays.filter(d=>d.d>=10&&d.d<=11),col:'#ff4757'},
+  {label:'Phase 2 — Days 12–24',days:allDays.filter(d=>d.d>=12),col:'#81c784'},
+ ];
+ const pb=document.getElementById('tr-phase-bars');
+ if(pb)pb.innerHTML=phases.map(ph=>{
+  let pm=0,pd=0;
+  ph.days.forEach(d=>{
+   [d.s1,d.s2,d.s3].filter(Boolean).filter(s=>s.subj!=='ALL'&&s.subj!=='REST').forEach(sx=>{
+    const mk=getTrMk(d.d,sx.id||sx.subj+d.d);
+    pm+=5;pd+=[mk.lecture,mk.dpp,mk.hw,mk.jeejan,mk.mustdo].filter(Boolean).length;
+   });
+  });
+  const p=pm?Math.round(pd/pm*100):0;
+  return`<div class="card" style="padding:12px">
+   <div style="font-size:11px;font-weight:700;color:${ph.col};margin-bottom:5px">${ph.label}</div>
+   <div style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:800;color:${ph.col}">${p}%</div>
+   <div style="height:5px;background:rgba(255,255,255,.05);border-radius:99px;overflow:hidden;margin-top:6px">
+    <div style="height:100%;width:${p}%;background:${ph.col};border-radius:99px;transition:width .4s"></div>
+   </div>
+   <div style="font-size:10px;color:var(--t4);margin-top:4px;font-family:'JetBrains Mono',monospace">${pd}/${pm} markers</div>
+  </div>`;
+ }).join('');
+}
+
+const MK_ITEMS=[
+ {k:'lecture',label:'Lecture',  col:'#4fc3f7',ico:'🎓'},
+ {k:'dpp',    label:'DPP',      col:'#ffb74d',ico:'📝'},
+ {k:'hw',     label:'HW',       col:'#a29bfe',ico:'📚'},
+ {k:'jeejan', label:'JEE Jan',  col:'#fd79a8',ico:'🎯'},
+ {k:'mustdo', label:'Must Do',  col:'#ff4757',ico:'⚡'},
+];
+
+function renderTracker(){
+ renderTrStats();
+ const SC={Physics:'var(--ph)',Maths:'var(--ma)',Chemistry:'var(--ch)',ALL:'var(--gold)',REST:'var(--gr)'};
+ const EMO={Physics:'⚛️',Maths:'📐',Chemistry:'🧪',ALL:'📚',REST:'😴'};
+
+ // Filter days
+ let days=MAINS_DAILY;
+ if(TRF==='p1')     days=MAINS_DAILY.filter(d=>d.d<=9);
+ else if(TRF==='p1b')days=MAINS_DAILY.filter(d=>d.d>=10&&d.d<=11);
+ else if(TRF==='p2') days=MAINS_DAILY.filter(d=>d.d>=12);
+ else if(TRF==='done')   days=MAINS_DAILY.filter(d=>isDayDone(d));
+ else if(TRF==='pending')days=MAINS_DAILY.filter(d=>!isDayDone(d));
+
+ const el=document.getElementById('tr-plan-content');
+ if(!el)return;
+
+ const today=new Date();
+ const planStart=new Date('2026-03-10');
+
+ el.innerHTML=days.map(d=>{
+  const dayDate=new Date('2026-03-10');dayDate.setDate(dayDate.getDate()+d.d-1);
+  const isToday=today.toDateString()===dayDate.toDateString();
+  const isPast=dayDate<today&&!isToday;
+  const isFuture=dayDate>today;
+  const done=isDayDone(d);
+
+  // Phase colours
+  const phase1=d.d<=9;const phyChem=d.d>=10&&d.d<=11;const phase2=d.d>=12&&d.d<=20;const blitz=d.d>=21;
+  const phCol=phase1?'#4fc3f7':phyChem?'#ff4757':phase2?'#81c784':'#c9a84c';
+  const phLabel=phase1?'PHASE 1A':phyChem?'PHY CHEM':phase2?'PHASE 2':'FINAL BLITZ';
+
+  // Status indicator
+  const statusCol=done?'#2ed573':isToday?'#ff4757':isPast?'#ffa502':'var(--t4)';
+  const statusLabel=done?'✅ DONE':isToday?'🔴 TODAY':isPast?'⚠️ PAST':'🔵 UPCOMING';
+
+  // Subjects
+  const subjs=[d.s1,d.s2,d.s3].filter(Boolean);
+
+  // Build subject marker blocks
+  function subjBlock(sx){
+   if(!sx)return'';
+   const sc=SC[sx.subj]||'var(--t3)';
+   const sid=sx.id||sx.subj+d.d;
+   const mk=getTrMk(d.d,sid);
+   const sp=subjDonePct(d,sx);
+   const isAllRest=sx.subj==='ALL'||sx.subj==='REST';
+
+   // Title — extract clean name without hour prefix
+   const cleanCh=sx.ch.replace(/^\[.*?\]\s*/,'');
+
+   return`<div style="background:${sc}07;border:1.5px solid ${sc}${sp.done===sp.total?'50':'20'};border-radius:14px;padding:16px;flex:1;min-width:260px">
+    <!-- Subject header -->
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+     <span style="font-size:22px">${EMO[sx.subj]||'📚'}</span>
+     <div style="flex:1">
+      <div style="font-size:13px;font-weight:800;color:${sc};letter-spacing:1.5px">${sx.subj.toUpperCase()}</div>
+      ${sx.hours?`<div style="font-size:11px;color:var(--t4);font-family:'JetBrains Mono',monospace">⏱ ${sx.hours}hr${sx.qcount?' · 📊 '+sx.qcount+'Q':''}</div>`:''}
+     </div>
+     <!-- Mini progress ring -->
+     <div style="text-align:center">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:800;color:${sp.done===5?'#2ed573':sc}">${sp.done}/5</div>
+      <div style="font-size:9px;color:var(--t4)">done</div>
+     </div>
+    </div>
+    <!-- Chapter name -->
+    <div style="font-size:14px;font-weight:700;color:var(--t1);line-height:1.45;margin-bottom:12px;padding:8px 10px;background:var(--bg4);border-radius:8px">${cleanCh}</div>
+    <!-- Progress bar -->
+    <div style="height:4px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden;margin-bottom:12px">
+     <div style="height:100%;width:${sp.pct}%;background:${sp.done===5?'#2ed573':sc};border-radius:99px;transition:width .3s"></div>
+    </div>
+    ${isAllRest?'':
+    `<!-- 5 Marker buttons -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:2px">
+     ${MK_ITEMS.map(it=>`<button
+      onclick="toggleTrMk(${d.d},'${sid}','${it.k}',this)"
+      style="font-size:13px;font-weight:700;padding:8px 10px;border-radius:9px;
+       border:1.5px solid ${mk[it.k]?it.col:it.col+'35'};
+       background:${mk[it.k]?it.col+'20':'transparent'};
+       color:${mk[it.k]?it.col:'var(--t4)'};
+       cursor:pointer;transition:all .18s;font-family:'Crimson Pro',serif;
+       display:flex;align-items:center;justify-content:center;gap:6px;width:100%">
+      ${it.ico} ${it.label}${mk[it.k]?' ✓':''}
+     </button>`).join('')}
+    </div>`}
+   </div>`;
+  }
+
+  return`<div style="border-radius:18px;overflow:hidden;margin-bottom:14px;
+   border:2px solid ${isToday?'rgba(255,71,87,.5)':done?'rgba(46,213,115,.3)':phCol+'30'};
+   box-shadow:${isToday?'0 0 30px rgba(255,71,87,.1)':done?'0 0 20px rgba(46,213,115,.05)':'none'}">
+
+   <!-- ══ Day Header ══ -->
+   <div style="background:linear-gradient(135deg,${phCol}15,${phCol}05);border-bottom:1px solid ${phCol}30;padding:16px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+
+    <!-- Big day number -->
+    <div style="text-align:center;min-width:60px">
+     <div style="font-family:'Bebas Neue',sans-serif;font-size:52px;line-height:1;color:${isToday?'var(--re2)':done?'#2ed573':phCol}">${d.d}</div>
+     <div style="font-size:10px;font-weight:700;color:var(--t4);letter-spacing:1px;font-family:'JetBrains Mono',monospace">DAY</div>
+    </div>
+
+    <!-- Date + phase -->
+    <div style="flex:1;min-width:120px">
+     <div style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:800;color:var(--t1)">${d.date}</div>
+     <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">
+      <span style="font-size:11px;font-weight:800;padding:3px 10px;border-radius:99px;background:${phCol}18;color:${phCol};font-family:'JetBrains Mono',monospace">${phLabel}</span>
+      <span style="font-size:11px;font-weight:800;padding:3px 10px;border-radius:99px;background:${statusCol}18;color:${statusCol};font-family:'JetBrains Mono',monospace">${statusLabel}</span>
+     </div>
+    </div>
+
+    <!-- Total hours badge -->
+    <div style="text-align:right">
+     ${[d.s1,d.s2,d.s3].filter(Boolean).map(sx=>sx.hours).filter(Boolean).reduce((a,b)=>a+b,0)>0
+      ?`<div style="font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:800;color:#ffa502">
+        ${[d.s1,d.s2,d.s3].filter(Boolean).map(sx=>sx.hours||0).reduce((a,b)=>a+b,0)}hr
+       </div>
+       <div style="font-size:10px;color:var(--t4)">total today</div>`:''}
+    </div>
+   </div>
+
+   <!-- ══ Subject Blocks ══ -->
+   <div style="padding:14px 16px;display:flex;gap:12px;flex-wrap:wrap">
+    ${subjs.map(sx=>subjBlock(sx)).join('')}
+   </div>
+
+   <!-- ══ Test/Note Banner ══ -->
+   ${d.test?`<div style="margin:0 16px 14px;background:rgba(255,71,87,.07);border:1px solid rgba(255,71,87,.25);border-radius:10px;padding:10px 14px;font-size:13px;font-weight:700;color:var(--re2)">📝 ${d.test}</div>`:''}
+   ${d.note?`<div style="margin:0 16px 14px;background:rgba(255,165,2,.06);border:1px solid rgba(255,165,2,.2);border-radius:10px;padding:8px 14px;font-size:12px;color:#ffa502">${d.note}</div>`:''}
+  </div>`;
+ }).join('');
+}
+
+// ═══ STUDY ACTIVITY CALENDAR — Fixed Mar 10 → Apr 1 ═══
+
+function markStudyToday(){
+ const t=new Date().toDateString();
+ if(!S.study.includes(t)){S.study.push(t);save();}
+ renderGithub();
+}
+
+function togStudy(ds){
+ const i=S.study.indexOf(ds);
+ if(i>=0)S.study.splice(i,1);else S.study.push(ds);
+ save();renderGithub();
+}
+
+// Get completion % for a plan day (0–100) from its markers
+function getDayPct(planDay){
+ const d=MAINS_DAILY.find(x=>x.d===planDay);
+ if(!d)return 0;
+ const subjs=[d.s1,d.s2,d.s3].filter(Boolean).filter(s=>s.subj!=='ALL'&&s.subj!=='REST');
+ if(!subjs.length)return 0;
+ let total=0,done=0;
+ subjs.forEach(sx=>{
+  const mk=getTrMk(d.d,sx.id||sx.subj+d.d);
+  total+=5;
+  done+=[mk.lecture,mk.dpp,mk.hw,mk.jeejan,mk.mustdo].filter(Boolean).length;
+ });
+ return total?Math.round(done/total*100):0;
+}
+
+function renderGithub(){
+ const grid=document.getElementById('plan-cal-grid');
+ if(!grid)return;
+
+ // Mar 10, 2026 = Tuesday. Monday=0, so offset = 1 (Mon slot empty before Tue)
+ // Build 24 plan days: Mar 10 (Day1) … Apr 1 (Day23 = Mar 31... wait: Mar has 31 days)
+ // Mar 10 → Apr 1 inclusive = 23 days
+ const PLAN_START=new Date('2026-03-10');
+ const PLAN_END  =new Date('2026-04-01');
+ const today=new Date(); today.setHours(0,0,0,0);
+
+ // Day-of-week of Mar 10: Tuesday=2 (JS). Mon-anchored offset = (2+6)%7 = 1
+ const startDow=PLAN_START.getDay(); // 0=Sun
+ const monOffset=(startDow+6)%7;     // cells to pad at start (Mon-anchored)
+
+ // Build full cell list: nulls then plan days
+ const cells=[];
+ for(let i=0;i<monOffset;i++) cells.push(null);
+ for(let i=0;i<23;i++){
+  const d=new Date(PLAN_START);
+  d.setDate(d.getDate()+i);
+  cells.push({date:d,dayNum:i+1});
+ }
+ // Pad end to multiple of 7
+ while(cells.length%7!==0) cells.push(null);
+
+ const MONTH=['Jan','Feb','Mar','Apr'];
+
+ grid.innerHTML=cells.map(c=>{
+  if(!c) return`<div style="min-height:72px"></div>`;
+
+  const ds=c.date.toDateString();
+  const isToday=c.date.getTime()===today.getTime();
+  const isPast=c.date<today&&!isToday;
+  const isFuture=c.date>today;
+  const studied=S.study.includes(ds);
+  const pct=getDayPct(c.dayNum);
+  const planD=MAINS_DAILY.find(x=>x.d===c.dayNum);
+
+  // Colour by completion
+  let bg,border,glow='';
+  if(pct===100){bg='#39d353';border='#39d353';glow='box-shadow:0 0 14px #39d35360';}
+  else if(pct>=71){bg='#26a641';border='#26a641';}
+  else if(pct>=41){bg='#1e6b2a';border='#1e6b2a';}
+  else if(pct>=1) {bg='#1a3a20';border='#1a3a20';}
+  else if(isToday){bg='rgba(201,168,76,.18)';border='var(--gold)';}
+  else if(isPast) {bg='rgba(255,71,87,.08)';border='rgba(255,71,87,.35)';}
+  else            {bg='rgba(255,255,255,.03)';border='rgba(255,255,255,.08)';}
+
+  // Subject emojis
+  const emos=planD?[planD.s1,planD.s2,planD.s3].filter(Boolean).map(s=>({Physics:'⚛️',Maths:'📐',Chemistry:'🧪',ALL:'📚',REST:'😴'}[s.subj]||'📚')).join(''):'';
+
+  // Date label
+  const mon=MONTH[c.date.getMonth()-2]||'';
+  const dateStr=`${mon} ${c.date.getDate()}`;
+
+  return`<div onclick="togStudy('${ds}')"
+   title="Day ${c.dayNum} — ${dateStr}${pct>0?' · '+pct+'% done':''}"
+   style="border-radius:12px;border:2px solid ${border};background:${bg};${glow};
+    padding:10px 8px;min-height:72px;cursor:pointer;transition:all .18s;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+    position:relative;
+    ${isToday?'box-shadow:0 0 20px rgba(201,168,76,.3)':''}">
+
+   <!-- Day number BIG -->
+   <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;line-height:1;
+    color:${pct===100?'#fff':isToday?'var(--gold)':isPast&&pct===0?'rgba(255,71,87,.6)':'rgba(255,255,255,.85)'}">
+    ${c.dayNum}
+   </div>
+
+   <!-- Date small -->
+   <div style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;
+    color:${pct===100?'rgba(255,255,255,.9)':isToday?'var(--gold)':'rgba(255,255,255,.45)'}">
+    ${dateStr}
+   </div>
+
+   <!-- Subject emojis -->
+   ${emos?`<div style="font-size:11px;margin-top:1px">${emos}</div>`:''}
+
+   <!-- % badge bottom -->
+   ${pct>0?`<div style="position:absolute;top:5px;right:6px;font-size:9px;font-weight:800;
+    font-family:'JetBrains Mono',monospace;color:${pct===100?'#fff':'#39d353'}">${pct}%</div>`:''}
+
+   <!-- Today label -->
+   ${isToday?`<div style="position:absolute;top:5px;left:6px;font-size:9px;font-weight:800;
+    color:var(--gold);font-family:'JetBrains Mono',monospace;animation:pulse .9s infinite">●</div>`:''}
+
+   <!-- Studied checkmark -->
+   ${studied&&pct<100?`<div style="position:absolute;top:5px;right:6px;font-size:11px">✓</div>`:''}
+  </div>`;
+ }).join('');
+
+ // ── Stats row ──
+ const statsEl=document.getElementById('gh-plan-stats');
+ if(statsEl){
+  const doneCount=MAINS_DAILY.filter(d=>getDayPct(d.d)===100).length;
+  const partCount=MAINS_DAILY.filter(d=>{const p=getDayPct(d.d);return p>0&&p<100;}).length;
+  const totalPct=Math.round(MAINS_DAILY.reduce((a,d)=>a+getDayPct(d.d),0)/24);
+  const daysPast=MAINS_DAILY.filter(d=>{
+   const dt=new Date('2026-03-10');dt.setDate(dt.getDate()+d.d-1);dt.setHours(0,0,0,0);
+   return dt<today;
+  }).length;
+  statsEl.innerHTML=[
+   ['✅ Complete',doneCount+'/24','#39d353'],
+   ['🔄 In Progress',partCount+' days','#ffa502'],
+   ['📊 Overall',totalPct+'%','var(--gold)'],
+   ['📅 Days Past',daysPast+'/24','var(--ph)'],
+  ].map(([l,v,c])=>`<div class="card" style="text-align:center;padding:14px">
+   <div style="font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:800;color:${c}">${v}</div>
+   <div style="font-size:11px;color:var(--t4);margin-top:3px">${l}</div>
+  </div>`).join('');
+ }
+
+ // ── Streak (over study-marked days within the plan window) ──
+ const planStudied=[...S.study].filter(ds=>{
+  const d=new Date(ds);return d>=PLAN_START&&d<=PLAN_END;
+ }).sort();
+ let cur=0,best=0,run=0;
+ // current streak backwards from today
+ for(let i=planStudied.length-1;i>=0;i--){
+  const d=new Date(planStudied[i]);d.setHours(0,0,0,0);
+  const diff=Math.round((today-d)/86400000);
+  if(i===planStudied.length-1){if(diff>1)break;cur=1;}
+  else{const prev=new Date(planStudied[i+1]);prev.setHours(0,0,0,0);
+   if(Math.round((prev-d)/86400000)===1)cur++;else break;}
+ }
+ planStudied.forEach((s,i)=>{
+  if(i===0)run=1;
+  else{const a=new Date(planStudied[i]),b=new Date(planStudied[i-1]);
+   run=(Math.round((a-b)/86400000)===1)?run+1:1;}
+  best=Math.max(best,run);
+ });
+ const curEl=document.getElementById('gh-cur');
+ const totEl=document.getElementById('gh-tot');
+ const bestEl=document.getElementById('gh-best');
+ if(curEl)curEl.textContent=cur;
+ if(totEl)totEl.textContent=planStudied.length;
+ if(bestEl)bestEl.textContent=best;
+}
 
 // ═══ TODAY / COUNTDOWN ═══
 function renderCountdownPage(){

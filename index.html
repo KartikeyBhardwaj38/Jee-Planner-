@@ -20,7 +20,7 @@
   --streak:#ff6b35;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;}
+body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;font-size:15px;line-height:1.5;}
 body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   background:
     radial-gradient(ellipse 50% 30% at 10% 5%,#00d4ff06,transparent),
@@ -41,15 +41,15 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   display:flex;flex-direction:column;transition:transform .25s;
 }
 .sidebar-logo{padding:20px 16px 12px;border-bottom:1px solid var(--border);}
-.logo-main{font-size:16px;font-weight:800;letter-spacing:-1px;}
+.logo-main{font-size:20px;font-weight:800;letter-spacing:-1px;}
 .logo-main span{background:var(--mg);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 .logo-sub{font-size:9px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;font-family:'Space Mono',monospace;margin-top:2px;}
 
 .nav-section{padding:12px 10px 4px;}
-.nav-label{font-size:9px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;padding:0 6px;margin-bottom:4px;}
+.nav-label{font-size:11px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;padding:0 6px;margin-bottom:4px;}
 .nav-item{
   display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:10px;
-  cursor:pointer;font-size:13px;font-weight:600;color:var(--muted);transition:all .15s;
+  cursor:pointer;font-size:14px;font-weight:600;color:var(--muted);transition:all .15s;
   margin-bottom:2px;border:1px solid transparent;
 }
 .nav-item:hover{background:var(--s2);color:var(--txt);}
@@ -62,7 +62,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .sidebar-footer{margin-top:auto;padding:12px;border-top:1px solid var(--border);}
 .streak-badge{display:flex;align-items:center;gap:8px;background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;}
 .streak-fire{font-size:18px;}
-.streak-num{font-family:'Space Mono',monospace;font-size:18px;font-weight:700;color:var(--streak);}
+.streak-num{font-family:'Space Mono',monospace;font-size:20px;font-weight:700;color:var(--streak);}
 .streak-lbl{font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;}
 
 /* Mobile nav toggle */
@@ -81,13 +81,13 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 ══════════════════════════════════════════════ */
 .page-hdr{margin-bottom:22px;}
 .page-title{font-size:clamp(22px,4vw,34px);font-weight:800;letter-spacing:-1px;line-height:1;}
-.page-sub{color:var(--muted);font-size:13px;margin-top:6px;display:flex;gap:12px;flex-wrap:wrap;}
+.page-sub{color:var(--muted);font-size:14px;margin-top:6px;display:flex;gap:12px;flex-wrap:wrap;}
 .page-sub b{color:var(--txt);}
 
 /* Cards */
 .card{background:var(--s1);border:1px solid var(--border);border-radius:16px;}
 .card-hdr{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
-.card-title{font-size:13px;font-weight:700;}
+.card-title{font-size:15px;font-weight:700;}
 .card-body{padding:16px 18px;}
 
 /* Grid helpers */
@@ -98,15 +98,15 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 
 /* Stat pill */
 .stat-pill{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:14px 16px;text-align:center;}
-.sp-num{font-size:24px;font-weight:800;line-height:1;}
-.sp-lbl{font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:3px;}
+.sp-num{font-size:26px;font-weight:800;line-height:1;}
+.sp-lbl{font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:3px;}
 
 /* Progress bar */
 .pbar{height:6px;background:var(--s2);border-radius:999px;overflow:hidden;}
 .pbar-fill{height:100%;border-radius:999px;transition:width .5s;}
 
 /* Tag / Badge */
-.badge{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:700;letter-spacing:1px;padding:3px 8px;border-radius:5px;text-transform:uppercase;border:1px solid;}
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;letter-spacing:1px;padding:3px 8px;border-radius:5px;text-transform:uppercase;border:1px solid;}
 .badge.phy{background:#f9731612;color:var(--phy);border-color:#f9731630;}
 .badge.math{background:#22d3ee12;color:var(--math);border-color:#22d3ee30;}
 .badge.chem{background:#a3e63512;color:var(--chem);border-color:#a3e63530;}
@@ -133,7 +133,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 /* Countdown */
 .cd-row{display:flex;gap:8px;flex-wrap:wrap;}
 .cd-blk{background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:10px 14px;min-width:60px;text-align:center;}
-.cd-num{font-family:'Space Mono',monospace;font-size:26px;font-weight:700;line-height:1;}
+.cd-num{font-family:'Space Mono',monospace;font-size:30px;font-weight:700;line-height:1;}
 .cd-unit{font-size:8px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-top:2px;}
 
 /* ══════════════════════════════════════════════
@@ -148,7 +148,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .dash-exam-title.a{color:var(--adv);}
 .dash-countdown-mini{display:flex;gap:6px;margin:10px 0;}
 .dcm-blk{background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:6px 10px;text-align:center;min-width:44px;}
-.dcm-n{font-family:'Space Mono',monospace;font-size:18px;font-weight:700;line-height:1;}
+.dcm-n{font-family:'Space Mono',monospace;font-size:22px;font-weight:700;line-height:1;}
 .dcm-u{font-size:7px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;}
 .dash-stats-row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
 .dst{background:var(--s2);border-radius:8px;padding:8px 12px;text-align:center;flex:1;}
@@ -166,8 +166,8 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .today-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--s2);border-radius:10px;border:1px solid var(--border);}
 .ti-icon{font-size:16px;flex-shrink:0;}
 .ti-info{flex:1;}
-.ti-main{font-size:13px;font-weight:600;}
-.ti-sub{font-size:11px;color:var(--muted);margin-top:1px;}
+.ti-main{font-size:15px;font-weight:600;}
+.ti-sub{font-size:12px;color:var(--muted);margin-top:1px;}
 .ti-badge{flex-shrink:0;}
 
 /* ══════════════════════════════════════════════
@@ -178,17 +178,17 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 /* CHAPTER POOL */
 .pool{background:var(--s1);border:1px solid var(--border);border-radius:14px;position:sticky;top:20px;max-height:calc(100vh - 80px);overflow-y:auto;}
 .pool-hdr{padding:12px 14px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--s1);z-index:2;display:flex;align-items:center;justify-content:space-between;}
-.pool-title{font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px;}
-.pool-count{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);}
+.pool-title{font-size:14px;font-weight:700;display:flex;align-items:center;gap:6px;}
+.pool-count{font-family:'Space Mono',monospace;font-size:12px;color:var(--muted);}
 .pool-sub-sec{padding:8px 10px;}
-.pool-sub-lbl{font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 4px 6px;display:flex;align-items:center;gap:6px;}
+.pool-sub-lbl{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 4px 6px;display:flex;align-items:center;gap:6px;}
 .pool-sub-lbl.phy{color:var(--phy);} .pool-sub-lbl.math{color:var(--math);} .pool-sub-lbl.chem{color:var(--chem);}
 .pool-chips{display:flex;flex-direction:column;gap:4px;}
 .pool-divider{height:1px;background:var(--border);margin:4px 0;}
 .pool-empty{font-size:10px;color:var(--muted);padding:4px 4px 8px;font-style:italic;}
 
 /* Draggable chapter pill */
-.ch-pill{display:flex;align-items:center;gap:7px;padding:7px 9px;border-radius:8px;border:1px solid;cursor:grab;user-select:none;transition:all .15s;font-size:11px;line-height:1.3;}
+.ch-pill{display:flex;align-items:center;gap:7px;padding:8px 10px;border-radius:8px;border:1px solid;cursor:grab;user-select:none;transition:all .15s;font-size:13px;line-height:1.3;}
 .ch-pill:active{cursor:grabbing;transform:scale(0.97);}
 .ch-pill.phy{background:#f9731610;border-color:#f9731628;color:var(--txt);}
 .ch-pill.phy:hover{background:#f9731620;border-color:#f9731645;}
@@ -202,7 +202,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 
 /* Day cards column */
 .days-col{display:flex;flex-direction:column;gap:8px;}
-.wk-sep{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;display:flex;align-items:center;gap:10px;margin:6px 0 2px;}
+.wk-sep{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;display:flex;align-items:center;gap:10px;margin:6px 0 2px;}
 .wk-sep::after{content:'';flex:1;height:1px;background:var(--border);}
 
 /* Day card */
@@ -215,13 +215,13 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 
 /* Day card header */
 .dc-hdr{display:grid;grid-template-columns:58px 1fr auto;gap:10px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--border);}
-.dc-num{font-family:'Space Mono',monospace;font-size:19px;font-weight:700;color:var(--mains);line-height:1;text-align:center;}
+.dc-num{font-family:'Space Mono',monospace;font-size:22px;font-weight:700;color:var(--mains);line-height:1;text-align:center;}
 .dc-num.dn{color:var(--ok);}
-.dc-date{font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);text-align:center;margin-top:1px;line-height:1.5;}
+.dc-date{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);text-align:center;margin-top:1px;line-height:1.5;}
 .dc-info{flex:1;}
 .dc-badges{display:flex;gap:5px;flex-wrap:wrap;}
 .dc-sched{font-size:9px;color:var(--muted);margin-top:4px;display:flex;gap:8px;flex-wrap:wrap;}
-.sched-pip{display:flex;align-items:center;gap:3px;}
+.sched-pip{display:flex;align-items:center;gap:3px;font-size:12px;}
 .sched-pip b{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;}
 .dc-act{display:flex;gap:6px;}
 .mark-all-btn{padding:4px 10px;border-radius:6px;font-size:9px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;transition:all .15s;white-space:nowrap;}
@@ -241,12 +241,12 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .dz.dz-math.filled{border-color:#22d3ee35;background:#22d3ee06;}
 .dz.dz-chem.filled{border-color:#a3e63535;background:#a3e63506;}
 .dz.drag-hover{border-style:solid;border-color:var(--ok)!important;background:color-mix(in srgb,var(--ok) 6%,transparent)!important;}
-.dz-empty-lbl{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:6px;flex:1;opacity:.7;}
+.dz-empty-lbl{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:6px;flex:1;opacity:.7;}
 .dz-hint{font-size:9px;color:var(--muted);opacity:.5;}
 
 /* Assigned chip inside dz */
 .asgn-chip{display:flex;align-items:center;gap:7px;flex:1;}
-.asgn-name{font-size:12px;color:var(--txt);flex:1;line-height:1.3;}
+.asgn-name{font-size:13px;color:var(--txt);flex:1;line-height:1.3;}
 .asgn-name.done{text-decoration:line-through;color:var(--muted);}
 .rm-btn{width:16px;height:16px;border-radius:4px;background:transparent;border:1px solid var(--border);color:var(--muted);font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;line-height:1;}
 .rm-btn:hover{background:#f43f5e15;border-color:var(--mock);color:var(--mock);}
@@ -254,13 +254,159 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 /* Practice block */
 .prac-block{border:1px solid var(--border);border-radius:9px;overflow:hidden;transition:border-color .2s;}
 .prac-block.all-prac-done{border-color:#34d39930;}
-.prac-hdr{background:var(--s2);padding:6px 10px;border-bottom:1px solid var(--border);font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;justify-content:space-between;}
+.prac-hdr{background:var(--s2);padding:7px 12px;border-bottom:1px solid var(--border);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;justify-content:space-between;}
 .prac-row{display:flex;align-items:center;gap:8px;padding:7px 10px;border-bottom:1px solid color-mix(in srgb,var(--border) 55%,transparent);transition:background .1s;}
 .prac-row:last-child{border-bottom:none;}
 .prac-row:hover{background:var(--s2);}
-.prac-tag{font-size:8px;font-weight:700;padding:2px 6px;border-radius:4px;border:1px solid;letter-spacing:.5px;white-space:nowrap;flex-shrink:0;}
-.prac-name{font-size:11px;color:var(--txt);flex:1;line-height:1.3;}
+.prac-tag{font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;border:1px solid;letter-spacing:.5px;white-space:nowrap;flex-shrink:0;}
+.prac-name{font-size:13px;color:var(--txt);flex:1;line-height:1.3;}
 .prac-name.done{text-decoration:line-through;color:var(--muted);}
+
+/* ══ ADDON SLOT ══ */
+.addon-section{margin-top:8px;border:1px dashed #8b5cf640;border-radius:10px;overflow:hidden;}
+.addon-section.unlocked{border-color:var(--purple);border-style:solid;}
+.addon-hdr{display:flex;align-items:center;justify-content:space-between;padding:7px 11px;background:#8b5cf608;border-bottom:1px solid #8b5cf618;}
+.addon-hdr-title{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--purple);display:flex;align-items:center;gap:6px;}
+.addon-trigger{display:flex;align-items:center;justify-content:center;padding:10px;cursor:pointer;gap:6px;font-size:11px;color:var(--muted);transition:all .15s;background:transparent;}
+.addon-trigger:hover{background:#8b5cf610;color:var(--purple);}
+.addon-trigger .plus{width:20px;height:20px;border-radius:6px;border:1.5px dashed var(--purple);color:var(--purple);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:300;}
+.addon-item{display:flex;align-items:center;gap:8px;padding:8px 11px;border-bottom:1px solid #8b5cf618;transition:background .1s;}
+.addon-item:hover{background:#8b5cf606;}
+.addon-item:last-child{border-bottom:none;}
+.addon-sub-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.addon-name{flex:1;font-size:13px;line-height:1.3;}
+.addon-name.done{text-decoration:line-through;color:var(--muted);}
+.addon-q{font-family:'Space Mono',monospace;font-size:9px;color:var(--purple);background:#8b5cf615;border:1px solid #8b5cf630;padding:1px 6px;border-radius:4px;white-space:nowrap;}
+.addon-rm{width:15px;height:15px;border-radius:4px;background:transparent;border:1px solid var(--border);color:var(--muted);font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;line-height:1;}
+.addon-rm:hover{background:#f43f5e15;border-color:var(--mock);color:var(--mock);}
+
+/* ══ MODAL OVERLAY ══ */
+.modal-overlay{position:fixed;inset:0;background:#00000090;backdrop-filter:blur(4px);z-index:500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s;}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal-box{background:var(--s1);border:1px solid var(--border);border-radius:18px;padding:26px;width:min(420px,90vw);max-height:90vh;overflow-y:auto;transform:translateY(20px);transition:transform .25s;box-shadow:0 24px 60px #000a;}
+.modal-overlay.open .modal-box{transform:translateY(0);}
+.modal-title{font-size:16px;font-weight:800;margin-bottom:4px;}
+.modal-sub{font-size:11px;color:var(--muted);margin-bottom:18px;}
+.modal-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;display:block;}
+.modal-input{width:100%;background:var(--s2);border:1px solid var(--border);color:var(--txt);padding:10px 14px;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .15s;margin-bottom:14px;}
+.modal-input:focus{border-color:var(--purple);}
+.modal-input.error{border-color:var(--mock)!important;animation:shake .3s;}
+.modal-row{display:flex;gap:8px;margin-bottom:14px;}
+.modal-sub-btn{flex:1;padding:11px 8px;border-radius:10px;border:1.5px solid var(--border);background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .15s;text-align:center;}
+.modal-sub-btn:hover{border-color:var(--purple);color:var(--purple);}
+.modal-sub-btn.selected.phy{border-color:var(--phy);background:#f9731612;color:var(--phy);}
+.modal-sub-btn.selected.math{border-color:var(--math);background:#22d3ee12;color:var(--math);}
+.modal-sub-btn.selected.chem{border-color:var(--chem);background:#a3e63512;color:var(--chem);}
+.modal-ch-list{display:flex;flex-direction:column;gap:4px;max-height:160px;overflow-y:auto;margin-bottom:14px;border:1px solid var(--border);border-radius:9px;padding:6px;}
+.modal-ch-item{padding:7px 10px;border-radius:6px;font-size:11px;cursor:pointer;transition:background .1s;display:flex;align-items:center;gap:7px;}
+.modal-ch-item:hover{background:var(--s2);}
+.modal-ch-item.selected{background:#8b5cf618;color:var(--purple);}
+.modal-ch-item .check{width:14px;height:14px;border-radius:4px;border:1.5px solid var(--border);flex-shrink:0;}
+.modal-ch-item.selected .check{background:var(--purple);border-color:var(--purple);}
+.modal-or{text-align:center;color:var(--muted);font-size:10px;margin:-4px 0 10px;display:flex;align-items:center;gap:8px;}
+.modal-or::before,.modal-or::after{content:'';flex:1;height:1px;background:var(--border);}
+.modal-footer{display:flex;gap:8px;margin-top:4px;}
+.modal-btn{flex:1;padding:11px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;border:1px solid;transition:all .15s;}
+.modal-btn.primary{background:linear-gradient(135deg,var(--purple),#6d28d9);color:#fff;border-color:transparent;}
+.modal-btn.primary:hover{opacity:.9;}
+.modal-btn.cancel{background:transparent;color:var(--muted);border-color:var(--border);}
+.modal-btn.cancel:hover{color:var(--txt);}
+.pw-stars{font-family:'Space Mono',monospace;font-size:22px;letter-spacing:6px;text-align:center;color:var(--purple);margin:10px 0;}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+/* ══ PRACTICE MATERIAL LOG ══ */
+.pmat-block{margin-top:6px;border:1px solid #22d3ee22;border-radius:10px;overflow:hidden;transition:border-color .2s;}
+.pmat-block.has-entries{border-color:#22d3ee40;}
+.pmat-hdr{background:#22d3ee06;padding:6px 10px;border-bottom:1px solid #22d3ee18;display:flex;align-items:center;justify-content:space-between;}
+.pmat-hdr-title{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--math);display:flex;align-items:center;gap:6px;}
+.pmat-entry{display:flex;align-items:center;gap:8px;padding:7px 10px;border-bottom:1px solid #22d3ee12;transition:background .1s;}
+.pmat-entry:hover{background:#22d3ee06;}
+.pmat-entry:last-of-type{border-bottom:none;}
+.pmat-sub-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.pmat-name{flex:1;font-size:13px;line-height:1.3;}
+.pmat-name.done{text-decoration:line-through;color:var(--muted);}
+.pmat-qs{font-family:'Space Mono',monospace;font-size:9px;color:var(--math);background:#22d3ee15;border:1px solid #22d3ee30;padding:1px 6px;border-radius:4px;white-space:nowrap;}
+.pmat-slot-tag{font-size:8px;font-weight:700;padding:1px 5px;border-radius:3px;border:1px solid;white-space:nowrap;flex-shrink:0;}
+.pmat-rm{width:15px;height:15px;border-radius:4px;background:transparent;border:1px solid var(--border);color:var(--muted);font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;line-height:1;}
+.pmat-rm:hover{background:#f43f5e15;border-color:var(--mock);color:var(--mock);}
+.pmat-add-row{display:flex;align-items:center;gap:6px;padding:6px 10px;cursor:pointer;transition:background .1s;}
+.pmat-add-row:hover{background:#22d3ee08;}
+.pmat-add-icon{width:18px;height:18px;border-radius:5px;border:1.5px dashed var(--math);color:var(--math);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:300;flex-shrink:0;}
+.pmat-add-lbl{font-size:13px;color:var(--muted);}
+/* inline add form */
+.pmat-form{padding:8px 10px;background:#22d3ee05;border-top:1px solid #22d3ee18;display:none;flex-direction:column;gap:6px;}
+.pmat-form.open{display:flex;}
+.pmat-form-row{display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
+.pmat-form input,.pmat-form select{background:var(--s2);border:1px solid var(--border);color:var(--txt);padding:6px 10px;border-radius:7px;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color .15s;}
+.pmat-form input:focus,.pmat-form select:focus{border-color:var(--math);}
+.pmat-form-btns{display:flex;gap:6px;}
+.pmat-save-btn{padding:5px 12px;border-radius:7px;background:#22d3ee15;border:1px solid #22d3ee35;color:var(--math);font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;}
+.pmat-save-btn:hover{background:#22d3ee25;}
+.pmat-cancel-btn{padding:5px 10px;border-radius:7px;background:transparent;border:1px solid var(--border);color:var(--muted);font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;}
+
+/* ══ DROP ZONE DONE / SYLLABUS COMPLETE ══ */
+.asgn-chip-done{background:var(--ok)08;border-left:2px solid var(--ok)!important;}
+.asgn-done-suggest{display:flex;align-items:center;gap:6px;padding:4px 10px 6px;font-size:11px;cursor:pointer;border-top:1px dashed var(--ok)20;background:var(--ok)05;transition:background .15s;}
+.asgn-done-suggest:hover{background:var(--ok)12;}
+.dz-syllabus-done{padding:12px 14px;cursor:pointer;text-align:center;transition:background .15s;border-radius:8px;}
+.dz-syllabus-done:hover{background:var(--ok)08;}
+.dz-empty-inner{display:flex;align-items:center;gap:6px;padding:2px 0;}
+
+/* ══ ADVANCED QUESTION TRACKER ══ */
+.aqt-target-bar{display:flex;align-items:center;gap:16px;background:linear-gradient(135deg,#1a1108,#1c0f0f);border:1px solid #f59e0b25;border-radius:16px;padding:18px 20px;margin-bottom:12px;flex-wrap:wrap;}
+.aqt-target-left{text-align:center;min-width:90px;}
+.aqt-target-label{font-size:9px;font-weight:800;letter-spacing:3px;color:var(--muted);text-transform:uppercase;}
+.aqt-target-score{font-family:'Space Mono',monospace;font-size:42px;font-weight:800;background:linear-gradient(135deg,#f59e0b,#ef4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;}
+.aqt-ring-wrap{position:relative;width:90px;height:90px;flex-shrink:0;}
+.aqt-ring-svg{width:100%;height:100%;}
+.aqt-ring-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.aqt-ring-pct{font-family:'Space Mono',monospace;font-size:16px;font-weight:800;color:var(--txt);}
+.aqt-target-center{display:flex;align-items:center;justify-content:center;}
+.aqt-stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;flex:1;min-width:200px;}
+.aqt-stat{background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:8px 10px;text-align:center;}
+.aqt-stat-n{font-family:'Space Mono',monospace;font-size:20px;font-weight:800;line-height:1;}
+.aqt-stat-l{font-size:9px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:1px;}
+.aqt-sub-bars{padding:14px 16px;}
+.aqt-sub-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.aqt-sub-row:last-child{margin-bottom:0;}
+.aqt-sub-icon{font-size:16px;width:24px;text-align:center;}
+.aqt-sub-name{font-size:12px;font-weight:600;width:80px;color:var(--muted);}
+.aqt-sub-ct{font-family:'Space Mono',monospace;font-size:11px;color:var(--txt);width:55px;text-align:right;}
+.aqt-log-card{padding:16px;}
+.aqt-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+@media(max-width:600px){.aqt-form-grid{grid-template-columns:1fr;}}
+.aqt-form-group{}
+.aqt-q-counts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+@media(max-width:600px){.aqt-q-counts{grid-template-columns:1fr;}}
+.aqt-qbtn{padding:7px 10px;border-radius:8px;border:1.5px solid var(--border);background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;}
+.aqt-qbtn:hover{border-color:#f59e0b;color:#f59e0b;}
+.aqt-qbtn.selected{border-color:#f59e0b;background:#f59e0b18;color:#f59e0b;}
+.aqt-qinput{width:70px;padding:6px 8px;background:var(--s2);border:1.5px solid var(--border);color:var(--txt);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:12px;outline:none;}
+.aqt-qinput:focus{border-color:#f59e0b;}
+.aqt-diff-btn{flex:1;padding:8px 6px;border-radius:8px;border:1.5px solid var(--border);background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;}
+.aqt-diff-btn.selected{border-color:currentColor;}
+.aqt-diff-btn#aqd-easy.selected{background:#22c55e18;color:var(--ok);border-color:var(--ok);}
+.aqt-diff-btn#aqd-med.selected{background:#f59e0b18;color:#f59e0b;border-color:#f59e0b;}
+.aqt-diff-btn#aqd-hard.selected{background:#ef444418;color:var(--mock);border-color:var(--mock);}
+.aqt-filter-btn{padding:5px 10px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:11px;cursor:pointer;transition:all .15s;}
+.aqt-filter-btn.on{background:var(--s2);color:var(--txt);border-color:var(--adv);}
+.aqt-ch-row{display:flex;align-items:center;gap:8px;padding:8px 10px;border-bottom:1px solid var(--border);transition:background .1s;}
+.aqt-ch-row:hover{background:var(--s2);}
+.aqt-ch-row:last-child{border-bottom:none;}
+.aqt-ch-sub-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.aqt-ch-name{flex:1;font-size:12px;}
+.aqt-ch-stat{font-family:'Space Mono',monospace;font-size:10px;text-align:right;}
+.aqt-sess-row{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-bottom:1px solid var(--border);transition:background .1s;}
+.aqt-sess-row:hover{background:var(--s2);}
+.aqt-sess-row:last-child{border-bottom:none;}
+.aqt-sess-sub{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+.aqt-sess-info{flex:1;}
+.aqt-sess-ch{font-size:13px;font-weight:600;}
+.aqt-sess-meta{font-size:10px;color:var(--muted);margin-top:2px;}
+.aqt-sess-score{text-align:right;}
+.aqt-sess-frac{font-family:'Space Mono',monospace;font-size:14px;font-weight:700;}
+.aqt-sess-acc{font-size:10px;color:var(--muted);}
+.aqt-empty{text-align:center;padding:24px;color:var(--muted);font-size:13px;}
 
 /* Mock test banner inside day */
 .mock-banner{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;background:#f43f5e10;border:1px solid #f43f5e30;font-size:10px;color:var(--mock);font-weight:700;letter-spacing:1px;font-family:'Space Mono',monospace;}
@@ -270,9 +416,9 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .mains-prog{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:14px;}
 .sub-bars{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px;}
 .sub-bar-card{background:var(--s2);border-radius:9px;padding:9px;}
-.sbc-lbl{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;}
+.sbc-lbl{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;}
 .sbc-lbl.phy{color:var(--phy);}.sbc-lbl.math{color:var(--math);}.sbc-lbl.chem{color:var(--chem);}
-.sbc-ct{font-size:9px;color:var(--muted);margin-top:3px;font-family:'Space Mono',monospace;}
+.sbc-ct{font-size:11px;color:var(--muted);margin-top:3px;font-family:'Space Mono',monospace;}
 
 /* ══════════════════════════════════════════════
    ── JEE ADVANCED (placeholder, filled in part2) ──
@@ -333,6 +479,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
     <div class="nav-item" onclick="goTo('mains-plan',this)"><span class="nav-icon">📅</span>21-Day Plan</div>
     <div class="nav-item" onclick="goTo('mains-syl',this)"><span class="nav-icon">📚</span>Syllabus</div>
     <div class="nav-item" onclick="goTo('mains-tests',this)"><span class="nav-icon">📝</span>Mock Tests</div>
+    <div class="nav-item" onclick="goTo('mains-qtrack',this)"><span class="nav-icon">🎯</span>Q Tracker</div>
   </div>
 
   <div class="nav-section">
@@ -340,6 +487,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
     <div class="nav-item" onclick="goTo('adv-plan',this)"><span class="nav-icon">⚡</span>40-Day Plan</div>
     <div class="nav-item" onclick="goTo('adv-syl',this)"><span class="nav-icon">📖</span>Syllabus</div>
     <div class="nav-item" onclick="goTo('adv-tests',this)"><span class="nav-icon">🎯</span>Test Tracker</div>
+    <div class="nav-item" onclick="goTo('adv-qtrack',this)"><span class="nav-icon">🔥</span>Q Tracker</div>
   </div>
 
   <div class="nav-section">
@@ -497,6 +645,165 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   <div id="mains-tests-root"></div>
 </div>
 
+<!-- ════════════════════ MAINS Q TRACKER ════════════════════ -->
+<div class="section" id="sec-mains-qtrack">
+  <div class="page-hdr">
+    <div class="page-title" style="background:var(--mg);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">🎯 Mains Question Tracker</div>
+    <div class="page-sub"><span>Track every question session · Target 240+ · Chapter-wise analysis</span></div>
+  </div>
+
+  <!-- TARGET DASHBOARD -->
+  <div class="aqt-target-bar" style="background:linear-gradient(135deg,#07111a,#070d17);border-color:#00d4ff25;">
+    <div class="aqt-target-left">
+      <div class="aqt-target-label">TARGET</div>
+      <div class="aqt-target-score" style="background:var(--mg);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">240<span style="font-size:16px;color:var(--muted);">/300</span></div>
+      <div style="font-size:11px;color:var(--muted);">JEE Mains 2026</div>
+    </div>
+    <div class="aqt-target-center">
+      <div class="aqt-ring-wrap">
+        <svg viewBox="0 0 100 100" class="aqt-ring-svg">
+          <circle cx="50" cy="50" r="42" fill="none" stroke="#ffffff08" stroke-width="8"/>
+          <circle cx="50" cy="50" r="42" fill="none" stroke="url(#mainsGrad)" stroke-width="8"
+            stroke-linecap="round" stroke-dasharray="264" id="mqt-ring-fill" stroke-dashoffset="264"
+            transform="rotate(-90 50 50)"/>
+          <defs>
+            <linearGradient id="mainsGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#00d4ff"/>
+              <stop offset="100%" stop-color="#8b5cf6"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <div class="aqt-ring-inner">
+          <div class="aqt-ring-pct" id="mqt-pct">0%</div>
+          <div style="font-size:9px;color:var(--muted);">progress</div>
+        </div>
+      </div>
+    </div>
+    <div class="aqt-stats-grid">
+      <div class="aqt-stat"><div class="aqt-stat-n" id="mqt-total-qs" style="color:var(--mains);">0</div><div class="aqt-stat-l">Total Qs</div></div>
+      <div class="aqt-stat"><div class="aqt-stat-n" id="mqt-correct" style="color:var(--ok);">0</div><div class="aqt-stat-l">Correct</div></div>
+      <div class="aqt-stat"><div class="aqt-stat-n" id="mqt-accuracy" style="color:var(--streak);">0%</div><div class="aqt-stat-l">Accuracy</div></div>
+      <div class="aqt-stat"><div class="aqt-stat-n" id="mqt-sessions" style="color:var(--purple);">0</div><div class="aqt-stat-l">Sessions</div></div>
+      <div class="aqt-stat"><div class="aqt-stat-n" id="mqt-today-qs" style="color:var(--mains);">0</div><div class="aqt-stat-l">Today Qs</div></div>
+      <div class="aqt-stat"><div class="aqt-stat-n" id="mqt-streak-qs" style="color:var(--mock);">0</div><div class="aqt-stat-l">Best/Day</div></div>
+    </div>
+  </div>
+
+  <!-- SUBJECT BREAKDOWN BARS -->
+  <div class="aqt-sub-bars card" style="margin-bottom:12px;">
+    <div style="font-size:10px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:10px;">Question Load by Subject</div>
+    <div class="aqt-sub-row">
+      <div class="aqt-sub-icon phy">⚡</div>
+      <div class="aqt-sub-name">Physics</div>
+      <div style="flex:1;"><div class="pbar" style="height:8px;"><div class="pbar-fill" id="mqt-phy-bar" style="width:0%;background:var(--phy);"></div></div></div>
+      <div class="aqt-sub-ct" id="mqt-phy-ct">0 Qs</div>
+    </div>
+    <div class="aqt-sub-row">
+      <div class="aqt-sub-icon chem">⚗</div>
+      <div class="aqt-sub-name">Chemistry</div>
+      <div style="flex:1;"><div class="pbar" style="height:8px;"><div class="pbar-fill" id="mqt-chem-bar" style="width:0%;background:var(--chem);"></div></div></div>
+      <div class="aqt-sub-ct" id="mqt-chem-ct">0 Qs</div>
+    </div>
+    <div class="aqt-sub-row">
+      <div class="aqt-sub-icon math">∑</div>
+      <div class="aqt-sub-name">Mathematics</div>
+      <div style="flex:1;"><div class="pbar" style="height:8px;"><div class="pbar-fill" id="mqt-math-bar" style="width:0%;background:var(--math);"></div></div></div>
+      <div class="aqt-sub-ct" id="mqt-math-ct">0 Qs</div>
+    </div>
+  </div>
+
+  <!-- LOG NEW SESSION -->
+  <div class="card aqt-log-card" style="margin-bottom:12px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+      <div style="font-size:14px;font-weight:800;color:var(--txt);">➕ Log Question Session</div>
+      <div style="font-size:10px;color:var(--muted);">+4 correct · −1 wrong · Mains scoring</div>
+    </div>
+    <div class="aqt-form-grid">
+      <div class="aqt-form-group">
+        <label class="modal-label">Subject</label>
+        <div style="display:flex;gap:6px;">
+          <button class="modal-sub-btn phy" id="mqf-phy" onclick="mqfSub('phy')" style="flex:1;padding:8px 4px;font-size:12px;">⚡ Phy</button>
+          <button class="modal-sub-btn chem" id="mqf-chem" onclick="mqfSub('chem')" style="flex:1;padding:8px 4px;font-size:12px;">⚗ Chem</button>
+          <button class="modal-sub-btn math" id="mqf-math" onclick="mqfSub('math')" style="flex:1;padding:8px 4px;font-size:12px;">∑ Math</button>
+        </div>
+      </div>
+      <div class="aqt-form-group">
+        <label class="modal-label">Chapter / Topic</label>
+        <div style="position:relative;">
+          <input id="mqf-chapter" type="text" class="modal-input" placeholder="e.g. Electrostatics, Organic, Integrals…" style="margin-bottom:0;" oninput="mqfFilterChapters(this.value)">
+          <div id="mqf-ch-dropdown" style="display:none;position:absolute;top:100%;left:0;right:0;background:var(--s2);border:1px solid var(--border);border-radius:8px;z-index:50;max-height:160px;overflow-y:auto;box-shadow:0 8px 24px #0008;"></div>
+        </div>
+      </div>
+      <div class="aqt-form-group">
+        <label class="modal-label">Source / Material</label>
+        <input id="mqf-source" type="text" class="modal-input" placeholder="e.g. NTA Abhyas, PYQ, Arihant, DPP…" style="margin-bottom:0;">
+      </div>
+      <div class="aqt-form-group">
+        <label class="modal-label">Question Type</label>
+        <select id="mqf-qtype" class="modal-input" style="margin-bottom:0;">
+          <option value="MCQ-single">MCQ Single Correct</option>
+          <option value="numerical">Numerical Value</option>
+          <option value="mixed">Mixed</option>
+          <option value="PYQ">Previous Year Qs</option>
+          <option value="DPP">DPP Set</option>
+        </select>
+      </div>
+    </div>
+    <div class="aqt-q-counts">
+      <div class="aqt-qc-group">
+        <label class="modal-label">Total Questions</label>
+        <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:6px;">
+          <button class="aqt-qbtn" id="mqtq-10" onclick="mqfSetQ(10)">10</button>
+          <button class="aqt-qbtn" id="mqtq-20" onclick="mqfSetQ(20)">20</button>
+          <button class="aqt-qbtn" id="mqtq-25" onclick="mqfSetQ(25)">25</button>
+          <button class="aqt-qbtn" id="mqtq-30" onclick="mqfSetQ(30)">30</button>
+          <button class="aqt-qbtn" id="mqtq-50" onclick="mqfSetQ(50)">50</button>
+          <input id="mqf-total" type="number" min="1" max="300" placeholder="Custom" class="aqt-qinput" oninput="mqfSetQ(+this.value)">
+        </div>
+      </div>
+      <div class="aqt-qc-group">
+        <label class="modal-label">Correct Answers</label>
+        <input id="mqf-correct" type="number" min="0" max="300" placeholder="How many correct?" class="modal-input" style="margin-bottom:0;">
+      </div>
+      <div class="aqt-qc-group">
+        <label class="modal-label">Difficulty</label>
+        <div style="display:flex;gap:5px;">
+          <button class="aqt-diff-btn" id="mqd-easy" onclick="mqfDiff('easy')">🟢 Easy</button>
+          <button class="aqt-diff-btn" id="mqd-med" onclick="mqfDiff('med')">🟡 Medium</button>
+          <button class="aqt-diff-btn" id="mqd-hard" onclick="mqfDiff('hard')">🔴 Hard</button>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:10px;align-items:center;">
+      <input id="mqf-notes" type="text" class="modal-input" placeholder="Notes (weak areas, concepts to revisit…)" style="flex:1;margin-bottom:0;">
+      <button onclick="mqfSave()" style="padding:10px 20px;border-radius:10px;background:var(--mg);border:none;color:#fff;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;">🎯 Log Session</button>
+    </div>
+  </div>
+
+  <!-- CHAPTER ANALYSIS TABLE -->
+  <div class="card" style="margin-bottom:12px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+      <div style="font-size:14px;font-weight:800;">📊 Chapter Analysis</div>
+      <div style="display:flex;gap:6px;">
+        <button class="aqt-filter-btn on" id="mqfilt-all" onclick="mqFilter('all')">All</button>
+        <button class="aqt-filter-btn" id="mqfilt-phy" onclick="mqFilter('phy')">⚡ Phy</button>
+        <button class="aqt-filter-btn" id="mqfilt-chem" onclick="mqFilter('chem')">⚗ Chem</button>
+        <button class="aqt-filter-btn" id="mqfilt-math" onclick="mqFilter('math')">∑ Math</button>
+      </div>
+    </div>
+    <div id="mqt-chapter-table"></div>
+  </div>
+
+  <!-- SESSION LOG -->
+  <div class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+      <div style="font-size:14px;font-weight:800;">📋 Session Log</div>
+      <button onclick="mqClearAll()" style="font-size:10px;color:var(--muted);background:transparent;border:1px solid var(--border);padding:3px 8px;border-radius:5px;cursor:pointer;">Clear All</button>
+    </div>
+    <div id="mqt-session-log"></div>
+  </div>
+</div>
+
 <!-- ════════════════════ ADVANCED PLAN (Part 2) ════════════════════ -->
 <div class="section" id="sec-adv-plan">
   <div class="page-hdr">
@@ -522,17 +829,17 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
     </div>
     <div class="pbar"><div class="pbar-fill" id="as-bar" style="width:0%;background:var(--ag);"></div></div>
     <div class="sub-bars">
-      <div class="sub-bar-card"><div class="sbc-lbl phy">⚡ Physics</div><div class="pbar"><div class="pbar-fill" id="ap-bar" style="width:0%;background:var(--phy);"></div></div><div class="sbc-ct" id="ap-ct">0/22</div></div>
+      <div class="sub-bar-card"><div class="sbc-lbl phy">⚡ Physics</div><div class="pbar"><div class="pbar-fill" id="ap-bar" style="width:0%;background:var(--phy);"></div></div><div class="sbc-ct" id="ap-ct">0/19</div></div>
       <div class="sub-bar-card"><div class="sbc-lbl chem">⚗ Chemistry</div><div class="pbar"><div class="pbar-fill" id="ac-bar" style="width:0%;background:var(--chem);"></div></div><div class="sbc-ct" id="ac-ct">0/20</div></div>
       <div class="sub-bar-card"><div class="sbc-lbl math">∑ Mathematics</div><div class="pbar"><div class="pbar-fill" id="am-bar" style="width:0%;background:var(--math);"></div></div><div class="sbc-ct" id="am-ct">0/20</div></div>
     </div>
   </div>
 
   <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
-    <span class="badge phy">⚡ Physics 22 chapters</span>
-    <span class="badge chem">⚗ Chemistry 20 chapters</span>
-    <span class="badge math">∑ Mathematics 20 chapters</span>
-    <span class="badge adv">📝 10 Test Days</span>
+    <span class="badge phy">⚡ Physics 19 chapters</span>
+    <span class="badge chem">⚗ Chemistry 32 chapters</span>
+    <span class="badge math">∑ Mathematics 17 chapters</span>
+    <span class="badge adv">📝 7 Test Days</span>
     <span class="badge ok">📅 Day 1 = Apr 7</span>
   </div>
 
@@ -543,7 +850,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 <div class="section" id="sec-adv-syl">
   <div class="page-hdr">
     <div class="page-title">📖 Advanced Syllabus</div>
-    <div class="page-sub"><span>62 chapters · Physics 22 · Chemistry 20 · Mathematics 20</span></div>
+    <div class="page-sub"><span>68 chapters · Physics 19 · Chemistry 32 · Mathematics 17</span></div>
   </div>
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;" id="adv-syl-root"></div>
 </div>
@@ -552,9 +859,170 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 <div class="section" id="sec-adv-tests">
   <div class="page-hdr">
     <div class="page-title">🎯 Advanced Test Tracker</div>
-    <div class="page-sub"><span>10 tests · Paper 1 + Paper 2 · Total 312 marks · Track rank estimates</span></div>
+    <div class="page-sub"><span>10 tests · Paper 1 + Paper 2 · Total 360 marks · Track rank estimates</span></div>
   </div>
   <div id="adv-tests-root"></div>
+</div>
+
+<!-- ════════════════════ ADVANCED QUESTION TRACKER ════════════════════ -->
+<div class="section" id="sec-adv-qtrack">
+  <div class="page-hdr">
+    <div class="page-title" style="background:var(--ag);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">🔥 Advanced Question Tracker</div>
+    <div class="page-sub"><span>Track every question session · Build to 270+ · Chapter-wise analysis</span></div>
+  </div>
+
+  <!-- TARGET DASHBOARD -->
+  <div class="aqt-target-bar">
+    <div class="aqt-target-left">
+      <div class="aqt-target-label">TARGET</div>
+      <div class="aqt-target-score">270<span style="font-size:16px;color:var(--muted);">/360</span></div>
+      <div style="font-size:11px;color:var(--muted);">JEE Advanced 2026</div>
+    </div>
+    <div class="aqt-target-center">
+      <div class="aqt-ring-wrap">
+        <svg viewBox="0 0 100 100" class="aqt-ring-svg">
+          <circle cx="50" cy="50" r="42" fill="none" stroke="#ffffff08" stroke-width="8"/>
+          <circle cx="50" cy="50" r="42" fill="none" stroke="url(#advGrad)" stroke-width="8"
+            stroke-linecap="round" stroke-dasharray="264" id="aqt-ring-fill" stroke-dashoffset="264"
+            transform="rotate(-90 50 50)"/>
+          <defs>
+            <linearGradient id="advGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#f59e0b"/>
+              <stop offset="100%" stop-color="#ef4444"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <div class="aqt-ring-inner">
+          <div class="aqt-ring-pct" id="aqt-pct">0%</div>
+          <div style="font-size:9px;color:var(--muted);">progress</div>
+        </div>
+      </div>
+    </div>
+    <div class="aqt-stats-grid">
+      <div class="aqt-stat"><div class="aqt-stat-n" id="aqt-total-qs" style="color:var(--adv);">0</div><div class="aqt-stat-l">Total Qs</div></div>
+      <div class="aqt-stat"><div class="aqt-stat-n" id="aqt-correct" style="color:var(--ok);">0</div><div class="aqt-stat-l">Correct</div></div>
+      <div class="aqt-stat"><div class="aqt-stat-n" id="aqt-accuracy" style="color:var(--streak);">0%</div><div class="aqt-stat-l">Accuracy</div></div>
+      <div class="aqt-stat"><div class="aqt-stat-n" id="aqt-sessions" style="color:var(--purple);">0</div><div class="aqt-stat-l">Sessions</div></div>
+      <div class="aqt-stat"><div class="aqt-stat-n" id="aqt-today-qs" style="color:var(--mains);">0</div><div class="aqt-stat-l">Today Qs</div></div>
+      <div class="aqt-stat"><div class="aqt-stat-n" id="aqt-streak-qs" style="color:var(--mock);">0</div><div class="aqt-stat-l">Best/Day</div></div>
+    </div>
+  </div>
+
+  <!-- SUBJECT BREAKDOWN BARS -->
+  <div class="aqt-sub-bars card" style="margin-bottom:12px;">
+    <div style="font-size:10px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:10px;">Question Load by Subject</div>
+    <div class="aqt-sub-row" id="aqt-phy-row">
+      <div class="aqt-sub-icon phy">⚡</div>
+      <div class="aqt-sub-name">Physics</div>
+      <div style="flex:1;"><div class="pbar" style="height:8px;"><div class="pbar-fill" id="aqt-phy-bar" style="width:0%;background:var(--phy);"></div></div></div>
+      <div class="aqt-sub-ct" id="aqt-phy-ct">0 Qs</div>
+    </div>
+    <div class="aqt-sub-row" id="aqt-chem-row">
+      <div class="aqt-sub-icon chem">⚗</div>
+      <div class="aqt-sub-name">Chemistry</div>
+      <div style="flex:1;"><div class="pbar" style="height:8px;"><div class="pbar-fill" id="aqt-chem-bar" style="width:0%;background:var(--chem);"></div></div></div>
+      <div class="aqt-sub-ct" id="aqt-chem-ct">0 Qs</div>
+    </div>
+    <div class="aqt-sub-row" id="aqt-math-row">
+      <div class="aqt-sub-icon math">∑</div>
+      <div class="aqt-sub-name">Mathematics</div>
+      <div style="flex:1;"><div class="pbar" style="height:8px;"><div class="pbar-fill" id="aqt-math-bar" style="width:0%;background:var(--math);"></div></div></div>
+      <div class="aqt-sub-ct" id="aqt-math-ct">0 Qs</div>
+    </div>
+  </div>
+
+  <!-- LOG NEW SESSION -->
+  <div class="card aqt-log-card" style="margin-bottom:12px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+      <div style="font-size:14px;font-weight:800;color:var(--txt);">➕ Log Question Session</div>
+      <div style="font-size:10px;color:var(--muted);">Every session counts toward 270</div>
+    </div>
+    <div class="aqt-form-grid">
+      <div class="aqt-form-group">
+        <label class="modal-label">Subject</label>
+        <div style="display:flex;gap:6px;">
+          <button class="modal-sub-btn phy" id="aqf-phy" onclick="aqfSub('phy')" style="flex:1;padding:8px 4px;font-size:12px;">⚡ Phy</button>
+          <button class="modal-sub-btn chem" id="aqf-chem" onclick="aqfSub('chem')" style="flex:1;padding:8px 4px;font-size:12px;">⚗ Chem</button>
+          <button class="modal-sub-btn math" id="aqf-math" onclick="aqfSub('math')" style="flex:1;padding:8px 4px;font-size:12px;">∑ Math</button>
+        </div>
+      </div>
+      <div class="aqt-form-group">
+        <label class="modal-label">Chapter / Topic</label>
+        <div style="position:relative;">
+          <input id="aqf-chapter" type="text" class="modal-input" placeholder="e.g. Electrostatics, Organic, Integrals…" style="margin-bottom:0;" oninput="aqfFilterChapters(this.value)">
+          <div id="aqf-ch-dropdown" style="display:none;position:absolute;top:100%;left:0;right:0;background:var(--s2);border:1px solid var(--border);border-radius:8px;z-index:50;max-height:160px;overflow-y:auto;box-shadow:0 8px 24px #0008;"></div>
+        </div>
+      </div>
+      <div class="aqt-form-group">
+        <label class="modal-label">Source / Material</label>
+        <input id="aqf-source" type="text" class="modal-input" placeholder="e.g. HC Verma, PYQ 2019, Arihant, DPP…" style="margin-bottom:0;">
+      </div>
+      <div class="aqt-form-group">
+        <label class="modal-label">Question Type</label>
+        <select id="aqf-qtype" class="modal-input" style="margin-bottom:0;">
+          <option value="MCQ-single">MCQ Single Correct</option>
+          <option value="MCQ-multi">MCQ Multiple Correct</option>
+          <option value="integer">Integer Type</option>
+          <option value="match">Match the Column</option>
+          <option value="para">Paragraph Based</option>
+          <option value="mixed">Mixed</option>
+        </select>
+      </div>
+    </div>
+    <div class="aqt-q-counts">
+      <div class="aqt-qc-group">
+        <label class="modal-label">Total Questions</label>
+        <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:6px;">
+          <button class="aqt-qbtn" id="aqtq-10" onclick="aqfSetQ('total',10)">10</button>
+          <button class="aqt-qbtn" id="aqtq-20" onclick="aqfSetQ('total',20)">20</button>
+          <button class="aqt-qbtn" id="aqtq-30" onclick="aqfSetQ('total',30)">30</button>
+          <button class="aqt-qbtn" id="aqtq-40" onclick="aqfSetQ('total',40)">40</button>
+          <button class="aqt-qbtn" id="aqtq-50" onclick="aqfSetQ('total',50)">50</button>
+          <button class="aqt-qbtn" id="aqtq-60" onclick="aqfSetQ('total',60)">60</button>
+          <input id="aqf-total" type="number" min="1" max="300" placeholder="Custom" class="aqt-qinput" oninput="aqfSetQ('total',+this.value)">
+        </div>
+      </div>
+      <div class="aqt-qc-group">
+        <label class="modal-label">Correct Answers</label>
+        <input id="aqf-correct" type="number" min="0" max="300" placeholder="How many correct?" class="modal-input" style="margin-bottom:0;">
+      </div>
+      <div class="aqt-qc-group">
+        <label class="modal-label">Difficulty</label>
+        <div style="display:flex;gap:5px;">
+          <button class="aqt-diff-btn" id="aqd-easy" onclick="aqfDiff('easy')">🟢 Easy</button>
+          <button class="aqt-diff-btn" id="aqd-med" onclick="aqfDiff('med')">🟡 Medium</button>
+          <button class="aqt-diff-btn" id="aqd-hard" onclick="aqfDiff('hard')">🔴 Hard</button>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:10px;align-items:center;">
+      <input id="aqf-notes" type="text" class="modal-input" placeholder="Notes (weak areas, concepts to revisit…)" style="flex:1;margin-bottom:0;">
+      <button onclick="aqfSave()" style="padding:10px 20px;border-radius:10px;background:linear-gradient(135deg,#f59e0b,#ef4444);border:none;color:#fff;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;">🔥 Log Session</button>
+    </div>
+  </div>
+
+  <!-- CHAPTER ANALYSIS TABLE -->
+  <div class="card" style="margin-bottom:12px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+      <div style="font-size:14px;font-weight:800;">📊 Chapter Analysis</div>
+      <div style="display:flex;gap:6px;">
+        <button class="aqt-filter-btn on" id="aqfilt-all" onclick="aqFilter('all')">All</button>
+        <button class="aqt-filter-btn" id="aqfilt-phy" onclick="aqFilter('phy')">⚡ Phy</button>
+        <button class="aqt-filter-btn" id="aqfilt-chem" onclick="aqFilter('chem')">⚗ Chem</button>
+        <button class="aqt-filter-btn" id="aqfilt-math" onclick="aqFilter('math')">∑ Math</button>
+      </div>
+    </div>
+    <div id="aqt-chapter-table"></div>
+  </div>
+
+  <!-- SESSION LOG -->
+  <div class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+      <div style="font-size:14px;font-weight:800;">📋 Session Log</div>
+      <button onclick="aqClearAll()" style="font-size:10px;color:var(--muted);background:transparent;border:1px solid var(--border);padding:3px 8px;border-radius:5px;cursor:pointer;">Clear All</button>
+    </div>
+    <div id="aqt-session-log"></div>
+  </div>
 </div>
 
 <!-- ════════════════════ ANALYTICS (Part 2) ════════════════════ -->
@@ -577,8 +1045,8 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 //  GLOBAL STATE
 // ══════════════════════════════════════════════
 let STATE = {
-  mains: { assignments:{}, checked:{}, dpp:{}, sheets:{}, revprac:{}, scores:[] },
-  adv:   { checked:{}, scores:[] },
+  mains: { assignments:{}, checked:{}, dpp:{}, sheets:{}, revprac:{}, scores:[], addons:{}, practiceLog:{}, qlog:{} },
+  adv:   { checked:{}, scores:[], qlog:{} },
   streak: 0,
   lastActive: null,
   mainsExam: '2026-04-05',
@@ -587,10 +1055,45 @@ let STATE = {
 (function loadState(){
   try{
     const r = JSON.parse(localStorage.getItem('jeecc26')||'null');
-    if(r) STATE = {...STATE,...r, mains:{...STATE.mains,...(r.mains||{})}, adv:{...STATE.adv,...(r.adv||{})}};
-  }catch{}
+    if(r){
+      STATE = {...STATE,...r,
+        mains:{...STATE.mains,...(r.mains||{})},
+        adv:  {...STATE.adv,  ...(r.adv  ||{})}
+      };
+    }
+  }catch(e){ console.warn('State load error:',e); }
+  // ── Type safety guards — fix any corrupt saved state
+  if(!Array.isArray(STATE.mains.scores))  STATE.mains.scores=[];
+  if(!Array.isArray(STATE.adv.scores))    STATE.adv.scores=[];
+  if(typeof STATE.mains.assignments!=='object'||Array.isArray(STATE.mains.assignments)) STATE.mains.assignments={};
+  if(typeof STATE.mains.checked!=='object'||Array.isArray(STATE.mains.checked))         STATE.mains.checked={};
+  if(typeof STATE.mains.dpp!=='object'||Array.isArray(STATE.mains.dpp))                 STATE.mains.dpp={};
+  if(typeof STATE.mains.sheets!=='object'||Array.isArray(STATE.mains.sheets))           STATE.mains.sheets={};
+  if(typeof STATE.mains.revprac!=='object'||Array.isArray(STATE.mains.revprac))         STATE.mains.revprac={};
+  if(typeof STATE.mains.addons!=='object'||Array.isArray(STATE.mains.addons))           STATE.mains.addons={};
+  if(typeof STATE.mains.practiceLog!=='object'||Array.isArray(STATE.mains.practiceLog)) STATE.mains.practiceLog={};
+  if(typeof STATE.mains.qlog!=='object'||Array.isArray(STATE.mains.qlog)) STATE.mains.qlog={};
+  if(typeof STATE.adv.checked!=='object'||Array.isArray(STATE.adv.checked))             STATE.adv.checked={};
+  if(typeof STATE.adv.qlog!=='object'||Array.isArray(STATE.adv.qlog))                   STATE.adv.qlog={};
+  // Ensure scores entries are not undefined
+  STATE.mains.scores=STATE.mains.scores.map(s=>s||null).filter(Boolean);
+  STATE.adv.scores=STATE.adv.scores.map(s=>s||null).filter(Boolean);
 })();
-const saveState = () => localStorage.setItem('jeecc26', JSON.stringify(STATE));
+const saveState = () => { try{ localStorage.setItem('jeecc26', JSON.stringify(STATE)); }catch(e){ console.warn('Save error:',e); } };
+
+// ── Addon vars — must be declared before ANY render function runs ──
+const ADDON_PW      = 'DEVASENA';
+let _pwUnlocked     = false;
+let _pwPendingDay   = null;
+let _pwPendingAction= null;
+let _addonDay       = null;
+let _addonSub       = null;
+let _addonQs        = null;
+let _addonPickedId  = null;
+
+// ── Exam dates — must exist before tick() runs ──
+let mainsExam = new Date((STATE.mainsExam||'2026-04-05')+'T00:00:00');
+const advExam = new Date('2026-05-17T00:00:00');
 
 // ══════════════════════════════════════════════
 //  NAV
@@ -781,19 +1284,42 @@ function renderMainsDays(){
 function buildDZ(day, sub, assigned, label){
   const isOcc=assigned.length>0;
   const dzCls=`dz dz-${sub} ${isOcc?'filled':''}`;
+  const subList=sub==='phy'?M_PHY:sub==='math'?M_MATH:M_CHEM;
+  const subTotal=subList.length;
+  const subDone=subList.filter(c=>STATE.mains.checked[c.id]).length;
+  const syllabusComplete=subDone===subTotal;
+  const subCol={phy:'var(--phy)',math:'var(--math)',chem:'var(--chem)'}[sub];
+  const icons={phy:'⚡',math:'∑',chem:'⚗'};
   let inner='';
+
   if(isOcc){
     inner=assigned.map(c=>{
       const done=!!STATE.mains.checked[c.id];
-      return `<div class="asgn-chip">
+      return `<div class="asgn-chip ${done?'asgn-chip-done':''}">
         <div class="chk ${done?'on':''}" onclick="mToggleChk('${c.id}')"></div>
         <span class="asgn-name ${done?'done':''}">${c.name}</span>
+        ${done?`<span style="font-size:9px;color:var(--ok);font-weight:700;margin-left:2px;">✓</span>`:''}
         <button class="rm-btn" onclick="mRemove('${c.id}')">×</button>
-      </div>`;
+      </div>
+      ${done?`<div class="asgn-done-suggest" onclick="requestAddon(${day})">
+        <span style="color:var(--ok);">✅ Done!</span>
+        <span style="color:var(--muted);">→ Add another ${icons[sub]} ${sub} chapter?</span>
+        <span style="color:${subCol};font-size:10px;">+ tap</span>
+      </div>`:''}`;
     }).join('');
+  } else if(syllabusComplete){
+    // All chapters done — syllabus complete mode
+    inner=`<div class="dz-syllabus-done" onclick="requestAddon(${day})">
+      <div style="font-size:13px;font-weight:800;color:var(--ok);">🎉 ${icons[sub]} Syllabus Complete!</div>
+      <div style="font-size:10px;color:var(--muted);margin:2px 0;">All ${subTotal} chapters done</div>
+      <div style="font-size:11px;color:${subCol};font-weight:600;">Tap to add practice slot →</div>
+    </div>`;
   } else {
-    const icons={phy:'⚡',math:'∑',chem:'⚗'};
-    inner=`<span class="dz-empty-lbl">${icons[sub]} ${label} chapter <span class="dz-hint">← drag here</span></span>`;
+    inner=`<div class="dz-empty-inner">
+      <span class="dz-empty-lbl">${icons[sub]} ${label} chapter</span>
+      <span class="dz-hint">← drag here</span>
+      <span style="font-size:9px;color:var(--muted);margin-left:4px;">${subDone}/${subTotal} done</span>
+    </div>`;
   }
   return `<div class="${dzCls}" data-day="${day}" data-sub="${sub}"
     ondragover="mDzOver(event,this,'${sub}')" ondragleave="mDzLeave(this)" ondrop="mDzDrop(event,${day},'${sub}')">${inner}</div>`;
@@ -860,13 +1386,22 @@ function buildPracBlock(day, type){
     <span class="prac-name ${dpp?'done':''}">All DPPs for today completed ✓</span>
   </div>`;
 
+  const hasChapterSlots = (STATE.mains.addons[day]||[]).length > 0;
+  const hasLogEntries   = (STATE.mains.practiceLog[day]||[]).length > 0;
+  // Mutual exclusion: if chapter slots → hide practice log + hide add-trigger
+  // vice versa: if practice log entries → hide add-trigger; if neither → show both
+  const showAddTrigger = !hasChapterSlots;
+  const showPracLog    = !hasChapterSlots || hasLogEntries;
+
   return `<div class="prac-block ${allDone?'all-prac-done':''}">
     <div class="prac-hdr">
       <span>⏱ 16hr Daily Breakdown</span>
       ${allDone?'<span style="color:var(--ok);font-size:10px;">✓ COMPLETE</span>':'<span style="color:var(--muted);font-size:9px;">12hr + 2hr Sheets + 2hr Rev</span>'}
     </div>
     ${rows}
-  </div>`;
+  </div>
+  ${buildAddonSection(day, allDone, showAddTrigger)}
+  ${showPracLog ? buildPracticeLog(day) : ''}`;
 }
 
 // ══════════════════════════════════════════════
@@ -1093,14 +1628,16 @@ function renderMainsTests(){
 }
 
 function toggleNotes(i){
-  if(!STATE.mains.scores[i]) STATE.mains.scores[i]={};
+  while(STATE.mains.scores.length<=i) STATE.mains.scores.push({});
+  if(!STATE.mains.scores[i]||typeof STATE.mains.scores[i]!=='object') STATE.mains.scores[i]={};
   STATE.mains.scores[i].notes=''; saveState(); renderMainsTests();
 }
 
 function mSaveScore(i,field,val){
-  if(!STATE.mains.scores[i]) STATE.mains.scores[i]={};
+  // Ensure scores array is long enough
+  while(STATE.mains.scores.length<=i) STATE.mains.scores.push({});
+  if(!STATE.mains.scores[i]||typeof STATE.mains.scores[i]!=='object') STATE.mains.scores[i]={};
   STATE.mains.scores[i][field]=val;
-  // Auto-calc total
   const sc=STATE.mains.scores[i];
   const t=(+sc.phy||0)+(+sc.math||0)+(+sc.chem||0);
   if(t>0) sc.total=t;
@@ -1186,8 +1723,7 @@ function updateDash(){
 // ══════════════════════════════════════════════
 //  EXAM DATES & COUNTDOWN
 // ══════════════════════════════════════════════
-let mainsExam=new Date((STATE.mainsExam||'2026-04-05')+'T00:00:00');
-const advExam =new Date('2026-05-17T00:00:00');
+// (mainsExam and advExam declared at top)
 
 function setMainsExam(){
   const v=document.getElementById('mains-exam-date')?.value; if(!v) return;
@@ -1218,6 +1754,18 @@ function showToast(msg){
 }
 
 // ══════════════════════════════════════════════
+//  PRACTICE MATERIAL LOG — slot definitions (must be before renderMainsDays)
+// ══════════════════════════════════════════════
+const PMAT_SLOTS = [
+  {id:'rev',   label:'2hr Rev Slot',   col:'var(--purple)', bg:'var(--purple)'},
+  {id:'sheets',label:'2hr Sheets Slot',col:'var(--ok)',     bg:'var(--ok)'},
+  {id:'dpp',   label:'DPP Time',       col:'var(--mains)',  bg:'var(--mains)'},
+  {id:'extra', label:'Extra Time',     col:'var(--streak)', bg:'var(--streak)'},
+];
+const PMAT_SUB_COL = {phy:'var(--phy)',math:'var(--math)',chem:'var(--chem)'};
+const PMAT_SUB_ICON = {phy:'⚡',math:'∑',chem:'⚗'};
+
+// ══════════════════════════════════════════════
 //  INIT
 // ══════════════════════════════════════════════
 document.getElementById('mains-exam-date').value=STATE.mainsExam||'2026-04-05';
@@ -1246,41 +1794,78 @@ setTimeout(()=>{
 //  JEE ADVANCED DATA
 // ══════════════════════════════════════════════
 const A_PHY=[
-  {id:'ap0',name:'Units & Measurement'},{id:'ap1',name:'Kinematics'},
-  {id:'ap2',name:'Laws of Motion'},{id:'ap3',name:'Work, Energy & Power'},
-  {id:'ap4',name:'Rotational Motion'},{id:'ap5',name:'Gravitation'},
-  {id:'ap6',name:'Properties of Matter'},{id:'ap7',name:'Simple Harmonic Motion'},
-  {id:'ap8',name:'Waves & Sound'},{id:'ap9',name:'Thermodynamics'},
-  {id:'ap10',name:'Kinetic Theory of Gases'},{id:'ap11',name:'Electrostatics'},
-  {id:'ap12',name:'Current Electricity'},{id:'ap13',name:'Magnetic Effects of Current'},
-  {id:'ap14',name:'Magnetism'},{id:'ap15',name:'EMI & Electromagnetic Induction'},
-  {id:'ap16',name:'Alternating Current'},{id:'ap17',name:'Electromagnetic Waves'},
-  {id:'ap18',name:'Ray Optics'},{id:'ap19',name:'Wave Optics'},
-  {id:'ap20',name:'Dual Nature & Photoelectric Effect'},{id:'ap21',name:'Atoms, Nuclei & Radiation'}
+  {id:'ap0', name:'General Physics'},
+  {id:'ap1', name:'Kinematics'},
+  {id:'ap2', name:'Laws of Motion'},
+  {id:'ap3', name:'Work, Energy & Power'},
+  {id:'ap4', name:'Rotational Motion'},
+  {id:'ap5', name:'Simple Harmonic Motion'},
+  {id:'ap6', name:'Gravitation'},
+  {id:'ap7', name:'Fluid Mechanics'},
+  {id:'ap8', name:'Waves & Sound'},
+  {id:'ap9', name:'Thermal Physics'},
+  {id:'ap10',name:'Electrostatics'},
+  {id:'ap11',name:'Capacitors'},
+  {id:'ap12',name:'Current Electricity'},
+  {id:'ap13',name:'Magnetic Effects of Current'},
+  {id:'ap14',name:'Electromagnetic Induction & AC'},
+  {id:'ap15',name:'Electromagnetic Waves'},
+  {id:'ap16',name:'Ray Optics'},
+  {id:'ap17',name:'Wave Optics'},
+  {id:'ap18',name:'Modern Physics'}
 ];
 const A_CHEM=[
-  {id:'ac0',name:'Atomic Structure & Periodic Table'},{id:'ac1',name:'Periodic Table'},
-  {id:'ac2',name:'Chemical Bonding & Mol. Structure'},{id:'ac3',name:'States of Matter'},
-  {id:'ac4',name:'Thermodynamics (Chem)'},{id:'ac5',name:'Chemical Equilibrium'},
-  {id:'ac6',name:'Ionic Equilibrium'},{id:'ac7',name:'Electrochemistry'},
-  {id:'ac8',name:'Chemical Kinetics'},{id:'ac9',name:'Surface Chemistry'},
-  {id:'ac10',name:'s-Block Elements'},{id:'ac11',name:'p-Block (13-14)'},
-  {id:'ac12',name:'p-Block (15-18)'},{id:'ac13',name:'d & f Block Elements'},
-  {id:'ac14',name:'Coordination Compounds'},{id:'ac15',name:'Haloalkanes & Haloarenes'},
-  {id:'ac16',name:'Alcohols, Phenols & Ethers'},{id:'ac17',name:'Aldehydes & Ketones'},
-  {id:'ac18',name:'Carboxylic Acids & Derivatives'},{id:'ac19',name:'Amines + Biomolecules'}
+  {id:'ac0', name:'Mole Concept & Stoichiometry'},
+  {id:'ac1', name:'States of Matter'},
+  {id:'ac2', name:'Atomic Structure'},
+  {id:'ac3', name:'Chemical Bonding'},
+  {id:'ac4', name:'Chemical Thermodynamics'},
+  {id:'ac5', name:'Chemical & Ionic Equilibrium'},
+  {id:'ac6', name:'Electrochemistry'},
+  {id:'ac7', name:'Chemical Kinetics'},
+  {id:'ac8', name:'Solid State'},
+  {id:'ac9', name:'Solutions'},
+  {id:'ac10',name:'Surface Chemistry'},
+  {id:'ac11',name:'Periodic Table'},
+  {id:'ac12',name:'Hydrogen'},
+  {id:'ac13',name:'s-Block Elements'},
+  {id:'ac14',name:'p-Block Elements'},
+  {id:'ac15',name:'d & f Block Elements'},
+  {id:'ac16',name:'Coordination Compounds'},
+  {id:'ac17',name:'Metallurgy'},
+  {id:'ac18',name:'Qualitative Analysis'},
+  {id:'ac19',name:'Environmental Chemistry'},
+  {id:'ac20',name:'Basic Organic Chemistry'},
+  {id:'ac21',name:'Alkanes'},
+  {id:'ac22',name:'Alkenes & Alkynes'},
+  {id:'ac23',name:'Benzene'},
+  {id:'ac24',name:'Phenols'},
+  {id:'ac25',name:'Alkyl Halides'},
+  {id:'ac26',name:'Alcohols & Ethers'},
+  {id:'ac27',name:'Aldehydes & Ketones'},
+  {id:'ac28',name:'Carboxylic Acids'},
+  {id:'ac29',name:'Amines & Haloarenes'},
+  {id:'ac30',name:'Biomolecules'},
+  {id:'ac31',name:'Polymers & Chemistry in Everyday Life'}
 ];
 const A_MATH=[
-  {id:'am0',name:'Sets, Relations & Functions'},{id:'am1',name:'Complex Numbers'},
-  {id:'am2',name:'Sequences & Series'},{id:'am3',name:'Quadratic Equations'},
-  {id:'am4',name:'Permutations & Combinations'},{id:'am5',name:'Binomial Theorem'},
-  {id:'am6',name:'Matrices & Determinants'},{id:'am7',name:'Trigonometric Functions & Equations'},
-  {id:'am8',name:'Inverse Trigonometry'},{id:'am9',name:'Straight Lines & Pair of Lines'},
-  {id:'am10',name:'Circles'},{id:'am11',name:'Parabola & Ellipse'},
-  {id:'am12',name:'Hyperbola'},{id:'am13',name:'3D Geometry & Vectors'},
-  {id:'am14',name:'Limits & Continuity'},{id:'am15',name:'Differentiation'},
-  {id:'am16',name:'Application of Derivatives'},{id:'am17',name:'Indefinite Integration'},
-  {id:'am18',name:'Definite Integration & Area'},{id:'am19',name:'Differential Equations'}
+  {id:'am0', name:'Sets, Relations & Functions'},
+  {id:'am1', name:'Complex Numbers'},
+  {id:'am2', name:'Quadratic Equations'},
+  {id:'am3', name:'Sequences & Series'},
+  {id:'am4', name:'Permutations, Combinations & Binomial'},
+  {id:'am5', name:'Matrices & Determinants'},
+  {id:'am6', name:'Probability & Statistics'},
+  {id:'am7', name:'Trigonometry'},
+  {id:'am8', name:'Straight Lines & Circles'},
+  {id:'am9', name:'Conic Sections'},
+  {id:'am10',name:'3D Geometry'},
+  {id:'am11',name:'Differential Calculus I — Limits & Continuity'},
+  {id:'am12',name:'Differential Calculus II — Differentiation & Applications'},
+  {id:'am13',name:'Integral Calculus I — Indefinite & Definite Integration'},
+  {id:'am14',name:'Integral Calculus II — Area Under Curves'},
+  {id:'am15',name:'Differential Equations'},
+  {id:'am16',name:'Vectors'}
 ];
 const A_ALL=[...A_PHY,...A_CHEM,...A_MATH];
 const A_MAP={}; A_ALL.forEach(c=>{A_MAP[c.id]=c;});
@@ -1288,31 +1873,44 @@ const A_MAP={}; A_ALL.forEach(c=>{A_MAP[c.id]=c;});
 const A_START=new Date('2026-04-07T00:00:00');
 const A_EXAM=new Date('2026-05-17T00:00:00');
 const A_TOTAL=40;
-const A_TEST_DATES=['2026-04-19','2026-04-22','2026-04-26','2026-04-29','2026-05-03','2026-05-06','2026-05-10','2026-05-12','2026-05-13','2026-05-14'];
+// Only 7 test days (removed May 12/13/14)
+const A_TEST_DATES=['2026-04-19','2026-04-22','2026-04-26','2026-04-29','2026-05-03','2026-05-06','2026-05-10'];
 const A_TEST_SET=new Set(A_TEST_DATES.map(s=>Math.round((new Date(s+'T00:00:00')-A_START)/86400000)+1));
-const A_TEST_SUBS=['ap','ac','am','ap','ac','am','ap','ac','am','ap'];
-const A_NON_PAIRS=[['ap','ac'],['am','ap'],['ac','am']];
 
-// Build Advanced plan
-const apq=[...A_PHY],acq=[...A_CHEM],amq=[...A_MATH];
-let anpi=0,atsi=0;
+// Build interleaved chapter queue: C,P,C,M pattern
+// PHY=19, CHEM=32, MATH=17 → total 68 chapters
 const A_PLAN=[];
-for(let d=1;d<=A_TOTAL;d++){
-  const isTest=A_TEST_SET.has(d);
-  const tasks=[];
-  if(isTest){
-    const pre=A_TEST_SUBS[atsi++%10];
-    const q=pre==='ap'?apq:pre==='ac'?acq:amq;
-    if(q.length) tasks.push({ch:q.shift()});
-  } else {
-    const pair=A_NON_PAIRS[anpi++%3];
-    pair.forEach(pre=>{
-      const q=pre==='ap'?apq:pre==='ac'?acq:pre==='am'?amq:[];
-      if(q.length) tasks.push({ch:q.shift()});
-    });
+(function buildAdvPlan(){
+  const pq=A_PHY.filter(c=>c.id!=='ap8'&&c.id!=='ap18');
+  const cq=[...A_CHEM], mq=[...A_MATH];
+  const pool=[];
+  while(pq.length||cq.length||mq.length){
+    if(cq.length) pool.push(cq.shift());
+    if(pq.length) pool.push(pq.shift());
+    if(cq.length) pool.push(cq.shift());
+    if(mq.length) pool.push(mq.shift());
   }
-  A_PLAN.push({d,isTest,tasks});
-}
+  // Append Waves + Modern Physics last → they land on same dedicated day
+  const waves=A_PHY.find(c=>c.id==='ap8');
+  const modern=A_PHY.find(c=>c.id==='ap18');
+  if(waves) pool.push(waves);
+  if(modern) pool.push(modern);
+  // 68 chapters in 69 slots (7 test×1 + 31 normal×2) — fits perfectly
+  for(let d=1;d<=A_TOTAL;d++){
+    const isTest=A_TEST_SET.has(d);
+    const isSylDay=d<=38;
+    const tasks=[];
+    if(isSylDay){
+      if(isTest){
+        if(pool.length) tasks.push({ch:pool.shift()});
+      } else {
+        if(pool.length) tasks.push({ch:pool.shift()});
+        if(pool.length) tasks.push({ch:pool.shift()});
+      }
+    }
+    A_PLAN.push({d,isTest,tasks});
+  }
+})();
 
 function aDayDate(n){const d=new Date(A_START);d.setDate(d.getDate()+n-1);return d;}
 
@@ -1387,7 +1985,8 @@ function aUpdateStats(){
   const cD=A_CHEM.filter(c=>STATE.adv.checked[c.id]).length;
   const mD=A_MATH.filter(c=>STATE.adv.checked[c.id]).length;
   const total=pD+cD+mD;
-  const pct=Math.round(total/62*100);
+  const totalCh=A_PHY.length+A_CHEM.length+A_MATH.length;
+  const pct=Math.round(total/totalCh*100);
   let doneDays=0;
   A_PLAN.forEach(dp=>{if(dp.tasks.length&&dp.tasks.every(t=>STATE.adv.checked[t.ch.id]))doneDays++;});
   const setEl=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
@@ -1395,9 +1994,9 @@ function aUpdateStats(){
   setEl('as-done',doneDays); setEl('as-left',A_TOTAL-doneDays);
   setEl('as-chs',total); setEl('as-pct',pct+'%');
   setBar('as-bar',pct);
-  setBar('ap-bar',Math.round(pD/22*100)); setEl('ap-ct',pD+'/22');
-  setBar('ac-bar',Math.round(cD/20*100)); setEl('ac-ct',cD+'/20');
-  setBar('am-bar',Math.round(mD/20*100)); setEl('am-ct',mD+'/20');
+  setBar('ap-bar',Math.round(pD/A_PHY.length*100)); setEl('ap-ct',pD+'/'+A_PHY.length);
+  setBar('ac-bar',Math.round(cD/A_CHEM.length*100)); setEl('ac-ct',cD+'/'+A_CHEM.length);
+  setBar('am-bar',Math.round(mD/A_MATH.length*100)); setEl('am-ct',mD+'/'+A_MATH.length);
   setEl('da-done',doneDays); setEl('da-chs',total);
   const today=new Date();today.setHours(0,0,0,0);
   const nt=A_TEST_DATES.map(s=>new Date(s+'T00:00:00')).find(d=>d>=today);
@@ -1452,7 +2051,7 @@ function renderAdvTests(){
 
   let html=`<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px;margin-bottom:14px;" id="adv-summary-row"></div>
     <div style="font-size:11px;color:var(--muted);margin-bottom:12px;padding:10px 14px;background:var(--s2);border-radius:10px;border:1px solid var(--border);">
-      💡 JEE Advanced scoring: <b style="color:var(--txt);">Phy: Paper1(52)+Paper2(52)=104 · Chem: 52+52=104 · Math: 52+52=104 · Total: 312</b>
+      💡 JEE Advanced scoring: <b style="color:var(--txt);">Phy: Paper1(60)+Paper2(60)=120 · Chem: 60+60=120 · Math: 60+60=120 · Total: 360</b>
     </div>
     <div style="display:flex;flex-direction:column;gap:10px;">`;
 
@@ -1468,35 +2067,35 @@ function renderAdvTests(){
         <div style="display:flex;align-items:center;gap:10px;">
           <div style="width:32px;height:32px;border-radius:8px;background:${done?'#f59e0b18':'var(--s2)'};color:${done?'var(--adv)':'var(--muted)'};display:flex;align-items:center;justify-content:center;font-weight:800;font-family:'Space Mono',monospace;">${i+1}</div>
           <div><div class="card-title">${tk.label} — <span style="font-size:10px;color:var(--muted);font-family:'Space Mono',monospace;">${new Date(tk.date+'T00:00:00').toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short'})}</span></div>
-          ${done?`<div style="font-size:10px;color:var(--ok);">✓ Logged · Total: <b style="color:var(--adv);">${total}/312</b></div>`:`<div style="font-size:10px;color:var(--muted);">${isPast?'Past — log score':'Upcoming'}</div>`}</div>
+          ${done?`<div style="font-size:10px;color:var(--ok);">✓ Logged · Total: <b style="color:var(--adv);">${total}/360</b></div>`:`<div style="font-size:10px;color:var(--muted);">${isPast?'Past — log score':'Upcoming'}</div>`}</div>
         </div>
         ${done?`<span class="badge adv">Logged</span>`:`<span class="badge" style="color:var(--muted);border-color:var(--border);">${isPast?'Log Now':'Soon'}</span>`}
       </div>
       <div class="card-body">
-        <div style="font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">Paper 1 (52 marks each)</div>
+        <div style="font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">Paper 1 (60 marks each)</div>
         <div style="display:grid;grid-template-columns:repeat(3,1fr) auto;gap:6px;margin-bottom:10px;align-items:end;">
           ${['phy','chem','math'].map((sub,si)=>`
             <div>
-              <div style="font-size:8px;color:var(--${sub});letter-spacing:1px;margin-bottom:3px;font-weight:700;">${['⚡PHY','⚗CHEM','∑MATH'][si]} /52</div>
-              <input type="number" min="-18" max="52" placeholder="—" value="${[p1,p1c,p1m][si]}"
+              <div style="font-size:8px;color:var(--${sub});letter-spacing:1px;margin-bottom:3px;font-weight:700;">${['⚡PHY','⚗CHEM','∑MATH'][si]} /60</div>
+              <input type="number" min="-14" max="60" placeholder="—" value="${[p1,p1c,p1m][si]}"
                 style="width:100%;background:var(--s2);border:1px solid var(--border);color:var(--txt);padding:5px 7px;border-radius:6px;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;"
                 oninput="aSaveScore(${i},'p1${sub}',this.value)">
             </div>`).join('')}
           <div style="text-align:center;"><div style="font-size:8px;color:var(--muted);">P1</div><div id="adv-p1t-${i}" style="font-family:'Space Mono',monospace;font-size:16px;font-weight:700;color:var(--adv);">${(+p1||0)+(+p1c||0)+(+p1m||0)||'—'}</div></div>
         </div>
-        <div style="font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">Paper 2 (52 marks each)</div>
+        <div style="font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">Paper 2 (60 marks each)</div>
         <div style="display:grid;grid-template-columns:repeat(3,1fr) auto;gap:6px;align-items:end;">
           ${['phy','chem','math'].map((sub,si)=>`
             <div>
-              <div style="font-size:8px;color:var(--${sub});letter-spacing:1px;margin-bottom:3px;font-weight:700;">${['⚡PHY','⚗CHEM','∑MATH'][si]} /52</div>
-              <input type="number" min="-18" max="52" placeholder="—" value="${[p2,p2c,p2m][si]}"
+              <div style="font-size:8px;color:var(--${sub});letter-spacing:1px;margin-bottom:3px;font-weight:700;">${['⚡PHY','⚗CHEM','∑MATH'][si]} /60</div>
+              <input type="number" min="-14" max="60" placeholder="—" value="${[p2,p2c,p2m][si]}"
                 style="width:100%;background:var(--s2);border:1px solid var(--border);color:var(--txt);padding:5px 7px;border-radius:6px;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;"
                 oninput="aSaveScore(${i},'p2${sub}',this.value)">
             </div>`).join('')}
           <div style="text-align:center;"><div style="font-size:8px;color:var(--muted);">P2</div><div id="adv-p2t-${i}" style="font-family:'Space Mono',monospace;font-size:16px;font-weight:700;color:var(--adv);">${(+p2||0)+(+p2c||0)+(+p2m||0)||'—'}</div></div>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:10px;">
-          <div style="background:var(--s2);border-radius:8px;padding:8px;text-align:center;"><div style="font-size:8px;color:var(--muted);">TOTAL /312</div><div style="font-family:'Space Mono',monospace;font-size:20px;font-weight:800;color:${total>=200?'var(--ok)':total>=150?'var(--adv)':'var(--mock)'};" id="adv-tot-${i}">${total||'—'}</div></div>
+          <div style="background:var(--s2);border-radius:8px;padding:8px;text-align:center;"><div style="font-size:8px;color:var(--muted);">TOTAL /360</div><div style="font-family:'Space Mono',monospace;font-size:20px;font-weight:800;color:${total>=240?'var(--ok)':total>=180?'var(--adv)':'var(--mock)'};" id="adv-tot-${i}">${total||'—'}</div></div>
           <div><div style="font-size:8px;color:var(--muted);margin-bottom:3px;">Accuracy %</div><input type="number" min="0" max="100" placeholder="e.g. 65" value="${sc.acc||''}" style="width:100%;background:var(--s2);border:1px solid var(--border);color:var(--txt);padding:5px 7px;border-radius:6px;font-family:'Space Mono',monospace;font-size:11px;" oninput="aSaveScore(${i},'acc',this.value)"></div>
           <div><div style="font-size:8px;color:var(--muted);margin-bottom:3px;">Rank Est.</div><input type="number" placeholder="e.g. 500" value="${sc.rank||''}" style="width:100%;background:var(--s2);border:1px solid var(--border);color:var(--txt);padding:5px 7px;border-radius:6px;font-family:'Space Mono',monospace;font-size:11px;" oninput="aSaveScore(${i},'rank',this.value)"></div>
         </div>
@@ -1510,13 +2109,16 @@ function renderAdvTests(){
 }
 
 function advToggleNotes(i){
-  if(!STATE.adv.scores[i]) STATE.adv.scores[i]={};
+  if(!Array.isArray(STATE.adv.scores)) STATE.adv.scores=[];
+  while(STATE.adv.scores.length<=i) STATE.adv.scores.push({});
+  if(!STATE.adv.scores[i]||typeof STATE.adv.scores[i]!=='object') STATE.adv.scores[i]={};
   STATE.adv.scores[i].notes=''; saveState(); renderAdvTests();
 }
 
 function aSaveScore(i,field,val){
-  if(!STATE.adv.scores) STATE.adv.scores=[];
-  if(!STATE.adv.scores[i]) STATE.adv.scores[i]={};
+  if(!Array.isArray(STATE.adv.scores)) STATE.adv.scores=[];
+  while(STATE.adv.scores.length<=i) STATE.adv.scores.push({});
+  if(!STATE.adv.scores[i]||typeof STATE.adv.scores[i]!=='object') STATE.adv.scores[i]={};
   STATE.adv.scores[i][field]=val;
   const sc=STATE.adv.scores[i];
   const t=(+sc.p1phy||0)+(+sc.p1chem||0)+(+sc.p1math||0)+(+sc.p2phy||0)+(+sc.p2chem||0)+(+sc.p2math||0);
@@ -1538,7 +2140,7 @@ function renderAdvTestSummary(){
   const best=Math.max(...totals),avg=Math.round(totals.reduce((a,b)=>a+b)/totals.length);
   const trend=totals.length>1?totals[totals.length-1]-totals[totals.length-2]:0;
   el.innerHTML=`
-    <div class="stat-pill"><div class="sp-num" style="color:var(--ok);">${best}</div><div class="sp-lbl">Best /312</div></div>
+    <div class="stat-pill"><div class="sp-num" style="color:var(--ok);">${best}</div><div class="sp-lbl">Best /360</div></div>
     <div class="stat-pill"><div class="sp-num" style="color:var(--adv);">${avg}</div><div class="sp-lbl">Average</div></div>
     <div class="stat-pill"><div class="sp-num" style="color:${trend>=0?'var(--ok)':'var(--mock)'}">${trend>=0?'+':''}${trend}</div><div class="sp-lbl">Trend</div></div>
     <div class="stat-pill"><div class="sp-num" style="color:var(--streak);">${logged.length}/10</div><div class="sp-lbl">Logged</div></div>`;
@@ -1595,7 +2197,7 @@ function renderAnalytics(){
       <div class="card">
         <div class="card-hdr"><div class="card-title" style="color:var(--adv);">⚡ Advanced Coverage</div></div>
         <div class="card-body">
-          ${[['⚡ Physics',aP,22,'var(--phy)'],['⚗ Chemistry',aC,20,'var(--chem)'],['∑ Maths',aM,20,'var(--math)']].map(([l,d,t,c])=>`
+          ${[['⚡ Physics',aP,A_PHY.length,'var(--phy)'],['⚗ Chemistry',aC,A_CHEM.length,'var(--chem)'],['∑ Maths',aM,A_MATH.length,'var(--math)']].map(([l,d,t,c])=>`
             <div style="margin-bottom:10px;">
               <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px;">
                 <span>${l}</span><span style="font-family:'Space Mono',monospace;color:${c};">${d}/${t}</span>
@@ -1633,7 +2235,7 @@ function renderAnalytics(){
           ${aScores.length?`
             <div style="display:flex;align-items:flex-end;gap:6px;height:80px;margin-bottom:8px;">
               ${aScores.map((s,i)=>{
-                const h=Math.round(((+s.total||0)/312)*80);
+                const h=Math.round(((+s.total||0)/360)*80);
                 const col=+s.total>=200?'var(--ok)':+s.total>=150?'var(--adv)':'var(--mock)';
                 return `<div style="display:flex;flex-direction:column;align-items:center;flex:1;gap:3px;">
                   <span style="font-size:8px;color:${col};font-family:'Space Mono',monospace;">${s.total}</span>
@@ -1642,7 +2244,7 @@ function renderAnalytics(){
                 </div>`;
               }).join('')}
             </div>
-            <div style="font-size:10px;color:var(--muted);">Best: <b style="color:var(--ok);">${Math.max(...aScores.map(s=>+s.total||0))}/312</b> · Avg: <b style="color:var(--adv);">${Math.round(aScores.reduce((a,s)=>a+(+s.total||0),0)/aScores.length)}</b></div>`
+            <div style="font-size:10px;color:var(--muted);">Best: <b style="color:var(--ok);">${Math.max(...aScores.map(s=>+s.total||0))}/360</b> · Avg: <b style="color:var(--adv);">${Math.round(aScores.reduce((a,s)=>a+(+s.total||0),0)/aScores.length)}</b></div>`
           :`<div style="color:var(--muted);font-size:12px;padding:8px;">No scores logged yet.</div>`}
         </div>
       </div>
@@ -1691,12 +2293,827 @@ window.goTo = function(id, btn){
   if(id==='adv-plan'){ renderAdvPlan(); aUpdateStats(); }
   if(id==='adv-syl')  renderAdvSyl();
   if(id==='adv-tests'){ if(!STATE.adv.scores) STATE.adv.scores=[]; renderAdvTests(); }
+  if(id==='adv-qtrack'){ renderAQT(); }
+  if(id==='mains-qtrack'){ renderMQT(); }
   if(id==='analytics') renderAnalytics();
 };
 // Add extra CSS for adv today
 const advStyle=document.createElement('style');
 advStyle.textContent='.adv-today{border-color:var(--adv)!important;box-shadow:0 0 0 1px color-mix(in srgb,var(--adv) 15%,transparent)!important;} .adv-test-day{background:linear-gradient(135deg,var(--s1),#1a1408)!important;}';
 document.head.appendChild(advStyle);
+
+// ══════════════════════════════════════════════
+//  PRACTICE MATERIAL LOG
+// ══════════════════════════════════════════════
+// practiceLog: { [day]: [ {id, sub, material, questions, slot, done}, ... ] }
+
+function buildPracticeLog(day){
+  const entries = STATE.mains.practiceLog[day]||[];
+  const formId = `pmat-form-${day}`;
+  const hasEntries = entries.length>0;
+
+  let entriesHtml = '';
+  entries.forEach(e=>{
+    const col=PMAT_SUB_COL[e.sub]||'var(--muted)';
+    const icon=PMAT_SUB_ICON[e.sub]||'📖';
+    const slot=PMAT_SLOTS.find(s=>s.id===e.slot)||PMAT_SLOTS[3];
+    entriesHtml+=`<div class="pmat-entry">
+      <div class="chk ${e.done?'on':''}" onclick="pmatToggle(${day},'${e.id}')"></div>
+      <div class="pmat-sub-dot" style="background:${col};"></div>
+      <span class="pmat-name ${e.done?'done':''}">${e.material}</span>
+      <span class="pmat-qs">${icon} ${e.questions} Qs</span>
+      <span class="pmat-slot-tag" style="color:${slot.col};border-color:${slot.col}40;background:${slot.col}12;">${slot.label}</span>
+      <button class="pmat-rm" onclick="pmatRemove(${day},'${e.id}')">×</button>
+    </div>`;
+  });
+
+  const totalQs = entries.reduce((a,e)=>a+(+e.questions||0),0);
+
+  return `<div class="pmat-block ${hasEntries?'has-entries':''}">
+    <div class="pmat-hdr">
+      <div class="pmat-hdr-title">
+        📚 Practice Material Log
+        ${hasEntries?`<span style="background:#22d3ee18;border:1px solid #22d3ee30;padding:1px 7px;border-radius:4px;">${entries.length} entries · ${totalQs} Qs solved</span>`:''}
+      </div>
+      <span style="font-size:8px;color:var(--muted);">Revision material tracker</span>
+    </div>
+    ${entriesHtml}
+    <div class="pmat-add-row" onclick="pmatToggleForm(${day})">
+      <div class="pmat-add-icon">+</div>
+      <span class="pmat-add-lbl">${hasEntries?'Add another material entry':'Log what you practiced during revision…'}</span>
+    </div>
+    <div class="pmat-form" id="${formId}">
+      <div class="pmat-form-row">
+        <select id="pmat-sub-${day}" style="flex:0 0 auto;">
+          <option value="phy">⚡ Physics</option>
+          <option value="math">∑ Maths</option>
+          <option value="chem">⚗ Chemistry</option>
+        </select>
+        <select id="pmat-slot-${day}" style="flex:0 0 auto;">
+          ${PMAT_SLOTS.map(s=>`<option value="${s.id}">${s.label}</option>`).join('')}
+        </select>
+      </div>
+      <div class="pmat-form-row">
+        <input id="pmat-mat-${day}" type="text" placeholder="Material / source (e.g. HC Verma Ch5, PYQs, Arihant sheet…)" style="flex:1;min-width:180px;">
+      </div>
+      <div class="pmat-form-row">
+        <input id="pmat-qs-${day}" type="number" min="1" max="500" placeholder="Questions solved (e.g. 30)" style="width:160px;">
+        <div class="pmat-form-btns">
+          <button class="pmat-save-btn" onclick="pmatSave(${day})">✓ Add Entry</button>
+          <button class="pmat-cancel-btn" onclick="pmatToggleForm(${day})">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function pmatToggleForm(day){
+  const f=document.getElementById(`pmat-form-${day}`);
+  if(!f) return;
+  const isOpen=f.classList.toggle('open');
+  if(isOpen) document.getElementById(`pmat-mat-${day}`)?.focus();
+}
+
+function pmatSave(day){
+  const sub   = document.getElementById(`pmat-sub-${day}`)?.value||'phy';
+  const slot  = document.getElementById(`pmat-slot-${day}`)?.value||'rev';
+  const mat   = (document.getElementById(`pmat-mat-${day}`)?.value||'').trim();
+  const qs    = +(document.getElementById(`pmat-qs-${day}`)?.value)||0;
+  if(!mat){ showToast('Enter material / source name!'); return; }
+  if(!qs||qs<1){ showToast('Enter number of questions solved!'); return; }
+  if(!STATE.mains.practiceLog[day]) STATE.mains.practiceLog[day]=[];
+  STATE.mains.practiceLog[day].push({
+    id:'pm_'+Date.now(), sub, slot, material:mat, questions:qs, done:false
+  });
+  saveState(); renderMainsDays(); mUpdateStats();
+  showToast(`📚 Material logged! ${qs} Qs added for Day ${day}`);
+}
+
+function pmatToggle(day,id){
+  const entries=STATE.mains.practiceLog[day]||[];
+  const e=entries.find(x=>x.id===id);
+  if(e){ e.done=!e.done; saveState(); renderMainsDays(); }
+}
+
+function pmatRemove(day,id){
+  STATE.mains.practiceLog[day]=(STATE.mains.practiceLog[day]||[]).filter(x=>x.id!==id);
+  saveState(); renderMainsDays(); mUpdateStats();
+}
+
+// ══════════════════════════════════════════════
+//  ADVANCED QUESTION TRACKER (AQT)
+// ══════════════════════════════════════════════
+// STATE.adv.qlog = { sessions: [{id,date,sub,chapter,source,qtype,total,correct,diff,notes}] }
+
+function aqtGetSessions(){ return (STATE.adv.qlog&&STATE.adv.qlog.sessions)||[]; }
+function aqtSaveSessions(s){ if(!STATE.adv.qlog) STATE.adv.qlog={}; STATE.adv.qlog.sessions=s; saveState(); }
+
+// ── form state
+let _aqfSub=null, _aqfTotal=null, _aqfDiff=null;
+
+function aqfSub(s){
+  _aqfSub=s;
+  ['phy','chem','math'].forEach(x=>document.getElementById('aqf-'+x)?.classList.toggle('selected',x===s));
+  // Auto-fill chapter dropdown with that subject's list
+  document.getElementById('aqf-chapter').value='';
+  document.getElementById('aqf-ch-dropdown').style.display='none';
+}
+
+function aqfFilterChapters(q){
+  const dd=document.getElementById('aqf-ch-dropdown');
+  const list=_aqfSub==='phy'?A_PHY:_aqfSub==='chem'?A_CHEM:_aqfSub==='math'?A_MATH:A_ALL;
+  const filtered=list.filter(c=>!q||c.name.toLowerCase().includes(q.toLowerCase()));
+  if(!filtered.length||!q){ dd.style.display='none'; return; }
+  dd.style.display='block';
+  dd.innerHTML=filtered.slice(0,8).map(c=>`
+    <div style="padding:8px 12px;cursor:pointer;font-size:12px;border-bottom:1px solid var(--border);transition:background .1s;"
+      onmouseover="this.style.background='var(--s1)'" onmouseout="this.style.background=''"
+      onclick="aqfPickChapter('${c.name.replace(/'/g,"\\'")}')">
+      ${c.name}
+    </div>`).join('');
+}
+
+function aqfPickChapter(name){
+  document.getElementById('aqf-chapter').value=name;
+  document.getElementById('aqf-ch-dropdown').style.display='none';
+}
+
+// Close dropdown on outside click
+document.addEventListener('click',e=>{ if(!e.target.closest('#aqf-chapter')&&!e.target.closest('#aqf-ch-dropdown')) document.getElementById('aqf-ch-dropdown').style.display='none'; });
+
+function aqfSetQ(type,n){
+  if(type==='total'){
+    _aqfTotal=n;
+    [10,20,30,40,50,60].forEach(q=>document.getElementById('aqtq-'+q)?.classList.toggle('selected',q===n));
+    const inp=document.getElementById('aqf-total');
+    if(inp&&[10,20,30,40,50,60].includes(n)) inp.value='';
+  }
+}
+
+function aqfDiff(d){
+  _aqfDiff=d;
+  ['easy','med','hard'].forEach(x=>document.getElementById('aqd-'+x)?.classList.toggle('selected',x===d));
+}
+
+function aqfSave(){
+  const chapter=(document.getElementById('aqf-chapter')?.value||'').trim();
+  const source=(document.getElementById('aqf-source')?.value||'').trim();
+  const qtype=document.getElementById('aqf-qtype')?.value||'mixed';
+  const totalRaw=_aqfTotal||+(document.getElementById('aqf-total')?.value)||0;
+  const correct=+(document.getElementById('aqf-correct')?.value)||0;
+  const notes=(document.getElementById('aqf-notes')?.value||'').trim();
+
+  if(!_aqfSub){ showToast('Select a subject first!'); return; }
+  if(!chapter){ showToast('Enter chapter / topic name!'); return; }
+  if(!totalRaw||totalRaw<1){ showToast('Enter number of questions!'); return; }
+  if(correct>totalRaw){ showToast('Correct cannot exceed total!'); return; }
+
+  const sessions=aqtGetSessions();
+  sessions.unshift({
+    id:'aq_'+Date.now(),
+    date:new Date().toISOString().slice(0,10),
+    sub:_aqfSub,
+    chapter,
+    source:source||'—',
+    qtype,
+    total:totalRaw,
+    correct,
+    diff:_aqfDiff||'med',
+    notes
+  });
+  aqtSaveSessions(sessions);
+
+  // Reset form
+  _aqfSub=null; _aqfTotal=null; _aqfDiff=null;
+  ['phy','chem','math'].forEach(x=>document.getElementById('aqf-'+x)?.classList.remove('selected'));
+  [10,20,30,40,50,60].forEach(q=>document.getElementById('aqtq-'+q)?.classList.remove('selected'));
+  ['easy','med','hard'].forEach(x=>document.getElementById('aqd-'+x)?.classList.remove('selected'));
+  ['aqf-chapter','aqf-source','aqf-correct','aqf-notes','aqf-total'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.value='';
+  });
+
+  renderAQT();
+  showToast(`🔥 Logged! ${totalRaw} Qs · ${correct} correct · ${Math.round(correct/totalRaw*100)}% accuracy`);
+}
+
+let _aqFilter='all';
+function aqFilter(f){
+  _aqFilter=f;
+  ['all','phy','chem','math'].forEach(x=>document.getElementById('aqfilt-'+x)?.classList.toggle('on',x===f));
+  renderAQTChapterTable();
+  renderAQTSessionLog();
+}
+
+function aqClearAll(){
+  if(!confirm('Clear ALL question sessions? This cannot be undone.')) return;
+  aqtSaveSessions([]);
+  renderAQT();
+  showToast('Session log cleared.');
+}
+
+function aqDeleteSession(id){
+  const sessions=aqtGetSessions().filter(s=>s.id!==id);
+  aqtSaveSessions(sessions);
+  renderAQT();
+}
+
+function renderAQT(){
+  renderAQTStats();
+  renderAQTChapterTable();
+  renderAQTSessionLog();
+}
+
+function renderAQTStats(){
+  const sessions=aqtGetSessions();
+  const totalQs=sessions.reduce((a,s)=>a+s.total,0);
+  const totalCorrect=sessions.reduce((a,s)=>a+s.correct,0);
+  const accuracy=totalQs?Math.round(totalCorrect/totalQs*100):0;
+  const TARGET=270;
+  // Estimate progress: each correct Q weighted toward target score
+  // Proxy: (correct accuracy * 360) compared to 270
+  const estScore=totalQs>=50?Math.min(Math.round(accuracy/100*360),360):0;
+  const pct=Math.min(Math.round(estScore/TARGET*100),100);
+
+  const today=new Date().toISOString().slice(0,10);
+  const todayQs=sessions.filter(s=>s.date===today).reduce((a,s)=>a+s.total,0);
+  const byDay={};
+  sessions.forEach(s=>{ byDay[s.date]=(byDay[s.date]||0)+s.total; });
+  const bestDay=Math.max(0,...Object.values(byDay));
+
+  const setEl=(id,v)=>{ const el=document.getElementById(id); if(el) el.textContent=v; };
+  setEl('aqt-total-qs',totalQs);
+  setEl('aqt-correct',totalCorrect);
+  setEl('aqt-accuracy',accuracy+'%');
+  setEl('aqt-sessions',sessions.length);
+  setEl('aqt-today-qs',todayQs);
+  setEl('aqt-streak-qs',bestDay);
+  setEl('aqt-pct',pct+'%');
+
+  // Ring
+  const ring=document.getElementById('aqt-ring-fill');
+  if(ring){ const offset=264*(1-pct/100); ring.style.strokeDashoffset=offset; }
+
+  // Subject bars
+  const subQs={phy:0,chem:0,math:0};
+  sessions.forEach(s=>{ subQs[s.sub]=(subQs[s.sub]||0)+s.total; });
+  const maxSub=Math.max(1,...Object.values(subQs));
+  ['phy','chem','math'].forEach(sub=>{
+    const bar=document.getElementById('aqt-'+sub+'-bar');
+    const ct=document.getElementById('aqt-'+sub+'-ct');
+    if(bar) bar.style.width=Math.round(subQs[sub]/maxSub*100)+'%';
+    if(ct) ct.textContent=subQs[sub]+' Qs';
+  });
+}
+
+function renderAQTChapterTable(){
+  const el=document.getElementById('aqt-chapter-table');
+  if(!el) return;
+  const sessions=aqtGetSessions().filter(s=>_aqFilter==='all'||s.sub===_aqFilter);
+  if(!sessions.length){ el.innerHTML=`<div class="aqt-empty">No sessions logged yet. Start tracking above!</div>`; return; }
+
+  // Aggregate by chapter
+  const chMap={};
+  sessions.forEach(s=>{
+    if(!chMap[s.chapter]) chMap[s.chapter]={name:s.chapter,sub:s.sub,total:0,correct:0,sessions:0};
+    chMap[s.chapter].total+=s.total;
+    chMap[s.chapter].correct+=s.correct;
+    chMap[s.chapter].sessions++;
+  });
+  const rows=Object.values(chMap).sort((a,b)=>b.total-a.total);
+  const subCol={phy:'var(--phy)',chem:'var(--chem)',math:'var(--math)'};
+  const subIcon={phy:'⚡',chem:'⚗',math:'∑'};
+
+  el.innerHTML=`<div style="display:grid;grid-template-columns:auto 1fr auto auto auto;gap:0;font-size:9px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;padding:6px 10px;border-bottom:2px solid var(--border);">
+    <div></div><div>Chapter</div><div style="text-align:center;">Qs</div><div style="text-align:center;">Acc</div><div style="text-align:center;">Sess</div>
+  </div>`+rows.map(r=>{
+    const acc=r.total?Math.round(r.correct/r.total*100):0;
+    const accCol=acc>=80?'var(--ok)':acc>=60?'#f59e0b':'var(--mock)';
+    return `<div class="aqt-ch-row" style="display:grid;grid-template-columns:14px 1fr 60px 50px 40px;gap:8px;align-items:center;">
+      <div class="aqt-ch-sub-dot" style="background:${subCol[r.sub]};"></div>
+      <div class="aqt-ch-name">${r.name}</div>
+      <div class="aqt-ch-stat" style="color:var(--txt);">${r.total}</div>
+      <div class="aqt-ch-stat" style="color:${accCol};font-weight:700;">${acc}%</div>
+      <div class="aqt-ch-stat" style="color:var(--muted);">${r.sessions}x</div>
+    </div>`;
+  }).join('');
+}
+
+function renderAQTSessionLog(){
+  const el=document.getElementById('aqt-session-log');
+  if(!el) return;
+  const sessions=aqtGetSessions().filter(s=>_aqFilter==='all'||s.sub===_aqFilter);
+  if(!sessions.length){ el.innerHTML=`<div class="aqt-empty">No sessions yet. Log your first question set above! 🎯</div>`; return; }
+
+  const subCol={phy:'var(--phy)',chem:'var(--chem)',math:'var(--math)'};
+  const subBg={phy:'#f9731618',chem:'#a3e63518',math:'#22d3ee18'};
+  const subIcon={phy:'⚡',chem:'⚗',math:'∑'};
+  const diffLabel={easy:'🟢',med:'🟡',hard:'🔴'};
+
+  el.innerHTML=sessions.slice(0,50).map(s=>{
+    const acc=s.total?Math.round(s.correct/s.total*100):0;
+    const accCol=acc>=80?'var(--ok)':acc>=60?'#f59e0b':'var(--mock)';
+    return `<div class="aqt-sess-row">
+      <div class="aqt-sess-sub" style="background:${subBg[s.sub]};color:${subCol[s.sub]};">${subIcon[s.sub]}</div>
+      <div class="aqt-sess-info">
+        <div class="aqt-sess-ch">${s.chapter}</div>
+        <div class="aqt-sess-meta">
+          ${diffLabel[s.diff]||'🟡'} ${s.qtype} &nbsp;·&nbsp; 📚 ${s.source} &nbsp;·&nbsp; 📅 ${s.date}
+          ${s.notes?`&nbsp;·&nbsp; 💬 ${s.notes}`:''}
+        </div>
+      </div>
+      <div class="aqt-sess-score">
+        <div class="aqt-sess-frac" style="color:${accCol};">${s.correct}/${s.total}</div>
+        <div class="aqt-sess-acc">${acc}% acc</div>
+      </div>
+      <button onclick="aqDeleteSession('${s.id}')" style="background:transparent;border:1px solid var(--border);color:var(--muted);width:20px;height:20px;border-radius:5px;cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;" onmouseover="this.style.borderColor='var(--mock)';this.style.color='var(--mock)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">×</button>
+    </div>`;
+  }).join('');
+}
+
+// ── STATE migration: ensure addons exists
+if(!STATE.mains.addons) { STATE.mains.addons={}; saveState(); }
+
+// ── Modal helpers
+function openModal(id){ document.getElementById(id).classList.add('open'); }
+function closeModal(id){
+  document.getElementById(id).classList.remove('open');
+  if(id==='pw-modal'){ document.getElementById('pw-input').value=''; document.getElementById('pw-dots').textContent='· · · · · · ·'; document.getElementById('pw-err').style.display='none'; }
+}
+
+// ── Password modal
+function pwDots(v){
+  const dots=['·','·','·','·','·','·','·'];
+  for(let i=0;i<Math.min(v.length,7);i++) dots[i]='●';
+  document.getElementById('pw-dots').textContent=dots.join(' ');
+}
+function pwSubmit(){
+  const val=document.getElementById('pw-input').value.trim().toUpperCase();
+  if(val===ADDON_PW){
+    _pwUnlocked=true;
+    closeModal('pw-modal');
+    if(_pwPendingAction==='addon') openAddonModal(_pwPendingDay);
+  } else {
+    const inp=document.getElementById('pw-input');
+    inp.classList.add('error');
+    document.getElementById('pw-err').style.display='block';
+    setTimeout(()=>inp.classList.remove('error'),400);
+    inp.value=''; pwDots('');
+  }
+}
+
+// ── Trigger: called when user clicks "+" on a day
+function requestAddon(day){
+  _pwPendingDay=day;
+  _pwPendingAction='addon';
+  if(_pwUnlocked){
+    openAddonModal(day);
+  } else {
+    const existing = mGetDayChapters(day);
+    const existingAddons = (STATE.mains.addons[day]||[]);
+    if(existing.length > 0 || existingAddons.length > 0){
+      openModal('pw-modal');
+      setTimeout(()=>document.getElementById('pw-input').focus(),200);
+    } else {
+      openAddonModal(day);
+    }
+  }
+}
+
+// ── Addon modal open (chapter-only)
+function openAddonModal(day){
+  _addonDay=day;
+  _addonSub=null;
+  _addonPickedId=null;
+  document.getElementById('addon-day-lbl').textContent=day;
+  document.getElementById('addon-ch-name').value='';
+  ['phy','math','chem'].forEach(s=>document.getElementById('asub-'+s)?.classList.remove('selected'));
+  document.getElementById('addon-pool-list').innerHTML='<div style="color:var(--muted);font-size:11px;padding:6px;">Select a subject first…</div>';
+  openModal('addon-modal');
+}
+
+// ── Subject selection in modal
+function addonSelectSub(sub){
+  _addonSub=sub;
+  ['phy','math','chem'].forEach(s=>{
+    const btn=document.getElementById('asub-'+s);
+    if(btn) btn.classList.toggle('selected',s===sub);
+  });
+  const list=sub==='phy'?M_PHY:sub==='math'?M_MATH:M_CHEM;
+  const poolEl=document.getElementById('addon-pool-list');
+  if(!poolEl) return;
+  const totalDone = list.filter(c=>STATE.mains.checked[c.id]).length;
+  const subCol = {phy:'var(--phy)',math:'var(--math)',chem:'var(--chem)'}[sub];
+  const headerHtml = `<div style="padding:6px 10px;border-bottom:1px solid var(--border);">
+    <span style="font-size:11px;color:var(--muted);">${totalDone}/${list.length} done · Pick a chapter</span>
+  </div>`;
+  const rows = list.map(c=>{
+    const isDone = !!STATE.mains.checked[c.id];
+    const isAssigned = !mIsUnassigned(c.id);
+    const assignedDay = STATE.mains.assignments[c.id];
+    let statusTag = isDone
+      ? `<span style="font-size:9px;color:var(--ok);background:var(--ok)15;border:1px solid var(--ok)30;padding:1px 5px;border-radius:3px;flex-shrink:0;">✓ D${assignedDay||'?'}</span>`
+      : isAssigned
+        ? `<span style="font-size:9px;color:${subCol};background:${subCol}12;border:1px solid ${subCol}30;padding:1px 5px;border-radius:3px;flex-shrink:0;">D${assignedDay}</span>`
+        : `<span style="font-size:9px;color:var(--muted);border:1px solid var(--border);padding:1px 5px;border-radius:3px;flex-shrink:0;">Pool</span>`;
+    return `<div class="modal-ch-item" id="pool-pick-${c.id}" onclick="addonPickPool('${c.id}','${c.name.replace(/'/g,"\\'")}','${sub}')">
+      <div class="check"></div>
+      <div style="width:7px;height:7px;border-radius:50%;background:${isDone?'var(--ok)':isAssigned?subCol:'var(--border)'};flex-shrink:0;margin-right:2px;"></div>
+      <span style="flex:1;${isDone?'color:var(--muted)':''}">${c.name}</span>
+      ${statusTag}
+    </div>`;
+  }).join('');
+  poolEl.innerHTML = headerHtml + rows;
+}
+
+function addonPickPool(id, name, sub){
+  _addonPickedId=id;
+  document.getElementById('addon-ch-name').value=name;
+  document.querySelectorAll('.modal-ch-item').forEach(el=>el.classList.remove('selected'));
+  document.getElementById('pool-pick-'+id)?.classList.add('selected');
+}
+
+// ── Confirm add (always chapter type)
+function addonConfirm(){
+  const name=(document.getElementById('addon-ch-name').value||'').trim();
+  if(!_addonSub){ showToast('Choose a subject!'); return; }
+  if(!name){ showToast('Enter chapter name!'); return; }
+  const slot={ id:'ao_'+Date.now(), type:'chapter', sub:_addonSub, name, theory:false, dpp:false, sheets:false, fromPool:_addonPickedId||null };
+  if(!STATE.mains.addons[_addonDay]) STATE.mains.addons[_addonDay]=[];
+  STATE.mains.addons[_addonDay].push(slot);
+  _addonPickedId=null;
+  saveState();
+  closeModal('addon-modal');
+  renderMainsDays();
+  mUpdateStats();
+  showToast('📖 Extra chapter added to Day '+_addonDay+'!');
+}
+
+// ── Toggle sub-item on a chapter slot (theory / dpp / sheets)
+function toggleAddonSub(dayStr, slotId, field){
+  const day=parseInt(dayStr);
+  const slot=(STATE.mains.addons[day]||[]).find(s=>s.id===slotId);
+  if(slot){ slot[field]=!slot[field]; saveState(); renderMainsDays(); mUpdateStats(); }
+}
+
+// ── Toggle addon done (legacy practice type support)
+function toggleAddon(dayStr, slotId){
+  const day=parseInt(dayStr);
+  const slot=(STATE.mains.addons[day]||[]).find(s=>s.id===slotId);
+  if(slot){ slot.done=!slot.done; saveState(); renderMainsDays(); mUpdateStats(); }
+}
+
+// ── Remove addon
+function removeAddon(dayStr, slotId){
+  const day=parseInt(dayStr);
+  STATE.mains.addons[day]=(STATE.mains.addons[day]||[]).filter(s=>s.id!==slotId);
+  saveState(); renderMainsDays(); mUpdateStats();
+}
+
+// ── Build addon section HTML (Chapter slots only)
+// ── Build practice log decides its own visibility based on what's present
+function buildAddonSection(day, isDayDone, showTrigger=true){
+  const slots=STATE.mains.addons[day]||[];
+  const subCol={phy:'var(--phy)',math:'var(--math)',chem:'var(--chem)'};
+  const subIcon={phy:'⚡',math:'∑',chem:'⚗'};
+
+  let html=`<div class="addon-section ${slots.length?'unlocked':''}">
+    <div class="addon-hdr">
+      <div class="addon-hdr-title">
+        ${slots.length?`<span style="background:var(--ok)18;border:1px solid var(--ok)30;padding:2px 7px;border-radius:4px;color:var(--ok);">${slots.length} Extra Ch${slots.length>1?'s':''}</span>`:''}
+        📖 Extra Chapters
+        ${isDayDone?`<span style="color:var(--ok);font-size:8px;background:var(--ok)12;border:1px solid var(--ok)25;padding:1px 6px;border-radius:4px;">DAY COMPLETE</span>`:''}
+      </div>
+      <span style="font-size:8px;color:var(--muted);">🔐 DEVASENA</span>
+    </div>`;
+
+  slots.forEach(slot=>{
+    const col=subCol[slot.sub]||'var(--ok)';
+    const icon=subIcon[slot.sub]||'📖';
+    // All slots treated as chapter type (with Theory/DPP/Must-Do toggles)
+    const allSubDone = slot.theory && slot.dpp && slot.sheets;
+    html+=`<div class="addon-item" style="flex-direction:column;align-items:stretch;gap:6px;padding:10px 11px;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div class="addon-sub-dot" style="background:${col};flex-shrink:0;"></div>
+        <span class="addon-name ${allSubDone?'done':''}" style="flex:1;font-weight:600;">${icon} ${slot.name}</span>
+        ${allSubDone?`<span style="font-size:9px;color:var(--ok);font-weight:700;">✓ DONE</span>`:''}
+        <button class="addon-rm" onclick="removeAddon('${day}','${slot.id}')">×</button>
+      </div>
+      <div style="display:flex;gap:6px;padding-left:15px;flex-wrap:wrap;">
+        <div onclick="toggleAddonSub('${day}','${slot.id}','theory')"
+          style="display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:7px;cursor:pointer;border:1px solid;transition:all .15s;font-size:11px;font-weight:700;user-select:none;
+          ${slot.theory?'background:#34d39915;border-color:#34d39940;color:var(--ok);':'background:var(--s2);border-color:var(--border);color:var(--muted);'}">
+          <div style="width:13px;height:13px;border-radius:4px;border:1.5px solid ${slot.theory?'var(--ok)':'var(--border)'};background:${slot.theory?'var(--ok)':'transparent'};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            ${slot.theory?'<span style="color:#000;font-size:9px;line-height:1;">✓</span>':''}
+          </div>📖 Theory
+        </div>
+        <div onclick="toggleAddonSub('${day}','${slot.id}','dpp')"
+          style="display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:7px;cursor:pointer;border:1px solid;transition:all .15s;font-size:11px;font-weight:700;user-select:none;
+          ${slot.dpp?'background:var(--mains)15;border-color:var(--mains)40;color:var(--mains);':'background:var(--s2);border-color:var(--border);color:var(--muted);'}">
+          <div style="width:13px;height:13px;border-radius:4px;border:1.5px solid ${slot.dpp?'var(--mains)':'var(--border)'};background:${slot.dpp?'var(--mains)':'transparent'};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            ${slot.dpp?'<span style="color:#000;font-size:9px;line-height:1;">✓</span>':''}
+          </div>✅ DPP
+        </div>
+        <div onclick="toggleAddonSub('${day}','${slot.id}','sheets')"
+          style="display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:7px;cursor:pointer;border:1px solid;transition:all .15s;font-size:11px;font-weight:700;user-select:none;
+          ${slot.sheets?'background:#34d39915;border-color:#34d39940;color:var(--ok);':'background:var(--s2);border-color:var(--border);color:var(--muted);'}">
+          <div style="width:13px;height:13px;border-radius:4px;border:1.5px solid ${slot.sheets?'var(--ok)':'var(--border)'};background:${slot.sheets?'var(--ok)':'transparent'};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            ${slot.sheets?'<span style="color:#000;font-size:9px;line-height:1;">✓</span>':''}
+          </div>📋 Must-Do
+        </div>
+      </div>
+    </div>`;
+  });
+
+  if(showTrigger){
+    html+=`<div class="addon-trigger" onclick="requestAddon(${day})">
+      <div class="plus">+</div>
+      <span>📖 Add extra chapter</span>
+      ${!_pwUnlocked?'<span style="font-size:9px;color:var(--muted);border:1px solid var(--border);border-radius:4px;padding:1px 5px;">🔐 locked</span>':'<span style="font-size:9px;color:var(--ok);">🔓 unlocked</span>'}
+    </div>`;
+  } else if(slots.length > 0){
+    html+=`<div style="padding:6px 10px;font-size:10px;color:var(--muted);font-style:italic;text-align:center;border-top:1px solid var(--border);">
+      📖 Doing extra chapters — Practice Log hidden
+    </div>`;
+  }
+  html+=`</div>`;
+  return html;
+}
+
+// ══════════════════════════════════════════════
+//  MAINS QUESTION TRACKER (MQT)
+// ══════════════════════════════════════════════
+function mqtGetSessions(){ return (STATE.mains.qlog&&STATE.mains.qlog.sessions)||[]; }
+function mqtSaveSessions(s){ if(!STATE.mains.qlog) STATE.mains.qlog={}; STATE.mains.qlog.sessions=s; saveState(); }
+
+let _mqfSub=null, _mqfTotal=null, _mqfDiff=null;
+
+function mqfSub(s){
+  _mqfSub=s;
+  ['phy','chem','math'].forEach(x=>document.getElementById('mqf-'+x)?.classList.toggle('selected',x===s));
+  document.getElementById('mqf-chapter').value='';
+  document.getElementById('mqf-ch-dropdown').style.display='none';
+}
+
+function mqfFilterChapters(q){
+  const dd=document.getElementById('mqf-ch-dropdown');
+  const list=_mqfSub==='phy'?M_PHY:_mqfSub==='math'?M_MATH:_mqfSub==='chem'?M_CHEM:M_ALL;
+  const filtered=list.filter(c=>!q||c.name.toLowerCase().includes(q.toLowerCase()));
+  if(!filtered.length||!q){ dd.style.display='none'; return; }
+  dd.style.display='block';
+  dd.innerHTML=filtered.slice(0,8).map(c=>`
+    <div style="padding:8px 12px;cursor:pointer;font-size:12px;border-bottom:1px solid var(--border);transition:background .1s;"
+      onmouseover="this.style.background='var(--s1)'" onmouseout="this.style.background=''"
+      onclick="mqfPickChapter('${c.name.replace(/'/g,"\\'")}')">
+      ${c.name}
+    </div>`).join('');
+}
+
+function mqfPickChapter(name){
+  document.getElementById('mqf-chapter').value=name;
+  document.getElementById('mqf-ch-dropdown').style.display='none';
+}
+
+document.addEventListener('click',e=>{
+  if(!e.target.closest('#mqf-chapter')&&!e.target.closest('#mqf-ch-dropdown')){
+    const d=document.getElementById('mqf-ch-dropdown');
+    if(d) d.style.display='none';
+  }
+});
+
+function mqfSetQ(n){
+  _mqfTotal=n;
+  [10,20,25,30,50].forEach(q=>document.getElementById('mqtq-'+q)?.classList.toggle('selected',q===n));
+  const inp=document.getElementById('mqf-total');
+  if(inp&&[10,20,25,30,50].includes(n)) inp.value='';
+}
+
+function mqfDiff(d){
+  _mqfDiff=d;
+  ['easy','med','hard'].forEach(x=>document.getElementById('mqd-'+x)?.classList.toggle('selected',x===d));
+}
+
+function mqfSave(){
+  const chapter=(document.getElementById('mqf-chapter')?.value||'').trim();
+  const source=(document.getElementById('mqf-source')?.value||'').trim();
+  const qtype=document.getElementById('mqf-qtype')?.value||'mixed';
+  const totalRaw=_mqfTotal||+(document.getElementById('mqf-total')?.value)||0;
+  const correct=+(document.getElementById('mqf-correct')?.value)||0;
+  const notes=(document.getElementById('mqf-notes')?.value||'').trim();
+
+  if(!_mqfSub){ showToast('Select a subject first!'); return; }
+  if(!chapter){ showToast('Enter chapter / topic!'); return; }
+  if(!totalRaw||totalRaw<1){ showToast('Enter number of questions!'); return; }
+  if(correct>totalRaw){ showToast('Correct cannot exceed total!'); return; }
+
+  const sessions=mqtGetSessions();
+  sessions.unshift({
+    id:'mq_'+Date.now(),
+    date:new Date().toISOString().slice(0,10),
+    sub:_mqfSub, chapter,
+    source:source||'—',
+    qtype, total:totalRaw, correct,
+    diff:_mqfDiff||'med', notes
+  });
+  mqtSaveSessions(sessions);
+
+  // Reset form
+  _mqfSub=null; _mqfTotal=null; _mqfDiff=null;
+  ['phy','chem','math'].forEach(x=>document.getElementById('mqf-'+x)?.classList.remove('selected'));
+  [10,20,25,30,50].forEach(q=>document.getElementById('mqtq-'+q)?.classList.remove('selected'));
+  ['easy','med','hard'].forEach(x=>document.getElementById('mqd-'+x)?.classList.remove('selected'));
+  ['mqf-chapter','mqf-source','mqf-correct','mqf-notes','mqf-total'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.value='';
+  });
+
+  renderMQT();
+  showToast(`🎯 Logged! ${totalRaw} Qs · ${correct} correct · ${Math.round(correct/totalRaw*100)}% acc`);
+}
+
+let _mqFilter='all';
+
+function mqFilter(f){
+  _mqFilter=f;
+  ['all','phy','chem','math'].forEach(x=>document.getElementById('mqfilt-'+x)?.classList.toggle('on',x===f));
+  renderMQTChapterTable();
+  renderMQTSessionLog();
+}
+
+function mqClearAll(){
+  if(!confirm('Clear ALL Mains question sessions? This cannot be undone.')) return;
+  mqtSaveSessions([]);
+  renderMQT();
+  showToast('Session log cleared.');
+}
+
+function mqDeleteSession(id){
+  mqtSaveSessions(mqtGetSessions().filter(s=>s.id!==id));
+  renderMQT();
+}
+
+function renderMQT(){
+  renderMQTStats();
+  renderMQTChapterTable();
+  renderMQTSessionLog();
+}
+
+function renderMQTStats(){
+  const sessions=mqtGetSessions();
+  const totalQs=sessions.reduce((a,s)=>a+s.total,0);
+  const totalCorrect=sessions.reduce((a,s)=>a+s.correct,0);
+  const accuracy=totalQs?Math.round(totalCorrect/totalQs*100):0;
+  const TARGET=240;
+  const estScore=totalQs>=30?Math.min(Math.round(accuracy/100*300),300):0;
+  const pct=Math.min(Math.round(estScore/TARGET*100),100);
+
+  const today=new Date().toISOString().slice(0,10);
+  const todayQs=sessions.filter(s=>s.date===today).reduce((a,s)=>a+s.total,0);
+  const byDay={}; sessions.forEach(s=>{ byDay[s.date]=(byDay[s.date]||0)+s.total; });
+  const bestDay=Math.max(0,...Object.values(byDay));
+
+  const setEl=(id,v)=>{ const el=document.getElementById(id); if(el) el.textContent=v; };
+  setEl('mqt-total-qs',totalQs);
+  setEl('mqt-correct',totalCorrect);
+  setEl('mqt-accuracy',accuracy+'%');
+  setEl('mqt-sessions',sessions.length);
+  setEl('mqt-today-qs',todayQs);
+  setEl('mqt-streak-qs',bestDay);
+  setEl('mqt-pct',pct+'%');
+
+  const ring=document.getElementById('mqt-ring-fill');
+  if(ring) ring.style.strokeDashoffset=264*(1-pct/100);
+
+  const subQs={phy:0,chem:0,math:0};
+  sessions.forEach(s=>{ subQs[s.sub]=(subQs[s.sub]||0)+s.total; });
+  const maxSub=Math.max(1,...Object.values(subQs));
+  ['phy','chem','math'].forEach(sub=>{
+    const bar=document.getElementById('mqt-'+sub+'-bar');
+    const ct=document.getElementById('mqt-'+sub+'-ct');
+    if(bar) bar.style.width=Math.round(subQs[sub]/maxSub*100)+'%';
+    if(ct) ct.textContent=subQs[sub]+' Qs';
+  });
+}
+
+function renderMQTChapterTable(){
+  const el=document.getElementById('mqt-chapter-table'); if(!el) return;
+  const sessions=mqtGetSessions().filter(s=>_mqFilter==='all'||s.sub===_mqFilter);
+  if(!sessions.length){
+    el.innerHTML=`<div class="aqt-empty">No sessions yet. Log your first question set above! 🎯</div>`;
+    return;
+  }
+  const chMap={};
+  sessions.forEach(s=>{
+    if(!chMap[s.chapter]) chMap[s.chapter]={name:s.chapter,sub:s.sub,total:0,correct:0,sessions:0};
+    chMap[s.chapter].total+=s.total;
+    chMap[s.chapter].correct+=s.correct;
+    chMap[s.chapter].sessions++;
+  });
+  const rows=Object.values(chMap).sort((a,b)=>b.total-a.total);
+  const subCol={phy:'var(--phy)',chem:'var(--chem)',math:'var(--math)'};
+  el.innerHTML=`<div style="display:grid;grid-template-columns:auto 1fr auto auto auto;gap:0;font-size:9px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;padding:6px 10px;border-bottom:2px solid var(--border);">
+    <div></div><div>Chapter</div><div style="text-align:center;">Qs</div><div style="text-align:center;">Acc</div><div style="text-align:center;">Sess</div>
+  </div>`+rows.map(r=>{
+    const acc=r.total?Math.round(r.correct/r.total*100):0;
+    const accCol=acc>=80?'var(--ok)':acc>=60?'#f59e0b':'var(--mock)';
+    return `<div class="aqt-ch-row" style="display:grid;grid-template-columns:14px 1fr 60px 50px 40px;gap:8px;align-items:center;">
+      <div class="aqt-ch-sub-dot" style="background:${subCol[r.sub]||'var(--muted)'};"></div>
+      <div class="aqt-ch-name">${r.name}</div>
+      <div class="aqt-ch-stat" style="color:var(--txt);">${r.total}</div>
+      <div class="aqt-ch-stat" style="color:${accCol};font-weight:700;">${acc}%</div>
+      <div class="aqt-ch-stat" style="color:var(--muted);">${r.sessions}x</div>
+    </div>`;
+  }).join('');
+}
+
+function renderMQTSessionLog(){
+  const el=document.getElementById('mqt-session-log'); if(!el) return;
+  const sessions=mqtGetSessions().filter(s=>_mqFilter==='all'||s.sub===_mqFilter);
+  if(!sessions.length){
+    el.innerHTML=`<div class="aqt-empty">No sessions yet. Log your first question set above! 🎯</div>`;
+    return;
+  }
+  const subCol={phy:'var(--phy)',chem:'var(--chem)',math:'var(--math)'};
+  const subBg={phy:'#f9731618',chem:'#a3e63518',math:'#22d3ee18'};
+  const subIcon={phy:'⚡',chem:'⚗',math:'∑'};
+  const diffLabel={easy:'🟢',med:'🟡',hard:'🔴'};
+  el.innerHTML=sessions.slice(0,50).map(s=>{
+    const acc=s.total?Math.round(s.correct/s.total*100):0;
+    const accCol=acc>=80?'var(--ok)':acc>=60?'#f59e0b':'var(--mock)';
+    return `<div class="aqt-sess-row">
+      <div class="aqt-sess-sub" style="background:${subBg[s.sub]||'var(--s2)'};color:${subCol[s.sub]||'var(--muted)'};">${subIcon[s.sub]||'📖'}</div>
+      <div class="aqt-sess-info">
+        <div class="aqt-sess-ch">${s.chapter}</div>
+        <div class="aqt-sess-meta">
+          ${diffLabel[s.diff]||'🟡'} ${s.qtype} &nbsp;·&nbsp; 📚 ${s.source} &nbsp;·&nbsp; 📅 ${s.date}
+          ${s.notes?`&nbsp;·&nbsp; 💬 ${s.notes}`:''}
+        </div>
+      </div>
+      <div class="aqt-sess-score">
+        <div class="aqt-sess-frac" style="color:${accCol};">${s.correct}/${s.total}</div>
+        <div class="aqt-sess-acc">${acc}% acc</div>
+      </div>
+      <button onclick="mqDeleteSession('${s.id}')"
+        style="background:transparent;border:1px solid var(--border);color:var(--muted);width:20px;height:20px;border-radius:5px;cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;"
+        onmouseover="this.style.borderColor='var(--mock)';this.style.color='var(--mock)'"
+        onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">×</button>
+    </div>`;
+  }).join('');
+}
+
+
 </script>
+
+<!-- ════ PASSWORD MODAL ════ -->
+<div class="modal-overlay" id="pw-modal">
+  <div class="modal-box" style="max-width:340px;">
+    <div class="modal-title" style="color:var(--purple);">🔐 Unlock Extra Chapter</div>
+    <div class="modal-sub">This day has existing content. Enter password to add an extra practice slot.</div>
+    <div class="pw-stars" id="pw-dots">· · · · · · ·</div>
+    <label class="modal-label">Password</label>
+    <input class="modal-input" id="pw-input" type="password" placeholder="Enter password…" onkeydown="if(event.key==='Enter')pwSubmit()" oninput="pwDots(this.value)" autocomplete="off">
+    <div id="pw-err" style="font-size:11px;color:var(--mock);margin:-10px 0 12px;display:none;">❌ Wrong password. Try again.</div>
+    <div class="modal-footer">
+      <button class="modal-btn cancel" onclick="closeModal('pw-modal')">Cancel</button>
+      <button class="modal-btn primary" onclick="pwSubmit()">🔓 Unlock</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════ ADDON MODAL ════ -->
+<div class="modal-overlay" id="addon-modal">
+  <div class="modal-box">
+    <div class="modal-title" style="color:var(--ok);">📖 Add Extra Chapter — Day <span id="addon-day-lbl">—</span></div>
+    <div class="modal-sub">Tracks Theory, DPP & Must-Do Sheets separately</div>
+
+    <label class="modal-label">1. Select Subject</label>
+    <div class="modal-row">
+      <button class="modal-sub-btn phy" id="asub-phy" onclick="addonSelectSub('phy')">⚡ Physics</button>
+      <button class="modal-sub-btn math" id="asub-math" onclick="addonSelectSub('math')">∑ Maths</button>
+      <button class="modal-sub-btn chem" id="asub-chem" onclick="addonSelectSub('chem')">⚗ Chem</button>
+    </div>
+
+    <label class="modal-label">2. Pick Chapter from Pool</label>
+    <div class="modal-ch-list" id="addon-pool-list">
+      <div style="color:var(--muted);font-size:11px;padding:6px;">Select a subject first…</div>
+    </div>
+    <div class="modal-or">— or type custom below —</div>
+    <label class="modal-label">3. Chapter / Topic Name</label>
+    <input class="modal-input" id="addon-ch-name" placeholder="e.g. Electrostatics, Organic Chemistry…">
+
+    <div style="background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin-bottom:14px;">
+      <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">This chapter will track:</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <span style="background:#34d39912;border:1px solid #34d39930;color:var(--ok);font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px;">📖 Theory</span>
+        <span style="background:var(--mains)12;border:1px solid var(--mains)30;color:var(--mains);font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px;">✅ DPP</span>
+        <span style="background:var(--ok)12;border:1px solid var(--ok)30;color:var(--ok);font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px;">📋 Must-Do</span>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="modal-btn cancel" onclick="closeModal('addon-modal')">Cancel</button>
+      <button class="modal-btn primary" onclick="addonConfirm()">📖 Add Chapter</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>

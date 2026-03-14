@@ -1908,7 +1908,6 @@ const FMT_WD = d => d.toLocaleDateString('en-IN',{weekday:'short',month:'short',
 
 function mIsUnassigned(id){ const v=STATE.mains.assignments[id]; return v===undefined||v===null; }
 function mGetDayChapters(day){ return M_ALL.filter(c=>STATE.mains.assignments[c.id]===day); }
-const mK = (d,slot) => `d${d}s${slot}`; // slot: 0=main,1=chem
 
 // ══════════════════════════════════════════════
 //  RENDER POOL
@@ -3158,7 +3157,6 @@ function renderMainsDeepDive(root){
   </div>`;
 }
 
-function toggleNotes(i){ renderMainsTests(); }
 let _mScoreTimer=null;
 function mSaveScore(i,field,val){
   while(STATE.mains.scores.length<=i) STATE.mains.scores.push({});
@@ -3171,8 +3169,6 @@ function mSaveScore(i,field,val){
   clearTimeout(_mScoreTimer);
   _mScoreTimer=setTimeout(()=>{ _rerenderTabOnly('mains'); },900);
 }
-function renderMockSummary(){}
-function renderMockCards(){ renderMainsTabContent(); }
 
 
 // ══════════════════════════════════════════════
@@ -4229,7 +4225,6 @@ function renderAdvDeepDive(root){
   </div>`;
 }
 
-function advToggleNotes(i){ renderAdvTests(); }
 function aSaveScore(i,field,val){
   if(!Array.isArray(STATE.adv.scores)) STATE.adv.scores=[];
   while(STATE.adv.scores.length<=i) STATE.adv.scores.push({});

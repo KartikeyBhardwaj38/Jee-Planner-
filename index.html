@@ -685,7 +685,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
     <div class="page-title" style="background:var(--mg);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">📅 JEE Mains — 21-Day Plan</div>
     <div class="page-sub">
       <span>Mar 14 → Apr 2 · 16hr/day</span>
-      <span>⚡ 9 Phy · ∑ 5 Math · ⚗ 5 Chem · 🔁 1 Rev</span>
+      <span>⚡ 9 Phy · ∑ Maths Done ✓ · ⚗ 10 Chem (Days 16–20 = Chem ×2)</span>
       <span>📝 Mocks: Mar 19,24,26,29,30,31 · Apr 1</span>
     </div>
   </div>
@@ -1235,8 +1235,8 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 <!-- ════ PYQ TRACKER ════ -->
 <div class="section" id="sec-pyq">
   <div class="page-hdr">
-    <div class="page-title" style="background:var(--ag);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">📜 PYQ Coverage Tracker</div>
-    <div class="page-sub"><span>Mark which year's PYQs you've done · 2016–2024</span></div>
+    <div class="page-title" style="background:var(--ag);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">📜 JEE Advanced PYQ Tracker</div>
+    <div class="page-sub"><span>IIT-JEE / JEE Advanced · 1978 – 2025 · 48 years · Mark year-wise coverage per chapter</span></div>
   </div>
   <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;">
     <button class="btn btn-ghost" onclick="pyqFilter('all')" id="pyq-f-all" style="border-color:var(--adv);">All</button>
@@ -1504,7 +1504,8 @@ const M_MOCK_SET = new Set(M_MOCK_DATES.map(s=>Math.round((new Date(s+'T00:00:00
 //   CM = Chemistry main + Maths secondary
 //   If all Maths chapters done → CC = Chemistry + Chemistry (both slots)
 // No revision block — use extra block for revision
-const M_DAY_TYPE = ['PM','PC','PM','PC','PM','PC','PM','PC','PM','PC','CM','CM','CM','CM','CM','CM','CM','CM','CM','CM'];
+// Days 16-20 → CC (Chemistry × 2) because Maths is already completed
+const M_DAY_TYPE = ['PM','PC','PM','PC','PM','PC','PM','PC','PM','PC','CM','CM','CM','CM','CM','CC','CC','CC','CC','CC'];
 
 // Dynamic: if all math done mid-phase, CM becomes CC
 function mGetDayType(d){
@@ -1734,7 +1735,8 @@ const ACHIEVEMENTS=[
   {id:'c25', chs:25,    icon:'📚', title:'Knowledge Seeker',desc:'25 chapters — more than half done.'},
   {id:'c40', chs:40,    icon:'🏆', title:'Syllabus Slayer', desc:'All 40 chapters complete. Legendary.'},
 ];
-const PYQ_YEARS=[2016,2017,2018,2019,2020,2021,2022,2023,2024];
+// JEE Advanced (IIT-JEE) — last 48 years: 1978 → 2025
+const PYQ_YEARS=Array.from({length:48},(_,i)=>1978+i);
 let _pyqFilter='all';
 let _errSub=null;
 let _energySel=0;
@@ -4582,32 +4584,120 @@ function renderMQTStats(){
 // ══════════════════════════════════════════════
 if(!STATE.sheets) STATE.sheets=[];
 
+// ── IndexedDB helper — PDFs are too big for localStorage ──
+const _pdfDB = {
+  _db: null,
+  open(){
+    return new Promise((res,rej)=>{
+      if(this._db){ res(this._db); return; }
+      const req = indexedDB.open('jeePDFStore', 1);
+      req.onupgradeneeded = e => e.target.result.createObjectStore('pdfs');
+      req.onsuccess = e => { this._db = e.target.result; res(this._db); };
+      req.onerror   = () => rej('IDB open failed');
+    });
+  },
+  async put(id, dataURL){
+    try{
+      const db = await this.open();
+      return new Promise((res,rej)=>{
+        const tx = db.transaction('pdfs','readwrite');
+        tx.objectStore('pdfs').put(dataURL, id);
+        tx.oncomplete = ()=>res(true);
+        tx.onerror    = ()=>rej(false);
+      });
+    }catch(e){ return false; }
+  },
+  async get(id){
+    try{
+      const db = await this.open();
+      return new Promise((res,rej)=>{
+        const tx = db.transaction('pdfs','readonly');
+        const req = tx.objectStore('pdfs').get(id);
+        req.onsuccess = ()=>res(req.result||null);
+        req.onerror   = ()=>res(null);
+      });
+    }catch(e){ return null; }
+  },
+  async del(id){
+    try{
+      const db = await this.open();
+      return new Promise((res)=>{
+        const tx = db.transaction('pdfs','readwrite');
+        tx.objectStore('pdfs').delete(id);
+        tx.oncomplete = ()=>res();
+      });
+    }catch(e){}
+  }
+};
+
+// Migrate any legacy base64 PDFs stored directly in STATE (old format)
+(async function _migrateLegacyPDFs(){
+  if(!STATE.sheets) return;
+  let changed=false;
+  for(const sh of STATE.sheets){
+    if(sh.pdf && typeof sh.pdf === 'string' && sh.pdf.startsWith('data:')){
+      await _pdfDB.put(sh.id, sh.pdf);
+      sh.pdf = null;   // remove from STATE — IDB is the source of truth
+      sh.hasPdf = true;
+      changed = true;
+    }
+  }
+  if(changed) saveState();
+})();
+
 function sheetHandlePDF(input){
-  const file=input.files[0]; if(!file) return;
-  const reader=new FileReader();
-  reader.onload=e=>{
-    _sheetPDFData=e.target.result;
-    document.getElementById('sheet-pdf-name').textContent='✓ '+file.name;
+  const file = input.files[0]; if(!file) return;
+  if(file.type !== 'application/pdf'){
+    showToast('Please upload a PDF file!'); input.value=''; return;
+  }
+  const maxMB = 50;
+  if(file.size > maxMB*1024*1024){
+    showToast('PDF too large (max '+maxMB+'MB)'); input.value=''; return;
+  }
+  const lbl = document.getElementById('sheet-pdf-name');
+  lbl.textContent = '⏳ Reading…'; lbl.style.color = 'var(--muted)';
+  const reader = new FileReader();
+  reader.onload = e => {
+    _sheetPDFData = e.target.result;  // base64 data URL, kept in memory only
+    lbl.textContent = '✓ ' + file.name;
+    lbl.style.color = 'var(--ok)';
   };
+  reader.onerror = () => { lbl.textContent = '✗ Read error'; lbl.style.color='var(--mock)'; _sheetPDFData=null; };
   reader.readAsDataURL(file);
 }
 
-function sheetAdd(){
-  const name=(document.getElementById('sheet-name-inp').value||'').trim();
-  const sub=document.getElementById('sheet-sub-inp').value||'phy';
-  const mins=parseInt(document.getElementById('sheet-time-inp').value)||60;
+async function sheetAdd(){
+  const name = (document.getElementById('sheet-name-inp').value||'').trim();
+  const sub  = document.getElementById('sheet-sub-inp').value||'phy';
+  const mins = parseInt(document.getElementById('sheet-time-inp').value)||60;
   if(!name){ showToast('Enter a sheet name!'); return; }
   if(!STATE.sheets) STATE.sheets=[];
+
+  const id = 'sh_'+Date.now();
+  const hasPdf = !!_sheetPDFData;
+
+  // Save PDF to IndexedDB (not localStorage — avoids 5MB quota crash)
+  if(hasPdf){
+    const lbl = document.getElementById('sheet-pdf-name');
+    lbl.textContent = '💾 Saving PDF…'; lbl.style.color='var(--muted)';
+    const ok = await _pdfDB.put(id, _sheetPDFData);
+    if(!ok){ showToast('⚠️ PDF save failed — sheet added without PDF'); }
+    lbl.textContent = hasPdf ? '✓ PDF attached' : '';
+    lbl.style.color = 'var(--ok)';
+  }
+
   STATE.sheets.push({
-    id:'sh_'+Date.now(), name, sub, mins,
-    pdf: _sheetPDFData||null, done:false, timerSecs:mins*60, timerRunning:false, timeUsed:0
+    id, name, sub, mins,
+    hasPdf,            // just a flag — actual data lives in IndexedDB
+    pdf: null,         // never store base64 in STATE
+    done: false, timerSecs: mins*60, timerRunning: false, timeUsed: 0
   });
-  _sheetPDFData=null;
-  document.getElementById('sheet-name-inp').value='';
-  document.getElementById('sheet-pdf-name').textContent='';
-  document.getElementById('sheet-pdf-inp').value='';
+  _sheetPDFData = null;
+  document.getElementById('sheet-name-inp').value = '';
+  document.getElementById('sheet-pdf-name').textContent = '';
+  document.getElementById('sheet-pdf-inp').value = '';
   saveState(); renderSheets();
-  showToast('📋 Sheet added!');
+  showToast('📋 Sheet added' + (hasPdf?' with PDF':'')+'!');
 }
 
 // Per-sheet timer workers {id: Worker}
@@ -4691,13 +4781,68 @@ function sheetToggleDone(id){
 function sheetDelete(id){
   if(_sheetWorkers[id]){ _sheetWorkers[id].postMessage('stop'); _sheetWorkers[id].terminate(); delete _sheetWorkers[id]; }
   STATE.sheets=(STATE.sheets||[]).filter(s=>s.id!==id);
+  _pdfDB.del(id); // clean up PDF from IndexedDB too
   saveState(); renderSheets();
 }
 
-function sheetViewPDF(id){
-  const sh=STATE.sheets.find(s=>s.id===id); if(!sh||!sh.pdf) return;
-  const w=window.open('','_blank');
-  w.document.write(`<html><head><title>${sh.name}</title></head><body style="margin:0;background:#1e1e2e;"><embed src="${sh.pdf}" type="application/pdf" width="100%" height="100%" style="height:100vh;"></body></html>`);
+async function sheetViewPDF(id){
+  const sh = STATE.sheets.find(s=>s.id===id);
+  if(!sh || (!sh.hasPdf && !sh.pdf)){ showToast('No PDF attached to this sheet.'); return; }
+
+  showToast('📄 Loading PDF…');
+  // Fetch from IndexedDB (or fallback to legacy inline base64)
+  let dataURL = await _pdfDB.get(id);
+  if(!dataURL && sh.pdf && sh.pdf.startsWith('data:')) dataURL = sh.pdf;
+  if(!dataURL){ showToast('PDF not found — may have been cleared by browser.'); return; }
+
+  // Convert data URL → blob URL (data: URIs blocked in embeds by modern browsers)
+  let blobURL;
+  try{
+    const b64 = dataURL.split(',')[1];
+    const bytes = atob(b64);
+    const arr = new Uint8Array(bytes.length);
+    for(let i=0;i<bytes.length;i++) arr[i]=bytes.charCodeAt(i);
+    const blob = new Blob([arr],{type:'application/pdf'});
+    blobURL = URL.createObjectURL(blob);
+  }catch(e){ showToast('Could not decode PDF.'); return; }
+
+  // In-page fullscreen overlay — no popup needed, no popup blocker issues
+  let ov = document.getElementById('pdf-viewer-overlay');
+  if(!ov){
+    ov = document.createElement('div');
+    ov.id = 'pdf-viewer-overlay';
+    ov.style.cssText = 'position:fixed;inset:0;z-index:9900;background:rgba(15,23,42,.95);display:flex;flex-direction:column;';
+    document.body.appendChild(ov);
+  }
+  ov.innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:#1e293b;border-bottom:1px solid #334155;flex-shrink:0;">
+      <div style="font-size:14px;font-weight:700;color:#e2e8f0;">📄 ${sh.name}</div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <a id="pdf-dl-btn" href="${blobURL}" download="${sh.name}.pdf"
+          style="padding:6px 14px;background:#0284c7;color:#fff;border-radius:7px;font-size:11px;font-weight:700;text-decoration:none;border:none;cursor:pointer;">
+          ⬇ Download
+        </a>
+        <button onclick="closePDFViewer()"
+          style="padding:6px 14px;background:#334155;color:#e2e8f0;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;">
+          ✕ Close
+        </button>
+      </div>
+    </div>
+    <iframe src="${blobURL}#toolbar=1&navpanes=0"
+      style="flex:1;width:100%;height:100%;border:none;background:#fff;"
+      allow="fullscreen">
+    </iframe>`;
+  ov.style.display = 'flex';
+  // Store blob URL to revoke on close
+  ov._blobURL = blobURL;
+}
+
+function closePDFViewer(){
+  const ov = document.getElementById('pdf-viewer-overlay');
+  if(!ov) return;
+  if(ov._blobURL){ URL.revokeObjectURL(ov._blobURL); ov._blobURL=null; }
+  ov.style.display = 'none';
+  ov.innerHTML = '';
 }
 
 function renderSheets(){
@@ -4732,7 +4877,7 @@ function renderSheets(){
           <div style="width:28px;height:28px;border-radius:8px;background:${col}18;color:${col};display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">${icon}</div>
           <div style="flex:1;min-width:120px;">
             <div style="font-size:14px;font-weight:700;${sh.done?'text-decoration:line-through;color:var(--muted)':''};">${sh.name}</div>
-            <div style="font-size:10px;color:var(--muted);margin-top:1px;">${sh.mins} min sheet${sh.pdf?' · 📄 PDF uploaded':''}</div>
+            <div style="font-size:10px;color:var(--muted);margin-top:1px;">${sh.mins} min sheet${(sh.hasPdf||sh.pdf)?' · 📄 PDF attached':''}</div>
           </div>
           <!-- Timer display -->
           <div style="text-align:center;min-width:80px;">
@@ -4743,7 +4888,7 @@ function renderSheets(){
           <div style="display:flex;gap:6px;flex-wrap:wrap;flex-shrink:0;">
             ${!sh.done&&sh.timerSecs>0?`<button id="sh-btn-${sh.id}" class="btn ${sh.timerRunning?'btn-grad':'btn-ghost'}" onclick="sheetTimerToggle('${sh.id}')">${sh.timerRunning?'⏸ Pause':'▶ Start'}</button>`:''}
             ${!sh.done?`<button class="btn btn-ghost" onclick="sheetReset('${sh.id}')">↺</button>`:''}
-            ${sh.pdf?`<button class="btn btn-ghost" onclick="sheetViewPDF('${sh.id}')">📄 View</button>`:''}
+            ${(sh.hasPdf||sh.pdf)?`<button class="btn btn-ghost" onclick="sheetViewPDF('${sh.id}')">📄 View PDF</button>`:''}
             <button class="btn ${sh.done?'btn-ok on':'btn-ok'}" onclick="sheetToggleDone('${sh.id}')">${sh.done?'✓ Done':'Mark Done'}</button>
             <button class="btn btn-ghost" style="color:var(--mock);" onclick="sheetDelete('${sh.id}')">🗑</button>
           </div>
@@ -5042,41 +5187,113 @@ function pyqToggle(chId,yr){
 }
 function _pyqUpdateRow(chId){
   const done=PYQ_YEARS.filter(y=>STATE.pyq[chId]?.[y]).length;
+  const pct=Math.round(done/PYQ_YEARS.length*100);
   const el=document.getElementById(`pyq-sum-${chId}`);
-  if(el) el.textContent=done+'/'+PYQ_YEARS.length;
+  if(el){
+    el.textContent=done;
+    el.style.color=pct>=80?'var(--ok)':pct>=40?'var(--adv)':'var(--muted)';
+  }
 }
 function renderPYQ(){
   const root=document.getElementById('pyq-root'); if(!root) return;
-  const subs=[{key:'phy',label:'⚡ Physics',list:M_PHY,col:'var(--phy)'},{key:'math',label:'∑ Maths',list:M_MATH,col:'var(--math)'},{key:'chem',label:'⚗ Chemistry',list:M_CHEM,col:'var(--chem)'}];
+
+  // ── Use JEE Advanced chapter lists ──
+  const subs=[
+    {key:'phy', label:'⚡ Physics',    list:A_PHY,  col:'var(--phy)'},
+    {key:'math',label:'∑ Mathematics', list:A_MATH, col:'var(--math)'},
+    {key:'chem',label:'⚗ Chemistry',   list:A_CHEM, col:'var(--chem)'}
+  ];
+  const ALL_ADV=[...A_PHY,...A_MATH,...A_CHEM];
   const filtered=_pyqFilter==='all'?subs:subs.filter(s=>s.key===_pyqFilter);
-  const totalCells=M_ALL.length*PYQ_YEARS.length;
-  const doneCells=M_ALL.reduce((a,c)=>a+PYQ_YEARS.filter(y=>STATE.pyq[c.id]?.[y]).length,0);
-  root.innerHTML=`<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;">
+
+  const totalCells=ALL_ADV.length*PYQ_YEARS.length;
+  const doneCells=ALL_ADV.reduce((a,c)=>a+PYQ_YEARS.filter(y=>STATE.pyq[c.id]?.[y]).length,0);
+
+  // Decade grouping for header (makes 48 cols readable)
+  const decades={};
+  PYQ_YEARS.forEach(y=>{ const d=Math.floor(y/10)*10; if(!decades[d]) decades[d]=[]; decades[d].push(y); });
+
+  // Per-year "any done" count for heat
+  const yearTotals={};
+  PYQ_YEARS.forEach(y=>{ yearTotals[y]=ALL_ADV.filter(c=>STATE.pyq[c.id]?.[y]).length; });
+
+  root.innerHTML=`
+  <!-- Stats strip -->
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;">
     <div class="stat-pill"><div class="sp-num" style="color:var(--ok);">${doneCells}</div><div class="sp-lbl">PYQs Done</div></div>
     <div class="stat-pill"><div class="sp-num" style="color:var(--muted);">${totalCells-doneCells}</div><div class="sp-lbl">Remaining</div></div>
-    <div class="stat-pill"><div class="sp-num" style="color:var(--mains);">${Math.round(doneCells/totalCells*100)}%</div><div class="sp-lbl">Coverage</div></div>
-  </div>`+filtered.map(s=>`
-    <div class="card" style="margin-bottom:14px;overflow-x:auto;">
-      <div class="card-hdr"><div class="card-title" style="color:${s.col};">${s.label}</div></div>
-      <div style="padding:10px;min-width:600px;">
-        <!-- Header row -->
-        <div style="display:grid;grid-template-columns:1fr repeat(${PYQ_YEARS.length},36px) 40px;gap:4px;margin-bottom:4px;align-items:center;">
-          <div style="font-size:9px;color:var(--muted);font-weight:700;">CHAPTER</div>
-          ${PYQ_YEARS.map(y=>`<div style="font-size:9px;font-weight:800;color:var(--muted);text-align:center;">'${y.toString().slice(2)}</div>`).join('')}
-          <div style="font-size:9px;font-weight:800;color:var(--muted);text-align:center;">DONE</div>
-        </div>
-        ${s.list.map(c=>`<div style="display:grid;grid-template-columns:1fr repeat(${PYQ_YEARS.length},36px) 40px;gap:4px;margin-bottom:3px;align-items:center;">
-          <div style="font-size:11px;color:var(--txt);padding-right:8px;line-height:1.2;">${c.name}</div>
-          ${PYQ_YEARS.map(y=>{
-            const on=!!(STATE.pyq[c.id]?.[y]);
-            return `<div id="pyq-${c.id}-${y}" onclick="pyqToggle('${c.id}',${y})"
-              style="width:36px;height:28px;border-radius:5px;border:1.5px solid ${on?'var(--ok)':'var(--border)'};background:${on?'var(--ok)':'#f8fafc'};color:${on?'#fff':'var(--muted)'};display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;cursor:pointer;transition:all .12s;">
-              ${on?'✓':y.toString().slice(2)}</div>`;
-          }).join('')}
-          <div id="pyq-sum-${c.id}" style="font-size:10px;font-weight:800;color:var(--ok);text-align:center;">${PYQ_YEARS.filter(y=>STATE.pyq[c.id]?.[y]).length}/${PYQ_YEARS.length}</div>
-        </div>`).join('')}
+    <div class="stat-pill"><div class="sp-num" style="color:var(--adv);">${Math.round(doneCells/totalCells*100)}%</div><div class="sp-lbl">Coverage</div></div>
+    <div class="stat-pill"><div class="sp-num" style="color:var(--mains);">${ALL_ADV.length}</div><div class="sp-lbl">Chapters</div></div>
+    <div class="stat-pill"><div class="sp-num" style="color:var(--purple);">48</div><div class="sp-lbl">Years (1978–2025)</div></div>
+  </div>
+
+  <!-- Year heat bar -->
+  <div class="card" style="margin-bottom:14px;">
+    <div class="card-hdr"><div class="card-title" style="color:var(--adv);">📊 Year-wise Coverage Heat</div></div>
+    <div style="padding:10px 14px;overflow-x:auto;">
+      <div style="display:flex;gap:2px;align-items:flex-end;height:48px;min-width:900px;">
+        ${PYQ_YEARS.map(y=>{
+          const pct=ALL_ADV.length?Math.round(yearTotals[y]/ALL_ADV.length*100):0;
+          const h=Math.max(3,Math.round(pct/100*44));
+          const col=pct>=80?'var(--ok)':pct>=50?'var(--adv)':pct>=20?'var(--mains)':'var(--border)';
+          return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;" title="${y}: ${pct}% done">
+            <div style="background:${col};height:${h}px;width:100%;border-radius:2px 2px 0 0;min-height:3px;"></div>
+            <div style="font-size:6.5px;color:var(--muted);transform:rotate(-45deg);transform-origin:top center;margin-top:2px;white-space:nowrap;">${y}</div>
+          </div>`;
+        }).join('')}
       </div>
-    </div>`).join('');
+    </div>
+  </div>
+  `+filtered.map(s=>{
+    const totalDone=PYQ_YEARS.reduce((a,y)=>a+s.list.filter(c=>STATE.pyq[c.id]?.[y]).length,0);
+    const totalPoss=s.list.length*PYQ_YEARS.length;
+    return `
+    <div class="card" style="margin-bottom:14px;">
+      <div class="card-hdr">
+        <div class="card-title" style="color:${s.col};">${s.label}</div>
+        <div style="font-size:11px;color:var(--muted);">${totalDone}/${totalPoss} · ${Math.round(totalDone/totalPoss*100)}%</div>
+      </div>
+      <div style="overflow-x:auto;padding:10px;">
+        <table style="border-collapse:collapse;width:max-content;">
+          <!-- Decade header -->
+          <thead>
+            <tr>
+              <th style="min-width:170px;max-width:200px;font-size:9px;color:var(--muted);font-weight:700;text-align:left;padding:0 8px 4px 4px;">CHAPTER</th>
+              ${Object.entries(decades).map(([dec,yrs])=>`
+                <th colspan="${yrs.length}" style="font-size:8px;font-weight:800;color:var(--adv);text-align:center;padding:0 0 2px;border-bottom:2px solid var(--adv);letter-spacing:1px;">${dec}s</th>
+              `).join('')}
+              <th style="font-size:8px;font-weight:800;color:var(--ok);text-align:center;padding:0 4px 4px;min-width:36px;">DONE</th>
+            </tr>
+            <tr>
+              <td></td>
+              ${PYQ_YEARS.map(y=>`<td style="font-size:7px;font-weight:700;color:var(--muted);text-align:center;padding:1px 1px 5px;min-width:20px;">'${y.toString().slice(2)}</td>`).join('')}
+              <td></td>
+            </tr>
+          </thead>
+          <tbody>
+            ${s.list.map((c,ri)=>{
+              const rowDone=PYQ_YEARS.filter(y=>STATE.pyq[c.id]?.[y]).length;
+              const rowPct=Math.round(rowDone/PYQ_YEARS.length*100);
+              const rowBg=ri%2===0?'#fafafa':'#ffffff';
+              return `<tr style="background:${rowBg};">
+                <td style="font-size:10px;color:var(--txt);padding:3px 8px 3px 4px;max-width:200px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${c.name}">${c.name}</td>
+                ${PYQ_YEARS.map(y=>{
+                  const on=!!(STATE.pyq[c.id]?.[y]);
+                  return `<td style="padding:1px;text-align:center;">
+                    <div id="pyq-${c.id}-${y}" onclick="pyqToggle('${c.id}',${y})"
+                      style="width:18px;height:18px;border-radius:3px;border:1px solid ${on?'var(--ok)':'var(--border)'};background:${on?'var(--ok)':'transparent'};color:${on?'#fff':'var(--muted)'};display:flex;align-items:center;justify-content:center;font-size:7.5px;font-weight:800;cursor:pointer;transition:all .1s;margin:auto;">
+                      ${on?'✓':''}</div></td>`;
+                }).join('')}
+                <td style="padding:2px 4px;text-align:center;">
+                  <span id="pyq-sum-${c.id}" style="font-size:9px;font-weight:800;color:${rowPct>=80?'var(--ok)':rowPct>=40?'var(--adv)':'var(--muted)'};">${rowDone}</span>
+                </td>
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 // ══════════════════════════════════════════════

@@ -1567,8 +1567,17 @@ function renderMainsDays(){
       const mainSub=isPhyDay?'phy':'chem';
       const secSub=type==='PM'?'math':type==='PC'?'chem':type==='CM'?'math':type==='CC'?'chem':null;
       const assigned=mGetDayChapters(d);
-      const mainAsgn=assigned.filter(c=>mSubOf(c.id)===(mainSub||''));
-      const secAsgn=secSub?assigned.filter(c=>mSubOf(c.id)===secSub):[];
+
+      // ── For CC days both slots are chem — split by index so each slot shows its own chapter ──
+      let mainAsgn, secAsgn;
+      if(type==='CC'){
+        const chemAll=assigned.filter(c=>mSubOf(c.id)==='chem');
+        mainAsgn=chemAll.slice(0,1);   // slot 1: first chem chapter
+        secAsgn =chemAll.slice(1,2);   // slot 2: second chem chapter
+      } else {
+        mainAsgn=assigned.filter(c=>mSubOf(c.id)===(mainSub||''));
+        secAsgn =secSub?assigned.filter(c=>mSubOf(c.id)===secSub):[];
+      }
       const theoryItems=assigned.filter(c=>STATE.mains.checked[c.id]);
       const allDone=assigned.length>0&&theoryItems.length===assigned.length;
 
@@ -1596,8 +1605,13 @@ function renderMainsDays(){
       // Body content
       let bodyHtml='';
       if(isMock) bodyHtml+=`<div class="mock-banner">📝 MOCK TEST TODAY</div>`;
-      bodyHtml+=buildDZ(d, mainSub, mainAsgn, focusSub);
-      if(secSub) bodyHtml+=buildDZ(d, secSub, secAsgn, secLabel);
+      if(type==='CC'){
+        bodyHtml+=buildDZ(d, 'chem', mainAsgn, 'Chem — Slot 1', 1);
+        bodyHtml+=buildDZ(d, 'chem', secAsgn,  'Chem — Slot 2', 2);
+      } else {
+        bodyHtml+=buildDZ(d, mainSub, mainAsgn, focusSub);
+        if(secSub) bodyHtml+=buildDZ(d, secSub, secAsgn, secLabel);
+      }
 
       // Chapter summary strip (read-only — just shows what's assigned)
       let chSummary = '';
@@ -1643,7 +1657,9 @@ function renderMainsDays(){
   root.innerHTML=html;
 }
 
-function buildDZ(day, sub, assigned, label){
+function buildDZ(day, sub, assigned, label, slot){
+  // slot: 1 or 2 for CC days (chem×2), undefined otherwise
+  const slotArg = slot ? `,${slot}` : '';
   const isOcc=assigned.length>0;
   const dzCls=`dz dz-${sub} ${isOcc?'filled':''}`;
   const subList=sub==='phy'?M_PHY:sub==='math'?M_MATH:M_CHEM;
@@ -1684,7 +1700,7 @@ function buildDZ(day, sub, assigned, label){
     </div>`;
   }
   return `<div class="${dzCls}" data-day="${day}" data-sub="${sub}"
-    ondragover="mDzOver(event,this,'${sub}')" ondragleave="mDzLeave(this)" ondrop="mDzDrop(event,${day},'${sub}')">${inner}</div>`;
+    ondragover="mDzOver(event,this,'${sub}')" ondragleave="mDzLeave(this)" ondrop="mDzDrop(event,${day},'${sub}'${slotArg})">${inner}</div>`;
 }
 
 
@@ -1696,10 +1712,24 @@ function mDragStart(e,id){ dragId=id; e.dataTransfer.effectAllowed='move'; e.dat
 function mDragEnd(){ if(dragId) document.getElementById('pill-'+dragId)?.classList.remove('dragging'); dragId=null; document.querySelectorAll('.drag-over-dc,.drag-hover').forEach(el=>{el.classList.remove('drag-over-dc','drag-hover');}); }
 function mDragOver(e,d){ e.preventDefault(); document.getElementById('dc'+d)?.classList.add('drag-over-dc'); }
 function mDragLeave(e,d){ if(!e.currentTarget.contains(e.relatedTarget)) document.getElementById('dc'+d)?.classList.remove('drag-over-dc'); }
-function mDrop(e,d){ e.preventDefault(); document.getElementById('dc'+d)?.classList.remove('drag-over-dc'); const id=e.dataTransfer.getData('text/plain')||dragId; if(id) mDoAssign(id,d); }
+function mDrop(e,d){ e.preventDefault(); document.getElementById('dc'+d)?.classList.remove('drag-over-dc'); const id=e.dataTransfer.getData('text/plain')||dragId; if(!id) return; const type=mGetDayType(d); if(type==='CC'){ const chemCount=mGetDayChapters(d).filter(c=>mSubOf(c.id)==='chem').length; if(chemCount>=2){ showToast('Both Chem slots filled for this day!'); return; } } mDoAssign(id,d); }
 function mDzOver(e,el,sub){ e.preventDefault(); e.stopPropagation(); if(dragId&&mSubOf(dragId)===sub) el.classList.add('drag-hover'); }
 function mDzLeave(el){ el.classList.remove('drag-hover'); }
-function mDzDrop(e,day,sub){ e.preventDefault(); e.stopPropagation(); const id=e.dataTransfer.getData('text/plain')||dragId; if(!id) return; if(mSubOf(id)!==sub){ showToast('Drop a '+sub.toUpperCase()+' chapter here!'); return; } mDoAssign(id,day); document.querySelectorAll('.drag-hover').forEach(el=>el.classList.remove('drag-hover')); }
+function mDzDrop(e,day,sub,slot){
+  e.preventDefault(); e.stopPropagation();
+  const id=e.dataTransfer.getData('text/plain')||dragId;
+  if(!id) return;
+  if(mSubOf(id)!==sub){ showToast('Drop a '+sub.toUpperCase()+' chapter here!'); return; }
+  const type=mGetDayType(day);
+  if(type==='CC'){
+    const chemAll=mGetDayChapters(day).filter(c=>mSubOf(c.id)==='chem');
+    if(slot===1 && chemAll.length>=1){ showToast('Slot 1 already filled — drop in Slot 2!'); return; }
+    if(slot===2 && chemAll.length===0){ showToast('Fill Slot 1 first!'); return; }
+    if(slot===2 && chemAll.length>=2){ showToast('Both Chem slots already filled!'); return; }
+  }
+  mDoAssign(id,day);
+  document.querySelectorAll('.drag-hover').forEach(el=>el.classList.remove('drag-hover'));
+}
 
 // ══════════════════════════════════════════════
 //  EARLY CONSTANTS — must be before first render
@@ -1807,8 +1837,8 @@ document.addEventListener('touchend',e=>{
   const el=document.elementFromPoint(t.clientX,t.clientY);
   const dz=el?.closest('.dz');
   const dc=el?.closest('.dc');
-  if(dz){ const day=parseInt(dz.dataset.day),sub=dz.dataset.sub; if(mSubOf(tDragId)===sub) mDoAssign(tDragId,day); }
-  else if(dc){ const day=parseInt(dc.id.replace('dc','')); if(!isNaN(day)) mDoAssign(tDragId,day); }
+  if(dz){ const day=parseInt(dz.dataset.day),sub=dz.dataset.sub; if(mSubOf(tDragId)===sub){ const type=mGetDayType(day); if(type==='CC'){ const cnt=mGetDayChapters(day).filter(c=>mSubOf(c.id)==='chem').length; if(cnt>=2){ showToast('Both Chem slots filled!'); tDragId=null; return; } } mDoAssign(tDragId,day); } }
+  else if(dc){ const day=parseInt(dc.id.replace('dc','')); if(!isNaN(day)){ const type=mGetDayType(day); if(type==='CC'){ const cnt=mGetDayChapters(day).filter(c=>mSubOf(c.id)==='chem').length; if(cnt>=2){ showToast('Both Chem slots filled!'); tDragId=null; return; } } mDoAssign(tDragId,day); } }
   tDragId=null;
 },{passive:true});
 

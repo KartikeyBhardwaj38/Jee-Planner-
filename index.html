@@ -2095,7 +2095,16 @@ function buildDZ(day, sub, assigned, label, slot){
 //  DRAG & DROP
 // ══════════════════════════════════════════════
 let dragId=null;
-function mDragStart(e,id){ dragId=id; e.dataTransfer.effectAllowed='move'; e.dataTransfer.setData('text/plain',id); setTimeout(()=>document.getElementById('pill-'+id)?.classList.add('dragging'),0); }
+function mDragStart(e,id){
+  // Close any open modal so it doesn't block drops
+  document.querySelectorAll('.modal-overlay.open').forEach(m=>{
+    m.classList.remove('open');
+  });
+  dragId=id;
+  e.dataTransfer.effectAllowed='move';
+  e.dataTransfer.setData('text/plain',id);
+  setTimeout(()=>document.getElementById('pill-'+id)?.classList.add('dragging'),0);
+}
 function mDragEnd(){ if(dragId) document.getElementById('pill-'+dragId)?.classList.remove('dragging'); dragId=null; document.querySelectorAll('.drag-over-dc,.drag-hover').forEach(el=>{el.classList.remove('drag-over-dc','drag-hover');}); }
 function mDragOver(e,d){ e.preventDefault(); document.getElementById('dc'+d)?.classList.add('drag-over-dc'); }
 function mDragLeave(e,d){ if(!e.currentTarget.contains(e.relatedTarget)) document.getElementById('dc'+d)?.classList.remove('drag-over-dc'); }
@@ -2276,6 +2285,8 @@ function mMarkAll(d){
 let tDragId=null, tClone=null;
 document.addEventListener('touchstart',e=>{
   const pill=e.target.closest('.ch-pill'); if(!pill) return;
+  // Close any open modal so overlay doesn't block the drop target
+  document.querySelectorAll('.modal-overlay.open').forEach(m=>m.classList.remove('open'));
   tDragId=pill.dataset.id;
   tClone=pill.cloneNode(true);
   tClone.style.cssText='position:fixed;opacity:.7;pointer-events:none;z-index:9999;width:'+pill.offsetWidth+'px;transform:scale(1.04);transition:none;';
@@ -4637,11 +4648,40 @@ function renderAQTSessionLog(){
 if(!STATE.mains.addons) { STATE.mains.addons={}; saveState(); }
 
 // ── Modal helpers
-function openModal(id){ document.getElementById(id).classList.add('open'); }
-function closeModal(id){
-  document.getElementById(id).classList.remove('open');
-  if(id==='pw-modal'){ document.getElementById('pw-input').value=''; document.getElementById('pw-dots').textContent='· · · · · · ·'; document.getElementById('pw-err').style.display='none'; }
+function openModal(id){
+  const el=document.getElementById(id);
+  if(el) el.classList.add('open');
 }
+function closeModal(id){
+  const el=document.getElementById(id);
+  if(!el) return;
+  el.classList.remove('open');
+  if(id==='pw-modal'){
+    document.getElementById('pw-input').value='';
+    document.getElementById('pw-dots').textContent='· · · · · · ·';
+    document.getElementById('pw-err').style.display='none';
+  }
+  if(id==='addon-modal' || id==='pw-modal'){
+    // Reset unlock state so dragging works cleanly after cancel
+    _pwUnlocked=false;
+    _addonPickedId=null;
+  }
+}
+
+// Click-outside-to-close for all modals
+document.addEventListener('click', e=>{
+  if(e.target.classList.contains('modal-overlay') && e.target.classList.contains('open')){
+    closeModal(e.target.id);
+  }
+});
+
+// Escape key closes any open modal
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape'){
+    document.querySelectorAll('.modal-overlay.open').forEach(m=>closeModal(m.id));
+    document.getElementById('pdf-ov-confirm')?.remove();
+  }
+});
 
 // ── Password modal
 function pwDots(v){
@@ -4750,16 +4790,35 @@ function addonConfirm(){
     saveState(); closeModal('addon-modal'); renderMainsDays(); mUpdateStats();
     showToast((_addonType==='practice'?'⚡ Practice':'🔁 Revision')+' added to Day '+_addonDay+'!');
   } else {
-    // Chapter
+    // Chapter type
     const name=(document.getElementById('addon-ch-name').value||'').trim();
     if(!_addonSub){ showToast('Choose a subject!'); return; }
     if(!name){ showToast('Enter chapter name!'); return; }
-    const slot={id:'ao_'+Date.now(), type:'chapter', sub:_addonSub, name, theory:false, dpp:false, sheets:false, fromPool:_addonPickedId||null};
+
+    // ── If chapter was picked from the pool, assign it to the day directly
+    //    so it drops into the proper subject slot on the day card
+    if(_addonPickedId && M_MAP[_addonPickedId]){
+      // Remove from any previous day assignment first
+      const prevDay=STATE.mains.assignments[_addonPickedId];
+      if(prevDay && prevDay !== _addonDay){
+        showToast(`Chapter was on Day ${prevDay} — moving to Day ${_addonDay}`);
+      }
+      STATE.mains.assignments[_addonPickedId]=_addonDay;
+      _addonPickedId=null;
+      _pwUnlocked=false;
+      saveState(); closeModal('addon-modal'); renderPool(); renderMainsDays(); mUpdateStats();
+      showToast('📖 Chapter assigned to Day '+_addonDay+' drop zone!');
+      return;
+    }
+
+    // ── Custom chapter name (not from pool) → goes to extra slot as before
+    const slot={id:'ao_'+Date.now(), type:'chapter', sub:_addonSub, name, theory:false, dpp:false, sheets:false, fromPool:null};
     if(!STATE.mains.addons[_addonDay]) STATE.mains.addons[_addonDay]=[];
     STATE.mains.addons[_addonDay].push(slot);
     _addonPickedId=null;
+    _pwUnlocked=false;
     saveState(); closeModal('addon-modal'); renderMainsDays(); mUpdateStats();
-    showToast('📖 Extra chapter added to Day '+_addonDay+'!');
+    showToast('📖 Custom chapter added to Day '+_addonDay+' extra slot!');
   }
 }
 
@@ -6962,14 +7021,19 @@ function renderDPP(){
         <button class="modal-sub-btn math" id="asub-math-ch" onclick="addonSelectSub('math')">∑ Maths</button>
         <button class="modal-sub-btn chem" id="asub-chem-ch" onclick="addonSelectSub('chem')">⚗ Chem</button>
       </div>
-      <label class="modal-label">3. Pick Chapter from Pool</label>
+      <label class="modal-label">3. Pick from Pool → drops into day slot</label>
       <div class="modal-ch-list" id="addon-pool-list">
         <div style="color:var(--muted);font-size:17px;padding:6px;">Select a subject first…</div>
       </div>
-      <div class="modal-or">— or type custom below —</div>
-      <label class="modal-label">4. Chapter / Topic Name</label>
+      <div class="modal-or">— or type custom name below (goes to extra slot) —</div>
+      <label class="modal-label">4. Custom Chapter / Topic</label>
       <input class="modal-input" id="addon-ch-name" placeholder="e.g. Electrostatics, Organic Chemistry…">
-      <div style="font-size:18px;color:var(--muted);display:flex;align-items:center;gap:4px;margin-top:-8px;margin-bottom:12px;">🔐 Extra chapters require DEVASENA password</div>
+      <div style="font-size:16px;color:var(--muted);display:flex;align-items:center;gap:6px;margin-top:-6px;margin-bottom:12px;">
+        <span>🔐 Password required · </span>
+        <span style="color:var(--mains);">Pool pick → drop zone</span>
+        <span> · </span>
+        <span style="color:var(--purple);">Custom name → extra slot</span>
+      </div>
     </div>
 
     <div class="modal-footer">

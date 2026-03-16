@@ -787,37 +787,46 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 
 <!-- ════════════════════ MAINS 21-DAY PLAN ════════════════════ -->
 <div class="section" id="sec-mains-plan">
-  <div class="page-hdr">
-    <div class="page-title" style="background:var(--mg);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">📅 JEE Mains — 18-Day Plan</div>
-    <div class="page-sub">
-      <span>Mar 16 → Apr 2 · 16hr/day</span>
-      <span>⚡ 8 Phy · ∑ Maths Done ✓ · ⚗ 10 Chem (Days 14–18 = Chem ×2)</span>
-      <span>📝 Mocks: Mar 19,24,26,29,30,31 · Apr 1</span>
+  <div class="page-hdr" style="border-bottom:1px solid rgba(56,189,248,.1);margin-bottom:20px;">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+      <div>
+        <div class="page-title" style="background:var(--mg);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-2px;">MAINS COMMAND — 18-DAY PLAN</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;align-items:center;">
+          <span style="font-size:17px;color:#334155;font-family:'JetBrains Mono',monospace;letter-spacing:1px;">MAR 16 → APR 2</span>
+          <span style="width:1px;height:14px;background:#1e2340;"></span>
+          <span style="font-size:17px;color:var(--phy);font-family:'JetBrains Mono',monospace;">⚡ 8 PHY</span>
+          <span style="font-size:17px;color:var(--chem);font-family:'JetBrains Mono',monospace;">⚗ 10 CHEM</span>
+          <span style="width:1px;height:14px;background:#1e2340;"></span>
+          <span style="font-size:17px;color:var(--mock);font-family:'JetBrains Mono',monospace;">📝 7 MOCKS</span>
+        </div>
+      </div>
+      <button onclick="exportPlannerPDF()" style="padding:8px 16px;border-radius:9px;background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.2);color:var(--mains);font-size:17px;font-weight:700;cursor:pointer;font-family:'JetBrains Mono',monospace;letter-spacing:1px;transition:all .15s;" onmouseover="this.style.background='rgba(56,189,248,.15)'" onmouseout="this.style.background='rgba(56,189,248,.08)'">⬇ EXPORT</button>
     </div>
   </div>
 
   <!-- Mains stats row -->
-  <div class="gauto" style="margin-bottom:12px;">
-    <div class="stat-pill"><div class="sp-num" id="ms-done" style="background:var(--mg);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">0</div><div class="sp-lbl">Days Done</div></div>
-    <div class="stat-pill"><div class="sp-num" style="color:var(--txt);" id="ms-left">18</div><div class="sp-lbl">Days Left</div></div>
-    <div class="stat-pill"><div class="sp-num" style="color:var(--ok);" id="ms-chs">0</div><div class="sp-lbl">Chapters</div></div>
-    <div class="stat-pill"><div class="sp-num" style="color:var(--mains);" id="ms-asgn">0</div><div class="sp-lbl">Assigned</div></div>
-    <div class="stat-pill"><div class="sp-num" style="color:var(--streak);" id="ms-dpp">0/21</div><div class="sp-lbl">DPPs Done</div></div>
-    <div class="stat-pill"><div class="sp-num" style="color:var(--ok);" id="ms-sh">0/21</div><div class="sp-lbl">Sheets Done</div></div>
-    <div class="stat-pill"><div class="sp-num" style="color:var(--mock);" id="ms-nt">—</div><div class="sp-lbl">Next Mock</div></div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:10px;margin-bottom:14px;">
+    <div class="stat-pill" style="border-color:rgba(56,189,248,.15);background:rgba(56,189,248,.04);"><div class="sp-num" id="ms-done" style="background:var(--mg);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">0</div><div class="sp-lbl" style="color:#334155;letter-spacing:2px;">DAYS DONE</div></div>
+    <div class="stat-pill"><div class="sp-num" style="color:var(--txt);" id="ms-left">18</div><div class="sp-lbl" style="color:#334155;letter-spacing:2px;">REMAINING</div></div>
+    <div class="stat-pill" style="border-color:rgba(34,211,238,.15);background:rgba(34,211,238,.03);"><div class="sp-num" style="color:var(--ok);" id="ms-chs">0</div><div class="sp-lbl" style="color:#334155;letter-spacing:2px;">CHAPTERS</div></div>
+    <div class="stat-pill" style="border-color:rgba(56,189,248,.12);"><div class="sp-num" style="color:var(--mains);" id="ms-asgn">0</div><div class="sp-lbl" style="color:#334155;letter-spacing:2px;">ASSIGNED</div></div>
+    <div class="stat-pill" style="border-color:rgba(249,115,22,.12);"><div class="sp-num" style="color:var(--streak);" id="ms-dpp">0/21</div><div class="sp-lbl" style="color:#334155;letter-spacing:2px;">DPPS</div></div>
+    <div class="stat-pill" style="border-color:rgba(244,63,94,.15);background:rgba(244,63,94,.03);"><div class="sp-num" style="color:var(--mock);" id="ms-nt">—</div><div class="sp-lbl" style="color:#334155;letter-spacing:2px;">NEXT MOCK</div></div>
   </div>
 
   <!-- Mains progress -->
   <div class="mains-prog">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-      <span style="font-size:18px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;">Syllabus Coverage</span>
-      <span style="font-family:'Space Mono',monospace;font-size:18px;font-weight:700;background:var(--mg);-webkit-background-clip:text;-webkit-text-fill-color:transparent;" id="ms-pct">0%</span>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <div>
+        <span style="font-size:17px;letter-spacing:3px;color:#334155;text-transform:uppercase;font-family:'JetBrains Mono',monospace;">SYLLABUS COVERAGE</span>
+      </div>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:800;background:var(--mg);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-1px;" id="ms-pct">0%</span>
     </div>
-    <div class="pbar"><div class="pbar-fill" id="ms-bar" style="width:0%;background:var(--mg);"></div></div>
+    <div class="pbar" style="height:8px;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.04);"><div class="pbar-fill" id="ms-bar" style="width:0%;background:var(--mg);border-radius:999px;box-shadow:0 0 12px rgba(56,189,248,.3);"></div></div>
     <div class="sub-bars">
-      <div class="sub-bar-card"><div class="sbc-lbl phy">⚡ Physics</div><div class="pbar"><div class="pbar-fill" id="mp-bar" style="width:0%;background:var(--phy);"></div></div><div class="sbc-ct" id="mp-ct">0/10</div></div>
-      <div class="sub-bar-card"><div class="sbc-lbl math">∑ Mathematics</div><div class="pbar"><div class="pbar-fill" id="mm-bar" style="width:0%;background:var(--math);"></div></div><div class="sbc-ct" id="mm-ct">0/10</div></div>
-      <div class="sub-bar-card"><div class="sbc-lbl chem">⚗ Chemistry</div><div class="pbar"><div class="pbar-fill" id="mc-bar" style="width:0%;background:var(--chem);"></div></div><div class="sbc-ct" id="mc-ct">0/20</div></div>
+      <div class="sub-bar-card"><div class="sbc-lbl phy" style="font-family:'JetBrains Mono',monospace;font-size:17px;letter-spacing:2px;margin-bottom:6px;">⚡ PHYSICS</div><div class="pbar"><div class="pbar-fill" id="mp-bar" style="width:0%;background:var(--phy);"></div></div><div class="sbc-ct" id="mp-ct" style="margin-top:4px;">0/10</div></div>
+      <div class="sub-bar-card"><div class="sbc-lbl math" style="font-family:'JetBrains Mono',monospace;font-size:17px;letter-spacing:2px;margin-bottom:6px;">∑ MATHS</div><div class="pbar"><div class="pbar-fill" id="mm-bar" style="width:0%;background:var(--math);"></div></div><div class="sbc-ct" id="mm-ct" style="margin-top:4px;">0/10</div></div>
+      <div class="sub-bar-card"><div class="sbc-lbl chem" style="font-family:'JetBrains Mono',monospace;font-size:17px;letter-spacing:2px;margin-bottom:6px;">⚗ CHEM</div><div class="pbar"><div class="pbar-fill" id="mc-bar" style="width:0%;background:var(--chem);"></div></div><div class="sbc-ct" id="mc-ct" style="margin-top:4px;">0/20</div></div>
     </div>
   </div>
 
@@ -825,8 +834,13 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   <div class="mains-layout">
     <div class="pool" id="pool-panel">
       <div class="pool-hdr">
-        <div class="pool-title">📦 Chapter Pool</div>
-        <div class="pool-count" id="pool-cnt">40 left</div>
+        <div class="pool-title" style="font-family:'Syne',sans-serif;font-size:17px;font-weight:800;letter-spacing:-.5px;">📦 Chapter Pool</div>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <div class="pool-count" id="pool-cnt">40 left</div>
+        </div>
+      </div>
+      <div style="padding:6px 10px 4px;border-bottom:1px solid #1e2340;">
+        <div style="font-size:17px;color:#1e2340;font-family:'JetBrains Mono',monospace;letter-spacing:2px;text-align:center;">CLICK = SPLIT · DRAG = ASSIGN</div>
       </div>
       <div class="pool-sub-sec">
         <div class="pool-sub-lbl phy">⚡ Physics (10)</div>
@@ -1085,41 +1099,55 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 
 <!-- ════════════════════ ADVANCED PLAN (Part 2) ════════════════════ -->
 <div class="section" id="sec-adv-plan">
-  <div class="page-hdr">
-    <div class="page-title" style="background:var(--ag);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">⚡ JEE Advanced — 40-Day Plan</div>
-    <div class="page-sub">
-      <span>Apr 7 → May 16 · Exam: May 17</span>
-      <span>Non-test: 2 chapters · Test: 1 chapter</span>
-      <span>📝 Tests: Apr 19,22,26,29 · May 3,6,10,12,13,14</span>
+
+  <!-- ── LUXURY HEADER ── -->
+  <div class="page-hdr" style="border-bottom:1px solid rgba(251,191,36,.12);margin-bottom:20px;">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+      <div>
+        <div class="page-title" style="background:var(--ag);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-2px;font-family:'Syne',sans-serif;">IIT ADVANCED — 40-DAY WAR PLAN</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;align-items:center;">
+          <span style="font-size:17px;color:#334155;font-family:'JetBrains Mono',monospace;letter-spacing:1px;">APR 7 → MAY 16</span>
+          <span style="width:1px;height:14px;background:#1e2340;"></span>
+          <span style="font-size:17px;color:var(--phy);font-family:'JetBrains Mono',monospace;">⚡ 19 PHY</span>
+          <span style="font-size:17px;color:var(--chem);font-family:'JetBrains Mono',monospace;">⚗ 32 CHEM</span>
+          <span style="font-size:17px;color:var(--math);font-family:'JetBrains Mono',monospace;">∑ 17 MATH</span>
+          <span style="width:1px;height:14px;background:#1e2340;"></span>
+          <span style="font-size:17px;color:var(--adv);font-family:'JetBrains Mono',monospace;">📝 7 TESTS</span>
+          <span style="font-size:17px;color:var(--mock);font-family:'JetBrains Mono',monospace;">🎯 MAY 17 EXAM</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        <button onclick="advExportPDF()" style="padding:8px 14px;border-radius:9px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);color:var(--adv);font-size:17px;font-weight:700;cursor:pointer;font-family:'JetBrains Mono',monospace;letter-spacing:1px;transition:all .15s;" onmouseover="this.style.background='rgba(251,191,36,.15)'" onmouseout="this.style.background='rgba(251,191,36,.08)'">⬇ EXPORT</button>
+        <button onclick="advShowInsights()" style="padding:8px 14px;border-radius:9px;background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.2);color:var(--purple);font-size:17px;font-weight:700;cursor:pointer;font-family:'JetBrains Mono',monospace;letter-spacing:1px;transition:all .15s;" onmouseover="this.style.background='rgba(167,139,250,.15)'" onmouseout="this.style.background='rgba(167,139,250,.08)'">💡 INSIGHTS</button>
+      </div>
     </div>
   </div>
 
-  <div class="gauto" style="margin-bottom:12px;">
-    <div class="stat-pill"><div class="sp-num" id="as-done" style="background:var(--ag);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">0</div><div class="sp-lbl">Days Done</div></div>
-    <div class="stat-pill"><div class="sp-num" style="color:var(--txt);" id="as-left">40</div><div class="sp-lbl">Days Left</div></div>
-    <div class="stat-pill"><div class="sp-num" style="color:var(--ok);" id="as-chs">0</div><div class="sp-lbl">Chapters Done</div></div>
-    <div class="stat-pill"><div class="sp-num" style="color:var(--mock);" id="as-nt">—</div><div class="sp-lbl">Next Test</div></div>
-    <div class="stat-pill"><div class="sp-num" style="background:var(--ag);-webkit-background-clip:text;-webkit-text-fill-color:transparent;" id="as-pct">0%</div><div class="sp-lbl">Coverage</div></div>
+  <!-- ── INSIGHTS PANEL ── -->
+  <div id="adv-insights-panel" style="display:none;margin-bottom:14px;"></div>
+
+  <!-- ── STATS ROW ── -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:10px;margin-bottom:14px;">
+    <div class="stat-pill" style="border-color:rgba(251,191,36,.2);background:rgba(251,191,36,.04);"><div class="sp-num" id="as-done" style="background:var(--ag);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">0</div><div class="sp-lbl" style="color:#334155;letter-spacing:2px;">DAYS DONE</div></div>
+    <div class="stat-pill"><div class="sp-num" id="as-left" style="color:var(--txt);">40</div><div class="sp-lbl" style="color:#334155;letter-spacing:2px;">REMAINING</div></div>
+    <div class="stat-pill" style="border-color:rgba(34,211,238,.15);background:rgba(34,211,238,.03);"><div class="sp-num" id="as-chs" style="color:var(--ok);">0</div><div class="sp-lbl" style="color:#334155;letter-spacing:2px;">CHAPTERS</div></div>
+    <div class="stat-pill" style="border-color:rgba(244,63,94,.15);background:rgba(244,63,94,.03);"><div class="sp-num" id="as-nt" style="color:var(--mock);">—</div><div class="sp-lbl" style="color:#334155;letter-spacing:2px;">NEXT TEST</div></div>
+    <div class="stat-pill" style="border-color:rgba(251,191,36,.15);"><div class="sp-num" id="as-pct" style="background:var(--ag);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">0%</div><div class="sp-lbl" style="color:#334155;letter-spacing:2px;">COVERAGE</div></div>
+    <div class="stat-pill" style="border-color:rgba(129,140,248,.15);background:rgba(129,140,248,.03);"><div class="sp-num" id="as-streak" style="color:var(--math);">0🔥</div><div class="sp-lbl" style="color:#334155;letter-spacing:2px;">STREAK</div></div>
   </div>
 
-  <div class="mains-prog" style="border-color:#fde68a;">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-      <span style="font-size:18px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;">Syllabus Coverage</span>
+  <!-- ── PROGRESS BAR ── -->
+  <div class="mains-prog" style="border-color:rgba(251,191,36,.15);background:linear-gradient(135deg,rgba(251,191,36,.04),rgba(249,115,22,.02));margin-bottom:14px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <span style="font-size:17px;letter-spacing:3px;color:#334155;text-transform:uppercase;font-family:'JetBrains Mono',monospace;">SYLLABUS COVERAGE</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:800;background:var(--ag);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-1px;" id="as-pct2">0%</span>
     </div>
-    <div class="pbar"><div class="pbar-fill" id="as-bar" style="width:0%;background:var(--ag);"></div></div>
-    <div class="sub-bars">
-      <div class="sub-bar-card"><div class="sbc-lbl phy">⚡ Physics</div><div class="pbar"><div class="pbar-fill" id="ap-bar" style="width:0%;background:var(--phy);"></div></div><div class="sbc-ct" id="ap-ct">0/19</div></div>
-      <div class="sub-bar-card"><div class="sbc-lbl chem">⚗ Chemistry</div><div class="pbar"><div class="pbar-fill" id="ac-bar" style="width:0%;background:var(--chem);"></div></div><div class="sbc-ct" id="ac-ct">0/20</div></div>
-      <div class="sub-bar-card"><div class="sbc-lbl math">∑ Mathematics</div><div class="pbar"><div class="pbar-fill" id="am-bar" style="width:0%;background:var(--math);"></div></div><div class="sbc-ct" id="am-ct">0/20</div></div>
+    <div class="pbar" style="height:8px;background:rgba(255,255,255,.04);"><div class="pbar-fill" id="as-bar" style="width:0%;background:var(--ag);box-shadow:0 0 12px rgba(251,191,36,.3);"></div></div>
+    <div class="sub-bars" style="margin-top:12px;">
+      <div class="sub-bar-card"><div class="sbc-lbl phy" style="font-family:'JetBrains Mono',monospace;font-size:17px;letter-spacing:2px;margin-bottom:6px;">⚡ PHYSICS</div><div class="pbar"><div class="pbar-fill" id="ap-bar" style="width:0%;background:var(--phy);"></div></div><div class="sbc-ct" id="ap-ct" style="margin-top:4px;">0/19</div></div>
+      <div class="sub-bar-card"><div class="sbc-lbl chem" style="font-family:'JetBrains Mono',monospace;font-size:17px;letter-spacing:2px;margin-bottom:6px;">⚗ CHEM</div><div class="pbar"><div class="pbar-fill" id="ac-bar" style="width:0%;background:var(--chem);"></div></div><div class="sbc-ct" id="ac-ct" style="margin-top:4px;">0/32</div></div>
+      <div class="sub-bar-card"><div class="sbc-lbl math" style="font-family:'JetBrains Mono',monospace;font-size:17px;letter-spacing:2px;margin-bottom:6px;">∑ MATHS</div><div class="pbar"><div class="pbar-fill" id="am-bar" style="width:0%;background:var(--math);"></div></div><div class="sbc-ct" id="am-ct" style="margin-top:4px;">0/17</div></div>
     </div>
-  </div>
-
-  <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
-    <span class="badge phy">⚡ Physics 19 chapters</span>
-    <span class="badge chem">⚗ Chemistry 32 chapters</span>
-    <span class="badge math">∑ Mathematics 17 chapters</span>
-    <span class="badge adv">📝 7 Test Days</span>
-    <span class="badge ok">📅 Day 1 = Apr 7</span>
   </div>
 
   <div class="days-col" id="adv-days-root"></div>
@@ -1723,6 +1751,66 @@ input::placeholder,textarea::placeholder{color:#334155!important;}
 .pool{background:var(--card)!important;border-color:#1e2340!important;}
 .pool-hdr{background:rgba(7,8,15,.95)!important;border-color:#1e2340!important;}
 
+/* ══ ADVANCED PLAN LUXURY ══ */
+.adv-test-day{background:linear-gradient(135deg,var(--card),rgba(244,63,94,.04))!important;border-color:rgba(244,63,94,.2)!important;}
+.dc.today-dc{border-color:var(--mains)!important;}
+
+/* Advanced day card glow on today */
+#sec-adv-plan .dc.today-dc{border-color:var(--adv)!important;box-shadow:0 0 0 1.5px rgba(251,191,36,.3),0 8px 40px rgba(251,191,36,.1)!important;}
+
+/* Advanced week separator */
+#adv-days-root .wk-sep-adv{font-family:'JetBrains Mono',monospace!important;}
+
+/* Advanced priority flag pulse */
+@keyframes flag-pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.flag-critical{animation:flag-pulse 1.5s ease-in-out infinite;}
+
+/* Advanced note input */
+#sec-adv-plan input[type=text]:focus{color:var(--txt)!important;border-bottom:1px solid rgba(251,191,36,.2)!important;}
+
+.split-pill{position:relative;}
+.split-pill::after{content:'';position:absolute;inset:0;border-radius:8px;background:linear-gradient(135deg,rgba(129,140,248,.06),rgba(167,139,250,.04));pointer-events:none;}
+.split-hint{transition:opacity .15s;}
+.ch-pill:hover .split-hint{opacity:1!important;}
+
+/* ══ LUXURY DAY CARD UPGRADES ══ */
+.dc{border-radius:16px!important;overflow:hidden;transition:all .25s!important;}
+.dc.today-dc{box-shadow:0 0 0 1.5px var(--mains),0 8px 40px rgba(56,189,248,.15)!important;}
+.dc.done-dc{border-color:rgba(34,211,238,.2)!important;box-shadow:0 2px 12px rgba(34,211,238,.06)!important;}
+.dc-hdr{background:linear-gradient(135deg,rgba(255,255,255,.025),rgba(255,255,255,.01))!important;}
+.dc-num{font-size:26px!important;letter-spacing:-1px!important;font-family:'Syne',sans-serif!important;}
+.dc.today-dc .dc-num{background:var(--mg);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+
+/* Pool pill click hint */
+.ch-pill{cursor:pointer!important;}
+.ch-pill:hover{box-shadow:0 4px 16px rgba(0,0,0,.3)!important;}
+
+/* Addon section luxury */
+.addon-trigger{border-top:1px solid rgba(167,139,250,.08)!important;background:rgba(167,139,250,.02)!important;}
+.addon-trigger:hover{background:rgba(167,139,250,.07)!important;}
+.addon-section.unlocked .addon-hdr{background:rgba(167,139,250,.06)!important;}
+
+/* ══ MAINS PLAN LUXURY PROGRESS BAR ══ */
+.mains-prog{background:linear-gradient(135deg,rgba(56,189,248,.04),rgba(129,140,248,.03));border:1px solid rgba(56,189,248,.12);border-radius:16px;padding:16px 18px;margin-bottom:14px;}
+.sub-bars{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px;}
+.sub-bar-card{background:rgba(255,255,255,.03)!important;border:1px solid #1e2340;border-radius:10px;padding:10px 12px;}
+
+/* Week separator premium */
+.wk-sep{font-size:17px!important;letter-spacing:4px!important;color:#1e2340!important;}
+.wk-sep::after{background:linear-gradient(90deg,#1e2340,transparent)!important;height:1px!important;}
+
+/* Luxury pool header */
+.pool-hdr{padding:14px 16px!important;}
+.pool-title{font-family:'Syne',sans-serif!important;font-size:17px!important;letter-spacing:.5px!important;}
+.pool-count{background:rgba(56,189,248,.1);color:var(--mains)!important;border:1px solid rgba(56,189,248,.2);border-radius:20px;padding:1px 10px!important;font-size:17px!important;}
+
+/* Pool sub section labels */
+.pool-sub-lbl{font-family:'JetBrains Mono',monospace!important;font-size:17px!important;letter-spacing:3px!important;}
+.pool-sub-lbl.phy{color:rgba(249,115,22,.7)!important;}
+.pool-sub-lbl.math{color:rgba(129,140,248,.7)!important;}
+.pool-sub-lbl.chem{color:rgba(52,211,153,.6)!important;}
+
+
 </style>
 
 <script>
@@ -1730,8 +1818,8 @@ input::placeholder,textarea::placeholder{color:#334155!important;}
 //  GLOBAL STATE
 // ══════════════════════════════════════════════
 let STATE = {
-  mains: { assignments:{}, checked:{}, scores:[], addons:{}, qlog:{}, dpp:{} },
-  adv:   { checked:{}, scores:[], qlog:{} },
+  mains: { assignments:{}, checked:{}, scores:[], addons:{}, qlog:{}, dpp:{}, splits:{} },
+  adv:   { checked:{}, scores:[], qlog:{}, addons:{}, notes:{}, priorities:{}, paperMode:{}, dpp:{} },
   sheets: [],
   errors: [],
   sleep: [],
@@ -1763,10 +1851,16 @@ let STATE = {
   if(typeof STATE.mains.assignments!=='object'||Array.isArray(STATE.mains.assignments)) STATE.mains.assignments={};
   if(typeof STATE.mains.checked!=='object'||Array.isArray(STATE.mains.checked))         STATE.mains.checked={};
   if(typeof STATE.mains.addons!=='object'||Array.isArray(STATE.mains.addons)) STATE.mains.addons={};
+  if(typeof STATE.mains.splits!=='object'||Array.isArray(STATE.mains.splits)) STATE.mains.splits={};
   if(typeof STATE.mains.qlog!=='object'||Array.isArray(STATE.mains.qlog)) STATE.mains.qlog={};
   if(typeof STATE.mains.dpp!=='object'||Array.isArray(STATE.mains.dpp)) STATE.mains.dpp={};
   if(typeof STATE.adv.checked!=='object'||Array.isArray(STATE.adv.checked))             STATE.adv.checked={};
   if(typeof STATE.adv.qlog!=='object'||Array.isArray(STATE.adv.qlog))                   STATE.adv.qlog={};
+  if(typeof STATE.adv.addons!=='object'||Array.isArray(STATE.adv.addons))               STATE.adv.addons={};
+  if(typeof STATE.adv.notes!=='object'||Array.isArray(STATE.adv.notes))                 STATE.adv.notes={};
+  if(typeof STATE.adv.priorities!=='object'||Array.isArray(STATE.adv.priorities))       STATE.adv.priorities={};
+  if(typeof STATE.adv.paperMode!=='object'||Array.isArray(STATE.adv.paperMode))         STATE.adv.paperMode={};
+  if(typeof STATE.adv.dpp!=='object'||Array.isArray(STATE.adv.dpp))                     STATE.adv.dpp={};
   // Ensure scores entries are not undefined
   STATE.mains.scores=STATE.mains.scores.map(s=>s||null).filter(Boolean);
   STATE.adv.scores=STATE.adv.scores.map(s=>s||null).filter(Boolean);
@@ -1919,12 +2013,40 @@ function renderPool(){
     const list = sub==='phy'?M_PHY:sub==='math'?M_MATH:M_CHEM;
     const unassigned = list.filter(c=>mIsUnassigned(c.id));
     if(!unassigned.length){ el.innerHTML=`<div class="pool-empty">All assigned ✓</div>`; return; }
-    el.innerHTML = unassigned.map(c=>`
-      <div class="ch-pill ${sub}" draggable="true" data-id="${c.id}" id="pill-${c.id}"
-           ondragstart="mDragStart(event,'${c.id}')" ondragend="mDragEnd(event)">
-        <div class="ch-dot ${sub}"></div>
-        <span>${c.name}</span>
-      </div>`).join('');
+    el.innerHTML = unassigned.map(c=>{
+      const isSplit=!!(STATE.mains.splits&&STATE.mains.splits[c.id]);
+      if(isSplit){
+        const sp=STATE.mains.splits[c.id];
+        const p1Assigned=sp.part1Day!=null, p2Assigned=sp.part2Day!=null;
+        let pills='';
+        if(!p1Assigned) pills+=`
+          <div class="ch-pill ${sub} split-pill" draggable="true" data-id="${c.id}-p1" data-splitpart="1" id="pill-${c.id}-p1"
+               ondragstart="mDragStart(event,'${c.id}-p1')" ondragend="mDragEnd(event)"
+               onclick="event.stopPropagation();splitPartClick('${c.id}',1)" title="Part 1 — drag to assign">
+            <div class="ch-dot ${sub}"></div>
+            <span style="flex:1;">${c.name}</span>
+            <span style="font-size:18px;font-weight:800;background:rgba(56,189,248,.18);color:var(--mains);padding:1px 6px;border-radius:4px;flex-shrink:0;">P1</span>
+          </div>`;
+        if(!p2Assigned) pills+=`
+          <div class="ch-pill ${sub} split-pill" draggable="true" data-id="${c.id}-p2" data-splitpart="2" id="pill-${c.id}-p2"
+               ondragstart="mDragStart(event,'${c.id}-p2')" ondragend="mDragEnd(event)"
+               onclick="event.stopPropagation();splitPartClick('${c.id}',2)" title="Part 2 — drag to assign">
+            <div class="ch-dot ${sub}"></div>
+            <span style="flex:1;">${c.name}</span>
+            <span style="font-size:18px;font-weight:800;background:rgba(167,139,250,.18);color:var(--purple);padding:1px 6px;border-radius:4px;flex-shrink:0;">P2</span>
+          </div>`;
+        if(!pills) pills=`<div style="font-size:18px;color:var(--ok);padding:4px 10px;font-style:italic;font-weight:600;">Both parts assigned ✓ <button onclick="unsplitChapter('${c.id}')" style="font-size:17px;background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:4px;padding:1px 6px;cursor:pointer;margin-left:4px;">Unsplit</button></div>`;
+        return pills;
+      }
+      return `
+        <div class="ch-pill ${sub}" draggable="true" data-id="${c.id}" id="pill-${c.id}"
+             ondragstart="mDragStart(event,'${c.id}')" ondragend="mDragEnd(event)"
+             onclick="event.stopPropagation();poolPillClick('${c.id}','${sub}')">
+          <div class="ch-dot ${sub}"></div>
+          <span>${c.name}</span>
+          <span class="split-hint" style="font-size:17px;opacity:.4;margin-left:4px;">✂</span>
+        </div>`;
+    }).join('');
   });
   const left = M_ALL.filter(c=>mIsUnassigned(c.id)).length;
   document.getElementById('pool-cnt').textContent = left+' left';
@@ -2002,36 +2124,44 @@ function renderMainsDays(){
       if(assigned.length > 0){
         const subIcon={phy:'⚡',math:'∑',chem:'⚗'};
         const subCol={phy:'var(--phy)',math:'var(--math)',chem:'var(--chem)'};
-        chSummary = `<div style="display:flex;gap:6px;flex-wrap:wrap;padding:8px 14px;background:var(--s2);border-bottom:1px solid var(--border);">
-          <span style="font-size:18px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);align-self:center;">📋 Assigned</span>
+        const doneCount=assigned.filter(c=>STATE.mains.checked[c.id]).length;
+        const allAsgnDone=doneCount===assigned.length;
+        chSummary = `<div style="display:flex;gap:6px;flex-wrap:wrap;padding:7px 14px;background:${allAsgnDone?'rgba(34,211,238,.04)':'rgba(255,255,255,.018)'};border-bottom:1px solid ${allAsgnDone?'rgba(34,211,238,.12)':'var(--border)'};align-items:center;">
+          <span style="font-size:17px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#1e2340;font-family:'JetBrains Mono',monospace;align-self:center;">PLAN</span>
           ${assigned.map(c=>{
             const sub=mSubOf(c.id);
             const done=!!STATE.mains.checked[c.id];
             const col=subCol[sub]||'var(--muted)';
-            return `<span style="display:inline-flex;align-items:center;gap:4px;font-size:18px;font-weight:600;padding:3px 8px;border-radius:6px;border:1px solid ${col}28;background:${col}10;color:${done?'var(--ok)':col};${done?'text-decoration:line-through;opacity:.7':''};">
+            return `<span style="display:inline-flex;align-items:center;gap:4px;font-size:17px;font-weight:700;padding:3px 9px;border-radius:6px;border:1px solid ${done?'rgba(34,211,238,.25)':col+'28'};background:${done?'rgba(34,211,238,.07)':col+'0e'};color:${done?'var(--ok)':col};${done?'text-decoration:line-through;opacity:.65;':''};letter-spacing:.3px;transition:all .2s;">
               ${subIcon[sub]||'📖'} ${c.name}${done?' ✓':''}
             </span>`;
           }).join('')}
+          ${allAsgnDone?`<span style="margin-left:auto;font-size:17px;font-weight:800;color:var(--ok);letter-spacing:2px;font-family:'JetBrains Mono',monospace;">ALL DONE ✓</span>`:`<span style="margin-left:auto;font-size:17px;color:var(--muted);font-family:'JetBrains Mono',monospace;">${doneCount}/${assigned.length}</span>`}
         </div>`;
       }
 
       const dayStr=mDayDate(d).toISOString().split('T')[0];
+      // ── Luxury day-card accent bar color
+      const accentCol=isToday?'var(--mains)':allDone?'var(--ok)':isMock?'var(--mock)':isPhyDay?'rgba(249,115,22,.5)':'rgba(52,211,153,.5)';
       html+=`
         <div class="${dcCls}" id="dc${d}" ondragover="mDragOver(event,${d})" ondragleave="mDragLeave(event,${d})" ondrop="mDrop(event,${d})">
+          <!-- Luxury top accent bar -->
+          <div style="height:2px;background:${isToday?'var(--mg)':allDone?'linear-gradient(90deg,var(--ok),rgba(34,211,238,.3))':isMock?'linear-gradient(90deg,var(--mock),rgba(244,63,94,.3))':isPhyDay?'linear-gradient(90deg,rgba(249,115,22,.6),rgba(251,191,36,.2))':'linear-gradient(90deg,rgba(52,211,153,.5),rgba(56,189,248,.2))'};"></div>
           <div class="dc-hdr">
-            <div>
-              <div class="dc-num ${allDone?'dn':''}">${String(d).padStart(2,'0')}</div>
-              <div class="dc-date">${FMT_WD(dd)}</div>
+            <div style="text-align:center;min-width:52px;">
+              <div class="dc-num ${allDone?'dn':''}" style="${isToday?'':'color:'+(allDone?'var(--ok)':isPhyDay?'var(--phy)':'var(--chem)')}">${String(d).padStart(2,'0')}</div>
+              <div class="dc-date" style="font-size:17px;">${FMT_WD(dd)}</div>
+              ${isToday?`<div style="font-size:17px;font-weight:800;letter-spacing:1.5px;color:var(--mains);background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.25);padding:1px 6px;border-radius:4px;margin-top:3px;font-family:'JetBrains Mono',monospace;">TODAY</div>`:''}
+              ${allDone&&!isToday?`<div style="font-size:17px;color:var(--ok);font-weight:700;letter-spacing:1px;font-family:'JetBrains Mono',monospace;margin-top:2px;">✓ DONE</div>`:''}
             </div>
             <div class="dc-info">
               <div class="dc-badges">${mainBadge}${mockBadge}</div>
-              <div class="dc-sched">${schedPips}</div>
+              <div class="dc-sched" style="margin-top:5px;">${schedPips}</div>
             </div>
-            <div class="dc-act">
-              <button class="mark-all-btn" onclick="quickLogDPP('${dayStr}')" title="Log DPP for this day" style="color:var(--mains);border-color:rgba(56,189,248,.2);">📝 DPP</button>
-              <button class="mark-all-btn" onclick="goTo('mains-sheets',document.querySelector('[onclick*=mains-sheets]'))" title="Open Must-Do Sheets">📋</button>
-              <button class="mark-all-btn" onclick="showDayReport(${d})" title="Daily Report">📄</button>
-              <button class="mark-all-btn ${allDone?'on':''}" onclick="mMarkAll(${d})">${allDone?'✓ Done':'Mark All'}</button>
+            <div class="dc-act" style="gap:4px;">
+              <button class="mark-all-btn" onclick="quickLogDPP('${dayStr}')" title="Quick DPP Log" style="color:var(--mains);border-color:rgba(56,189,248,.18);font-size:17px;padding:4px 8px;">📝</button>
+              <button class="mark-all-btn" onclick="showDayReport(${d})" title="Day Report" style="font-size:17px;padding:4px 8px;">📄</button>
+              <button class="mark-all-btn ${allDone?'on':''}" onclick="mMarkAll(${d})" style="font-size:17px;">${allDone?'✓':'Mark All'}</button>
             </div>
           </div>
           ${chSummary}
@@ -2053,8 +2183,10 @@ function buildDZ(day, sub, assigned, label, slot){
   const subTotal=subList.length;
   const subDone=subList.filter(c=>STATE.mains.checked[c.id]).length;
   const syllabusComplete=subDone===subTotal;
-  const subCol={phy:'var(--phy)',math:'var(--math)',chem:'var(--chem)'}[sub];
+  const subColMap={phy:'var(--phy)',math:'var(--math)',chem:'var(--chem)'};
+  const subCol=subColMap[sub];
   const icons={phy:'⚡',math:'∑',chem:'⚗'};
+  const pct=Math.round(subDone/subTotal*100);
   let inner='';
 
   if(isOcc){
@@ -2062,28 +2194,28 @@ function buildDZ(day, sub, assigned, label, slot){
       const done=!!STATE.mains.checked[c.id];
       return `<div class="asgn-chip ${done?'asgn-chip-done':''}">
         <div class="chk ${done?'on':''}" onclick="mToggleChk('${c.id}')"></div>
-        <span class="asgn-name ${done?'done':''}">${c.name}</span>
-        ${done?`<span style="font-size:18px;color:var(--ok);font-weight:700;margin-left:2px;">✓</span>`:''}
+        <span class="asgn-name ${done?'done':''}" style="font-size:17px;">${c.name}</span>
+        ${done?`<span style="font-size:17px;color:var(--ok);font-weight:800;font-family:'JetBrains Mono',monospace;margin-left:2px;letter-spacing:.5px;">✓</span>`:''}
         <button class="rm-btn" onclick="mRemove('${c.id}')">×</button>
       </div>
-      ${done?`<div class="asgn-done-suggest" onclick="requestAddon(${day})">
-        <span style="color:var(--ok);">✅ Done!</span>
-        <span style="color:var(--muted);">→ Add another ${icons[sub]} ${sub} chapter?</span>
-        <span style="color:${subCol};font-size:18px;">+ tap</span>
+      ${done?`<div class="asgn-done-suggest" onclick="requestAddon(${day})" style="border-top:1px solid rgba(34,211,238,.1);padding:5px 10px 6px;">
+        <span style="font-size:17px;color:var(--ok);font-weight:700;letter-spacing:1px;font-family:'JetBrains Mono',monospace;">✓ DONE</span>
+        <span style="font-size:17px;color:#334155;margin:0 4px;">→</span>
+        <span style="font-size:17px;color:var(--muted);">Add extra block?</span>
+        <span style="font-size:17px;color:${subCol};font-weight:700;margin-left:auto;">+ tap</span>
       </div>`:''}`;
     }).join('');
   } else if(syllabusComplete){
-    // All chapters done — syllabus complete mode
-    inner=`<div class="dz-syllabus-done" onclick="requestAddon(${day})">
-      <div style="font-size:18px;font-weight:800;color:var(--ok);">🎉 ${icons[sub]} Syllabus Complete!</div>
-      <div style="font-size:18px;color:var(--muted);margin:2px 0;">All ${subTotal} chapters done</div>
-      <div style="font-size:17px;color:${subCol};font-weight:600;">Tap to add practice slot →</div>
+    inner=`<div class="dz-syllabus-done" onclick="requestAddon(${day})" style="padding:14px;">
+      <div style="font-size:17px;font-weight:900;color:var(--ok);letter-spacing:1px;font-family:'JetBrains Mono',monospace;">🎉 ${icons[sub]} SYLLABUS DONE</div>
+      <div style="font-size:17px;color:#334155;margin:2px 0;">All ${subTotal} chapters complete</div>
+      <div style="font-size:17px;color:${subCol};font-weight:700;letter-spacing:.5px;margin-top:4px;">→ Add practice slot</div>
     </div>`;
   } else {
     inner=`<div class="dz-empty-inner">
-      <span class="dz-empty-lbl">${icons[sub]} ${label} chapter</span>
-      <span class="dz-hint">← drag here</span>
-      <span style="font-size:18px;color:var(--muted);margin-left:4px;">${subDone}/${subTotal} done</span>
+      <span class="dz-empty-lbl" style="font-size:17px;">${icons[sub]} ${label}</span>
+      <span class="dz-hint" style="font-size:17px;">← drag</span>
+      <span style="font-size:17px;color:#1e2340;font-family:'JetBrains Mono',monospace;margin-left:auto;">${subDone}/${subTotal} · ${pct}%</span>
     </div>`;
   }
   return `<div class="${dzCls}" data-day="${day}" data-sub="${sub}"
@@ -2109,12 +2241,20 @@ function mDragEnd(){ if(dragId) document.getElementById('pill-'+dragId)?.classLi
 function mDragOver(e,d){ e.preventDefault(); document.getElementById('dc'+d)?.classList.add('drag-over-dc'); }
 function mDragLeave(e,d){ if(!e.currentTarget.contains(e.relatedTarget)) document.getElementById('dc'+d)?.classList.remove('drag-over-dc'); }
 function mDrop(e,d){ e.preventDefault(); document.getElementById('dc'+d)?.classList.remove('drag-over-dc'); const id=e.dataTransfer.getData('text/plain')||dragId; if(!id) return; const type=mGetDayType(d); if(type==='CC'){ const chemCount=mGetDayChapters(d).filter(c=>mSubOf(c.id)==='chem').length; if(chemCount>=2){ showToast('Both Chem slots filled for this day!'); return; } } mDoAssign(id,d); }
-function mDzOver(e,el,sub){ e.preventDefault(); e.stopPropagation(); if(dragId&&mSubOf(dragId)===sub) el.classList.add('drag-hover'); }
+function mSubOfAny(id){ const base=id.replace(/-p[12]$/,''); return mSubOf(base); }
+function mDzOver(e,el,sub){ e.preventDefault(); e.stopPropagation(); if(dragId&&mSubOfAny(dragId)===sub) el.classList.add('drag-hover'); }
 function mDzLeave(el){ el.classList.remove('drag-hover'); }
 function mDzDrop(e,day,sub,slot){
   e.preventDefault(); e.stopPropagation();
   const id=e.dataTransfer.getData('text/plain')||dragId;
   if(!id) return;
+  const isSplit=id.endsWith('-p1')||id.endsWith('-p2');
+  if(isSplit){
+    // Split parts bypass subject slot restriction — go to addon
+    mDoAssign(id,day);
+    document.querySelectorAll('.drag-hover').forEach(el=>el.classList.remove('drag-hover'));
+    return;
+  }
   if(mSubOf(id)!==sub){ showToast('Drop a '+sub.toUpperCase()+' chapter here!'); return; }
   const type=mGetDayType(day);
   if(type==='CC'){
@@ -2195,10 +2335,107 @@ const _sheetWorkers={};
 let _reportDay=null;
 
 function mDoAssign(id,day){
+  // Handle split part IDs like "p0-p1" or "p0-p2"
+  if(id&&id.includes('-p')&&(id.endsWith('-p1')||id.endsWith('-p2'))){
+    const basePart = id.endsWith('-p1')?1:2;
+    const baseId = id.replace(/-p[12]$/,'');
+    if(!M_MAP[baseId]) return;
+    if(!STATE.mains.splits) STATE.mains.splits={};
+    if(!STATE.mains.splits[baseId]) STATE.mains.splits[baseId]={};
+    if(basePart===1) STATE.mains.splits[baseId].part1Day=day;
+    else STATE.mains.splits[baseId].part2Day=day;
+    // Add as addon chapter with part suffix
+    const suffix=basePart===1?' — Part 1':' — Part 2';
+    const sub=mSubOf(baseId);
+    if(!STATE.mains.addons[day]) STATE.mains.addons[day]=[];
+    // Avoid duplicates
+    const existId=id;
+    if(!STATE.mains.addons[day].some(a=>a.id===existId)){
+      STATE.mains.addons[day].push({id:existId,type:'chapter',sub,name:M_MAP[baseId].name+suffix,theory:false,dpp:false,sheets:false,isSplitPart:true,splitBaseId:baseId,splitPart:basePart});
+    }
+    saveState(); renderPool(); renderMainsDays(); mUpdateStats();
+    return;
+  }
   if(!M_MAP[id]) return;
   STATE.mains.assignments[id]=day; saveState();
   renderPool(); renderMainsDays(); mUpdateStats();
 }
+
+// ── Pool pill click → show split dialog
+function poolPillClick(id, sub){
+  const ch=M_MAP[id]; if(!ch) return;
+  // Show luxe split dialog
+  let dlg=document.getElementById('split-dialog-overlay');
+  if(!dlg){
+    dlg=document.createElement('div');
+    dlg.id='split-dialog-overlay';
+    dlg.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:9500;display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(16px);';
+    document.body.appendChild(dlg);
+  }
+  const subGrad={phy:'linear-gradient(135deg,#f97316,#fbbf24)',math:'linear-gradient(135deg,#818cf8,#a78bfa)',chem:'linear-gradient(135deg,#34d399,#22d3ee)'};
+  const subCol={phy:'var(--phy)',math:'var(--math)',chem:'var(--chem)'};
+  dlg.innerHTML=`
+    <div style="background:#09091a;border:1px solid #1e2340;border-radius:22px;padding:28px;width:100%;max-width:420px;box-shadow:0 32px 80px rgba(0,0,0,.9);position:relative;">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:${subGrad[sub]||subGrad.chem};border-radius:22px 22px 0 0;"></div>
+      <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;margin-bottom:4px;letter-spacing:-0.5px;">✂ Chapter Pool</div>
+      <div style="font-size:17px;color:var(--muted);margin-bottom:18px;font-family:'Space Mono',monospace;letter-spacing:1px;">SPLIT OR USE FULL?</div>
+      <div style="background:rgba(255,255,255,.04);border:1px solid #1e2340;border-radius:12px;padding:12px 16px;margin-bottom:20px;">
+        <div style="font-size:18px;font-weight:700;color:${subCol[sub]};">${ch.name}</div>
+        <div style="font-size:17px;color:var(--muted);margin-top:3px;">Drag to assign, or split into 2 independent parts</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <button onclick="closeSplitDialog()" style="padding:14px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid #1e2340;color:var(--muted);font-size:18px;font-weight:600;cursor:pointer;text-align:left;display:flex;align-items:center;gap:10px;transition:all .15s;"
+          onmouseover="this.style.borderColor='rgba(56,189,248,.3)';this.style.color='var(--txt)'" onmouseout="this.style.borderColor='#1e2340';this.style.color='var(--muted)'">
+          <span style="font-size:22px;">📖</span>
+          <div><div style="font-size:18px;font-weight:700;color:inherit;">Use Full Chapter</div><div style="font-size:17px;color:var(--muted);margin-top:1px;">Keep as one chapter — drag to any day</div></div>
+        </button>
+        <button onclick="splitChapter('${id}');closeSplitDialog()" style="padding:14px;border-radius:12px;background:linear-gradient(135deg,rgba(129,140,248,.1),rgba(167,139,250,.06));border:1px solid rgba(129,140,248,.3);color:var(--purple);font-size:18px;font-weight:700;cursor:pointer;text-align:left;display:flex;align-items:center;gap:10px;transition:all .15s;"
+          onmouseover="this.style.background='linear-gradient(135deg,rgba(129,140,248,.2),rgba(167,139,250,.1))'" onmouseout="this.style.background='linear-gradient(135deg,rgba(129,140,248,.1),rgba(167,139,250,.06))'">
+          <span style="font-size:22px;">✂️</span>
+          <div>
+            <div style="font-size:18px;font-weight:800;color:var(--purple);">Split into 2 Parts</div>
+            <div style="font-size:17px;color:var(--muted);margin-top:1px;">Assign Part 1 + Part 2 to <b style="color:var(--txt);">different days</b></div>
+            <div style="display:flex;gap:6px;margin-top:6px;">
+              <span style="background:rgba(56,189,248,.18);color:var(--mains);padding:2px 8px;border-radius:4px;font-size:17px;font-weight:800;">P1</span>
+              <span style="background:rgba(167,139,250,.18);color:var(--purple);padding:2px 8px;border-radius:4px;font-size:17px;font-weight:800;">P2</span>
+            </div>
+          </div>
+        </button>
+      </div>
+      <button onclick="closeSplitDialog()" style="position:absolute;top:14px;right:14px;background:transparent;border:1px solid #1e2340;color:var(--muted);border-radius:7px;padding:4px 9px;cursor:pointer;font-size:17px;">✕</button>
+    </div>`;
+  dlg.style.display='flex';
+  dlg.onclick=e=>{if(e.target===dlg)closeSplitDialog();};
+}
+
+function closeSplitDialog(){
+  const dlg=document.getElementById('split-dialog-overlay');
+  if(dlg) dlg.remove();
+}
+
+function splitChapter(id){
+  if(!STATE.mains.splits) STATE.mains.splits={};
+  STATE.mains.splits[id]={part1Day:null,part2Day:null,createdAt:Date.now()};
+  saveState(); renderPool();
+  showToast(`✂ ${M_MAP[id]?.name||id} split into Part 1 + Part 2!`);
+}
+
+function unsplitChapter(id){
+  if(!confirm('Remove split and restore full chapter to pool?')) return;
+  if(STATE.mains.splits) delete STATE.mains.splits[id];
+  // Remove any split addon entries
+  Object.keys(STATE.mains.addons).forEach(day=>{
+    STATE.mains.addons[day]=(STATE.mains.addons[day]||[]).filter(a=>a.splitBaseId!==id);
+    if(!STATE.mains.addons[day].length) delete STATE.mains.addons[day];
+  });
+  saveState(); renderPool(); renderMainsDays(); mUpdateStats();
+  showToast(`Restored full chapter to pool.`);
+}
+
+function splitPartClick(baseId, part){
+  showToast(`P${part} of ${M_MAP[baseId]?.name||baseId} — drag to assign to any day`);
+}
+
 // Quick DPP log triggered from day card
 function quickLogDPP(dateStr){
   let ov=document.getElementById('quick-dpp-overlay');
@@ -3432,75 +3669,169 @@ const A_PLAN=[];
 
 function aDayDate(n){const d=new Date(A_START);d.setDate(d.getDate()+n-1);return d;}
 
-// ── ADV PLAN RENDER ──
+// ── ADV PLAN RENDER — LUXURY ──
 function renderAdvPlan(){
   const root=document.getElementById('adv-days-root');
   if(!root) return;
   const today=new Date();today.setHours(0,0,0,0);
   let html='',wk=1;
+  const subCol={phy:'var(--phy)',chem:'var(--chem)',math:'var(--math)'};
+  const subIcon={phy:'⚡',chem:'⚗',math:'∑'};
+  const subGrad={phy:'linear-gradient(135deg,#f97316,#fbbf24)',chem:'linear-gradient(135deg,#34d399,#22d3ee)',math:'linear-gradient(135deg,#818cf8,#a78bfa)'};
+
   for(let ws=1;ws<=A_TOTAL;ws+=7){
     const we=Math.min(ws+6,A_TOTAL);
-    html+=`<div class="wk-sep" style="color:var(--adv)88;">Week ${wk++} · ${FMT_S(aDayDate(ws))} – ${FMT_S(aDayDate(we))}</div>`;
+    const wkDays=[];
+    for(let d=ws;d<=we;d++) wkDays.push(d);
+    const wkDone=wkDays.filter(d=>{const dp=A_PLAN[d-1];return dp.tasks.length>0&&dp.tasks.every(t=>STATE.adv.checked[t.ch.id]);}).length;
+    const wkPct=wkDays.length?Math.round(wkDone/wkDays.length*100):0;
+
+    html+=`<div style="display:flex;align-items:center;gap:10px;margin:8px 0 4px;">
+      <span style="font-family:'JetBrains Mono',monospace;font-size:17px;letter-spacing:4px;color:rgba(251,191,36,.4);text-transform:uppercase;white-space:nowrap;">WEEK ${wk++}</span>
+      <span style="font-size:17px;color:#1e2340;font-family:'JetBrains Mono',monospace;"> ${FMT_S(aDayDate(ws))} – ${FMT_S(aDayDate(we))}</span>
+      <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(251,191,36,.2),transparent);"></div>
+      <span style="font-size:17px;font-family:'JetBrains Mono',monospace;color:${wkPct===100?'var(--ok)':wkPct>50?'var(--adv)':'#334155'};">${wkDone}/${wkDays.length} ✓</span>
+    </div>`;
+
     for(let d=ws;d<=we;d++){
       const dp=A_PLAN[d-1];
       const dd=aDayDate(d);
+      const isPast=dd<today;
       const isToday=dd.getTime()===today.getTime();
       const allDone=dp.tasks.length>0&&dp.tasks.every(t=>STATE.adv.checked[t.ch.id]);
+      const doneCnt=dp.tasks.filter(t=>STATE.adv.checked[t.ch.id]).length;
+      const dayStr=dd.toISOString().split('T')[0];
+
+      // Per-day extra addons
+      const advAddons=STATE.adv.addons[d]||[];
+      const advNote=STATE.adv.notes[d]||'';
+      const priorities=STATE.adv.priorities||{};
+      const paperMode=STATE.adv.paperMode||{};
+
       let cls='dc';
-      if(isToday) cls+=' adv-today';
-      if(dp.isTest) cls+=' adv-test-day';
-      if(allDone) cls+=' done-dc';
+      if(isToday) cls+=' today-dc';
+      if(dp.isTest) cls+=' adv-test-day mockday-dc';
+      if(allDone&&dp.tasks.length>0) cls+=' done-dc';
 
+      // Accent bar color
+      const accentBar=isToday?'linear-gradient(90deg,var(--adv),rgba(251,191,36,.3))':
+        allDone?'linear-gradient(90deg,var(--ok),rgba(34,211,238,.3))':
+        dp.isTest?'linear-gradient(90deg,var(--mock),rgba(244,63,94,.3))':
+        'linear-gradient(90deg,rgba(251,191,36,.25),transparent)';
+
+      // Build chapter rows
       let bodyHtml='';
-      if(dp.isTest) bodyHtml+=`<div class="mock-banner" style="border-color:#f59e0b35;background:#f59e0b10;color:var(--adv);">📝 JEE ADV TEST DAY</div>`;
-      dp.tasks.forEach((t,i)=>{
-        const done=!!STATE.adv.checked[t.ch.id];
-        const sub=t.ch.id.startsWith('ap')?'phy':t.ch.id.startsWith('ac')?'chem':'math';
-        const icon=sub==='phy'?'⚡':sub==='chem'?'⚗':'∑';
-        bodyHtml+=`<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid color-mix(in srgb,var(--border) 50%,transparent);">
-          <div class="chk ${done?'on':''}" onclick="aToggle('${t.ch.id}',${d})"></div>
-          <span class="badge ${sub}">${icon} ${sub.toUpperCase()}</span>
-          <span style="font-size:17px;color:${done?'var(--muted)':'var(--txt)'};${done?'text-decoration:line-through':''};flex:1;">${t.ch.name}</span>
-        </div>`;
-      });
-      if(!dp.tasks.length) bodyHtml+=`<div style="font-size:17px;color:var(--muted);padding:6px 0;">Revision / Buffer Day</div>`;
-
-      // Chapter summary strip (read-only)
-      let aChSummary = '';
-      if(dp.tasks.length > 0){
-        const subIcon={phy:'⚡',chem:'⚗',math:'∑'};
-        const subCol={phy:'var(--phy)',chem:'var(--chem)',math:'var(--math)'};
-        aChSummary = `<div style="display:flex;gap:6px;flex-wrap:wrap;padding:8px 14px;background:var(--s2);border-bottom:1px solid var(--border);">
-          <span style="font-size:18px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);align-self:center;">📋 Today</span>
-          ${dp.tasks.map(t=>{
-            const sub=t.ch.id.startsWith('ap')?'phy':t.ch.id.startsWith('ac')?'chem':'math';
-            const done=!!STATE.adv.checked[t.ch.id];
-            const col=subCol[sub];
-            return `<span style="display:inline-flex;align-items:center;gap:4px;font-size:18px;font-weight:600;padding:3px 8px;border-radius:6px;border:1px solid ${col}28;background:${col}10;color:${done?'var(--ok)':col};${done?'text-decoration:line-through;opacity:.7':''};">
-              ${subIcon[sub]} ${t.ch.name}${done?' ✓':''}
-            </span>`;
-          }).join('')}
+      if(dp.isTest){
+        bodyHtml+=`<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:linear-gradient(135deg,rgba(251,191,36,.08),rgba(249,115,22,.04));border-bottom:1px solid rgba(251,191,36,.15);">
+          <span style="font-size:20px;">📝</span>
+          <div>
+            <div style="font-size:17px;font-weight:900;color:var(--adv);letter-spacing:2px;font-family:'JetBrains Mono',monospace;">JEE ADVANCED TEST DAY</div>
+            <div style="font-size:17px;color:#475569;font-family:'JetBrains Mono',monospace;margin-top:1px;">Paper 1 · Paper 2 · Full 3hr each</div>
+          </div>
+          <div style="margin-left:auto;display:flex;gap:6px;">
+            <span style="font-size:17px;font-weight:800;padding:3px 10px;border-radius:6px;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.25);color:var(--adv);font-family:'JetBrains Mono',monospace;">P1</span>
+            <span style="font-size:17px;font-weight:800;padding:3px 10px;border-radius:6px;background:rgba(129,140,248,.1);border:1px solid rgba(129,140,248,.25);color:var(--math);font-family:'JetBrains Mono',monospace;">P2</span>
+          </div>
         </div>`;
       }
 
-      html+=`<div class="${cls}" id="adc${d}" style="${isToday?'border-color:var(--adv);':dp.isTest?'border-color:#f59e0b28;':''}">
-        <div class="dc-hdr">
+      dp.tasks.forEach((t,i)=>{
+        const done=!!STATE.adv.checked[t.ch.id];
+        const sub=t.ch.id.startsWith('ap')?'phy':t.ch.id.startsWith('ac')?'chem':'math';
+        const col=subCol[sub];
+        const icon=subIcon[sub];
+        const prio=priorities[t.ch.id]||0; // 0=normal,1=hard,2=critical
+        const prioTag=prio===2?`<span style="font-size:17px;font-weight:800;color:var(--mock);background:rgba(244,63,94,.12);border:1px solid rgba(244,63,94,.3);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;flex-shrink:0;">🔴 CRITICAL</span>`:
+                      prio===1?`<span style="font-size:17px;font-weight:800;color:var(--adv);background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;flex-shrink:0;">⚠ HARD</span>`:'';
+        const pm=paperMode[t.ch.id]||'both'; // 'p1','p2','both'
+        const pmTag=`<span onclick="aTogglePaperMode('${t.ch.id}')" title="Toggle Paper mode" style="font-size:17px;padding:1px 7px;border-radius:4px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-weight:800;flex-shrink:0;transition:all .15s;
+          ${pm==='p1'?'background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.3);color:var(--adv);':
+            pm==='p2'?'background:rgba(129,140,248,.12);border:1px solid rgba(129,140,248,.3);color:var(--math);':
+            'background:rgba(255,255,255,.04);border:1px solid #1e2340;color:#334155;'}">${pm==='p1'?'P1':pm==='p2'?'P2':'P1+P2'}</span>`;
+
+        bodyHtml+=`<div style="display:flex;align-items:center;gap:8px;padding:9px 14px;border-bottom:1px solid rgba(255,255,255,.04);transition:background .15s;${done?'opacity:.55':''}" onmouseover="this.style.background='rgba(255,255,255,.025)'" onmouseout="this.style.background=''">
+          <div class="chk ${done?'on':''}" onclick="aToggle('${t.ch.id}',${d})" style="flex-shrink:0;width:16px;height:16px;border-radius:5px;${done?'background:var(--ok);border-color:var(--ok);':'border-color:#1e2340;'}"></div>
+          <div style="width:6px;height:6px;border-radius:50%;background:${done?col:'#1e2340'};box-shadow:${done?'0 0 6px '+col:'none'};flex-shrink:0;transition:all .3s;"></div>
+          <span style="font-size:17px;font-weight:700;padding:2px 8px;border-radius:5px;border:1px solid ${col}30;background:${col}0e;color:${col};letter-spacing:.5px;flex-shrink:0;">${icon} ${sub.toUpperCase()}</span>
+          <span style="font-size:17px;font-weight:600;${done?'text-decoration:line-through;color:#334155':'color:var(--txt)'};flex:1;line-height:1.4;">${t.ch.name}</span>
+          ${prioTag}
+          ${pmTag}
+          <button onclick="aTogglePriority('${t.ch.id}')" title="Flag difficulty" style="background:transparent;border:none;cursor:pointer;font-size:17px;opacity:.3;transition:opacity .15s;padding:0 2px;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=${prio>0?1:.3}">🚩</button>
+          ${done?`<span style="font-size:17px;font-weight:800;color:var(--ok);font-family:'JetBrains Mono',monospace;">✓</span>`:''}
+        </div>`;
+      });
+
+      if(!dp.tasks.length){
+        bodyHtml+=`<div style="padding:12px 14px;display:flex;align-items:center;gap:10px;">
+          <span style="font-size:20px;">🔄</span>
           <div>
-            <div class="dc-num ${allDone?'dn':''}" style="color:${allDone?'var(--ok)':'var(--adv)'};">${String(d).padStart(2,'0')}</div>
-            <div class="dc-date">${FMT_WD(dd)}</div>
+            <div style="font-size:17px;font-weight:700;color:var(--adv);letter-spacing:1px;font-family:'JetBrains Mono',monospace;">REVISION & BUFFER DAY</div>
+            <div style="font-size:17px;color:#334155;">Revise weak chapters · Attempt PYQs · Rest if needed</div>
+          </div>
+        </div>`;
+      }
+
+      // DPP strip for this day
+      const advDpps=(STATE.adv.dpp&&STATE.adv.dpp[dayStr])||[];
+      const dppStripHtml=advDpps.length?`
+        <div style="border-top:1px solid rgba(255,255,255,.04);padding:6px 14px;display:flex;gap:6px;flex-wrap:wrap;align-items:center;background:rgba(255,255,255,.015);">
+          <span style="font-size:17px;color:#1e2340;font-family:'JetBrains Mono',monospace;letter-spacing:2px;">DPP</span>
+          ${advDpps.map(e=>{
+            const acc=e.total>0?Math.round(e.correct/e.total*100):null;
+            const accCol=acc===null?'#334155':acc>=70?'var(--ok)':acc>=50?'var(--adv)':'var(--mock)';
+            return `<span style="font-size:17px;font-weight:700;padding:2px 8px;border-radius:5px;background:${subCol[e.sub]||'var(--muted)'}10;border:1px solid ${subCol[e.sub]||'var(--muted)'}25;color:${subCol[e.sub]||'var(--muted)'};">
+              ${subIcon[e.sub]||'📝'} ${e.chapter}${acc!==null?` · <span style="color:${accCol};">${acc}%</span>`:''}
+            </span>`;
+          }).join('')}
+        </div>`:'';
+
+      // Day note
+      const noteHtml=`<div style="border-top:1px solid rgba(255,255,255,.04);padding:7px 14px;display:flex;align-items:center;gap:8px;">
+        <span style="font-size:17px;color:#1e2340;flex-shrink:0;font-family:'JetBrains Mono',monospace;">NOTE</span>
+        <input type="text" value="${(advNote||'').replace(/"/g,'&quot;')}" placeholder="Add day note, weak topics, strategy…"
+          onchange="aSetNote(${d},this.value)"
+          style="flex:1;background:transparent;border:none;outline:none;font-size:17px;color:${advNote?'var(--muted)':'#1e2340'};font-family:'Space Grotesk',sans-serif;padding:0;" />
+      </div>`;
+
+      // Addon section
+      const addonHtml=buildAdvAddonSection(d);
+
+      html+=`<div class="${cls}" id="adc${d}" style="position:relative;">
+        <div style="height:2px;background:${accentBar};"></div>
+        <div class="dc-hdr" style="padding:10px 14px;grid-template-columns:58px 1fr auto;">
+          <div style="text-align:center;">
+            <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;letter-spacing:-1px;color:${isToday?'var(--adv)':allDone?'var(--ok)':dp.isTest?'var(--mock)':'var(--adv)'};${isToday?'background:var(--ag);-webkit-background-clip:text;-webkit-text-fill-color:transparent;':''}">${String(d).padStart(2,'0')}</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:17px;color:#334155;">${FMT_WD(dd)}</div>
+            ${isToday?`<div style="font-size:17px;font-weight:800;color:var(--adv);background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.25);padding:1px 5px;border-radius:4px;margin-top:3px;font-family:'JetBrains Mono',monospace;letter-spacing:1px;">TODAY</div>`:''}
+            ${allDone&&dp.tasks.length>0&&!isToday?`<div style="font-size:17px;font-weight:700;color:var(--ok);font-family:'JetBrains Mono',monospace;">✓ DONE</div>`:''}
+            ${dp.isTest?`<div style="font-size:17px;font-weight:700;color:var(--mock);background:rgba(244,63,94,.1);border:1px solid rgba(244,63,94,.2);padding:1px 5px;border-radius:4px;margin-top:3px;font-family:'JetBrains Mono',monospace;">TEST</div>`:''}
           </div>
           <div class="dc-info">
-            <div class="dc-badges">
-              ${dp.isTest?`<span class="badge adv">📝 TEST</span>`:`<span class="badge" style="color:var(--adv)88;border-color:var(--adv)28;">Study Day</span>`}
-              ${dp.tasks.length?`<span style="font-size:18px;color:var(--muted);">${dp.tasks.length} chapter${dp.tasks.length>1?'s':''}</span>`:''}
+            <div class="dc-badges" style="margin-bottom:5px;">
+              ${dp.isTest?`<span style="font-size:17px;font-weight:800;padding:3px 9px;border-radius:6px;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.25);color:var(--adv);font-family:'JetBrains Mono',monospace;letter-spacing:1px;">📝 MOCK TEST</span>`:
+               dp.tasks.length===0?`<span style="font-size:17px;padding:3px 9px;border-radius:6px;background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.2);color:var(--purple);font-family:'JetBrains Mono',monospace;letter-spacing:1px;">🔄 BUFFER</span>`:
+               `<span style="font-size:17px;font-weight:800;padding:3px 9px;border-radius:6px;background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.2);color:rgba(251,191,36,.7);font-family:'JetBrains Mono',monospace;letter-spacing:1px;">⚡ STUDY DAY</span>`}
+              ${dp.tasks.length?`<span style="font-size:17px;color:#334155;font-family:'JetBrains Mono',monospace;padding:3px 7px;border-radius:5px;border:1px solid #1e2340;">${dp.tasks.length} ch</span>`:''}
+              ${advAddons.length?`<span style="font-size:17px;color:var(--purple);font-family:'JetBrains Mono',monospace;padding:3px 7px;border-radius:5px;background:rgba(167,139,250,.06);border:1px solid rgba(167,139,250,.2);">+${advAddons.length}</span>`:''}
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              ${dp.tasks.map(t=>{
+                const sub=t.ch.id.startsWith('ap')?'phy':t.ch.id.startsWith('ac')?'chem':'math';
+                const done=!!STATE.adv.checked[t.ch.id];
+                return `<span style="font-size:17px;font-weight:600;color:${done?'var(--ok)':subCol[sub]};${done?'text-decoration:line-through;opacity:.6':''}">${subIcon[sub]} ${t.ch.name}</span>`;
+              }).join('')}
             </div>
           </div>
-          <div class="dc-act">
-            <button class="mark-all-btn ${allDone?'on':''}" style="${allDone?'border-color:var(--ok);color:var(--ok);':''}" onclick="aMarkAll(${d})">${allDone?'✓ Done':'Mark All'}</button>
+          <div class="dc-act" style="gap:4px;align-items:flex-start;padding-top:2px;">
+            <button onclick="advQuickDPP('${dayStr}')" title="Quick DPP Log" style="padding:5px 9px;border-radius:7px;border:1px solid rgba(251,191,36,.2);background:rgba(251,191,36,.06);color:var(--adv);font-size:17px;cursor:pointer;font-family:'JetBrains Mono',monospace;transition:all .15s;" onmouseover="this.style.background='rgba(251,191,36,.12)'" onmouseout="this.style.background='rgba(251,191,36,.06)'">📝</button>
+            <button onclick="advDayReport(${d})" title="Day Report" style="padding:5px 9px;border-radius:7px;border:1px solid #1e2340;background:rgba(255,255,255,.03);color:var(--muted);font-size:17px;cursor:pointer;transition:all .15s;" onmouseover="this.style.borderColor='rgba(56,189,248,.3)';this.style.color='var(--mains)'" onmouseout="this.style.borderColor='#1e2340';this.style.color='var(--muted)'">📄</button>
+            <button class="mark-all-btn ${allDone&&dp.tasks.length>0?'on':''}" onclick="aMarkAll(${d})" style="${allDone&&dp.tasks.length>0?'border-color:var(--ok);color:var(--ok);background:rgba(34,211,238,.08);':''}font-size:17px;">${allDone&&dp.tasks.length>0?'✓':'Mark All'}</button>
           </div>
         </div>
-        ${aChSummary}
-        <div class="dc-body">${bodyHtml}</div>
+        <div class="dc-body" style="padding:0;">${bodyHtml}</div>
+        ${dppStripHtml}
+        ${noteHtml}
+        ${addonHtml}
       </div>`;
     }
   }
@@ -3517,6 +3848,350 @@ function aMarkAll(d){
   saveState(); renderAdvPlan(); aUpdateStats();
 }
 
+// ── New Advanced Plan helpers ──
+function aTogglePriority(id){
+  if(!STATE.adv.priorities) STATE.adv.priorities={};
+  const cur=STATE.adv.priorities[id]||0;
+  STATE.adv.priorities[id]=(cur+1)%3; // 0→1→2→0
+  saveState(); renderAdvPlan();
+}
+function aTogglePaperMode(id){
+  if(!STATE.adv.paperMode) STATE.adv.paperMode={};
+  const cur=STATE.adv.paperMode[id]||'both';
+  STATE.adv.paperMode[id]=cur==='both'?'p1':cur==='p1'?'p2':'both';
+  saveState(); renderAdvPlan();
+}
+function aSetNote(day,val){
+  if(!STATE.adv.notes) STATE.adv.notes={};
+  STATE.adv.notes[day]=val.trim();
+  saveState();
+}
+
+// ── Advanced Quick DPP ──
+function advQuickDPP(dateStr){
+  let ov=document.getElementById('adv-qdpp-overlay');
+  if(!ov){ ov=document.createElement('div'); ov.id='adv-qdpp-overlay';
+    ov.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:9500;display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(16px);';
+    document.body.appendChild(ov);
+  }
+  const d=new Date(dateStr+'T12:00:00');
+  const label=d.toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short'});
+  ov.innerHTML=`
+    <div style="background:#09091a;border:1px solid rgba(251,191,36,.2);border-radius:22px;padding:28px;width:100%;max-width:420px;box-shadow:0 32px 80px rgba(0,0,0,.9);position:relative;">
+      <div style="height:2px;background:linear-gradient(90deg,var(--adv),rgba(251,191,36,.2));border-radius:2px;margin:-28px -28px 20px;"></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+        <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;background:var(--ag);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">📝 ADV DPP LOG</div>
+        <div style="font-size:17px;color:var(--muted);font-family:'JetBrains Mono',monospace;">${label}</div>
+      </div>
+      <div style="display:flex;gap:6px;margin-bottom:12px;">
+        <button id="aqdpp-phy" onclick="aqdppSub('phy')" style="flex:1;padding:8px;border-radius:8px;border:1.5px solid rgba(249,115,22,.3);background:rgba(249,115,22,.08);color:var(--phy);font-weight:700;cursor:pointer;font-size:17px;transition:all .2s;">⚡ Phy</button>
+        <button id="aqdpp-math" onclick="aqdppSub('math')" style="flex:1;padding:8px;border-radius:8px;border:1.5px solid rgba(129,140,248,.3);background:rgba(129,140,248,.08);color:var(--math);font-weight:700;cursor:pointer;font-size:17px;transition:all .2s;">∑ Math</button>
+        <button id="aqdpp-chem" onclick="aqdppSub('chem')" style="flex:1;padding:8px;border-radius:8px;border:1.5px solid rgba(52,211,153,.3);background:rgba(52,211,153,.06);color:var(--chem);font-weight:700;cursor:pointer;font-size:17px;transition:all .2s;">⚗ Chem</button>
+      </div>
+      <input id="aqdpp-chapter" class="modal-input" placeholder="Chapter / DPP name…" style="margin-bottom:8px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
+        <div>
+          <div style="font-size:17px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:4px;font-family:'JetBrains Mono',monospace;">Total Qs</div>
+          <input type="number" id="aqdpp-total" class="modal-input" style="margin-bottom:0;text-align:center;" placeholder="0" min="0">
+        </div>
+        <div>
+          <div style="font-size:17px;font-weight:700;letter-spacing:2px;color:var(--ok);text-transform:uppercase;margin-bottom:4px;font-family:'JetBrains Mono',monospace;">Correct ✓</div>
+          <input type="number" id="aqdpp-correct" class="modal-input" style="margin-bottom:0;text-align:center;border-color:rgba(34,211,238,.2);" placeholder="0" min="0">
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button onclick="aqdppSave('${dateStr}')" style="flex:1;padding:10px;background:var(--ag);color:#000;border:none;border-radius:10px;font-family:'Syne',sans-serif;font-weight:800;font-size:17px;cursor:pointer;">+ Log DPP</button>
+        <button onclick="document.getElementById('adv-qdpp-overlay').remove()" style="padding:10px 14px;background:rgba(255,255,255,.04);color:var(--muted);border:1px solid var(--border);border-radius:10px;cursor:pointer;font-size:17px;">✕</button>
+      </div>
+    </div>`;
+  ov.style.display='flex';
+  window._aqdppSub=null;
+  ov.onclick=e=>{if(e.target===ov)ov.remove();};
+}
+function aqdppSub(s){
+  window._aqdppSub=s;
+  const cols={phy:'rgba(249,115,22,.5)',math:'rgba(129,140,248,.5)',chem:'rgba(52,211,153,.4)'};
+  ['phy','math','chem'].forEach(x=>{
+    const btn=document.getElementById('aqdpp-'+x);
+    if(btn){btn.style.borderWidth=x===s?'2.5px':'1.5px';btn.style.opacity=x===s?'1':'0.45';}
+  });
+}
+function aqdppSave(dateStr){
+  if(!window._aqdppSub){showToast('Pick a subject!');return;}
+  const chapter=(document.getElementById('aqdpp-chapter')?.value||'').trim();
+  if(!chapter){showToast('Enter chapter name!');return;}
+  const total=parseInt(document.getElementById('aqdpp-total')?.value)||0;
+  const correct=parseInt(document.getElementById('aqdpp-correct')?.value)||0;
+  if(!STATE.adv.dpp) STATE.adv.dpp={};
+  if(!STATE.adv.dpp[dateStr]) STATE.adv.dpp[dateStr]=[];
+  STATE.adv.dpp[dateStr].unshift({id:'adpp_'+Date.now(),sub:window._aqdppSub,chapter,total,correct,acc:total>0?Math.round(correct/total*100):null,date:dateStr});
+  saveState();
+  document.getElementById('adv-qdpp-overlay')?.remove();
+  renderAdvPlan(); aUpdateStats();
+  showToast('📝 ADV DPP logged!');
+}
+
+// ── Advanced Day Report ──
+function advDayReport(day){
+  const dp=A_PLAN[day-1]; if(!dp) return;
+  const dd=aDayDate(day);
+  const dayStr=dd.toISOString().split('T')[0];
+  const subCol={phy:'var(--phy)',chem:'var(--chem)',math:'var(--math)'};
+  const subIcon={phy:'⚡',chem:'⚗',math:'∑'};
+  const dpps=(STATE.adv.dpp&&STATE.adv.dpp[dayStr])||[];
+  const note=STATE.adv.notes&&STATE.adv.notes[day]||'';
+  const addons=STATE.adv.addons&&STATE.adv.addons[day]||[];
+  const priorities=STATE.adv.priorities||{};
+
+  const chRows=dp.tasks.map(t=>{
+    const sub=t.ch.id.startsWith('ap')?'phy':t.ch.id.startsWith('ac')?'chem':'math';
+    const done=!!STATE.adv.checked[t.ch.id];
+    const prio=priorities[t.ch.id]||0;
+    return `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #1e2340;">
+      <div style="width:12px;height:12px;border-radius:4px;border:1.5px solid ${done?'var(--ok)':'#334155'};background:${done?'var(--ok)':'transparent'};flex-shrink:0;display:flex;align-items:center;justify-content:center;">${done?'<span style="font-size:9px;color:#000;">✓</span>':''}</div>
+      <span style="font-size:17px;font-weight:700;color:${subCol[sub]};padding:2px 8px;border-radius:4px;background:${subCol[sub]}10;border:1px solid ${subCol[sub]}25;flex-shrink:0;">${subIcon[sub]} ${sub.toUpperCase()}</span>
+      <span style="font-size:17px;${done?'text-decoration:line-through;color:#334155':'color:var(--txt)'};flex:1;">${t.ch.name}</span>
+      ${prio===2?'<span style="font-size:17px;color:var(--mock);">🔴</span>':prio===1?'<span style="font-size:17px;color:var(--adv);">⚠</span>':''}
+    </div>`;
+  }).join('');
+
+  const dppRows=dpps.map(e=>{
+    const acc=e.total>0?Math.round(e.correct/e.total*100):null;
+    const accCol=acc===null?'#334155':acc>=70?'var(--ok)':acc>=50?'var(--adv)':'var(--mock)';
+    return `<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #1e2340;">
+      <span style="font-size:17px;color:${subCol[e.sub]||'var(--muted)'};">${subIcon[e.sub]||'📝'}</span>
+      <span style="font-size:17px;color:var(--txt);flex:1;">${e.chapter}</span>
+      ${e.total>0?`<span style="font-size:17px;font-weight:700;color:var(--ok);">${e.correct}/${e.total}</span><span style="font-size:17px;font-weight:800;color:${accCol};">${acc}%</span>`:'<span style="font-size:17px;color:#334155;">no score</span>'}
+    </div>`;
+  }).join('');
+
+  const allDone=dp.tasks.length>0&&dp.tasks.every(t=>STATE.adv.checked[t.ch.id]);
+  const doneCnt=dp.tasks.filter(t=>STATE.adv.checked[t.ch.id]).length;
+
+  let reportEl=document.getElementById('adv-report-modal');
+  if(!reportEl){
+    reportEl=document.createElement('div');
+    reportEl.id='adv-report-modal';
+    reportEl.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:9000;display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(12px);';
+    document.body.appendChild(reportEl);
+    reportEl.onclick=e=>{if(e.target===reportEl)reportEl.remove();};
+  }
+  reportEl.innerHTML=`
+    <div style="background:#07080f;border:1px solid rgba(251,191,36,.2);border-radius:20px;padding:26px;width:100%;max-width:560px;max-height:88vh;overflow-y:auto;box-shadow:0 32px 80px rgba(0,0,0,.9);">
+      <div style="height:2px;background:linear-gradient(90deg,var(--ag),transparent);border-radius:2px;margin:-26px -26px 20px;"></div>
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:8px;">
+        <div>
+          <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;background:var(--ag);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-1px;">DAY ${String(day).padStart(2,'0')} REPORT</div>
+          <div style="font-size:17px;color:#334155;font-family:'JetBrains Mono',monospace;letter-spacing:2px;margin-top:2px;">${dd.toLocaleDateString('en-IN',{weekday:'long',month:'short',day:'numeric'}).toUpperCase()}</div>
+        </div>
+        <button onclick="document.getElementById('adv-report-modal').remove()" style="background:transparent;border:1px solid #1e2340;color:var(--muted);border-radius:8px;padding:5px 12px;cursor:pointer;font-size:17px;">✕ Close</button>
+      </div>
+
+      <!-- Status card -->
+      <div style="background:${allDone?'rgba(34,211,238,.06)':'rgba(251,191,36,.04)'};border:1px solid ${allDone?'rgba(34,211,238,.2)':'rgba(251,191,36,.15)'};border-radius:12px;padding:14px;margin-bottom:16px;display:flex;align-items:center;gap:14px;">
+        <div style="font-size:28px;">${allDone?'✅':'⏳'}</div>
+        <div>
+          <div style="font-size:18px;font-weight:800;color:${allDone?'var(--ok)':'var(--adv)'};font-family:'JetBrains Mono',monospace;letter-spacing:1px;">${allDone?'DAY COMPLETE!':doneCnt+'/'+dp.tasks.length+' CHAPTERS DONE'}</div>
+          <div style="font-size:17px;color:#334155;margin-top:2px;">${dpps.length} DPPs logged · ${addons.length} extra blocks</div>
+        </div>
+      </div>
+
+      ${dp.tasks.length?`<div style="margin-bottom:16px;"><div style="font-size:17px;font-weight:900;letter-spacing:2px;color:#334155;font-family:'JetBrains Mono',monospace;margin-bottom:8px;">CHAPTERS</div>${chRows}</div>`:''}
+      ${dpps.length?`<div style="margin-bottom:16px;"><div style="font-size:17px;font-weight:900;letter-spacing:2px;color:#334155;font-family:'JetBrains Mono',monospace;margin-bottom:8px;">DPPs</div>${dppRows}</div>`:''}
+      ${note?`<div style="background:rgba(167,139,250,.06);border:1px solid rgba(167,139,250,.2);border-radius:10px;padding:12px;margin-bottom:14px;"><div style="font-size:17px;font-weight:900;letter-spacing:2px;color:var(--purple);font-family:'JetBrains Mono',monospace;margin-bottom:6px;">NOTE</div><div style="font-size:17px;color:var(--muted);font-style:italic;">${note}</div></div>`:''}
+    </div>`;
+  reportEl.style.display='flex';
+}
+
+// ── Advanced Addon section ──
+function buildAdvAddonSection(day){
+  const slots=STATE.adv.addons&&STATE.adv.addons[day]||[];
+  const subCol={phy:'var(--phy)',math:'var(--math)',chem:'var(--chem)'};
+  const subIcon={phy:'⚡',math:'∑',chem:'⚗'};
+  const subName={phy:'Physics',math:'Maths',chem:'Chemistry'};
+
+  let slotsHtml='';
+  slots.forEach(slot=>{
+    const rm=`<button onclick="removeAdvAddon(${day},'${slot.id}')" style="background:transparent;border:none;color:#334155;cursor:pointer;font-size:17px;padding:0 4px;opacity:.4;transition:opacity .15s;flex-shrink:0;" onmouseover="this.style.opacity=1;this.style.color='var(--mock)'" onmouseout="this.style.opacity=.4;this.style.color='#334155'">×</button>`;
+    if(slot.type==='practice'||slot.type==='revision'){
+      const isRev=slot.type==='revision';
+      const subs=Array.isArray(slot.subs)?slot.subs:[];
+      const typeCol=isRev?'var(--purple)':'var(--adv)';
+      const done=!!slot.done;
+      const acc=slot.totalQ>0?Math.round(slot.correctQ/slot.totalQ*100):null;
+      const accCol=acc===null?null:acc>=80?'var(--ok)':acc>=60?'var(--adv)':'var(--mock)';
+      slotsHtml+=`<div style="border-left:2px solid ${typeCol};background:${typeCol}07;border-radius:0 8px 8px 0;padding:8px 12px;${done?'opacity:.55':''}">
+        <div style="display:flex;align-items:center;gap:7px;">
+          <div class="chk ${done?'on':''}" onclick="toggleAdvAddon(${day},'${slot.id}')" style="flex-shrink:0;width:15px;height:15px;border-radius:4px;${done?'background:var(--ok);border-color:var(--ok);':'border-color:#1e2340;'}"></div>
+          <span style="font-size:17px;font-weight:900;letter-spacing:2px;color:${typeCol};font-family:'JetBrains Mono',monospace;">${isRev?'🔁 REVISION':'⚡ PRACTICE'}</span>
+          <div style="display:flex;gap:4px;flex-wrap:wrap;flex:1;">${subs.map(s=>`<span style="font-size:17px;font-weight:700;padding:1px 7px;border-radius:4px;border:1px solid ${subCol[s]}30;background:${subCol[s]}0e;color:${subCol[s]};">${subIcon[s]} ${subName[s]}</span>`).join('')||'<span style="color:#334155;font-size:17px;">—</span>'}</div>
+          ${rm}
+        </div>
+        ${slot.type==='practice'&&slot.totalQ>0?`<div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:5px;padding-left:22px;">
+          <span style="font-size:17px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--adv);background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);padding:1px 7px;border-radius:4px;">${slot.totalQ}Q</span>
+          <span style="font-size:17px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--ok);background:rgba(34,211,238,.08);border:1px solid rgba(34,211,238,.2);padding:1px 7px;border-radius:4px;">✓ ${slot.correctQ}</span>
+          ${acc!==null?`<span style="font-size:17px;font-weight:800;font-family:'JetBrains Mono',monospace;color:${accCol};background:${accCol}12;border:1px solid ${accCol}30;padding:1px 7px;border-radius:4px;">${acc}%</span>`:''}
+        </div>`:''}
+        ${slot.notes?`<div style="padding-left:22px;margin-top:4px;font-size:17px;color:var(--muted);font-style:italic;">📌 ${slot.notes}</div>`:''}
+      </div>`;
+    } else {
+      const col=subCol[slot.sub]||'var(--adv)';
+      const icon=subIcon[slot.sub]||'📖';
+      const allDone=slot.theory&&slot.dpp&&slot.sheets;
+      slotsHtml+=`<div style="border-left:2px solid ${col};background:${col}07;border-radius:0 8px 8px 0;padding:8px 12px;${allDone?'opacity:.55':''}">
+        <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;">
+          <div style="width:6px;height:6px;border-radius:50%;background:${col};box-shadow:0 0 5px ${col};flex-shrink:0;"></div>
+          <span style="font-size:17px;font-weight:900;letter-spacing:1.5px;color:var(--adv);font-family:'JetBrains Mono',monospace;">EXTRA</span>
+          <span style="font-size:17px;font-weight:700;${allDone?'text-decoration:line-through;color:#334155':'color:var(--txt)'};flex:1;">${icon} ${slot.name}</span>
+          ${allDone?`<span style="font-size:17px;font-weight:800;color:var(--ok);font-family:'JetBrains Mono',monospace;">✓</span>`:''}
+          ${rm}
+        </div>
+        <div style="display:flex;gap:5px;flex-wrap:wrap;padding-left:13px;">
+          ${['theory','dpp','sheets'].map(f=>{
+            const meta={theory:{icon:'📖',lbl:'Theory',col:'var(--ok)'},dpp:{icon:'✅',lbl:'DPP',col:'var(--adv)'},sheets:{icon:'📋',lbl:'Sheets',col:'var(--math)'}};
+            const m=meta[f]; const on=!!slot[f];
+            return `<div onclick="toggleAdvAddonSub(${day},'${slot.id}','${f}')" style="display:flex;align-items:center;gap:4px;padding:3px 8px;border-radius:5px;cursor:pointer;border:1px solid;font-size:17px;font-weight:700;user-select:none;transition:all .15s;
+              ${on?`background:${m.col}10;border-color:${m.col}35;color:${m.col};`:'background:rgba(255,255,255,.03);border-color:#1e2340;color:#334155;'}">
+              <div style="width:11px;height:11px;border-radius:3px;border:1.5px solid ${on?m.col:'#1e2340'};background:${on?m.col:'transparent'};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                ${on?'<span style="color:#000;font-size:8px;font-weight:900;line-height:1;">✓</span>':''}
+              </div>${m.icon} ${m.lbl}
+            </div>`;
+          }).join('')}
+        </div>
+      </div>`;
+    }
+  });
+
+  const total=slots.length;
+  return `<div style="border-top:1px solid ${total?'rgba(251,191,36,.15)':'rgba(255,255,255,.04)'};background:${total?'rgba(251,191,36,.02)':'transparent'};">
+    ${total?`<div style="display:flex;flex-direction:column;gap:5px;padding:6px 14px 4px;">${slotsHtml}</div>`:''}
+    <div onclick="advRequestAddon(${day})" style="display:flex;align-items:center;gap:6px;padding:8px 14px;cursor:pointer;transition:background .15s;border-radius:0 0 14px 14px;" onmouseover="this.style.background='rgba(251,191,36,.04)'" onmouseout="this.style.background=''">
+      <div style="width:16px;height:16px;border-radius:4px;border:1.5px dashed rgba(251,191,36,.3);color:var(--adv);display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:300;flex-shrink:0;">+</div>
+      <span style="font-size:17px;font-weight:600;color:#334155;letter-spacing:.5px;">Add Practice · Revision · Chapter</span>
+      ${total?`<span style="margin-left:auto;font-size:17px;font-family:'JetBrains Mono',monospace;color:var(--adv);">${total}</span>`:''}
+    </div>
+  </div>`;
+}
+
+function removeAdvAddon(day,id){
+  if(!STATE.adv.addons) STATE.adv.addons={};
+  STATE.adv.addons[day]=(STATE.adv.addons[day]||[]).filter(s=>s.id!==id);
+  saveState(); renderAdvPlan(); aUpdateStats();
+}
+function toggleAdvAddon(day,id){
+  const slot=(STATE.adv.addons&&STATE.adv.addons[day]||[]).find(s=>s.id===id);
+  if(slot){slot.done=!slot.done;saveState();renderAdvPlan();aUpdateStats();}
+}
+function toggleAdvAddonSub(day,id,f){
+  const slot=(STATE.adv.addons&&STATE.adv.addons[day]||[]).find(s=>s.id===id);
+  if(slot){slot[f]=!slot[f];saveState();renderAdvPlan();aUpdateStats();}
+}
+
+// ── Advanced Addon modal trigger ──
+let _advAddonDay=null, _advAddonType=null, _advAddonSubs=new Set(), _advAddonSub=null;
+function advRequestAddon(day){
+  _advAddonDay=day; _advAddonType=null; _advAddonSubs=new Set(); _advAddonSub=null;
+  // Reuse the existing addon modal but intercept confirm
+  _addonDay=day; _addonType=null; _addonSubs=new Set(); _addonSub=null; _addonPickedId=null;
+  document.getElementById('addon-day-lbl').textContent='ADV '+day;
+  document.getElementById('addon-ch-name').value='';
+  document.getElementById('addon-notes').value='';
+  ['practice','revision','chapter'].forEach(t=>document.getElementById('atype-'+t)?.classList.remove('selected'));
+  ['phy','math','chem'].forEach(s=>{document.getElementById('asub-'+s)?.classList.remove('selected');document.getElementById('asub-'+s+'-ch')?.classList.remove('selected');});
+  document.getElementById('addon-sub-section').style.display='none';
+  document.getElementById('addon-notes-section').style.display='none';
+  document.getElementById('addon-ch-section').style.display='none';
+  // Override confirm to save to adv
+  window._advAddonMode=true;
+  openModal('addon-modal');
+}
+
+// ── Advanced Insights ──
+function advShowInsights(){
+  const panel=document.getElementById('adv-insights-panel');
+  if(!panel) return;
+  panel.style.display=panel.style.display==='none'?'block':'none';
+  if(panel.style.display==='none') return;
+  const insights=[];
+  const pD=A_PHY.filter(c=>STATE.adv.checked[c.id]).length;
+  const cD=A_CHEM.filter(c=>STATE.adv.checked[c.id]).length;
+  const mD=A_MATH.filter(c=>STATE.adv.checked[c.id]).length;
+  const total=pD+cD+mD; const totalAll=A_ALL.length;
+  const pct=Math.round(total/totalAll*100);
+  const today=new Date();today.setHours(0,0,0,0);
+  const daysLeft=Math.max(0,Math.round((new Date('2026-05-17')-today)/86400000));
+  const chLeft=totalAll-total;
+  const chPerDay=daysLeft>0?(chLeft/daysLeft).toFixed(1):0;
+
+  if(pct<25) insights.push({type:'warn',title:'⚡ Coverage Critical: '+pct+'%',body:'Only '+total+'/'+totalAll+' chapters done. At current pace, need '+chPerDay+' chapters/day to finish before May 17.'});
+  else if(pct<60) insights.push({type:'info',title:'📚 Coverage: '+pct+'%',body:total+'/'+totalAll+' chapters. '+chLeft+' remaining. '+daysLeft+' days left.'});
+  else insights.push({type:'ok',title:'🏆 Coverage Strong: '+pct+'%',body:'On track! '+chLeft+' chapters remaining in '+daysLeft+' days.'});
+
+  if(pD/A_PHY.length < mD/A_MATH.length - 0.2) insights.push({type:'warn',title:'⚡ Physics Lagging',body:'Physics at '+Math.round(pD/A_PHY.length*100)+'% vs Math '+Math.round(mD/A_MATH.length*100)+'%. Physics is heavily weighted in Advanced.'});
+  if(cD/A_CHEM.length < 0.4) insights.push({type:'warn',title:'⚗ Chemistry Critical',body:'Only '+Math.round(cD/A_CHEM.length*100)+'% of Chemistry done. Chem has 32 chapters — prioritize!'});
+
+  const hardCount=Object.values(STATE.adv.priorities||{}).filter(v=>v===2).length;
+  const warnCount=Object.values(STATE.adv.priorities||{}).filter(v=>v===1).length;
+  if(hardCount>0||warnCount>0) insights.push({type:'warn',title:'🚩 '+hardCount+' Critical + '+warnCount+' Hard Topics Flagged',body:'Review flagged topics during buffer/revision days before the test.'});
+
+  const aScores=(STATE.adv.scores||[]).filter(s=>s&&s.total);
+  if(aScores.length>0){
+    const last=aScores[aScores.length-1];
+    const t=last.total||0;
+    if(t<150) insights.push({type:'warn',title:'📉 Last Test Score: '+t+'/360',body:'Below 150. Focus on Paper 1 (objective) accuracy immediately.'});
+    else if(t>=200) insights.push({type:'ok',title:'🎯 Last Test: '+t+'/360',body:'Above 200! Maintain this and target 240+ for Top 500 rank.'});
+  } else {
+    insights.push({type:'info',title:'📝 No Advanced Tests Logged',body:'Log your test scores in Advanced Test Tracker to get score trajectory insights.'});
+  }
+
+  panel.innerHTML=insights.map(i=>`<div class="insight-card ${i.type}" style="margin-bottom:8px;padding:12px 14px;border-radius:10px;border:1px solid;">
+    <div class="insight-title" style="font-family:'JetBrains Mono',monospace;letter-spacing:1px;font-size:17px;">${i.title}</div>
+    <div class="insight-body" style="margin-top:4px;font-size:17px;">${i.body}</div>
+  </div>`).join('');
+  showToast('💡 '+insights.length+' Advanced insights!');
+}
+
+// ── Advanced Export PDF ──
+function advExportPDF(){
+  const subCol={phy:'#ea580c',math:'#0369a1',chem:'#4d7c0f'};
+  const subIcon={phy:'⚡',math:'∑',chem:'⚗'};
+  let rows='';
+  for(let d=1;d<=A_TOTAL;d++){
+    const dp=A_PLAN[d-1]; const dd=aDayDate(d);
+    const allDone=dp.tasks.length>0&&dp.tasks.every(t=>STATE.adv.checked[t.ch.id]);
+    rows+=`<tr style="background:${allDone?'#f0fdf4':d%2===0?'#f8fafc':'#fff'};">
+      <td style="padding:7px 10px;font-weight:800;color:#c07d10;font-family:monospace;border:1px solid #e2e8f0;">${String(d).padStart(2,'0')}</td>
+      <td style="padding:7px 10px;font-size:17px;color:#64748b;border:1px solid #e2e8f0;">${dd.toLocaleDateString('en-IN',{weekday:'short',month:'short',day:'numeric'})}</td>
+      <td style="padding:7px 10px;border:1px solid #e2e8f0;">${dp.isTest?'<b style="color:#dc2626;">📝 TEST</b>':dp.tasks.length===0?'Buffer/Revision':'Study'}</td>
+      <td style="padding:7px 10px;border:1px solid #e2e8f0;">${dp.tasks.map(t=>{const s=t.ch.id.startsWith('ap')?'phy':t.ch.id.startsWith('ac')?'chem':'math';const done=!!STATE.adv.checked[t.ch.id];return`<span style="font-size:18px;${done?'text-decoration:line-through;color:#94a3b8;':'color:#0f172a;'}">${subIcon[s]} ${t.ch.name}${done?' ✓':''}</span><br>`;}).join('')||'<span style="color:#94a3b8;">—</span>'}</td>
+      <td style="padding:7px 10px;text-align:center;border:1px solid #e2e8f0;">${allDone?'✅':'⬜'}</td>
+    </tr>`;
+  }
+  const doneChs=A_ALL.filter(c=>STATE.adv.checked[c.id]).length;
+  const content=`<div style="font-family:Arial,sans-serif;max-width:900px;margin:0 auto;padding:20px;color:#0f172a;">
+    <div style="background:linear-gradient(135deg,#c07d10,#dc2626,#7c3aed);color:#fff;padding:24px;border-radius:14px;margin-bottom:24px;">
+      <div style="font-size:26px;font-weight:900;">JEE Advanced Command 2026</div>
+      <div style="font-size:18px;opacity:.85;margin-top:4px;">40-Day War Plan · Generated ${new Date().toLocaleDateString('en-IN',{weekday:'long',year:'numeric',month:'long',day:'numeric'})}</div>
+      <div style="display:flex;gap:20px;margin-top:16px;flex-wrap:wrap;">
+        <div><div style="font-size:28px;font-weight:900;">${doneChs}/${A_ALL.length}</div><div style="font-size:18px;opacity:.7;">Chapters Done</div></div>
+        <div><div style="font-size:28px;font-weight:900;">${Math.round(doneChs/A_ALL.length*100)}%</div><div style="font-size:18px;opacity:.7;">Coverage</div></div>
+      </div>
+    </div>
+    <table style="width:100%;border-collapse:collapse;margin-bottom:28px;">
+      <thead><tr style="background:#0f172a;color:#fff;">
+        <th style="padding:8px 10px;text-align:left;border:1px solid #334155;">Day</th>
+        <th style="padding:8px 10px;text-align:left;border:1px solid #334155;">Date</th>
+        <th style="padding:8px 10px;text-align:left;border:1px solid #334155;">Type</th>
+        <th style="padding:8px 10px;text-align:left;border:1px solid #334155;">Chapters</th>
+        <th style="padding:8px 10px;text-align:center;border:1px solid #334155;">Done</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <div style="font-size:17px;color:#94a3b8;text-align:center;border-top:1px solid #e2e8f0;padding-top:14px;">JEE Advanced Command 2026 · All data is yours</div>
+  </div>`;
+  _printHTML(content,'JEE_Adv_Plan_'+new Date().toISOString().slice(0,10));
+}
+
 function aUpdateStats(){
   const pD=A_PHY.filter(c=>STATE.adv.checked[c.id]).length;
   const cD=A_CHEM.filter(c=>STATE.adv.checked[c.id]).length;
@@ -3529,7 +4204,8 @@ function aUpdateStats(){
   const setEl=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
   const setBar=(id,w)=>{const el=document.getElementById(id);if(el)el.style.width=w+'%';};
   setEl('as-done',doneDays); setEl('as-left',A_TOTAL-doneDays);
-  setEl('as-chs',total); setEl('as-pct',pct+'%');
+  setEl('as-chs',total); setEl('as-pct',pct+'%'); setEl('as-pct2',pct+'%');
+  setEl('as-streak',(STATE.streak||0)+'🔥');
   setBar('as-bar',pct);
   setBar('ap-bar',Math.round(pD/A_PHY.length*100)); setEl('ap-ct',pD+'/'+A_PHY.length);
   setBar('ac-bar',Math.round(cD/A_CHEM.length*100)); setEl('ac-ct',cD+'/'+A_CHEM.length);
@@ -4694,7 +5370,11 @@ function pwSubmit(){
   if(val===ADDON_PW){
     _pwUnlocked=true;
     closeModal('pw-modal');
-    if(_pwPendingAction==='addon') openAddonModal(_pwPendingDay);
+    if(_pwPendingAction==='addon'){
+      openAddonModal(_pwPendingDay);
+      // Auto-select the chapter type that triggered the password
+      setTimeout(()=>addonSelectType('chapter'),80);
+    }
   } else {
     const inp=document.getElementById('pw-input');
     inp.classList.add('error');
@@ -4777,6 +5457,35 @@ function addonToggleSub(sub){
 
 // ── Confirm add
 function addonConfirm(){
+  // If triggered from Advanced plan, save to adv.addons
+  if(window._advAddonMode){
+    window._advAddonMode=false;
+    if(!_addonType){ showToast('Choose a type first!'); return; }
+    if(!STATE.adv.addons) STATE.adv.addons={};
+    if(_addonType==='practice'||_addonType==='revision'){
+      const subs=[..._addonSubs];
+      const notes=(_addonType==='revision'?(document.getElementById('addon-notes').value||'').trim():'');
+      const totalQ=_addonType==='practice'?parseInt(document.getElementById('addon-prac-total')?.value)||0:0;
+      const correctQ=_addonType==='practice'?parseInt(document.getElementById('addon-prac-correct')?.value)||0:0;
+      const timeMins=_addonType==='practice'?parseInt(document.getElementById('addon-prac-time')?.value)||0:0;
+      const slot={id:'aao_'+Date.now(),type:_addonType,subs,notes,totalQ,correctQ,timeMins,done:false};
+      if(!STATE.adv.addons[_addonDay]) STATE.adv.addons[_addonDay]=[];
+      STATE.adv.addons[_addonDay].push(slot);
+      saveState(); closeModal('addon-modal'); renderAdvPlan(); aUpdateStats();
+      showToast((_addonType==='practice'?'⚡ Practice':'🔁 Revision')+' added to ADV Day '+_addonDay+'!');
+    } else {
+      const name=(document.getElementById('addon-ch-name').value||'').trim();
+      if(!_addonSub){ showToast('Choose a subject!'); return; }
+      if(!name){ showToast('Enter chapter name!'); return; }
+      const slot={id:'aao_'+Date.now(),type:'chapter',sub:_addonSub,name,theory:false,dpp:false,sheets:false};
+      if(!STATE.adv.addons[_addonDay]) STATE.adv.addons[_addonDay]=[];
+      STATE.adv.addons[_addonDay].push(slot);
+      _pwUnlocked=false;
+      saveState(); closeModal('addon-modal'); renderAdvPlan(); aUpdateStats();
+      showToast('📖 Extra chapter added to ADV Day '+_addonDay+'!');
+    }
+    return;
+  }
   if(!_addonType){ showToast('Choose a type first!'); return; }
   if(_addonType==='practice'||_addonType==='revision'){
     const subs=[..._addonSubs];
@@ -4881,7 +5590,7 @@ function removeAddon(dayStr, slotId){
   saveState(); renderMainsDays(); mUpdateStats();
 }
 
-// ── Build addon section HTML — Practice / Revision / Extra Chapter
+// ── Build addon section HTML — Practice / Revision / Extra Chapter (LUXURY)
 function buildAddonSection(day){
   const slots=STATE.mains.addons[day]||[];
   const subCol={phy:'var(--phy)',math:'var(--math)',chem:'var(--chem)'};
@@ -4889,58 +5598,65 @@ function buildAddonSection(day){
   const subName={phy:'Physics',math:'Maths',chem:'Chemistry'};
 
   let slotsHtml='';
-  slots.forEach(slot=>{
-    const rm=`<button class="addon-rm" onclick="removeAddon('${day}','${slot.id}')">×</button>`;
+  slots.forEach((slot,idx)=>{
+    const rm=`<button class="addon-rm" title="Remove" onclick="removeAddon('${day}','${slot.id}')" style="margin-left:4px;opacity:.5;transition:opacity .15s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=.5">×</button>`;
 
     if(slot.type==='practice'||slot.type==='revision'){
       const isRev=slot.type==='revision';
       const subs=Array.isArray(slot.subs)?slot.subs:[];
-      const tagBg=isRev?'var(--purple)':'var(--mains)';
-      const typeLabel=isRev?'🔁 Revision':'⚡ Practice';
       const done=!!slot.done;
-      const subTags=subs.map(s=>`<span style="font-size:18px;font-weight:700;padding:2px 7px;border-radius:5px;border:1px solid ${subCol[s]}40;background:${subCol[s]}14;color:${subCol[s]};">${subIcon[s]} ${subName[s]}</span>`).join('');
+      const typeCol=isRev?'var(--purple)':'var(--mains)';
+      const typeBg=isRev?'rgba(167,139,250,.1)':'rgba(56,189,248,.08)';
+      const typeBorder=isRev?'rgba(167,139,250,.3)':'rgba(56,189,248,.2)';
+      const typeIcon=isRev?'🔁':'⚡';
+      const typeLabel=isRev?'REVISION':'PRACTICE';
       const acc=slot.totalQ>0?Math.round(slot.correctQ/slot.totalQ*100):null;
-      const statsHtml=slot.type==='practice'&&slot.totalQ>0?`<div style="display:flex;gap:8px;padding-left:30px;flex-wrap:wrap;margin-top:4px;">
-        <span style="font-size:18px;font-weight:700;background:rgba(56,189,248,.08);border:1px solid #bfdbfe;color:var(--mains);padding:2px 8px;border-radius:5px;">📝 ${slot.totalQ} Qs</span>
-        <span style="font-size:18px;font-weight:700;background:rgba(34,211,238,.08);border:1px solid #bbf7d0;color:var(--ok);padding:2px 8px;border-radius:5px;">✓ ${slot.correctQ} correct</span>
-        ${acc!==null?`<span style="font-size:18px;font-weight:700;background:${acc>=70?'#f0fdf4':acc>=50?'#fffbeb':'#fff1f2'};border:1px solid ${acc>=70?'#bbf7d0':acc>=50?'#fde68a':'#fecdd3'};color:${acc>=70?'var(--ok)':acc>=50?'var(--adv)':'var(--mock)'};padding:2px 8px;border-radius:5px;">${acc}% acc</span>`:''}
-        ${slot.timeMins>0?`<span style="font-size:18px;font-weight:700;background:#f5f3ff;border:1px solid #e9d5ff;color:var(--purple);padding:2px 8px;border-radius:5px;">⏱ ${slot.timeMins}min</span>`:''}
-      </div>`:'';
-      slotsHtml+=`<div class="addon-item" style="align-items:flex-start;flex-direction:column;gap:6px;padding:10px 12px;">
-        <div style="display:flex;align-items:center;gap:8px;width:100%;">
-          <div class="chk ${done?'on':''}" onclick="toggleAddon('${day}','${slot.id}')" style="flex-shrink:0;"></div>
-          <span style="font-size:17px;font-weight:800;color:${tagBg};background:${tagBg}12;border:1px solid ${tagBg}30;padding:2px 8px;border-radius:5px;flex-shrink:0;">${typeLabel}</span>
-          <div style="display:flex;gap:4px;flex-wrap:wrap;flex:1;">${subTags||'<span style="font-size:18px;color:var(--muted);">No subjects picked</span>'}</div>
+      const accCol=acc===null?null:acc>=80?'var(--ok)':acc>=60?'var(--adv)':'var(--mock)';
+      const subTags=subs.map(s=>`<span style="font-size:17px;font-weight:700;padding:2px 8px;border-radius:5px;border:1px solid ${subCol[s]}35;background:${subCol[s]}10;color:${subCol[s]};letter-spacing:.5px;">${subIcon[s]} ${subName[s]}</span>`).join('');
+      slotsHtml+=`
+      <div style="border-left:2px solid ${typeCol};background:${typeBg};border-radius:0 10px 10px 0;padding:10px 12px;margin:0;${done?'opacity:.6':''}">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div class="chk ${done?'on':''}" onclick="toggleAddon('${day}','${slot.id}')" style="flex-shrink:0;width:16px;height:16px;"></div>
+          <span style="font-size:17px;font-weight:900;letter-spacing:2.5px;text-transform:uppercase;color:${typeCol};font-family:'JetBrains Mono',monospace;">${typeIcon} ${typeLabel}</span>
+          <div style="display:flex;gap:4px;flex-wrap:wrap;flex:1;">${subTags||'<span style="font-size:17px;color:var(--muted);">—</span>'}</div>
           ${rm}
         </div>
-        ${statsHtml}
-        ${slot.notes?`<div style="padding-left:30px;font-size:17px;color:var(--muted);font-style:italic;">📝 ${slot.notes}</div>`:''}
+        ${slot.type==='practice'&&slot.totalQ>0?`
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:7px;padding-left:24px;">
+          <span style="font-size:17px;font-weight:700;font-family:'JetBrains Mono',monospace;background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.2);color:var(--mains);padding:2px 8px;border-radius:5px;">📝 ${slot.totalQ}Q</span>
+          <span style="font-size:17px;font-weight:700;font-family:'JetBrains Mono',monospace;background:rgba(34,211,238,.08);border:1px solid rgba(34,211,238,.2);color:var(--ok);padding:2px 8px;border-radius:5px;">✓ ${slot.correctQ}</span>
+          ${acc!==null?`<span style="font-size:17px;font-weight:800;font-family:'JetBrains Mono',monospace;background:${accCol}15;border:1px solid ${accCol}35;color:${accCol};padding:2px 8px;border-radius:5px;">${acc}%</span>`:''}
+          ${slot.timeMins>0?`<span style="font-size:17px;font-weight:700;font-family:'JetBrains Mono',monospace;background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.2);color:var(--purple);padding:2px 8px;border-radius:5px;">⏱ ${slot.timeMins}m</span>`:''}
+        </div>`:''}
+        ${slot.notes?`<div style="padding-left:24px;margin-top:5px;font-size:17px;color:var(--muted);font-style:italic;border-left:1px dashed rgba(167,139,250,.3);margin-left:10px;padding:3px 8px;">📌 ${slot.notes}</div>`:''}
       </div>`;
     } else {
-      // Chapter type
+      // Chapter / split part
       const col=subCol[slot.sub]||'var(--ok)';
       const icon=subIcon[slot.sub]||'📖';
+      const isSplit=!!slot.isSplitPart;
+      const splitBadge=isSplit?`<span style="font-size:17px;font-weight:800;padding:1px 7px;border-radius:4px;background:${slot.splitPart===1?'rgba(56,189,248,.18)':'rgba(167,139,250,.18)'};color:${slot.splitPart===1?'var(--mains)':'var(--purple)'};border:1px solid ${slot.splitPart===1?'rgba(56,189,248,.35)':'rgba(167,139,250,.35)'};font-family:'JetBrains Mono',monospace;">P${slot.splitPart}</span>`:
+        `<span style="font-size:17px;font-weight:800;letter-spacing:1.5px;padding:1px 7px;border-radius:4px;background:rgba(34,211,238,.08);color:var(--ok);border:1px solid rgba(34,211,238,.25);font-family:'JetBrains Mono',monospace;">EXTRA</span>`;
       const allSubDone=slot.theory&&slot.dpp&&slot.sheets;
-      slotsHtml+=`<div class="addon-item" style="flex-direction:column;align-items:stretch;gap:6px;padding:10px 11px;">
-        <div style="display:flex;align-items:center;gap:8px;">
-          <div class="addon-sub-dot" style="background:${col};flex-shrink:0;"></div>
-          <span style="font-size:17px;font-weight:800;color:var(--ok);background:var(--ok)12;border:1px solid var(--ok)30;padding:2px 7px;border-radius:5px;flex-shrink:0;">📖 Chapter</span>
-          <span class="addon-name ${allSubDone?'done':''}" style="flex:1;font-weight:600;">${icon} ${slot.name}</span>
-          ${allSubDone?`<span style="font-size:18px;color:var(--ok);font-weight:700;">✓ DONE</span>`:''}
+      slotsHtml+=`
+      <div style="border-left:2px solid ${col};background:${col}07;border-radius:0 10px 10px 0;padding:10px 12px;${allSubDone?'opacity:.55':''}">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:7px;">
+          <div style="width:7px;height:7px;border-radius:50%;background:${col};flex-shrink:0;box-shadow:0 0 6px ${col};"></div>
+          ${splitBadge}
+          <span style="font-size:17px;font-weight:700;${allSubDone?'text-decoration:line-through;color:var(--muted)':'color:var(--txt)'};flex:1;">${icon} ${slot.name}</span>
+          ${allSubDone?`<span style="font-size:17px;font-weight:800;color:var(--ok);font-family:'JetBrains Mono',monospace;">✓ DONE</span>`:''}
           ${rm}
         </div>
-        <div style="display:flex;gap:6px;padding-left:15px;flex-wrap:wrap;">
+        <div style="display:flex;gap:5px;flex-wrap:wrap;padding-left:15px;">
           ${['theory','dpp','sheets'].map(f=>{
-            const labels={theory:'📖 Theory',dpp:'✅ DPP',sheets:'📋 Must-Do'};
-            const cols={theory:'var(--ok)',dpp:'var(--mains)',sheets:'var(--ok)'};
-            const on=!!slot[f];
-            const c=cols[f];
+            const meta={theory:{icon:'📖',lbl:'Theory',col:'var(--ok)'},dpp:{icon:'✅',lbl:'DPP',col:'var(--mains)'},sheets:{icon:'📋',lbl:'Sheets',col:'var(--adv)'}};
+            const m=meta[f]; const on=!!slot[f];
             return `<div onclick="toggleAddonSub('${day}','${slot.id}','${f}')"
-              style="display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:7px;cursor:pointer;border:1px solid;transition:all .15s;font-size:17px;font-weight:700;user-select:none;
-              ${on?`background:${c}15;border-color:${c}40;color:${c};`:'background:var(--s2);border-color:var(--border);color:var(--muted);'}">
-              <div style="width:13px;height:13px;border-radius:4px;border:1.5px solid ${on?c:'var(--border)'};background:${on?c:'transparent'};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                ${on?'<span style="color:#000;font-size:18px;line-height:1;">✓</span>':''}
-              </div>${labels[f]}
+              style="display:flex;align-items:center;gap:4px;padding:4px 9px;border-radius:6px;cursor:pointer;border:1px solid;font-size:17px;font-weight:700;user-select:none;transition:all .15s;letter-spacing:.3px;
+              ${on?`background:${m.col}12;border-color:${m.col}40;color:${m.col};`:'background:rgba(255,255,255,.03);border-color:#1e2340;color:#334155;'}">
+              <div style="width:12px;height:12px;border-radius:3px;border:1.5px solid ${on?m.col:'#1e2340'};background:${on?m.col:'transparent'};display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;">
+                ${on?'<span style="color:#000;font-size:9px;font-weight:900;line-height:1;">✓</span>':''}
+              </div>${m.icon} ${m.lbl}
             </div>`;
           }).join('')}
         </div>
@@ -4948,24 +5664,30 @@ function buildAddonSection(day){
     }
   });
 
-  const countByType=(t)=>slots.filter(s=>s.type===t).length;
-  const badges=[
-    countByType('practice')?`<span style="background:var(--mains)18;border:1px solid var(--mains)35;padding:2px 7px;border-radius:4px;color:var(--mains);font-size:18px;">${countByType('practice')} Practice</span>`:'',
-    countByType('revision')?`<span style="background:var(--purple)18;border:1px solid var(--purple)35;padding:2px 7px;border-radius:4px;color:var(--purple);font-size:18px;">${countByType('revision')} Revision</span>`:'',
-    countByType('chapter')?`<span style="background:var(--ok)18;border:1px solid var(--ok)35;padding:2px 7px;border-radius:4px;color:var(--ok);font-size:18px;">${countByType('chapter')} Chapter</span>`:'',
-  ].filter(Boolean).join('');
+  const pCount=slots.filter(s=>s.type==='practice').length;
+  const rCount=slots.filter(s=>s.type==='revision').length;
+  const cCount=slots.filter(s=>s.type==='chapter').length;
+  const total=slots.length;
 
-  return `<div class="addon-section ${slots.length?'unlocked':''}">
-    <div class="addon-hdr">
-      <div class="addon-hdr-title" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-        ➕ Practice / Revision / Chapters
-        ${badges}
+  const metaLine=total>0?[
+    pCount?`${pCount}⚡`:'',
+    rCount?`${rCount}🔁`:'',
+    cCount?`${cCount}📖`:'',
+  ].filter(Boolean).join(' · '):'';
+
+  return `<div class="addon-section ${total?'unlocked':''}" style="border-top:1px solid ${total?'rgba(167,139,250,.25)':'rgba(167,139,250,.1)'};background:${total?'rgba(167,139,250,.03)':'transparent'};">
+    <div class="addon-hdr" style="padding:8px 14px;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:17px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:${total?'var(--purple)':'#334155'};font-family:'JetBrains Mono',monospace;">⬡ EXTRA BLOCKS</span>
+        ${metaLine?`<span style="font-size:17px;color:var(--muted);font-family:'JetBrains Mono',monospace;">${metaLine}</span>`:''}
       </div>
+      ${total?`<span style="font-size:17px;font-family:'JetBrains Mono',monospace;color:${total>=3?'var(--ok)':total>=2?'var(--adv)':'var(--muted)'};">${total} block${total>1?'s':''}</span>`:''}
     </div>
-    ${slotsHtml}
-    <div class="addon-trigger" onclick="requestAddon(${day})">
-      <div class="plus">+</div>
-      <span>Add Practice · Revision · Chapter</span>
+    ${total?`<div style="display:flex;flex-direction:column;gap:5px;padding:4px 14px 6px;">${slotsHtml}</div>`:''}
+    <div class="addon-trigger" onclick="requestAddon(${day})" style="padding:9px 14px;border-top:${total?'1px solid rgba(167,139,250,.1)':'none'};">
+      <div class="plus" style="width:16px;height:16px;font-size:17px;">+</div>
+      <span style="font-size:17px;font-weight:600;letter-spacing:.5px;">Add Practice · Revision · Chapter</span>
+      <span style="margin-left:auto;font-size:17px;color:#1e2340;font-family:'JetBrains Mono',monospace;">⌘</span>
     </div>
   </div>`;
 }
@@ -6950,95 +7672,96 @@ function renderDPP(){
 
 <!-- ════ PASSWORD MODAL ════ -->
 <div class="modal-overlay" id="pw-modal">
-  <div class="modal-box" style="max-width:340px;">
-    <div class="modal-title" style="color:var(--purple);">🔐 Unlock Extra Chapter</div>
-    <div class="modal-sub">This day has existing content. Enter password to add an extra practice slot.</div>
-    <div class="pw-stars" id="pw-dots">· · · · · · ·</div>
-    <label class="modal-label">Password</label>
-    <input class="modal-input" id="pw-input" type="password" placeholder="Enter password…" onkeydown="if(event.key==='Enter')pwSubmit()" oninput="pwDots(this.value)" autocomplete="off">
-    <div id="pw-err" style="font-size:17px;color:var(--mock);margin:-10px 0 12px;display:none;">❌ Wrong password. Try again.</div>
+  <div class="modal-box" style="max-width:340px;border-color:rgba(167,139,250,.3);background:linear-gradient(135deg,#09091a,#0d0f1a);">
+    <div style="height:2px;background:linear-gradient(90deg,var(--purple),rgba(167,139,250,.3));border-radius:2px;margin:-26px -26px 20px;"></div>
+    <div class="modal-title" style="color:var(--purple);font-family:'Syne',sans-serif;font-size:20px;letter-spacing:-.5px;">🔐 Extra Chapter Unlock</div>
+    <div class="modal-sub" style="font-family:'JetBrains Mono',monospace;font-size:17px;letter-spacing:1px;">This day already has content.<br>Enter password to add an extra chapter slot.</div>
+    <div class="pw-stars" id="pw-dots" style="font-size:24px;letter-spacing:8px;font-family:'JetBrains Mono',monospace;background:rgba(167,139,250,.06);border:1px solid rgba(167,139,250,.2);border-radius:10px;padding:12px;text-align:center;">· · · · · · ·</div>
+    <label class="modal-label" style="font-family:'JetBrains Mono',monospace;letter-spacing:3px;font-size:17px;color:var(--purple);">PASSWORD</label>
+    <input class="modal-input" id="pw-input" type="password" placeholder="Enter password…" onkeydown="if(event.key==='Enter')pwSubmit()" oninput="pwDots(this.value)" autocomplete="off" style="border-color:rgba(167,139,250,.3);font-size:22px;text-align:center;letter-spacing:6px;">
+    <div id="pw-err" style="font-size:17px;color:var(--mock);margin:-10px 0 12px;display:none;font-family:'JetBrains Mono',monospace;letter-spacing:1px;">❌ WRONG PASSWORD</div>
     <div class="modal-footer">
-      <button class="modal-btn cancel" onclick="closeModal('pw-modal')">Cancel</button>
-      <button class="modal-btn primary" onclick="pwSubmit()">🔓 Unlock</button>
+      <button class="modal-btn cancel" onclick="closeModal('pw-modal')" style="font-family:'JetBrains Mono',monospace;letter-spacing:1px;font-size:17px;">CANCEL</button>
+      <button class="modal-btn primary" onclick="pwSubmit()" style="background:linear-gradient(135deg,#7c3aed,#a78bfa);font-family:'JetBrains Mono',monospace;letter-spacing:1px;font-size:17px;">🔓 UNLOCK</button>
     </div>
   </div>
 </div>
 
 <!-- ════ ADDON MODAL ════ -->
 <div class="modal-overlay" id="addon-modal">
-  <div class="modal-box">
-    <div class="modal-title" style="color:var(--ok);">➕ Add to Day <span id="addon-day-lbl">—</span></div>
-    <div class="modal-sub">Choose what you want to add for this day</div>
+  <div class="modal-box" style="border-color:rgba(56,189,248,.15);background:linear-gradient(135deg,#07080f,#0d0f1a);">
+    <div style="height:2px;background:linear-gradient(90deg,var(--mains),var(--purple),rgba(56,189,248,.2));border-radius:2px;margin:-26px -26px 20px;"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+      <div>
+        <div class="modal-title" style="color:var(--ok);font-family:'Syne',sans-serif;font-size:19px;letter-spacing:-.5px;">⬡ EXTRA BLOCK — DAY <span id="addon-day-lbl" style="color:var(--mains);">—</span></div>
+        <div style="font-size:17px;color:#334155;font-family:'JetBrains Mono',monospace;letter-spacing:1.5px;margin-top:2px;">SELECT BLOCK TYPE</div>
+      </div>
+    </div>
 
     <!-- TYPE CHOOSER -->
-    <label class="modal-label">1. What are you adding?</label>
-    <div class="modal-row" style="gap:8px;">
-      <button class="modal-sub-btn" id="atype-practice" onclick="addonSelectType('practice')" style="flex:1;padding:10px 6px;font-size:17px;border-radius:9px;">⚡ Practice</button>
-      <button class="modal-sub-btn" id="atype-revision" onclick="addonSelectType('revision')" style="flex:1;padding:10px 6px;font-size:17px;border-radius:9px;">🔁 Revision</button>
-      <button class="modal-sub-btn" id="atype-chapter" onclick="addonSelectType('chapter')" style="flex:1;padding:10px 6px;font-size:17px;border-radius:9px;">📖 Chapter</button>
+    <div class="modal-row" style="gap:6px;margin-bottom:14px;">
+      <button class="modal-sub-btn" id="atype-practice" onclick="addonSelectType('practice')" style="flex:1;padding:10px 4px;font-size:17px;font-family:'JetBrains Mono',monospace;letter-spacing:1px;border-radius:10px;">⚡ PRACTICE</button>
+      <button class="modal-sub-btn" id="atype-revision" onclick="addonSelectType('revision')" style="flex:1;padding:10px 4px;font-size:17px;font-family:'JetBrains Mono',monospace;letter-spacing:1px;border-radius:10px;">🔁 REVISION</button>
+      <button class="modal-sub-btn" id="atype-chapter" onclick="addonSelectType('chapter')" style="flex:1;padding:10px 4px;font-size:17px;font-family:'JetBrains Mono',monospace;letter-spacing:1px;border-radius:10px;">📖 CHAPTER</button>
     </div>
 
     <!-- SUBJECT MULTI-SELECT (Practice + Revision) -->
-    <div id="addon-sub-section" style="display:none;margin-top:12px;">
-      <label class="modal-label">2. Subjects — pick any combination</label>
-      <div class="modal-row" style="gap:8px;">
-        <button class="modal-sub-btn phy" id="asub-phy" onclick="addonToggleSub('phy')" style="flex:1;padding:10px 4px;font-size:17px;">⚡ Physics</button>
-        <button class="modal-sub-btn math" id="asub-math" onclick="addonToggleSub('math')" style="flex:1;padding:10px 4px;font-size:17px;">∑ Maths</button>
-        <button class="modal-sub-btn chem" id="asub-chem" onclick="addonToggleSub('chem')" style="flex:1;padding:10px 4px;font-size:17px;">⚗ Chem</button>
+    <div id="addon-sub-section" style="display:none;margin-top:4px;">
+      <label class="modal-label" style="font-family:'JetBrains Mono',monospace;letter-spacing:2px;font-size:17px;">SUBJECTS — pick any</label>
+      <div class="modal-row" style="gap:6px;margin-bottom:10px;">
+        <button class="modal-sub-btn phy" id="asub-phy" onclick="addonToggleSub('phy')" style="flex:1;padding:9px 4px;font-size:17px;">⚡ Phy</button>
+        <button class="modal-sub-btn math" id="asub-math" onclick="addonToggleSub('math')" style="flex:1;padding:9px 4px;font-size:17px;">∑ Math</button>
+        <button class="modal-sub-btn chem" id="asub-chem" onclick="addonToggleSub('chem')" style="flex:1;padding:9px 4px;font-size:17px;">⚗ Chem</button>
       </div>
-      <div style="font-size:18px;color:var(--muted);margin-top:6px;margin-bottom:12px;">Select multiple subjects — all tracked together.</div>
       <!-- Practice stats -->
       <div id="addon-practice-stats" style="display:none;">
-        <label class="modal-label">3. Questions Practiced</label>
-        <div style="display:flex;gap:8px;margin-bottom:12px;">
+        <label class="modal-label" style="font-family:'JetBrains Mono',monospace;letter-spacing:2px;font-size:17px;">SESSION STATS</label>
+        <div style="display:flex;gap:6px;margin-bottom:12px;">
           <div style="flex:1;">
-            <div style="font-size:18px;color:var(--muted);margin-bottom:4px;">Total Questions</div>
-            <input type="number" id="addon-prac-total" min="0" max="500" class="modal-input" style="margin-bottom:0;" placeholder="e.g. 40">
+            <div style="font-size:17px;color:var(--muted);margin-bottom:4px;font-family:'JetBrains Mono',monospace;letter-spacing:1px;">TOTAL Qs</div>
+            <input type="number" id="addon-prac-total" min="0" max="500" class="modal-input" style="margin-bottom:0;text-align:center;font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;" placeholder="0">
           </div>
           <div style="flex:1;">
-            <div style="font-size:18px;color:var(--muted);margin-bottom:4px;">Correct</div>
-            <input type="number" id="addon-prac-correct" min="0" max="500" class="modal-input" style="margin-bottom:0;" placeholder="e.g. 30">
+            <div style="font-size:17px;color:var(--ok);margin-bottom:4px;font-family:'JetBrains Mono',monospace;letter-spacing:1px;">CORRECT</div>
+            <input type="number" id="addon-prac-correct" min="0" max="500" class="modal-input" style="margin-bottom:0;text-align:center;font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;border-color:rgba(34,211,238,.25);" placeholder="0">
           </div>
           <div style="flex:1;">
-            <div style="font-size:18px;color:var(--muted);margin-bottom:4px;">Time (mins)</div>
-            <input type="number" id="addon-prac-time" min="0" max="600" class="modal-input" style="margin-bottom:0;" placeholder="e.g. 60">
+            <div style="font-size:17px;color:var(--purple);margin-bottom:4px;font-family:'JetBrains Mono',monospace;letter-spacing:1px;">TIME (m)</div>
+            <input type="number" id="addon-prac-time" min="0" max="600" class="modal-input" style="margin-bottom:0;text-align:center;font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;border-color:rgba(167,139,250,.25);" placeholder="0">
           </div>
         </div>
       </div>
     </div>
 
     <!-- NOTES (Revision only) -->
-    <div id="addon-notes-section" style="display:none;margin-top:10px;">
-      <label class="modal-label">3. What to revise? (optional)</label>
-      <input class="modal-input" id="addon-notes" placeholder="e.g. Formulas, weak topics, PYQs…" style="margin-bottom:0;">
+    <div id="addon-notes-section" style="display:none;margin-top:8px;">
+      <label class="modal-label" style="font-family:'JetBrains Mono',monospace;letter-spacing:2px;font-size:17px;">REVISION NOTES</label>
+      <input class="modal-input" id="addon-notes" placeholder="e.g. Formulas, weak topics, PYQs…" style="margin-bottom:0;font-size:17px;">
     </div>
 
     <!-- CHAPTER section (password-protected) -->
-    <div id="addon-ch-section" style="display:none;margin-top:12px;">
-      <label class="modal-label">2. Select Subject</label>
-      <div class="modal-row">
-        <button class="modal-sub-btn phy" id="asub-phy-ch" onclick="addonSelectSub('phy')">⚡ Physics</button>
-        <button class="modal-sub-btn math" id="asub-math-ch" onclick="addonSelectSub('math')">∑ Maths</button>
-        <button class="modal-sub-btn chem" id="asub-chem-ch" onclick="addonSelectSub('chem')">⚗ Chem</button>
+    <div id="addon-ch-section" style="display:none;margin-top:4px;">
+      <label class="modal-label" style="font-family:'JetBrains Mono',monospace;letter-spacing:2px;font-size:17px;">SUBJECT</label>
+      <div class="modal-row" style="gap:6px;margin-bottom:10px;">
+        <button class="modal-sub-btn phy" id="asub-phy-ch" onclick="addonSelectSub('phy')" style="font-size:17px;">⚡ Phy</button>
+        <button class="modal-sub-btn math" id="asub-math-ch" onclick="addonSelectSub('math')" style="font-size:17px;">∑ Math</button>
+        <button class="modal-sub-btn chem" id="asub-chem-ch" onclick="addonSelectSub('chem')" style="font-size:17px;">⚗ Chem</button>
       </div>
-      <label class="modal-label">3. Pick from Pool → drops into day slot</label>
+      <label class="modal-label" style="font-family:'JetBrains Mono',monospace;letter-spacing:2px;font-size:17px;">PICK FROM POOL</label>
       <div class="modal-ch-list" id="addon-pool-list">
-        <div style="color:var(--muted);font-size:17px;padding:6px;">Select a subject first…</div>
+        <div style="color:var(--muted);font-size:17px;padding:6px;font-family:'JetBrains Mono',monospace;">Select subject first…</div>
       </div>
-      <div class="modal-or">— or type custom name below (goes to extra slot) —</div>
-      <label class="modal-label">4. Custom Chapter / Topic</label>
-      <input class="modal-input" id="addon-ch-name" placeholder="e.g. Electrostatics, Organic Chemistry…">
-      <div style="font-size:16px;color:var(--muted);display:flex;align-items:center;gap:6px;margin-top:-6px;margin-bottom:12px;">
-        <span>🔐 Password required · </span>
-        <span style="color:var(--mains);">Pool pick → drop zone</span>
-        <span> · </span>
-        <span style="color:var(--purple);">Custom name → extra slot</span>
+      <div class="modal-or" style="font-size:17px;color:#1e2340;letter-spacing:2px;font-family:'JetBrains Mono',monospace;">— OR CUSTOM NAME —</div>
+      <label class="modal-label" style="font-family:'JetBrains Mono',monospace;letter-spacing:2px;font-size:17px;">CUSTOM CHAPTER</label>
+      <input class="modal-input" id="addon-ch-name" placeholder="e.g. Electrostatics, Organic…" style="font-size:17px;">
+      <div style="font-size:17px;color:#1e2340;display:flex;align-items:center;gap:6px;margin-top:-8px;margin-bottom:12px;font-family:'JetBrains Mono',monospace;letter-spacing:1px;">
+        <span style="color:var(--purple);">🔐 Password required for extra chapter</span>
       </div>
     </div>
 
-    <div class="modal-footer">
-      <button class="modal-btn cancel" onclick="closeModal('addon-modal')">Cancel</button>
-      <button class="modal-btn primary" onclick="addonConfirm()">➕ Add</button>
+    <div class="modal-footer" style="gap:8px;">
+      <button class="modal-btn cancel" onclick="closeModal('addon-modal')" style="font-family:'JetBrains Mono',monospace;letter-spacing:1px;font-size:17px;">CANCEL</button>
+      <button class="modal-btn primary" onclick="addonConfirm()" style="font-family:'JetBrains Mono',monospace;letter-spacing:1px;font-size:17px;">⬡ ADD BLOCK</button>
     </div>
   </div>
 </div>

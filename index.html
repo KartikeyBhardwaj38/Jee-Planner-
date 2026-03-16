@@ -550,7 +550,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 
   <div class="nav-section">
     <div class="nav-label">JEE Mains</div>
-    <div class="nav-item" onclick="goTo('mains-plan',this)"><span class="nav-icon">📅</span>21-Day Plan</div>
+    <div class="nav-item" onclick="goTo('mains-plan',this)"><span class="nav-icon">📅</span>18-Day Plan</div>
     <div class="nav-item" onclick="goTo('mains-schedule',this)"><span class="nav-icon">🗓️</span>Schedule</div>
     <div class="nav-item" onclick="goTo('mains-syl',this)"><span class="nav-icon">📚</span>Syllabus</div>
     <div class="nav-item" onclick="goTo('mains-tests',this)"><span class="nav-icon">📝</span>Mock Tests</div>
@@ -639,7 +639,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
         <div class="dcm-blk"><div class="dcm-n" id="dm-m" style="color:var(--mains)">--</div><div class="dcm-u">M</div></div>
         <div class="dcm-blk"><div class="dcm-n" id="dm-s" style="color:var(--mains)">--</div><div class="dcm-u">S</div></div>
       </div>
-      <div style="font-size:18px;color:var(--muted);font-family:'Courier New',monospace;">Exam: <span style="color:var(--mock);">Set below ↓</span> · Plan: Mar 14 – Apr 2</div>
+      <div style="font-size:18px;color:var(--muted);font-family:'Courier New',monospace;">Exam: <span style="color:var(--mock);">Set below ↓</span> · Plan: Mar 16 – Apr 2</div>
       <div class="dash-stats-row">
         <div class="dst"><div class="dst-n" id="dm-done" style="color:var(--mains)">0</div><div class="dst-l">Days Done</div></div>
         <div class="dst"><div class="dst-n" id="dm-chs" style="color:var(--ok)">0</div><div class="dst-l">Chs Done</div></div>
@@ -788,10 +788,10 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 <!-- ════════════════════ MAINS 21-DAY PLAN ════════════════════ -->
 <div class="section" id="sec-mains-plan">
   <div class="page-hdr">
-    <div class="page-title" style="background:var(--mg);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">📅 JEE Mains — 21-Day Plan</div>
+    <div class="page-title" style="background:var(--mg);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">📅 JEE Mains — 18-Day Plan</div>
     <div class="page-sub">
-      <span>Mar 14 → Apr 2 · 16hr/day</span>
-      <span>⚡ 9 Phy · ∑ Maths Done ✓ · ⚗ 10 Chem (Days 16–20 = Chem ×2)</span>
+      <span>Mar 16 → Apr 2 · 16hr/day</span>
+      <span>⚡ 8 Phy · ∑ Maths Done ✓ · ⚗ 10 Chem (Days 14–18 = Chem ×2)</span>
       <span>📝 Mocks: Mar 19,24,26,29,30,31 · Apr 1</span>
     </div>
   </div>
@@ -799,7 +799,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   <!-- Mains stats row -->
   <div class="gauto" style="margin-bottom:12px;">
     <div class="stat-pill"><div class="sp-num" id="ms-done" style="background:var(--mg);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">0</div><div class="sp-lbl">Days Done</div></div>
-    <div class="stat-pill"><div class="sp-num" style="color:var(--txt);" id="ms-left">21</div><div class="sp-lbl">Days Left</div></div>
+    <div class="stat-pill"><div class="sp-num" style="color:var(--txt);" id="ms-left">18</div><div class="sp-lbl">Days Left</div></div>
     <div class="stat-pill"><div class="sp-num" style="color:var(--ok);" id="ms-chs">0</div><div class="sp-lbl">Chapters</div></div>
     <div class="stat-pill"><div class="sp-num" style="color:var(--mains);" id="ms-asgn">0</div><div class="sp-lbl">Assigned</div></div>
     <div class="stat-pill"><div class="sp-num" style="color:var(--streak);" id="ms-dpp">0/21</div><div class="sp-lbl">DPPs Done</div></div>
@@ -1876,8 +1876,8 @@ const M_ALL = [...M_PHY,...M_MATH,...M_CHEM];
 const M_MAP = {}; M_ALL.forEach(c=>{M_MAP[c.id]=c;});
 const mSubOf = id => id[0]==='p'?'phy':id[0]==='m'?'math':'chem';
 
-const M_START  = new Date('2026-03-14T00:00:00');
-const M_TOTAL  = 20;
+const M_START  = new Date('2026-03-16T00:00:00');
+const M_TOTAL  = 18;
 const M_MOCK_DATES = ['2026-03-19','2026-03-24','2026-03-26','2026-03-29','2026-03-30','2026-03-31','2026-04-01'];
 const M_MOCK_SET = new Set(M_MOCK_DATES.map(s=>Math.round((new Date(s+'T00:00:00')-M_START)/86400000)+1));
 // = {7,12,14,17,18,19,20}
@@ -1890,7 +1890,7 @@ const M_MOCK_SET = new Set(M_MOCK_DATES.map(s=>Math.round((new Date(s+'T00:00:00
 //   If all Maths chapters done → CC = Chemistry + Chemistry (both slots)
 // No revision block — use extra block for revision
 // Days 16-20 → CC (Chemistry × 2) because Maths is already completed
-const M_DAY_TYPE = ['PM','PC','PM','PC','PM','PC','PM','PC','PM','PC','CM','CM','CM','CM','CM','CC','CC','CC','CC','CC'];
+const M_DAY_TYPE = ['PM','PC','PM','PC','PM','PC','PM','PC','CM','CM','CM','CM','CM','CC','CC','CC','CC','CC'];
 
 // Dynamic: if all math done mid-phase, CM becomes CC
 function mGetDayType(d){
@@ -4255,10 +4255,10 @@ function renderAnalytics(){
   const mScores=(STATE.mains.scores||[]).filter(s=>s&&s.total);
   const aScores=(STATE.adv.scores||[]).filter(s=>s&&s.total);
 
-  // Heatmap: activity for past 21 days
+  // Heatmap: activity for past 18 days
   const today=new Date(); today.setHours(0,0,0,0);
   const heatDays=[];
-  for(let i=20;i>=0;i--){ const d=new Date(today); d.setDate(d.getDate()-i); heatDays.push(d); }
+  for(let i=17;i>=0;i--){ const d=new Date(today); d.setDate(d.getDate()-i); heatDays.push(d); }
 
   function activityForDate(date){
     // Check if any mains day was completed on this date
@@ -4345,7 +4345,7 @@ function renderAnalytics(){
 
     <!-- ACTIVITY HEATMAP -->
     <div class="card">
-      <div class="card-hdr"><div class="card-title">🔥 21-Day Activity (Mains Plan)</div></div>
+      <div class="card-hdr"><div class="card-title">🔥 18-Day Activity (Mains Plan)</div></div>
       <div class="card-body">
         <div style="display:flex;gap:4px;flex-wrap:wrap;">
           ${heatDays.map(d=>{

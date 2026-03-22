@@ -567,8 +567,8 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;o
     <div class="stat"><div class="statn" id="st-done" style="color:var(--grn)">0</div><div class="statl">Done</div></div>
     <div class="stat"><div class="statn" id="st-tot" style="color:var(--tx)">--</div><div class="statl">Total Tasks</div></div>
     <div class="stat"><div class="statn" id="st-pct" style="color:var(--gold-l)">0%</div><div class="statl">Progress</div></div>
-    <div class="stat"><div class="statn" id="st-mmax" style="color:var(--pc)">252</div><div class="statl">Max /300</div></div>
-    <div class="stat"><div class="statn" id="st-mreal" style="color:var(--grn)">226</div><div class="statl">Realistic /300</div></div>
+    <div class="stat"><div class="statn" id="st-mmax" style="color:var(--pc)">212</div><div class="statl">Max /300</div></div>
+    <div class="stat"><div class="statn" id="st-mreal" style="color:var(--grn)">152</div><div class="statl">Realistic /300</div></div>
   </div>
 
   <!-- MARKS SUMMARY STRIP -->
@@ -789,23 +789,23 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;o
     <div id="md-score-bar">
       <div class="md-sb-top">
         <div class="md-sb-lbl">Minimum Marks Guaranteed</div>
-        <div class="md-sb-val" id="md-min-score" style="color:var(--gold)">0 / 216</div>
+        <div class="md-sb-val" id="md-min-score" style="color:var(--gold)">0 / 148</div>
       </div>
       <div class="md-sb-tracks">
         <div class="md-sb-row">
           <span class="md-sb-rlbl" style="color:#4a9eff">PHYSICS</span>
           <div class="md-sb-track"><div class="md-sb-fill" id="mdsb-phy" style="background:#4a9eff;width:0%"></div></div>
-          <span class="md-sb-rval" id="mdsbv-phy" style="color:#4a9eff">0/72</span>
+          <span class="md-sb-rval" id="mdsbv-phy" style="color:#4a9eff">0/56</span>
         </div>
         <div class="md-sb-row">
           <span class="md-sb-rlbl" style="color:#34d399">CHEM</span>
           <div class="md-sb-track"><div class="md-sb-fill" id="mdsb-chem" style="background:#34d399;width:0%"></div></div>
-          <span class="md-sb-rval" id="mdsbv-chem" style="color:#34d399">0/72</span>
+          <span class="md-sb-rval" id="mdsbv-chem" style="color:#34d399">0/44</span>
         </div>
         <div class="md-sb-row">
           <span class="md-sb-rlbl" style="color:#c084fc">MATHS</span>
           <div class="md-sb-track"><div class="md-sb-fill" id="mdsb-math" style="background:#c084fc;width:0%"></div></div>
-          <span class="md-sb-rval" id="mdsbv-math" style="color:#c084fc">0/72</span>
+          <span class="md-sb-rval" id="mdsbv-math" style="color:#c084fc">0/48</span>
         </div>
       </div>
     </div>
@@ -843,38 +843,48 @@ try {
    Maths chapters cover ~72% of paper    → Max 72, Realistic 60
    cp1 = PRACTICE DAY only — zero exam marks
    ───────────────────────────────────────────────────────────────── */
+/* ───────────────────────────────────────────────────────────────
+   VERY REALISTIC MARKS — based on actual JEE hit rates
+   Assumption: student completes all 3 tasks per chapter
+   Hit rate 60–80% depending on chapter difficulty
+   Negative marking factored in
+   Physics:   realistic 60 / max 80 / 100
+   Chemistry: realistic 52 / max 72 / 100
+   Maths:     realistic 40 / max 60 / 100
+   TOTAL:     realistic 152 / max 212 / 300
+   ─────────────────────────────────────────────────────────────── */
 var CHAPTERS = {
-  p1: {id:'p1', subj:'phy', label:'Optics — Ray + Wave',                          mMin:8,  mMax:12, mReal:10, pri:'HIGH'},
-  p2: {id:'p2', subj:'phy', label:'Electrostatics',                               mMin:8,  mMax:12, mReal:8,  pri:'HIGH'},
-  p3: {id:'p3', subj:'phy', label:'Current Electricity',                          mMin:8,  mMax:12, mReal:10, pri:'HIGHEST'},
-  p4: {id:'p4', subj:'phy', label:'Magnetism & EMI',                              mMin:4,  mMax:8,  mReal:6,  pri:'MED'},
-  p5: {id:'p5', subj:'phy', label:'Modern Physics',                               mMin:8,  mMax:12, mReal:10, pri:'HIGH'},
-  p6: {id:'p6', subj:'phy', label:'Mechanics I — Laws of Motion, Work & Energy',  mMin:4,  mMax:4,  mReal:6,  pri:'MED'},
-  p7: {id:'p7', subj:'phy', label:'Mechanics II — Rotational Motion, COM',        mMin:4,  mMax:4,  mReal:6,  pri:'MED'},
+  p1: {id:'p1', subj:'phy', label:'Optics — Ray + Wave',                          mMin:4,  mMax:8,  mReal:8,  pri:'HIGH'},
+  p2: {id:'p2', subj:'phy', label:'Electrostatics',                               mMin:4,  mMax:8,  mReal:8,  pri:'HIGH'},
+  p3: {id:'p3', subj:'phy', label:'Current Electricity',                          mMin:8,  mMax:12, mReal:12, pri:'HIGHEST'},
+  p4: {id:'p4', subj:'phy', label:'Magnetism & EMI',                              mMin:4,  mMax:8,  mReal:4,  pri:'MED'},
+  p5: {id:'p5', subj:'phy', label:'Modern Physics',                               mMin:4,  mMax:8,  mReal:8,  pri:'HIGH'},
+  p6: {id:'p6', subj:'phy', label:'Mechanics I — Laws of Motion, Work & Energy',  mMin:0,  mMax:4,  mReal:4,  pri:'MED'},
+  p7: {id:'p7', subj:'phy', label:'Mechanics II — Rotational Motion, COM',        mMin:0,  mMax:4,  mReal:4,  pri:'MED'},
   p8: {id:'p8', subj:'phy', label:'Mechanics III — SHM, Waves, Gravitation',      mMin:4,  mMax:8,  mReal:8,  pri:'HIGH'},
-  p9: {id:'p9', subj:'phy', label:'KTG & Thermodynamics',                         mMin:8,  mMax:8,  mReal:8,  pri:'JAN #1'},
-  p10:{id:'p10',subj:'phy', label:'Mechanical Properties & Fluids',               mMin:4,  mMax:4,  mReal:4,  pri:'MED'},
-  /* Physics total: mMin=64  mMax=84  mReal=76 ✓ */
+  p9: {id:'p9', subj:'phy', label:'KTG & Thermodynamics',                         mMin:4,  mMax:8,  mReal:8,  pri:'JAN #1'},
+  p10:{id:'p10',subj:'phy', label:'Mechanical Properties & Fluids',               mMin:0,  mMax:4,  mReal:4,  pri:'MED'},
+  /* Physics: mMin=32  mMax=80  mReal=60 (realistic — neg marking + difficulty) */
 
-  i1: {id:'i1', subj:'chem',label:'Inorganic Pt 1',                               mMin:4,  mMax:8,  mReal:8,  pri:'MED'},
-  i2: {id:'i2', subj:'chem',label:'Inorganic Pt 2',                               mMin:8,  mMax:12, mReal:12, pri:'HIGH'},
-  i3: {id:'i3', subj:'chem',label:'Inorganic Pt 3',                               mMin:12, mMax:16, mReal:14, pri:'JAN #1'},
-  o1: {id:'o1', subj:'org', label:'Organic Pt 1',                                 mMin:4,  mMax:8,  mReal:8,  pri:'MED'},
-  o2: {id:'o2', subj:'org', label:'Organic Pt 2',                                 mMin:8,  mMax:12, mReal:12, pri:'HIGH'},
-  o3: {id:'o3', subj:'org', label:'Organic Pt 3',                                 mMin:8,  mMax:12, mReal:12, pri:'HIGH'},
-  pc1:{id:'pc1',subj:'pc',  label:'Physical Chem Pt 1',                           mMin:8,  mMax:12, mReal:10, pri:'HIGH'},
-  pc2:{id:'pc2',subj:'pc',  label:'Physical Chem Pt 2',                           mMin:12, mMax:16, mReal:14, pri:'TOP 2'},
+  i1: {id:'i1', subj:'chem',label:'Inorganic Pt 1',                               mMin:4,  mMax:8,  mReal:4,  pri:'MED'},
+  i2: {id:'i2', subj:'chem',label:'Inorganic Pt 2',                               mMin:4,  mMax:12, mReal:8,  pri:'HIGH'},
+  i3: {id:'i3', subj:'chem',label:'Inorganic Pt 3',                               mMin:8,  mMax:16, mReal:12, pri:'JAN #1'},
+  o1: {id:'o1', subj:'org', label:'Organic Pt 1',                                 mMin:4,  mMax:8,  mReal:4,  pri:'MED'},
+  o2: {id:'o2', subj:'org', label:'Organic Pt 2',                                 mMin:4,  mMax:12, mReal:8,  pri:'HIGH'},
+  o3: {id:'o3', subj:'org', label:'Organic Pt 3',                                 mMin:4,  mMax:12, mReal:8,  pri:'HIGH'},
+  pc1:{id:'pc1',subj:'pc',  label:'Physical Chem Pt 1',                           mMin:4,  mMax:12, mReal:8,  pri:'HIGH'},
+  pc2:{id:'pc2',subj:'pc',  label:'Physical Chem Pt 2',                           mMin:8,  mMax:12, mReal:12, pri:'TOP 2'},
   cp1:{id:'cp1',subj:'all', label:'Chemistry Practice — IOC + OC + PC',           mMin:0,  mMax:0,  mReal:0,  pri:'DAY 13'},
-  /* Chemistry total (excl cp1): mMin=64  mMax=96  mReal=90 ✓ */
+  /* Chemistry: mMin=40  mMax=92  mReal=64 (NCERT = high hit rate in Chem) */
 
-  m1: {id:'m1', subj:'math',label:'Coordinate Geometry — Lines, Circles, Conics', mMin:8,  mMax:12, mReal:10, pri:'HIGH'},
-  m2: {id:'m2', subj:'math',label:'Vectors, 3D Geometry, Matrices & Determinants',mMin:16, mMax:20, mReal:18, pri:'HIGHEST'},
-  m3: {id:'m3', subj:'math',label:'Sequences & Series, Binomial, Complex Numbers', mMin:12, mMax:16, mReal:14, pri:'JAN #2'},
-  m4: {id:'m4', subj:'math',label:'Basic Maths, Trigonometry & Quadratic Eqs',    mMin:4,  mMax:8,  mReal:6,  pri:'MED'},
-  m5: {id:'m5', subj:'math',label:'Relations, Functions & ITF',                   mMin:4,  mMax:8,  mReal:4,  pri:'LOW'},
-  m6: {id:'m6', subj:'math',label:'P&C, Probability & Statistics',                mMin:4,  mMax:8,  mReal:8,  pri:'MED'}
-  /* Maths total: mMin=48  mMax=72  mReal=60 ✓ */
-  /* GRAND TOTAL: mMax=252  mReal=226 out of 300 */
+  m1: {id:'m1', subj:'math',label:'Coordinate Geometry — Lines, Circles, Conics', mMin:4,  mMax:12, mReal:8,  pri:'HIGH'},
+  m2: {id:'m2', subj:'math',label:'Vectors, 3D Geometry, Matrices & Determinants',mMin:8,  mMax:20, mReal:12, pri:'HIGHEST'},
+  m3: {id:'m3', subj:'math',label:'Sequences & Series, Binomial, Complex Numbers', mMin:4,  mMax:16, mReal:8,  pri:'JAN #2'},
+  m4: {id:'m4', subj:'math',label:'Basic Maths, Trigonometry & Quadratic Eqs',    mMin:0,  mMax:8,  mReal:4,  pri:'MED'},
+  m5: {id:'m5', subj:'math',label:'Relations, Functions & ITF',                   mMin:0,  mMax:8,  mReal:4,  pri:'LOW'},
+  m6: {id:'m6', subj:'math',label:'P&C, Probability & Statistics',                mMin:0,  mMax:8,  mReal:4,  pri:'MED'}
+  /* Maths: mMin=16  mMax=72  mReal=40 (Maths is tough — neg marking hurts most) */
+  /* GRAND TOTAL: mMax=244  mReal=164 — HONEST 15-day revision estimate */
 };
 
 var SUBJ_ORDER = ['phy','chem','org','pc','all','math'];
@@ -942,14 +952,14 @@ var PLAN_START = new Date(2026,2,21,0,0,0); /* 21 March 2026 — Plan Start */
 var ASSIGN, TASKS, REV_TASKS, OPEN_DAYS, selectedDay = null, dragState = null;
 
 function loadState(){
-  try{var a=localStorage.getItem('jwa4');ASSIGN=a?JSON.parse(a):JSON.parse(JSON.stringify(DEFAULT_ASSIGN));}catch(e){ASSIGN=JSON.parse(JSON.stringify(DEFAULT_ASSIGN));}
+  try{var a=localStorage.getItem('jwa5');ASSIGN=a?JSON.parse(a):JSON.parse(JSON.stringify(DEFAULT_ASSIGN));}catch(e){ASSIGN=JSON.parse(JSON.stringify(DEFAULT_ASSIGN));}
   try{var t=localStorage.getItem('jwt');TASKS=t?JSON.parse(t):{};}catch(e){TASKS={};}
   try{var r=localStorage.getItem('jwr');REV_TASKS=r?JSON.parse(r):{};}catch(e){REV_TASKS={};}
   try{var o=localStorage.getItem('jwo');OPEN_DAYS=o?JSON.parse(o):{};}catch(e){OPEN_DAYS={};}
   // Auto-open today
   var tid=getTID();if(tid&&!OPEN_DAYS[tid])OPEN_DAYS[tid]=true;
 }
-function saveAssign(){try{localStorage.setItem('jwa4',JSON.stringify(ASSIGN));}catch(e){}}
+function saveAssign(){try{localStorage.setItem('jwa5',JSON.stringify(ASSIGN));}catch(e){}}
 function saveTasks(){try{localStorage.setItem('jwt',JSON.stringify(TASKS));}catch(e){}}
 function saveRevTasks(){try{localStorage.setItem('jwr',JSON.stringify(REV_TASKS));}catch(e){}}
 function saveOpen(){try{localStorage.setItem('jwo',JSON.stringify(OPEN_DAYS));}catch(e){}}
@@ -1933,7 +1943,7 @@ setTimeout(function(){
 ══════════════════════════════════════════════════ */
 var MD_CHAPTERS = {
   /* ── PHYSICS ── */
-  mp1:{id:'mp1',subj:'phy',num:1,name:'Modern Physics (incl Semiconductor)',  minM:12, col:'#4a9eff',
+  mp1:{id:'mp1',subj:'phy',num:1,name:'Modern Physics (incl Semiconductor)',  minM:8, col:'#4a9eff',
     tasks:[
       ['[FORMULA]',  'Photoelectric effect — all formulae + threshold freq',    2],
       ['[MUST-DO]',  'Bohr model / hydrogen spectrum (5–7 Qs)',                 3],
@@ -1941,7 +1951,7 @@ var MD_CHAPTERS = {
       ['[MUST-DO]',  'Semiconductor: pn junction, diode, logic gates',          2],
       ['[PYQ 2026]', 'Solve all Jan 2026 questions from this chapter',          2]
     ]},
-  mp2:{id:'mp2',subj:'phy',num:2,name:'KTG & Thermodynamics',                  minM:12, col:'#4a9eff',
+  mp2:{id:'mp2',subj:'phy',num:2,name:'KTG & Thermodynamics',                  minM:8, col:'#4a9eff',
     tasks:[
       ['[FORMULA]',  'All KTG formulae — vrms, mean KE, degrees of freedom',   2],
       ['[MUST-DO]',  'First law applications — cyclic, isothermal, adiabatic',  3],
@@ -1949,7 +1959,7 @@ var MD_CHAPTERS = {
       ['[MUST-DO]',  'Maxwell distribution, mean free path',                    2],
       ['[PYQ 2026]', 'Solve all Jan 2026 questions from this chapter',          2]
     ]},
-  mp3:{id:'mp3',subj:'phy',num:3,name:'Optics — Ray + Wave + EMW',             minM:12, col:'#4a9eff',
+  mp3:{id:'mp3',subj:'phy',num:3,name:'Optics — Ray + Wave + EMW',             minM:8, col:'#4a9eff',
     tasks:[
       ['[FORMULA]',  'Lens / mirror formula, refraction, TIR, prism',           2],
       ['[MUST-DO]',  'Ray optics numericals — lens systems, optical instruments',3],
@@ -1957,7 +1967,7 @@ var MD_CHAPTERS = {
       ['[MUST-DO]',  'EM spectrum, properties, energy of photon',               2],
       ['[PYQ 2026]', 'Solve all Jan 2026 questions from this chapter',          2]
     ]},
-  mp4:{id:'mp4',subj:'phy',num:4,name:'Electrostatics + Capacitor',            minM:12, col:'#4a9eff',
+  mp4:{id:'mp4',subj:'phy',num:4,name:'Electrostatics + Capacitor',            minM:8, col:'#4a9eff',
     tasks:[
       ['[FORMULA]',  'Coulomb\'s law, field, potential, dipole formulae',        2],
       ['[MUST-DO]',  'Gauss law applications — sphere, cylinder, plate',        3],
@@ -1965,7 +1975,7 @@ var MD_CHAPTERS = {
       ['[MUST-DO]',  'Potential & field problems (6–8 standard Qs)',            2],
       ['[PYQ 2026]', 'Solve all Jan 2026 questions from this chapter',          2]
     ]},
-  mp5:{id:'mp5',subj:'phy',num:5,name:'Current Electricity',                   minM:12, col:'#4a9eff',
+  mp5:{id:'mp5',subj:'phy',num:5,name:'Current Electricity',                   minM:8, col:'#4a9eff',
     tasks:[
       ['[FORMULA]',  'Ohm\'s law, resistivity, temperature coefficient',         2],
       ['[MUST-DO]',  'Kirchhoff\'s laws — complex networks (8–10 Qs)',           3],
@@ -1973,28 +1983,28 @@ var MD_CHAPTERS = {
       ['[MUST-DO]',  'Cell — internal resistance, max power theorem',           2],
       ['[PYQ 2026]', 'Solve all Jan 2026 questions from this chapter',          2]
     ]},
-  mp6:{id:'mp6',subj:'phy',num:6,name:'EMI + AC Circuits',                     minM:8,  col:'#4a9eff',
+  mp6:{id:'mp6',subj:'phy',num:6,name:'EMI + AC Circuits',                     minM:4,  col:'#4a9eff',
     tasks:[
       ['[FORMULA]',  'Faraday\'s law, Lenz\'s law, motional EMF formulae',        2],
       ['[MUST-DO]',  'Self/mutual inductance, energy in inductor',              2],
       ['[MUST-DO]',  'AC — Vrms, Irms, impedance, resonance, power factor',    2],
       ['[PYQ 2026]', 'Solve all Jan 2026 questions from this chapter',          2]
     ]},
-  mp7:{id:'mp7',subj:'phy',num:7,name:'Rotational Motion',                     minM:8,  col:'#4a9eff',
+  mp7:{id:'mp7',subj:'phy',num:7,name:'Rotational Motion',                     minM:4,  col:'#4a9eff',
     tasks:[
       ['[FORMULA]',  'MOI of standard bodies, parallel/perpendicular axis',    2],
       ['[MUST-DO]',  'Torque, angular momentum, conservation problems',        2],
       ['[MUST-DO]',  'Rolling without slipping — 6–8 Qs',                     2],
       ['[PYQ 2026]', 'Solve all Jan 2026 questions from this chapter',         2]
     ]},
-  mp8:{id:'mp8',subj:'phy',num:8,name:'Gravitation',                           minM:8,  col:'#4a9eff',
+  mp8:{id:'mp8',subj:'phy',num:8,name:'Gravitation',                           minM:4,  col:'#4a9eff',
     tasks:[
       ['[FORMULA]',  'Kepler\'s laws, orbital velocity, escape velocity, g',   2],
       ['[MUST-DO]',  'Satellite orbits, energy, geostationary (5–7 Qs)',       3],
       ['[MUST-DO]',  'Gravitational potential and field problems',             2],
       ['[PYQ 2026]', 'Solve all Jan 2026 questions from this chapter',         1]
     ]},
-  mp9:{id:'mp9',subj:'phy',num:9,name:'Work, Power & Energy',                  minM:8,  col:'#4a9eff',
+  mp9:{id:'mp9',subj:'phy',num:9,name:'Work, Power & Energy',                  minM:4,  col:'#4a9eff',
     tasks:[
       ['[FORMULA]',  'Work-energy theorem, conservative forces, power',        2],
       ['[MUST-DO]',  'Variable force problems, spring energy (6 Qs)',          2],
@@ -2003,7 +2013,7 @@ var MD_CHAPTERS = {
     ]},
 
   /* ── MATHS ── */
-  mm1:{id:'mm1',subj:'math',num:1,name:'Vectors & 3D Geometry',                minM:16, col:'#c084fc',
+  mm1:{id:'mm1',subj:'math',num:1,name:'Vectors & 3D Geometry',                minM:12, col:'#c084fc',
     tasks:[
       ['[FORMULA]',  'Dot / cross product, scalar triple product',             3],
       ['[MUST-DO]',  'Lines & planes in 3D — 10+ standard Qs',                4],
@@ -2018,7 +2028,7 @@ var MD_CHAPTERS = {
       ['[MUST-DO]',  'Telescoping sums, method of differences',               2],
       ['[PYQ 2026]', 'Solve all Jan 2026 questions from this chapter',         2]
     ]},
-  mm3:{id:'mm3',subj:'math',num:3,name:'Matrices & Determinants',              minM:12, col:'#c084fc',
+  mm3:{id:'mm3',subj:'math',num:3,name:'Matrices & Determinants',              minM:8, col:'#c084fc',
     tasks:[
       ['[FORMULA]',  'Properties of determinants, matrix operations',          2],
       ['[MUST-DO]',  'Adjoint, inverse, rank — 8 standard Qs',                3],
@@ -2090,7 +2100,7 @@ var MD_CHAPTERS = {
       ['[MUST-DO]',  'Hydrogen bonding, VdW forces, solid state bonding',      2],
       ['[PYQ 2026]', 'Solve all Jan 2026 questions from this chapter',         2]
     ]},
-  mc4:{id:'mc4',subj:'chem2',num:4,name:'Coordination Compounds',              minM:12, col:'#34d399',
+  mc4:{id:'mc4',subj:'chem2',num:4,name:'Coordination Compounds',              minM:8, col:'#34d399',
     tasks:[
       ['[CONCEPT]',  'IUPAC naming — all rules memorised + isomerism types',   3],
       ['[MUST-DO]',  'Crystal field theory — splitting, colour, magnetism',    3],
@@ -2125,7 +2135,7 @@ var MD_CHAPTERS = {
       ['[MUST-DO]',  'Aldehydes/Ketones distinction, Cannizzaro, Aldol — 8 Qs',3],
       ['[PYQ 2026]', 'Solve all Jan 2026 questions from this chapter',         2]
     ]},
-  mc9:{id:'mc9',subj:'chem2',num:9,name:'Electrochemistry + Chemical Kinetics',minM:12, col:'#34d399',
+  mc9:{id:'mc9',subj:'chem2',num:9,name:'Electrochemistry + Chemical Kinetics',minM:8, col:'#34d399',
     tasks:[
       ['[FORMULA]',  'Nernst equation, EMF, cell potential, Faraday\'s law',   2],
       ['[MUST-DO]',  'Galvanic / electrolytic cells, electrode reactions — 6 Qs',3],
@@ -2136,9 +2146,9 @@ var MD_CHAPTERS = {
 };
 
 var MD_SUBJ_GROUPS = [
-  {key:'phy',   label:'PHYSICS',   col:'#4a9eff', ids:['mp1','mp2','mp3','mp4','mp5','mp6','mp7','mp8','mp9'], gridId:'md-grid-phy',  maxM:72},
-  {key:'math',  label:'MATHS',     col:'#c084fc', ids:['mm1','mm2','mm3','mm4','mm5','mm6','mm7','mm8','mm9'], gridId:'md-grid-math', maxM:72},
-  {key:'chem2', label:'CHEMISTRY', col:'#34d399', ids:['mc1','mc2','mc3','mc4','mc5','mc6','mc7','mc8','mc9'], gridId:'md-grid-chem', maxM:72}
+  {key:'phy',   label:'PHYSICS',   col:'#4a9eff', ids:['mp1','mp2','mp3','mp4','mp5','mp6','mp7','mp8','mp9'], gridId:'md-grid-phy',  maxM:56},
+  {key:'math',  label:'MATHS',     col:'#c084fc', ids:['mm1','mm2','mm3','mm4','mm5','mm6','mm7','mm8','mm9'], gridId:'md-grid-math', maxM:48},
+  {key:'chem2', label:'CHEMISTRY', col:'#34d399', ids:['mc1','mc2','mc3','mc4','mc5','mc6','mc7','mc8','mc9'], gridId:'md-grid-chem', maxM:44}
 ];
 
 /* ── MD STATE ── */
@@ -2328,7 +2338,7 @@ function updateMustDo(){
     else if(ch.subj==='math'){mathS+=sc;if(dc.done===dc.tot&&dc.tot>0)mathD++;}
     else if(ch.subj==='chem2'){chemS+=sc;if(dc.done===dc.tot&&dc.tot>0)chemD++;}
   });
-  phyS=Math.min(phyS,72); mathS=Math.min(mathS,72); chemS=Math.min(chemS,72);
+  phyS=Math.min(phyS,56); mathS=Math.min(mathS,48); chemS=Math.min(chemS,44);
   var total=phyS+mathS+chemS;
 
   /* dashboard */
@@ -2337,15 +2347,15 @@ function updateMustDo(){
   if(el('md-tasks-done'))  el('md-tasks-done').textContent=totDone;
   if(el('md-tasks-sub'))   el('md-tasks-sub').textContent='of '+totTasks+' total';
   if(el('md-chs-done'))    el('md-chs-done').textContent=totChsDone;
-  if(el('md-min-score'))   el('md-min-score').textContent=total+' / 216';
+  if(el('md-min-score'))   el('md-min-score').textContent=total+' / 148';
   /* subject bars */
   function setBar(fillId,valId,score,max){
     var f=el(fillId); if(f)f.style.width=Math.round(score/max*100)+'%';
     var v=el(valId);  if(v)v.textContent=score+'/'+max;
   }
-  setBar('mdsb-phy','mdsbv-phy',phyS,72);
-  setBar('mdsb-math','mdsbv-math',mathS,72);
-  setBar('mdsb-chem','mdsbv-chem',chemS,72);
+  setBar('mdsb-phy','mdsbv-phy',phyS,56);
+  setBar('mdsb-math','mdsbv-math',mathS,48);
+  setBar('mdsb-chem','mdsbv-chem',chemS,44);
   /* subject labels */
   MD_SUBJ_GROUPS.forEach(function(grp){
     var sc2=grp.key==='phy'?phyS:grp.key==='math'?mathS:chemS;

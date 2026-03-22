@@ -3,123 +3,165 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JEE WAR — 21 March → 4 April</title>
+<title>JEE WAR — 21 Mar to 4 Apr 2026</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#080a0e;color:#e2e8f0;font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
-body::before{content:'';position:fixed;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(255,107,26,.04) 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(255,107,26,.04) 40px);pointer-events:none;z-index:0}
+html{scroll-behavior:smooth}
+body{background:#080a0e;color:#e2e8f0;font-family:Arial,sans-serif;min-height:100vh;padding-bottom:80px}
 
-.top{position:relative;z-index:1;text-align:center;padding:32px 20px 18px;border-bottom:1px solid rgba(255,107,26,.2)}
-.war-title{font-size:clamp(36px,9vw,80px);font-weight:900;letter-spacing:6px;color:#ff6b1a;text-shadow:0 0 40px rgba(255,107,26,.5);line-height:1;font-family:Impact,'Arial Black',sans-serif}
-.war-sub{font-family:monospace;font-size:11px;letter-spacing:3px;color:#64748b;margin-top:8px;text-transform:uppercase}
-.cd-wrap{display:flex;justify-content:center;gap:10px;margin-top:16px;flex-wrap:wrap}
-.cd-box{background:#0d1117;border:1px solid rgba(255,107,26,.35);border-radius:10px;padding:12px 18px;min-width:72px;text-align:center;position:relative;box-shadow:0 0 20px rgba(255,107,26,.08)}
-.cd-box::after{content:'';position:absolute;left:0;right:0;top:50%;height:1px;background:rgba(255,107,26,.15)}
-.cd-num{font-family:Impact,sans-serif;font-size:clamp(32px,7vw,52px);color:#ff6b1a;line-height:1;text-shadow:0 0 20px rgba(255,107,26,.5);letter-spacing:2px}
+/* BG GRID */
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(255,107,26,.04) 40px),
+    repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(255,107,26,.04) 40px)}
+
+/* HEADER */
+#header{position:relative;z-index:1;text-align:center;padding:28px 16px 20px;border-bottom:1px solid rgba(255,107,26,.25)}
+#title{font-size:clamp(38px,9vw,82px);font-weight:900;letter-spacing:5px;color:#ff6b1a;
+  text-shadow:0 0 40px rgba(255,107,26,.5);line-height:1}
+#subtitle{font-family:monospace;font-size:11px;letter-spacing:3px;color:#64748b;margin-top:6px;text-transform:uppercase}
+#clock-line{font-family:monospace;font-size:13px;color:#94a3b8;margin-top:6px;letter-spacing:2px}
+
+/* COUNTDOWN */
+#cd-wrap{display:flex;justify-content:center;align-items:flex-end;gap:8px;margin-top:16px;flex-wrap:wrap}
+.cd-box{background:#0d1117;border:1px solid rgba(255,107,26,.4);border-radius:10px;
+  padding:10px 14px;min-width:68px;text-align:center;box-shadow:0 0 16px rgba(255,107,26,.08)}
+.cd-num{font-size:clamp(30px,6vw,50px);font-weight:900;color:#ff6b1a;line-height:1;
+  text-shadow:0 0 16px rgba(255,107,26,.4);font-variant-numeric:tabular-nums}
 .cd-lbl{font-family:monospace;font-size:9px;letter-spacing:3px;color:#64748b;margin-top:4px;text-transform:uppercase}
-.cd-sep{font-family:Impact,sans-serif;font-size:clamp(28px,6vw,44px);color:rgba(255,107,26,.4);align-self:center;margin-top:-8px}
+.cd-sep{font-size:clamp(26px,5vw,42px);font-weight:900;color:rgba(255,107,26,.35);line-height:1;padding-bottom:18px}
 
-.pips{position:relative;z-index:1;display:flex;justify-content:center;gap:4px;padding:16px 20px 8px;flex-wrap:wrap}
-.pip{width:20px;height:28px;border-radius:4px;border:1px solid #1e2a3a;background:#111620;cursor:pointer;transition:all .2s;position:relative}
-.pip.done{background:#22c55e;border-color:#16a34a;box-shadow:0 0 6px rgba(34,197,94,.4)}
-.pip.today{background:#ffaa44;border-color:#fff;animation:pp 1.5s infinite}
-.pip.past{background:rgba(255,107,26,.2);border-color:rgba(255,107,26,.2)}
-.pip.exam-pip{background:rgba(239,68,68,.15);border-color:#ef4444;animation:pp2 1.5s infinite}
-.pip.revision-pip{background:rgba(59,130,246,.15);border-color:#3b82f6}
-@keyframes pp{0%,100%{box-shadow:0 0 8px rgba(255,170,68,.5)}50%{box-shadow:0 0 18px rgba(255,170,68,.9)}}
-@keyframes pp2{0%,100%{box-shadow:0 0 8px rgba(239,68,68,.5)}50%{box-shadow:0 0 18px rgba(239,68,68,.9)}}
+/* PIPS */
+#pip-section{position:relative;z-index:1;padding:14px 16px 4px}
+#pips{display:flex;justify-content:center;gap:4px;flex-wrap:wrap}
+.pip{width:19px;height:27px;border-radius:4px;cursor:pointer;transition:all .2s;border:1px solid #1e2a3a;background:#111620}
+.pip.done{background:#22c55e;border-color:#16a34a;box-shadow:0 0 5px rgba(34,197,94,.4)}
+.pip.today{background:#ffaa44;border-color:#fff}
+.pip.past{background:rgba(255,107,26,.18);border-color:rgba(255,107,26,.2)}
+.pip.rev{background:rgba(59,130,246,.15);border-color:rgba(59,130,246,.4)}
+.pip.exam{background:rgba(239,68,68,.15);border-color:#ef4444}
+#pip-dates{display:flex;justify-content:center;gap:4px;flex-wrap:wrap;margin-top:4px}
+.pip-d{width:19px;font-family:monospace;font-size:6px;color:#334155;text-align:center;overflow:hidden}
 
-.pip-labels{position:relative;z-index:1;display:flex;justify-content:center;gap:4px;padding:0 20px 12px;flex-wrap:wrap}
-.pip-lbl{width:20px;font-family:monospace;font-size:7px;color:#475569;text-align:center;overflow:hidden}
-
-.stats{position:relative;z-index:1;display:flex;justify-content:center;gap:10px;padding:0 16px 14px;flex-wrap:wrap}
-.stat{background:#0d1117;border:1px solid #1e2a3a;border-radius:8px;padding:12px 16px;text-align:center;min-width:90px}
-.stat-n{font-size:28px;font-weight:900;line-height:1;font-family:Impact,sans-serif}
+/* STATS */
+#stats{position:relative;z-index:1;display:flex;justify-content:center;gap:8px;padding:14px 16px;flex-wrap:wrap}
+.stat{background:#0d1117;border:1px solid #1e2a3a;border-radius:8px;padding:10px 14px;text-align:center;min-width:86px}
+.stat-n{font-size:28px;font-weight:900;line-height:1}
 .stat-l{font-family:monospace;font-size:9px;letter-spacing:2px;color:#64748b;margin-top:4px;text-transform:uppercase}
 
-.prog-wrap{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:0 20px 14px}
-.prog-meta{display:flex;justify-content:space-between;font-family:monospace;font-size:10px;color:#64748b;margin-bottom:6px;letter-spacing:1px;text-transform:uppercase}
-.prog-track{height:6px;background:#111620;border-radius:99px;overflow:hidden;border:1px solid #1e2a3a}
-.prog-fill{height:100%;background:linear-gradient(90deg,#ff6b1a,#ffaa44);border-radius:99px;transition:width .5s;box-shadow:0 0 10px rgba(255,107,26,.5);width:0%}
+/* PROGRESS */
+#prog-wrap{position:relative;z-index:1;max-width:840px;margin:0 auto;padding:0 16px 14px}
+#prog-meta{display:flex;justify-content:space-between;font-family:monospace;font-size:10px;
+  color:#64748b;margin-bottom:6px;letter-spacing:1px;text-transform:uppercase}
+#prog-track{height:6px;background:#111620;border-radius:99px;overflow:hidden;border:1px solid #1e2a3a}
+#prog-fill{height:100%;width:0%;background:linear-gradient(90deg,#ff6b1a,#ffaa44);
+  border-radius:99px;transition:width .4s;box-shadow:0 0 8px rgba(255,107,26,.5)}
 
-.banner{position:relative;z-index:1;text-align:center;padding:14px 20px;margin:4px 0;background:rgba(255,107,26,.06);border-top:1px solid rgba(255,107,26,.2);border-bottom:1px solid rgba(255,107,26,.2);font-family:Impact,sans-serif;font-size:clamp(12px,2.5vw,17px);letter-spacing:3px;color:#ffaa44}
+/* BANNER */
+#banner{position:relative;z-index:1;text-align:center;padding:13px 16px;
+  background:rgba(255,107,26,.06);border-top:1px solid rgba(255,107,26,.18);
+  border-bottom:1px solid rgba(255,107,26,.18);
+  font-size:clamp(12px,2.5vw,17px);font-weight:900;letter-spacing:3px;color:#ffaa44}
 
-.legend{position:relative;z-index:1;display:flex;justify-content:center;gap:12px;padding:10px 20px 14px;flex-wrap:wrap}
-.leg{display:flex;align-items:center;gap:5px;font-family:monospace;font-size:10px;color:#64748b;letter-spacing:1px}
+/* LEGEND */
+#legend{position:relative;z-index:1;display:flex;justify-content:center;gap:12px;
+  padding:10px 16px 12px;flex-wrap:wrap}
+.leg{display:flex;align-items:center;gap:5px;font-family:monospace;font-size:10px;color:#64748b}
 .leg-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
 
-.grid{position:relative;z-index:1;max-width:1060px;margin:0 auto;padding:0 12px 80px;display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:10px}
+/* GRID */
+#grid{position:relative;z-index:1;max-width:1040px;margin:0 auto;padding:0 10px;
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
 
-/* SPECIAL CARDS */
-.card{background:#0d1117;border:1px solid #1e2a3a;border-radius:10px;overflow:hidden;transition:border-color .2s,box-shadow .2s,opacity .2s}
-.card:hover{border-color:rgba(255,107,26,.35)}
-.card.today{border-color:#ff6b1a;box-shadow:0 0 24px rgba(255,107,26,.25)}
-.card.done{border-color:rgba(34,197,94,.4);opacity:.6}
-.card.revision-card{border-color:rgba(59,130,246,.4);background:#0a0f1a}
-.card.revision-card:hover{border-color:#3b82f6}
-.card.exam-card{border-color:rgba(239,68,68,.5);background:#110a0a}
-.card.exam-card:hover{border-color:#ef4444;box-shadow:0 0 24px rgba(239,68,68,.2)}
+/* CARD */
+.card{background:#0d1117;border:1px solid #1e2a3a;border-radius:10px;overflow:hidden;transition:border-color .2s}
+.card:hover{border-color:rgba(255,107,26,.3)}
+.card.today{border-color:#ff6b1a;box-shadow:0 0 22px rgba(255,107,26,.2)}
+.card.done-card{border-color:rgba(34,197,94,.35);opacity:.62}
+.card.rev-card{border-color:rgba(59,130,246,.35);background:#090f1a}
+.card.exam-card{border-color:rgba(239,68,68,.45);background:#0f0808}
 
-.card-hdr{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;user-select:none;border-bottom:1px solid transparent;background:rgba(255,255,255,.01);transition:border-color .2s}
-.card.open .card-hdr{border-bottom-color:#1e2a3a}
-.day-num{font-family:Impact,sans-serif;font-size:24px;min-width:32px;line-height:1;color:#ff6b1a}
-.card.today .day-num{color:#ffaa44}
-.card.done .day-num{color:#22c55e}
-.card.revision-card .day-num{color:#3b82f6}
-.card.exam-card .day-num{color:#ef4444}
-.day-info{flex:1;min-width:0}
-.day-date{font-family:monospace;font-size:9px;color:#64748b;letter-spacing:1px;text-transform:uppercase}
-.day-title{font-size:12px;font-weight:700;color:#e2e8f0;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.badge{font-family:monospace;font-size:9px;letter-spacing:2px;padding:3px 7px;border-radius:4px;font-weight:700;flex-shrink:0}
-.badge-today{background:#ff6b1a;color:#000;animation:pp 1.5s infinite}
-.badge-rev{background:rgba(59,130,246,.2);color:#3b82f6;border:1px solid #3b82f6}
-.badge-exam{background:#ef4444;color:#fff;animation:pp2 1.5s infinite}
-.chevron{color:#64748b;font-size:11px;flex-shrink:0;transition:transform .2s}
-.card.open .chevron{transform:rotate(180deg)}
+/* CARD HEADER */
+.chdr{display:flex;align-items:center;gap:10px;padding:11px 13px;cursor:pointer;
+  user-select:none;border-bottom:1px solid transparent;background:rgba(255,255,255,.01)}
+.card.open .chdr{border-bottom-color:#1e2a3a}
+.dnum{font-size:22px;font-weight:900;min-width:28px;line-height:1;color:#ff6b1a}
+.card.today .dnum{color:#ffaa44}
+.card.done-card .dnum{color:#22c55e}
+.card.rev-card .dnum{color:#3b82f6}
+.card.exam-card .dnum{color:#ef4444}
+.dinfo{flex:1;min-width:0}
+.ddate{font-family:monospace;font-size:9px;color:#64748b;letter-spacing:1px;text-transform:uppercase}
+.dtitle{font-size:12px;font-weight:700;color:#e2e8f0;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bdg{font-family:monospace;font-size:9px;letter-spacing:2px;padding:3px 7px;border-radius:4px;font-weight:700;flex-shrink:0}
+.bdg-today{background:#ff6b1a;color:#000}
+.bdg-rev{background:rgba(59,130,246,.15);color:#3b82f6;border:1px solid #3b82f6}
+.bdg-exam{background:#ef4444;color:#fff}
+.chev{color:#64748b;font-size:11px;flex-shrink:0;transition:transform .2s}
+.card.open .chev{transform:rotate(180deg)}
 
-.card-body{display:none;padding:12px 14px 14px}
-.card.open .card-body{display:block}
+/* CARD BODY */
+.cbody{display:none;padding:12px 13px 13px}
+.card.open .cbody{display:block}
 
-.subj-div{height:1px;background:#1e2a3a;margin:12px 0}
-.subj-tag{display:inline-block;padding:2px 8px;border-radius:3px;font-family:monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;font-weight:700;margin-bottom:8px}
-.tag-phy{background:rgba(59,130,246,.12);color:#3b82f6;border:1px solid rgba(59,130,246,.3)}
-.tag-chem{background:rgba(34,197,94,.1);color:#22c55e;border:1px solid rgba(34,197,94,.25)}
-.tag-math{background:rgba(168,85,247,.1);color:#a855f7;border:1px solid rgba(168,85,247,.25)}
-.tag-all{background:rgba(255,107,26,.1);color:#ff6b1a;border:1px solid rgba(255,107,26,.3)}
-.tag-exam{background:rgba(239,68,68,.1);color:#ef4444;border:1px solid rgba(239,68,68,.3)}
-.subj-name{font-size:13px;font-weight:700;color:#e2e8f0;margin-bottom:10px}
+/* SUBJECTS */
+.sdiv{height:1px;background:#1e2a3a;margin:11px 0}
+.stag{display:inline-block;padding:2px 7px;border-radius:3px;font-family:monospace;font-size:9px;
+  letter-spacing:3px;text-transform:uppercase;font-weight:700;margin-bottom:7px}
+.t-phy{background:rgba(59,130,246,.12);color:#3b82f6;border:1px solid rgba(59,130,246,.28)}
+.t-chem{background:rgba(34,197,94,.1);color:#22c55e;border:1px solid rgba(34,197,94,.22)}
+.t-math{background:rgba(168,85,247,.1);color:#a855f7;border:1px solid rgba(168,85,247,.22)}
+.t-all{background:rgba(255,107,26,.1);color:#ff6b1a;border:1px solid rgba(255,107,26,.28)}
+.t-exam{background:rgba(239,68,68,.1);color:#ef4444;border:1px solid rgba(239,68,68,.28)}
+.sname{font-size:13px;font-weight:700;color:#e2e8f0;margin-bottom:9px}
 
-.task{display:flex;align-items:center;gap:9px;padding:7px 9px;border-radius:6px;margin-bottom:3px;cursor:pointer;border:1px solid transparent;transition:all .15s}
+/* TASKS */
+.task{display:flex;align-items:center;gap:9px;padding:7px 8px;border-radius:6px;
+  margin-bottom:3px;cursor:pointer;border:1px solid transparent;transition:background .12s,border-color .12s}
 .task:hover{background:rgba(255,255,255,.03);border-color:#1e2a3a}
-.task.checked{opacity:.45}
-.task.checked .task-txt{text-decoration:line-through;color:#64748b}
-.cb{width:16px;height:16px;border-radius:4px;border:2px solid #1e2a3a;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;background:transparent}
+.task.checked{opacity:.42}
+.task.checked .ttxt{text-decoration:line-through;color:#64748b}
+.cb{width:16px;height:16px;border-radius:4px;border:2px solid #2d3f55;display:flex;
+  align-items:center;justify-content:center;flex-shrink:0;transition:all .13s;background:transparent}
 .task.checked .cb{background:#22c55e;border-color:#22c55e}
-.cb-tick{font-size:9px;color:#000;font-weight:900;display:none}
-.task.checked .cb-tick{display:block}
-.task-icon{font-size:13px;flex-shrink:0}
-.task-txt{font-size:12px;color:#e2e8f0;flex:1}
+.cbtick{font-size:9px;color:#000;font-weight:900;display:none}
+.task.checked .cbtick{display:block}
+.ticon{font-size:13px;flex-shrink:0}
+.ttxt{font-size:12px;color:#e2e8f0;flex:1;line-height:1.4}
 
-/* EXAM DAY SPECIAL */
-.exam-inner{text-align:center;padding:16px 10px}
-.exam-big{font-family:Impact,sans-serif;font-size:clamp(28px,6vw,48px);color:#ef4444;letter-spacing:4px;text-shadow:0 0 20px rgba(239,68,68,.4);line-height:1}
-.exam-msg{font-family:monospace;font-size:11px;color:#94a3b8;margin-top:8px;letter-spacing:2px;text-transform:uppercase;line-height:1.8}
-.exam-tips{text-align:left;margin-top:14px;border-top:1px solid rgba(239,68,68,.2);padding-top:12px}
-.exam-tip{display:flex;align-items:flex-start;gap:8px;padding:6px 0;font-size:12px;color:#94a3b8}
-.tip-icon{flex-shrink:0}
+/* EXAM CARD INNER */
+.exam-inner{text-align:center;padding:14px 8px}
+.exam-big{font-size:clamp(24px,5vw,44px);font-weight:900;color:#ef4444;letter-spacing:4px;
+  text-shadow:0 0 18px rgba(239,68,68,.4);line-height:1}
+.exam-msg{font-family:monospace;font-size:11px;color:#94a3b8;margin-top:8px;
+  letter-spacing:1px;text-transform:uppercase;line-height:1.9}
+.exam-tips{margin-top:12px;border-top:1px solid rgba(239,68,68,.18);padding-top:11px}
+.etip{display:flex;align-items:flex-start;gap:8px;padding:5px 0;font-size:12px;color:#94a3b8;line-height:1.5}
+.eicon{flex-shrink:0;font-size:14px}
 
-.scroll-btn{position:fixed;bottom:20px;right:20px;background:#ff6b1a;color:#000;border:none;border-radius:8px;padding:10px 16px;font-family:monospace;font-size:11px;letter-spacing:2px;font-weight:700;cursor:pointer;box-shadow:0 4px 20px rgba(255,107,26,.5);text-transform:uppercase;z-index:100;transition:all .2s}
-.scroll-btn:hover{background:#ffaa44;transform:scale(1.05)}
+/* FLOAT BUTTON */
+#floatbtn{position:fixed;bottom:18px;right:18px;background:#ff6b1a;color:#000;border:none;
+  border-radius:8px;padding:10px 16px;font-family:monospace;font-size:11px;letter-spacing:2px;
+  font-weight:700;cursor:pointer;box-shadow:0 4px 20px rgba(255,107,26,.5);
+  text-transform:uppercase;z-index:999;transition:all .2s}
+#floatbtn:hover{background:#ffaa44;transform:scale(1.05)}
 
-@media(max-width:600px){.grid{grid-template-columns:1fr}.stats{gap:6px}.stat{min-width:80px;padding:10px 12px}}
+@media(max-width:560px){
+  #grid{grid-template-columns:1fr}
+  #stats{gap:5px}
+  .stat{min-width:76px;padding:8px 10px}
+  .cd-box{min-width:58px;padding:8px 10px}
+}
 </style>
 </head>
 <body>
 
-<div class="top">
-  <div class="war-title">JEE WAR PLAN</div>
-  <div class="war-sub">21 MARCH → 4 APRIL 2026 &nbsp;·&nbsp; <span id="clock">--:--:--</span></div>
-  <div class="cd-wrap">
+<!-- HEADER -->
+<div id="header">
+  <div id="title">JEE WAR PLAN</div>
+  <div id="subtitle">21 MARCH &rarr; 4 APRIL 2026 &nbsp;&bull;&nbsp; OPERATION FINAL SHOT</div>
+  <div id="clock-line">&#x231A; <span id="clock">--:--:--</span></div>
+  <div id="cd-wrap">
     <div class="cd-box"><div class="cd-num" id="cd-d">--</div><div class="cd-lbl">Days</div></div>
     <div class="cd-sep">:</div>
     <div class="cd-box"><div class="cd-num" id="cd-h">--</div><div class="cd-lbl">Hours</div></div>
@@ -130,363 +172,378 @@ body::before{content:'';position:fixed;inset:0;background-image:repeating-linear
   </div>
 </div>
 
-<div class="pips" id="pips"></div>
-<div class="pip-labels" id="pip-labels"></div>
-
-<div class="stats">
-  <div class="stat"><div class="stat-n" id="s-left" style="color:#ff6b1a">-</div><div class="stat-l">Days Left</div></div>
-  <div class="stat"><div class="stat-n" id="s-done" style="color:#22c55e">0</div><div class="stat-l">Tasks Done</div></div>
-  <div class="stat"><div class="stat-n" id="s-total" style="color:#e2e8f0">-</div><div class="stat-l">Total Tasks</div></div>
-  <div class="stat"><div class="stat-n" id="s-pct" style="color:#ffaa44">0%</div><div class="stat-l">Progress</div></div>
+<!-- PIPS -->
+<div id="pip-section">
+  <div id="pips"></div>
+  <div id="pip-dates"></div>
 </div>
 
-<div class="prog-wrap">
-  <div class="prog-meta"><span>OVERALL COMPLETION</span><span id="p-text">- / - tasks</span></div>
-  <div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div>
+<!-- STATS -->
+<div id="stats">
+  <div class="stat"><div class="stat-n" id="sn-left" style="color:#ff6b1a">--</div><div class="stat-l">Days Left</div></div>
+  <div class="stat"><div class="stat-n" id="sn-done" style="color:#22c55e">0</div><div class="stat-l">Tasks Done</div></div>
+  <div class="stat"><div class="stat-n" id="sn-tot" style="color:#e2e8f0">--</div><div class="stat-l">Total Tasks</div></div>
+  <div class="stat"><div class="stat-n" id="sn-pct" style="color:#ffaa44">0%</div><div class="stat-l">Progress</div></div>
 </div>
 
-<div class="banner">🔥 &nbsp; 21 MARCH TO 4 APRIL — EVERY HOUR COUNTS — YOU WILL NOT REGRET THIS &nbsp; 🔥</div>
+<!-- PROGRESS -->
+<div id="prog-wrap">
+  <div id="prog-meta"><span>OVERALL COMPLETION</span><span id="prog-txt">-- / --</span></div>
+  <div id="prog-track"><div id="prog-fill"></div></div>
+</div>
 
-<div class="legend">
+<!-- BANNER -->
+<div id="banner">&#128293; &nbsp; 21 MARCH TO 4 APRIL &mdash; EVERY HOUR COUNTS &mdash; YOU WILL NOT REGRET THIS &nbsp; &#128293;</div>
+
+<!-- LEGEND -->
+<div id="legend">
   <div class="leg"><div class="leg-dot" style="background:#3b82f6"></div>Physics</div>
   <div class="leg"><div class="leg-dot" style="background:#22c55e"></div>Chemistry</div>
   <div class="leg"><div class="leg-dot" style="background:#a855f7"></div>Mathematics</div>
   <div class="leg"><div class="leg-dot" style="background:#ffaa44"></div>Today</div>
-  <div class="leg"><div class="leg-dot" style="background:#22c55e;opacity:.5"></div>Done ✅</div>
-  <div class="leg"><div class="leg-dot" style="background:#3b82f6;opacity:.5"></div>Revision</div>
-  <div class="leg"><div class="leg-dot" style="background:#ef4444"></div>Exam 🔥</div>
+  <div class="leg"><div class="leg-dot" style="background:#22c55e;opacity:.45"></div>Done</div>
+  <div class="leg"><div class="leg-dot" style="background:#3b82f6;opacity:.45"></div>Revision</div>
+  <div class="leg"><div class="leg-dot" style="background:#ef4444"></div>Exam</div>
 </div>
 
-<div class="grid" id="grid"></div>
-<button class="scroll-btn" id="scroll-btn">▶ TODAY</button>
+<!-- GRID -->
+<div id="grid"></div>
+
+<!-- FLOAT BUTTON -->
+<button id="floatbtn">&#9654; TODAY</button>
 
 <script>
-// ─── DATA ───────────────────────────────────────────────────────────
-const DAYS = [
-  {
-    id:'d1', date:'21 Mar, Sat', label:'DAY 1',
-    type:'study',
-    subjects:[{t:'phy',label:'PHYSICS',name:'Optics (Ray + Wave)'}]
-  },
-  {
-    id:'d2', date:'22 Mar, Sun', label:'DAY 2',
-    type:'study',
-    subjects:[{t:'phy',label:'PHYSICS',name:'Electrostatics'},{t:'chem',label:'CHEMISTRY',name:'Physical Chemistry — Part 1 (Mole Concept, Equilibrium)'}]
-  },
-  {
-    id:'d3', date:'23 Mar, Mon', label:'DAY 3',
-    type:'study',
-    subjects:[{t:'phy',label:'PHYSICS',name:'Current Electricity'},{t:'chem',label:'CHEMISTRY',name:'Physical Chemistry — Part 2 (Electrochemistry, Thermodynamics)'}]
-  },
-  {
-    id:'d4', date:'24 Mar, Tue', label:'DAY 4',
-    type:'study',
-    subjects:[{t:'phy',label:'PHYSICS',name:'Magnetism & EMI'},{t:'math',label:'MATHEMATICS',name:'Coordinate Geometry — Lines, Circles, Conics'}]
-  },
-  {
-    id:'d5', date:'25 Mar, Wed', label:'DAY 5',
-    type:'study',
-    subjects:[{t:'phy',label:'PHYSICS',name:'Modern Physics (Photoelectric, Nuclei, Atoms)'},{t:'chem',label:'CHEMISTRY',name:'Inorganic Chemistry — Part 1 (Periodic Table, Chemical Bonding)'}]
-  },
-  {
-    id:'d6', date:'26 Mar, Thu', label:'DAY 6',
-    type:'study',
-    subjects:[{t:'phy',label:'PHYSICS',name:'Mechanics — I (Laws of Motion, Work & Energy)'},{t:'math',label:'MATHEMATICS',name:'Vectors, 3D Geometry, Matrices & Determinants'}]
-  },
-  {
-    id:'d7', date:'27 Mar, Fri', label:'DAY 7',
-    type:'study',
-    subjects:[{t:'phy',label:'PHYSICS',name:'Mechanics — II (Rotational Motion, COM)'},{t:'chem',label:'CHEMISTRY',name:'Inorganic Chemistry — Part 2 (p-Block, d-Block)'}]
-  },
-  {
-    id:'d8', date:'28 Mar, Sat', label:'DAY 8',
-    type:'study',
-    subjects:[{t:'phy',label:'PHYSICS',name:'Mechanics — III (SHM, Waves, Gravitation)'},{t:'chem',label:'CHEMISTRY',name:'Inorganic Chemistry — Part 3 (Coordination, Metallurgy, Salt Analysis)'}]
-  },
-  {
-    id:'d9', date:'29 Mar, Sun', label:'DAY 9',
-    type:'study',
-    subjects:[{t:'phy',label:'PHYSICS',name:'KTG & Thermodynamics'},{t:'math',label:'MATHEMATICS',name:'Sequences & Series, Binomial Theorem, Complex Numbers'}]
-  },
-  {
-    id:'d10', date:'30 Mar, Mon', label:'DAY 10',
-    type:'study',
-    subjects:[{t:'phy',label:'PHYSICS',name:'Mechanical Properties of Matter & Fluids'},{t:'chem',label:'CHEMISTRY',name:'Organic Chemistry — Part 1 (GOC, Hydrocarbons)'}]
-  },
-  {
-    id:'d11', date:'31 Mar, Tue', label:'DAY 11',
-    type:'study',
-    subjects:[{t:'math',label:'MATHEMATICS',name:'Basic Maths, Trigonometry & Quadratic Equations'},{t:'chem',label:'CHEMISTRY',name:'Organic Chemistry — Part 2 (Alcohol, Aldehyde, Ketone, Acids)'}]
-  },
-  {
-    id:'d12', date:'1 Apr, Wed', label:'DAY 12',
-    type:'study',
-    subjects:[{t:'math',label:'MATHEMATICS',name:'Relations, Functions & ITF'},{t:'chem',label:'CHEMISTRY',name:'Organic Chemistry — Part 3 (Amines, Polymers, Biomolecules, Everyday Chem)'}]
-  },
-  {
-    id:'d13', date:'2 Apr, Thu', label:'DAY 13',
-    type:'study',
-    subjects:[{t:'math',label:'MATHEMATICS',name:'P&C, Probability & Statistics'},{t:'all',label:'ALL SUBJECTS',name:'⚡ Full Revision — Chemistry + Physics key formulas'}]
-  },
-  {
-    id:'rev', date:'3 Apr, Fri', label:'REVISION',
-    type:'revision',
-    subjects:[
-      {t:'all',label:'MORNING',name:'Full mock paper (2.5 hrs, exam conditions)'},
-      {t:'all',label:'AFTERNOON',name:'Review mistakes + weak areas only'},
-      {t:'all',label:'EVENING',name:'Formula sheet scan — all 3 subjects'},
-      {t:'all',label:'NIGHT',name:'Sleep by 10 PM. No new topics.'}
-    ]
-  },
-  {
-    id:'exam', date:'4 Apr, Sat', label:'EXAM DAY',
-    type:'exam'
-  }
+(function(){
+"use strict";
+
+// ── PLAN DATA ─────────────────────────────────────────────────────────
+var PLAN = [
+  {id:"d1",  date:"21 Mar, Sat", label:"DAY 1",  type:"study",
+   subjs:[{t:"phy",l:"PHYSICS",n:"Optics (Ray + Wave)"}]},
+  {id:"d2",  date:"22 Mar, Sun", label:"DAY 2",  type:"study",
+   subjs:[{t:"phy",l:"PHYSICS",n:"Electrostatics"},{t:"chem",l:"CHEMISTRY",n:"Physical Chemistry — Part 1 (Mole Concept, Equilibrium)"}]},
+  {id:"d3",  date:"23 Mar, Mon", label:"DAY 3",  type:"study",
+   subjs:[{t:"phy",l:"PHYSICS",n:"Current Electricity"},{t:"chem",l:"CHEMISTRY",n:"Physical Chemistry — Part 2 (Electrochemistry, Thermodynamics)"}]},
+  {id:"d4",  date:"24 Mar, Tue", label:"DAY 4",  type:"study",
+   subjs:[{t:"phy",l:"PHYSICS",n:"Magnetism & EMI"},{t:"math",l:"MATHEMATICS",n:"Coordinate Geometry — Lines, Circles, Conics"}]},
+  {id:"d5",  date:"25 Mar, Wed", label:"DAY 5",  type:"study",
+   subjs:[{t:"phy",l:"PHYSICS",n:"Modern Physics (Photoelectric, Nuclei, Atoms)"},{t:"chem",l:"CHEMISTRY",n:"Inorganic Chemistry — Part 1 (Periodic Table, Chemical Bonding)"}]},
+  {id:"d6",  date:"26 Mar, Thu", label:"DAY 6",  type:"study",
+   subjs:[{t:"phy",l:"PHYSICS",n:"Mechanics — I (Laws of Motion, Work & Energy)"},{t:"math",l:"MATHEMATICS",n:"Vectors, 3D Geometry, Matrices & Determinants"}]},
+  {id:"d7",  date:"27 Mar, Fri", label:"DAY 7",  type:"study",
+   subjs:[{t:"phy",l:"PHYSICS",n:"Mechanics — II (Rotational Motion, COM)"},{t:"chem",l:"CHEMISTRY",n:"Inorganic Chemistry — Part 2 (p-Block, d-Block)"}]},
+  {id:"d8",  date:"28 Mar, Sat", label:"DAY 8",  type:"study",
+   subjs:[{t:"phy",l:"PHYSICS",n:"Mechanics — III (SHM, Waves, Gravitation)"},{t:"chem",l:"CHEMISTRY",n:"Inorganic Chemistry — Part 3 (Coordination, Metallurgy, Salt Analysis)"}]},
+  {id:"d9",  date:"29 Mar, Sun", label:"DAY 9",  type:"study",
+   subjs:[{t:"phy",l:"PHYSICS",n:"KTG & Thermodynamics"},{t:"math",l:"MATHEMATICS",n:"Sequences & Series, Binomial Theorem, Complex Numbers"}]},
+  {id:"d10", date:"30 Mar, Mon", label:"DAY 10", type:"study",
+   subjs:[{t:"phy",l:"PHYSICS",n:"Mechanical Properties of Matter & Fluids"},{t:"chem",l:"CHEMISTRY",n:"Organic Chemistry — Part 1 (GOC, Hydrocarbons)"}]},
+  {id:"d11", date:"31 Mar, Tue", label:"DAY 11", type:"study",
+   subjs:[{t:"math",l:"MATHEMATICS",n:"Basic Maths, Trigonometry & Quadratic Equations"},{t:"chem",l:"CHEMISTRY",n:"Organic Chemistry — Part 2 (Alcohol, Aldehyde, Ketone, Acids)"}]},
+  {id:"d12", date:"1 Apr, Wed",  label:"DAY 12", type:"study",
+   subjs:[{t:"math",l:"MATHEMATICS",n:"Relations, Functions & ITF"},{t:"chem",l:"CHEMISTRY",n:"Organic Chemistry — Part 3 (Amines, Polymers, Biomolecules, Everyday Chem)"}]},
+  {id:"d13", date:"2 Apr, Thu",  label:"DAY 13", type:"study",
+   subjs:[{t:"math",l:"MATHEMATICS",n:"P&C, Probability & Statistics"},{t:"all",l:"ALL SUBJECTS",n:"Full Revision — Chemistry + Physics Key Formulas"}]},
+  {id:"rev", date:"3 Apr, Fri",  label:"REVISION", type:"rev",
+   subjs:[
+     {t:"all",l:"MORNING",   n:"Full mock paper — 2.5 hrs, exam conditions"},
+     {t:"all",l:"AFTERNOON", n:"Review mistakes + weak areas only"},
+     {t:"all",l:"EVENING",   n:"Formula sheet scan — all 3 subjects"},
+     {t:"all",l:"NIGHT",     n:"Sleep by 10 PM. Zero new topics."}
+   ]},
+  {id:"exam",date:"4 Apr, Sat",  label:"EXAM DAY", type:"exam", subjs:[]}
 ];
 
-const STD_TASKS = [
-  {icon:'🎬', text:'Lecture / Revise Notes'},
-  {icon:'✅', text:'Must-Do Questions (50+)'},
-  {icon:'📋', text:'JEE Mains Jan 2026 Questions'}
+var STD_TASKS = [
+  {icon:"🎬", txt:"Lecture / Revise Notes"},
+  {icon:"✅", txt:"Must-Do Questions (50+)"},
+  {icon:"📋", txt:"JEE Mains Jan 2026 Questions"}
 ];
-const REV_TASKS = [
-  {icon:'📝', text:'Complete'},
-];
+var REV_TASK = [{icon:"✅", txt:"Done"}];
 
-// ─── STATE ───────────────────────────────────────────────────────────
-const state = {};
-try { Object.assign(state, JSON.parse(localStorage.getItem('jeewar26')||'{}')); } catch(e){}
-function save(){ try{localStorage.setItem('jeewar26',JSON.stringify(state))}catch(e){} }
-
-// ─── TODAY ───────────────────────────────────────────────────────────
-const DATE_MAP = {
-  'd1': new Date(2026,2,21),
-  'd2': new Date(2026,2,22),
-  'd3': new Date(2026,2,23),
-  'd4': new Date(2026,2,24),
-  'd5': new Date(2026,2,25),
-  'd6': new Date(2026,2,26),
-  'd7': new Date(2026,2,27),
-  'd8': new Date(2026,2,28),
-  'd9': new Date(2026,2,29),
-  'd10':new Date(2026,2,30),
-  'd11':new Date(2026,2,31),
-  'd12':new Date(2026,3,1),
-  'd13':new Date(2026,3,2),
-  'rev':new Date(2026,3,3),
-  'exam':new Date(2026,3,4)
+// Date lookup (midnight)
+var DATES = {
+  d1:  new Date(2026,2,21), d2:  new Date(2026,2,22), d3:  new Date(2026,2,23),
+  d4:  new Date(2026,2,24), d5:  new Date(2026,2,25), d6:  new Date(2026,2,26),
+  d7:  new Date(2026,2,27), d8:  new Date(2026,2,28), d9:  new Date(2026,2,29),
+  d10: new Date(2026,2,30), d11: new Date(2026,2,31), d12: new Date(2026,3,1),
+  d13: new Date(2026,3,2),  rev: new Date(2026,3,3),  exam:new Date(2026,3,4)
 };
-const EXAM_DATE = new Date(2026,3,4);
+var EXAM_DT = new Date(2026,3,4,9,0,0);
 
-function getTodayId(){
-  const now = new Date(); now.setHours(0,0,0,0);
-  for(const [id, dt] of Object.entries(DATE_MAP)){
-    const d = new Date(dt); d.setHours(0,0,0,0);
-    if(d.getTime() === now.getTime()) return id;
-  }
-  if(now < new Date(2026,2,21)) return 'd1';
-  return 'exam';
+// ── STATE ─────────────────────────────────────────────────────────────
+var ST = {};
+try { var raw = localStorage.getItem("jeewar26"); if(raw) ST = JSON.parse(raw); } catch(e){}
+
+function save(){
+  try { localStorage.setItem("jeewar26", JSON.stringify(ST)); } catch(e){}
 }
 
-function getTasksForDay(dd){
-  if(dd.type==='exam') return [];
-  if(dd.type==='revision') return dd.subjects.map((_,i)=>[{icon:'✅',text:'Done'}]);
-  return dd.subjects.map(()=>STD_TASKS);
+function getKey(id, si, ti){ return id+"_"+si+"_"+ti; }
+
+// ── TODAY ─────────────────────────────────────────────────────────────
+function todayId(){
+  var now = new Date(); now.setHours(0,0,0,0);
+  var t = now.getTime();
+  for(var id in DATES){
+    var d = new Date(DATES[id]); d.setHours(0,0,0,0);
+    if(d.getTime()===t) return id;
+  }
+  if(now < DATES.d1) return "d1";
+  return "exam";
+}
+
+var TODAY = todayId();
+
+// ── TASK HELPERS ──────────────────────────────────────────────────────
+function tasksFor(dd){
+  if(dd.type==="exam") return [];
+  if(dd.type==="rev") return dd.subjs.map(function(){ return REV_TASK; });
+  return dd.subjs.map(function(){ return STD_TASKS; });
 }
 
 function isDayDone(dd){
-  if(dd.type==='exam') return false;
-  const tasks = getTasksForDay(dd);
-  return dd.subjects.every((_,si)=>tasks[si].every((_,ti)=>state[dd.id+'_'+si+'_'+ti]));
+  if(dd.type==="exam") return false;
+  var tasks = tasksFor(dd);
+  for(var si=0;si<dd.subjs.length;si++){
+    for(var ti=0;ti<tasks[si].length;ti++){
+      if(!ST[getKey(dd.id,si,ti)]) return false;
+    }
+  }
+  return true;
 }
 
 function countAll(){
-  let done=0,total=0;
-  DAYS.forEach(dd=>{
-    if(dd.type==='exam') return;
-    const tasks=getTasksForDay(dd);
-    dd.subjects.forEach((_,si)=>tasks[si].forEach((_,ti)=>{
-      total++;
-      if(state[dd.id+'_'+si+'_'+ti]) done++;
-    }));
-  });
-  return{done,total};
+  var done=0, total=0;
+  for(var i=0;i<PLAN.length;i++){
+    var dd=PLAN[i];
+    if(dd.type==="exam") continue;
+    var tasks=tasksFor(dd);
+    for(var si=0;si<dd.subjs.length;si++){
+      for(var ti=0;ti<tasks[si].length;ti++){
+        total++;
+        if(ST[getKey(dd.id,si,ti)]) done++;
+      }
+    }
+  }
+  return {done:done,total:total};
 }
 
-// ─── PIPS ─────────────────────────────────────────────────────────────
-function buildPips(todayId){
-  const pc=document.getElementById('pips'), lc=document.getElementById('pip-labels');
-  pc.innerHTML=''; lc.innerHTML='';
-  DAYS.forEach(dd=>{
-    const pip=document.createElement('div');
-    const done=isDayDone(dd);
-    const isT=dd.id===todayId;
-    if(dd.type==='exam') pip.className='pip exam-pip';
-    else if(dd.type==='revision') pip.className='pip revision-pip'+(done?' done':'')+(isT?' today':'');
-    else pip.className='pip'+(done?' done':isT?' today':DATE_MAP[dd.id]<new Date()?' past':'');
-    pip.title=dd.label+' — '+dd.date;
-    pip.onclick=()=>document.getElementById('card-'+dd.id).scrollIntoView({behavior:'smooth',block:'center'});
-    pc.appendChild(pip);
-
-    const lbl=document.createElement('div');
-    lbl.className='pip-lbl';
-    lbl.textContent=dd.date.split(',')[0];
-    lc.appendChild(lbl);
-  });
-}
-
-// ─── STATS ────────────────────────────────────────────────────────────
-function updateStats(todayId){
-  const{done,total}=countAll();
-  const pct=total?Math.round(done/total*100):0;
-  const examDate=new Date(2026,3,4); examDate.setHours(0,0,0,0);
-  const now=new Date(); now.setHours(0,0,0,0);
-  const daysLeft=Math.max(0,Math.round((examDate-now)/(864e5)));
-  document.getElementById('s-left').textContent=daysLeft;
-  document.getElementById('s-done').textContent=done;
-  document.getElementById('s-total').textContent=total;
-  document.getElementById('s-pct').textContent=pct+'%';
-  document.getElementById('prog-fill').style.width=pct+'%';
-  document.getElementById('p-text').textContent=done+' / '+total+' tasks';
-}
-
-// ─── EXAM COUNTDOWN ───────────────────────────────────────────────────
-function updateExamCd(){
-  const exam=new Date(2026,3,4,9,0,0);
-  const now=new Date();
-  const diff=exam-now;
+// ── COUNTDOWN ────────────────────────────────────────────────────────
+function updateCd(){
+  var diff = EXAM_DT - new Date();
   if(diff<=0){
-    ['cd-d','cd-h','cd-m','cd-s'].forEach(id=>document.getElementById(id).textContent='00');
+    document.getElementById("cd-d").textContent="00";
+    document.getElementById("cd-h").textContent="00";
+    document.getElementById("cd-m").textContent="00";
+    document.getElementById("cd-s").textContent="00";
     return;
   }
-  const d=Math.floor(diff/864e5);
-  const h=Math.floor((diff%864e5)/36e5);
-  const m=Math.floor((diff%36e5)/6e4);
-  const s=Math.floor((diff%6e4)/1e3);
-  document.getElementById('cd-d').textContent=String(d).padStart(2,'0');
-  document.getElementById('cd-h').textContent=String(h).padStart(2,'0');
-  document.getElementById('cd-m').textContent=String(m).padStart(2,'0');
-  document.getElementById('cd-s').textContent=String(s).padStart(2,'0');
+  var d=Math.floor(diff/86400000);
+  var h=Math.floor((diff%86400000)/3600000);
+  var m=Math.floor((diff%3600000)/60000);
+  var s=Math.floor((diff%60000)/1000);
+  function p(x){ return String(x).padStart(2,"0"); }
+  document.getElementById("cd-d").textContent=p(d);
+  document.getElementById("cd-h").textContent=p(h);
+  document.getElementById("cd-m").textContent=p(m);
+  document.getElementById("cd-s").textContent=p(s);
 }
 
-// ─── CARDS ────────────────────────────────────────────────────────────
-function buildCards(todayId){
-  const g=document.getElementById('grid');
-  DAYS.forEach(dd=>{
-    const isT=dd.id===todayId;
-    const card=document.createElement('div');
-    let cls='card';
-    if(dd.type==='exam') cls+=' exam-card open';
-    else if(dd.type==='revision') cls+=' revision-card';
-    if(isT) cls+=' today open';
-    else if(done) cls+=' done';
-    card.className=cls;
-    card.id='card-'+dd.id;
+function updateClock(){
+  var n=new Date();
+  function p(x){return String(x).padStart(2,"0");}
+  document.getElementById("clock").textContent=p(n.getHours())+":"+p(n.getMinutes())+":"+p(n.getSeconds());
+}
 
-    // Header
-    const hdr=document.createElement('div');
-    hdr.className='card-hdr';
-    const titleStr = dd.type==='exam'
-      ? '🔥 JEE MAINS — APRIL 2026'
-      : dd.subjects.map(s=>s.name).join(' + ');
-    hdr.innerHTML=`
-      <div class="day-num">${dd.label}</div>
-      <div class="day-info">
-        <div class="day-date">${dd.date}</div>
-        <div class="day-title">${titleStr}</div>
-      </div>
-      ${isT&&dd.type!=='exam'?'<div class="badge badge-today">TODAY</div>':''}
-      ${dd.type==='revision'&&isT?'<div class="badge badge-rev">REVISE</div>':''}
-      ${dd.type==='exam'?'<div class="badge badge-exam">EXAM</div>':''}
-      ${done&&dd.type!=='exam'?'<span style="font-size:16px;flex-shrink:0">✅</span>':''}
-      ${dd.type!=='exam'?'<span class="chevron">▼</span>':''}
-    `;
-    if(dd.type!=='exam') hdr.onclick=()=>card.classList.toggle('open');
+// ── STATS ─────────────────────────────────────────────────────────────
+function updateStats(){
+  var c=countAll();
+  var pct=c.total?Math.round(c.done/c.total*100):0;
+  var examMid=new Date(2026,3,4); examMid.setHours(0,0,0,0);
+  var nowMid=new Date(); nowMid.setHours(0,0,0,0);
+  var dLeft=Math.max(0,Math.round((examMid-nowMid)/86400000));
+  document.getElementById("sn-left").textContent=dLeft;
+  document.getElementById("sn-done").textContent=c.done;
+  document.getElementById("sn-tot").textContent=c.total;
+  document.getElementById("sn-pct").textContent=pct+"%";
+  document.getElementById("prog-fill").style.width=pct+"%";
+  document.getElementById("prog-txt").textContent=c.done+" / "+c.total+" tasks";
+}
+
+// ── PIPS ──────────────────────────────────────────────────────────────
+function buildPips(){
+  var pc=document.getElementById("pips");
+  var lc=document.getElementById("pip-dates");
+  pc.innerHTML=""; lc.innerHTML="";
+  var nowMid=new Date(); nowMid.setHours(0,0,0,0);
+
+  for(var i=0;i<PLAN.length;i++){
+    var dd=PLAN[i];
+    var done=isDayDone(dd);
+    var isT=dd.id===TODAY;
+    var dt=new Date(DATES[dd.id]); dt.setHours(0,0,0,0);
+    var past=dt<nowMid;
+
+    var pip=document.createElement("div");
+    var cls="pip";
+    if(dd.type==="exam") cls+=" exam";
+    else if(dd.type==="rev") cls+=" rev"+(done?" done":"")+(isT?" today":"");
+    else if(done) cls+=" done";
+    else if(isT) cls+=" today";
+    else if(past) cls+=" past";
+    pip.className=cls;
+    pip.title=dd.label+" — "+dd.date;
+    (function(id){ pip.onclick=function(){ scrollTo(id); }; })(dd.id);
+    pc.appendChild(pip);
+
+    var lbl=document.createElement("div");
+    lbl.className="pip-d";
+    lbl.textContent=dd.date.split(",")[0];
+    lc.appendChild(lbl);
+  }
+}
+
+// ── SCROLL ────────────────────────────────────────────────────────────
+function scrollTo(id){
+  var el=document.getElementById("card-"+id);
+  if(el) el.scrollIntoView({behavior:"smooth",block:"center"});
+}
+
+// ── BUILD CARDS ───────────────────────────────────────────────────────
+function buildCards(){
+  var g=document.getElementById("grid");
+  g.innerHTML="";
+
+  for(var i=0;i<PLAN.length;i++){
+    var dd=PLAN[i];
+    var isT=dd.id===TODAY;
+    var done=isDayDone(dd);
+
+    var card=document.createElement("div");
+    var cls="card";
+    if(isT) cls+=" today open";
+    if(dd.type==="exam") cls+=" exam-card open";
+    else if(dd.type==="rev") cls+=" rev-card"+(isT?" open":"");
+    else if(done) cls+=" done-card";
+    card.className=cls;
+    card.id="card-"+dd.id;
+
+    // HEADER
+    var hdr=document.createElement("div");
+    hdr.className="chdr";
+    var titleStr;
+    if(dd.type==="exam") titleStr="&#128293; JEE MAINS — APRIL 2026";
+    else titleStr=dd.subjs.map(function(s){return s.n;}).join(" + ");
+    var badgeHtml="";
+    if(dd.type==="exam") badgeHtml='<span class="bdg bdg-exam">EXAM</span>';
+    else if(isT) badgeHtml='<span class="bdg bdg-today">TODAY</span>';
+    else if(dd.type==="rev"&&isT) badgeHtml='<span class="bdg bdg-rev">REVISE</span>';
+    if(done&&dd.type!=="exam") badgeHtml+='<span style="font-size:15px;flex-shrink:0">&#9989;</span>';
+    var chevHtml=dd.type!=="exam"?'<span class="chev">&#9660;</span>':"";
+
+    hdr.innerHTML=
+      '<div class="dnum">'+dd.label+'</div>'+
+      '<div class="dinfo">'+
+        '<div class="ddate">'+dd.date+'</div>'+
+        '<div class="dtitle">'+titleStr+'</div>'+
+      '</div>'+
+      badgeHtml+chevHtml;
+
+    if(dd.type!=="exam"){
+      (function(c){ hdr.onclick=function(){ c.classList.toggle("open"); }; })(card);
+    }
     card.appendChild(hdr);
 
-    // Body
-    const body=document.createElement('div');
-    body.className='card-body';
+    // BODY
+    var body=document.createElement("div");
+    body.className="cbody";
 
-    if(dd.type==='exam'){
-      body.innerHTML=`
-        <div class="exam-inner">
-          <div class="exam-big">IT'S YOUR DAY</div>
-          <div class="exam-msg">Every page you studied.<br>Every question you solved.<br>It all comes down to this.</div>
-        </div>
-        <div class="exam-tips" style="margin:0 4px">
-          <div class="exam-tip"><span class="tip-icon">⏰</span><span>Wake up by 6 AM. Reach center 1 hr early.</span></div>
-          <div class="exam-tip"><span class="tip-icon">🍽️</span><span>Light breakfast. No heavy food.</span></div>
-          <div class="exam-tip"><span class="tip-icon">📄</span><span>Admit card + ID proof ready the night before.</span></div>
-          <div class="exam-tip"><span class="tip-icon">🧠</span><span>Chemistry first — easiest marks. Then Physics. Maths last.</span></div>
-          <div class="exam-tip"><span class="tip-icon">⚡</span><span>Skip and return. Never get stuck on 1 question.</span></div>
-          <div class="exam-tip"><span class="tip-icon">❌</span><span>Negative marking — only attempt if 70%+ sure.</span></div>
-          <div class="exam-tip"><span class="tip-icon">💪</span><span>You did the work. Trust it. Go.</span></div>
-        </div>
-      `;
+    if(dd.type==="exam"){
+      body.innerHTML=
+        '<div class="exam-inner">'+
+          '<div class="exam-big">IT\'S YOUR DAY</div>'+
+          '<div class="exam-msg">Every page you studied.<br>Every question you solved.<br>It all comes down to this.</div>'+
+        '</div>'+
+        '<div class="exam-tips">'+
+          '<div class="etip"><span class="eicon">&#9200;</span><span>Wake up by 6 AM. Reach center 1 hour early.</span></div>'+
+          '<div class="etip"><span class="eicon">&#127857;</span><span>Light breakfast. No heavy food before exam.</span></div>'+
+          '<div class="etip"><span class="eicon">&#128196;</span><span>Admit card + ID proof ready the night before.</span></div>'+
+          '<div class="etip"><span class="eicon">&#129504;</span><span>Chemistry first — easiest marks. Physics next. Maths last.</span></div>'+
+          '<div class="etip"><span class="eicon">&#9889;</span><span>Skip and return. Never get stuck on one question.</span></div>'+
+          '<div class="etip"><span class="eicon">&#10060;</span><span>Negative marking — only attempt if 70%+ confident.</span></div>'+
+          '<div class="etip"><span class="eicon">&#128170;</span><span>You did the work. Trust it. Go get 160+.</span></div>'+
+        '</div>';
       card.appendChild(body);
-      card.classList.add('open');
       g.appendChild(card);
-      return;
+      continue;
     }
 
-    const tasks = getTasksForDay(dd);
-    dd.subjects.forEach((subj,si)=>{
-      if(si>0){const dv=document.createElement('div');dv.className='subj-div';body.appendChild(dv);}
-      const bl=document.createElement('div');
-      const tag=document.createElement('div');
-      tag.className='subj-tag tag-'+subj.t;
-      tag.textContent=subj.label;
-      bl.appendChild(tag);
-      const nm=document.createElement('div');
-      nm.className='subj-name';nm.textContent=subj.name;bl.appendChild(nm);
+    var tasks=tasksFor(dd);
+    for(var si=0;si<dd.subjs.length;si++){
+      if(si>0){ var sdiv=document.createElement("div"); sdiv.className="sdiv"; body.appendChild(sdiv); }
+      var subj=dd.subjs[si];
+      var stag=document.createElement("div");
+      stag.className="stag t-"+subj.t;
+      stag.textContent=subj.l;
+      body.appendChild(stag);
+      var sname=document.createElement("div");
+      sname.className="sname";
+      sname.textContent=subj.n;
+      body.appendChild(sname);
 
-      tasks[si].forEach((task,ti)=>{
-        const k=dd.id+'_'+si+'_'+ti;
-        const row=document.createElement('div');
-        row.className='task'+(state[k]?' checked':'');
-        row.innerHTML=`<div class="cb"><span class="cb-tick">✓</span></div><span class="task-icon">${task.icon}</span><span class="task-txt">${task.text}</span>`;
-        row.onclick=()=>{
-          state[k]=!state[k];
-          row.classList.toggle('checked',!!state[k]);
-          save();
-          updateStats(todayId);
-          buildPips(todayId);
-          if(isDayDone(dd)){card.classList.add('done');}
-          else{card.classList.remove('done');}
-        };
-        bl.appendChild(row);
-      });
-      body.appendChild(bl);
-    });
-
+      for(var ti=0;ti<tasks[si].length;ti++){
+        var task=tasks[si][ti];
+        var k=getKey(dd.id,si,ti);
+        var row=document.createElement("div");
+        row.className="task"+(ST[k]?" checked":"");
+        row.innerHTML=
+          '<div class="cb"><span class="cbtick">&#10003;</span></div>'+
+          '<span class="ticon">'+task.icon+'</span>'+
+          '<span class="ttxt">'+task.txt+'</span>';
+        (function(r,key,dayData){
+          r.onclick=function(){
+            ST[key]=!ST[key];
+            r.classList.toggle("checked",!!ST[key]);
+            save();
+            updateStats();
+            buildPips();
+            var card=document.getElementById("card-"+dayData.id);
+            if(isDayDone(dayData)){
+              card.classList.add("done-card");
+            } else {
+              card.classList.remove("done-card");
+            }
+          };
+        })(row, k, dd);
+        body.appendChild(row);
+      }
+    }
     card.appendChild(body);
     g.appendChild(card);
-  });
+  }
 }
 
-// ─── CLOCK ────────────────────────────────────────────────────────────
+// ── TICK ─────────────────────────────────────────────────────────────
 function tick(){
-  const n=new Date();
-  document.getElementById('clock').textContent=
-    [n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');
-  updateExamCd();
+  updateClock();
+  updateCd();
 }
 
-// ─── INIT ─────────────────────────────────────────────────────────────
-const TODAYID=getTodayId();
-buildCards(TODAYID);
-buildPips(TODAYID);
-updateStats(TODAYID);
+// ── INIT ─────────────────────────────────────────────────────────────
+buildCards();
+buildPips();
+updateStats();
 tick();
 setInterval(tick,1000);
 
-document.getElementById('scroll-btn').onclick=()=>{
-  document.getElementById('card-'+TODAYID).scrollIntoView({behavior:'smooth',block:'center'});
+document.getElementById("floatbtn").onclick=function(){
+  scrollTo(TODAY);
 };
-setTimeout(()=>{
-  document.getElementById('card-'+TODAYID).scrollIntoView({behavior:'smooth',block:'center'});
-},400);
+
+setTimeout(function(){ scrollTo(TODAY); }, 350);
+
+})();
 </script>
 </body>
 </html>

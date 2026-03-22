@@ -926,15 +926,15 @@ var DAYS = [
 var DEFAULT_ASSIGN = {
   d1:['p1'],
   d2:['p2','pc1'],
-  d3:['p3','pc2'],
-  d4:['p4','m1'],
-  d5:['p5','i1'],
-  d6:['p6','i2'],
-  d7:['p7','i3'],
-  d8:['p8','m2'],
-  d9:['p9','o1'],
-  d10:['p10','o2'],
-  d11:['m3','o3'],
+  d3:['pc2','i1'],
+  d4:['p5','i2'],
+  d5:['p3','m1'],
+  d6:['p4','o1'],
+  d7:['p6','o2'],
+  d8:['p7','o3'],
+  d9:['p8','m2'],
+  d10:['p9','i3'],
+  d11:['p10','m3'],
   d12:['m4','cp1'],
   d13:['m5','m6'],
   rev:[], exam:[]
@@ -952,14 +952,14 @@ var PLAN_START = new Date(2026,2,21,0,0,0); /* 21 March 2026 — Plan Start */
 var ASSIGN, TASKS, REV_TASKS, OPEN_DAYS, selectedDay = null, dragState = null;
 
 function loadState(){
-  try{var a=localStorage.getItem('jwa5');ASSIGN=a?JSON.parse(a):JSON.parse(JSON.stringify(DEFAULT_ASSIGN));}catch(e){ASSIGN=JSON.parse(JSON.stringify(DEFAULT_ASSIGN));}
+  try{var a=localStorage.getItem('jwa6');ASSIGN=a?JSON.parse(a):JSON.parse(JSON.stringify(DEFAULT_ASSIGN));}catch(e){ASSIGN=JSON.parse(JSON.stringify(DEFAULT_ASSIGN));}
   try{var t=localStorage.getItem('jwt');TASKS=t?JSON.parse(t):{};}catch(e){TASKS={};}
   try{var r=localStorage.getItem('jwr');REV_TASKS=r?JSON.parse(r):{};}catch(e){REV_TASKS={};}
   try{var o=localStorage.getItem('jwo');OPEN_DAYS=o?JSON.parse(o):{};}catch(e){OPEN_DAYS={};}
   // Auto-open today
   var tid=getTID();if(tid&&!OPEN_DAYS[tid])OPEN_DAYS[tid]=true;
 }
-function saveAssign(){try{localStorage.setItem('jwa5',JSON.stringify(ASSIGN));}catch(e){}}
+function saveAssign(){try{localStorage.setItem('jwa6',JSON.stringify(ASSIGN));}catch(e){}}
 function saveTasks(){try{localStorage.setItem('jwt',JSON.stringify(TASKS));}catch(e){}}
 function saveRevTasks(){try{localStorage.setItem('jwr',JSON.stringify(REV_TASKS));}catch(e){}}
 function saveOpen(){try{localStorage.setItem('jwo',JSON.stringify(OPEN_DAYS));}catch(e){}}

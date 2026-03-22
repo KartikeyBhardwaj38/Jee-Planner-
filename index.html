@@ -374,3 +374,119 @@ function buildCards(todayId){
   const g=document.getElementById('grid');
   DAYS.forEach(dd=>{
     const isT=dd.id===todayId;
+    const card=document.createElement('div');
+    let cls='card';
+    if(dd.type==='exam') cls+=' exam-card open';
+    else if(dd.type==='revision') cls+=' revision-card';
+    if(isT) cls+=' today open';
+    else if(done) cls+=' done';
+    card.className=cls;
+    card.id='card-'+dd.id;
+
+    // Header
+    const hdr=document.createElement('div');
+    hdr.className='card-hdr';
+    const titleStr = dd.type==='exam'
+      ? '🔥 JEE MAINS — APRIL 2026'
+      : dd.subjects.map(s=>s.name).join(' + ');
+    hdr.innerHTML=`
+      <div class="day-num">${dd.label}</div>
+      <div class="day-info">
+        <div class="day-date">${dd.date}</div>
+        <div class="day-title">${titleStr}</div>
+      </div>
+      ${isT&&dd.type!=='exam'?'<div class="badge badge-today">TODAY</div>':''}
+      ${dd.type==='revision'&&isT?'<div class="badge badge-rev">REVISE</div>':''}
+      ${dd.type==='exam'?'<div class="badge badge-exam">EXAM</div>':''}
+      ${done&&dd.type!=='exam'?'<span style="font-size:16px;flex-shrink:0">✅</span>':''}
+      ${dd.type!=='exam'?'<span class="chevron">▼</span>':''}
+    `;
+    if(dd.type!=='exam') hdr.onclick=()=>card.classList.toggle('open');
+    card.appendChild(hdr);
+
+    // Body
+    const body=document.createElement('div');
+    body.className='card-body';
+
+    if(dd.type==='exam'){
+      body.innerHTML=`
+        <div class="exam-inner">
+          <div class="exam-big">IT'S YOUR DAY</div>
+          <div class="exam-msg">Every page you studied.<br>Every question you solved.<br>It all comes down to this.</div>
+        </div>
+        <div class="exam-tips" style="margin:0 4px">
+          <div class="exam-tip"><span class="tip-icon">⏰</span><span>Wake up by 6 AM. Reach center 1 hr early.</span></div>
+          <div class="exam-tip"><span class="tip-icon">🍽️</span><span>Light breakfast. No heavy food.</span></div>
+          <div class="exam-tip"><span class="tip-icon">📄</span><span>Admit card + ID proof ready the night before.</span></div>
+          <div class="exam-tip"><span class="tip-icon">🧠</span><span>Chemistry first — easiest marks. Then Physics. Maths last.</span></div>
+          <div class="exam-tip"><span class="tip-icon">⚡</span><span>Skip and return. Never get stuck on 1 question.</span></div>
+          <div class="exam-tip"><span class="tip-icon">❌</span><span>Negative marking — only attempt if 70%+ sure.</span></div>
+          <div class="exam-tip"><span class="tip-icon">💪</span><span>You did the work. Trust it. Go.</span></div>
+        </div>
+      `;
+      card.appendChild(body);
+      card.classList.add('open');
+      g.appendChild(card);
+      return;
+    }
+
+    const tasks = getTasksForDay(dd);
+    dd.subjects.forEach((subj,si)=>{
+      if(si>0){const dv=document.createElement('div');dv.className='subj-div';body.appendChild(dv);}
+      const bl=document.createElement('div');
+      const tag=document.createElement('div');
+      tag.className='subj-tag tag-'+subj.t;
+      tag.textContent=subj.label;
+      bl.appendChild(tag);
+      const nm=document.createElement('div');
+      nm.className='subj-name';nm.textContent=subj.name;bl.appendChild(nm);
+
+      tasks[si].forEach((task,ti)=>{
+        const k=dd.id+'_'+si+'_'+ti;
+        const row=document.createElement('div');
+        row.className='task'+(state[k]?' checked':'');
+        row.innerHTML=`<div class="cb"><span class="cb-tick">✓</span></div><span class="task-icon">${task.icon}</span><span class="task-txt">${task.text}</span>`;
+        row.onclick=()=>{
+          state[k]=!state[k];
+          row.classList.toggle('checked',!!state[k]);
+          save();
+          updateStats(todayId);
+          buildPips(todayId);
+          if(isDayDone(dd)){card.classList.add('done');}
+          else{card.classList.remove('done');}
+        };
+        bl.appendChild(row);
+      });
+      body.appendChild(bl);
+    });
+
+    card.appendChild(body);
+    g.appendChild(card);
+  });
+}
+
+// ─── CLOCK ────────────────────────────────────────────────────────────
+function tick(){
+  const n=new Date();
+  document.getElementById('clock').textContent=
+    [n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');
+  updateExamCd();
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────
+const TODAYID=getTodayId();
+buildCards(TODAYID);
+buildPips(TODAYID);
+updateStats(TODAYID);
+tick();
+setInterval(tick,1000);
+
+document.getElementById('scroll-btn').onclick=()=>{
+  document.getElementById('card-'+TODAYID).scrollIntoView({behavior:'smooth',block:'center'});
+};
+setTimeout(()=>{
+  document.getElementById('card-'+TODAYID).scrollIntoView({behavior:'smooth',block:'center'});
+},400);
+</script>
+</body>
+</html>

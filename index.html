@@ -25,6 +25,58 @@ body{background:var(--bg);color:var(--tx);font-family:'Rajdhani',sans-serif;min-
 body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 59px,rgba(201,168,76,.02) 60px),repeating-linear-gradient(90deg,transparent,transparent 59px,rgba(201,168,76,.02) 60px)}
 body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;opacity:.022;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 
+/* ══ NAV ══ */
+#nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:52px;background:rgba(5,6,8,.92);border-bottom:1px solid var(--gold-b);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:space-between;padding:0 16px;gap:12px}
+#nav-brand{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:3px;color:var(--gold);font-weight:700;flex-shrink:0}
+#nav-tabs{display:flex;gap:4px;background:var(--bg3);border-radius:8px;padding:4px;border:1px solid rgba(255,255,255,.05)}
+.ntab{background:transparent;border:none;color:var(--tx2);font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:600;padding:5px 12px;border-radius:6px;cursor:pointer;transition:all .2s;white-space:nowrap}
+.ntab:hover{background:rgba(255,255,255,.05);color:var(--tx)}
+.ntab.active{background:var(--gold);color:#000;font-weight:700}
+#nav-clock{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--tx3);letter-spacing:2px;flex-shrink:0}
+/* ══ SECTIONS ══ */
+.sec{display:none;padding-top:64px;min-height:100vh;animation:fadeUp .4s ease both}
+.sec.active{display:block}
+.sec-header{text-align:center;padding:28px 16px 14px;border-bottom:1px solid rgba(255,255,255,.04)}
+.sec-header-title{font-family:'Cormorant Garamond',serif;font-size:clamp(22px,4vw,36px);font-weight:700;color:var(--gold-l);letter-spacing:4px}
+.sec-header-sub{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--tx3);margin-top:6px;text-transform:uppercase}
+.sec-banner{text-align:center;padding:14px 16px;background:rgba(201,168,76,.04);border-top:1px solid var(--gold-b);border-bottom:1px solid var(--gold-b);font-family:'Share Tech Mono',monospace;font-size:clamp(7px,1.5vw,10px);font-weight:700;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-top:24px}
+/* ══ TIMER BLOCK ══ */
+#timer-block{position:relative;z-index:1;text-align:center;padding:36px 20px 24px;background:linear-gradient(180deg,rgba(201,168,76,.05),transparent);border-bottom:1px solid var(--gold-b)}
+#timer-label-top{margin-bottom:20px}
+#timer-label-txt{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:6px;color:var(--gold);text-transform:uppercase;display:block}
+#timer-sublabel{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--tx3);text-transform:uppercase;margin-top:6px;display:block}
+#cdwrap{display:flex;justify-content:center;align-items:flex-end;gap:10px;flex-wrap:wrap;margin:0 auto}
+.cdbox{background:var(--bg3);border:1px solid var(--gold-b);border-radius:8px;padding:14px 18px;min-width:80px;text-align:center;position:relative;overflow:hidden;box-shadow:0 0 24px rgba(201,168,76,.06)}
+.cdbox::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,168,76,.06),transparent);pointer-events:none}
+.cdnum{font-family:'Share Tech Mono',monospace;font-size:clamp(36px,6vw,60px);color:var(--gold-l);line-height:1;text-shadow:0 0 20px rgba(201,168,76,.35);transition:all .3s}
+.cdlbl{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:4px;color:var(--tx3);margin-top:5px;text-transform:uppercase}
+.cdsep{font-family:'Share Tech Mono',monospace;font-size:clamp(28px,5vw,48px);color:rgba(201,168,76,.2);line-height:1;padding-bottom:22px}
+/* timer progress bar */
+#timer-bar-wrap{max-width:500px;margin:18px auto 0;height:3px;background:var(--bg4);border-radius:99px;overflow:hidden}
+#timer-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-l));border-radius:99px;transition:width .8s;box-shadow:0 0 10px rgba(201,168,76,.4);width:0%}
+#timer-meta{display:flex;justify-content:space-between;max-width:500px;margin:8px auto 0;font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--tx3);letter-spacing:1px;padding:0 2px}
+/* CTA buttons */
+#home-cta{display:flex;justify-content:center;gap:10px;padding:24px 16px 8px;flex-wrap:wrap}
+.cta-btn{background:var(--gold);color:#000;border:none;border-radius:8px;padding:12px 24px;font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:3px;font-weight:700;cursor:pointer;transition:all .2s;text-transform:uppercase}
+.cta-btn:hover{background:var(--gold-l);transform:scale(1.04)}
+.cta-sec{background:transparent;color:var(--gold);border:1px solid var(--gold-b)}
+.cta-sec:hover{background:var(--gold-d)}
+/* plan section progress bar visible */
+#sec-plan #progwrap{display:block;max-width:860px;margin:14px auto 0;padding:0 20px}
+#sec-plan #progmeta{display:flex;justify-content:space-between;font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--tx3);margin-bottom:6px;letter-spacing:2px;text-transform:uppercase}
+#sec-plan #progbar{height:2px;background:var(--bg4);border-radius:99px;overflow:hidden}
+#sec-plan #progfill{height:100%;width:0%;background:linear-gradient(90deg,var(--gold),var(--gold-l));border-radius:99px;transition:width .5s cubic-bezier(.4,0,.2,1);box-shadow:0 0 10px rgba(201,168,76,.5)}
+#sec-plan #hint-banner{position:relative;z-index:1;text-align:center;padding:12px 16px;background:rgba(201,168,76,.04);border-top:1px solid var(--gold-b);border-bottom:1px solid var(--gold-b);font-family:'Share Tech Mono',monospace;font-size:clamp(7px,1.5vw,10px);letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:0}
+/* tracker section */
+#sec-tracker #tracker-wrap{max-width:960px;margin:0 auto;padding:14px 14px 40px}
+/* Mobile pool toggle only on plan tab */
+#pool-toggle{display:none}
+@media(max-width:700px){
+  #sec-plan #pool-toggle{display:block}
+  #nav-brand{display:none}
+  .ntab{padding:5px 8px;font-size:11px}
+}
+
 /* ══ HEADER ══ */
 #hdr{position:relative;z-index:10;text-align:center;padding:48px 20px 38px;border-bottom:1px solid var(--gold-b);background:linear-gradient(180deg,rgba(201,168,76,.05),transparent)}
 .h-eyebrow{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:7px;color:var(--gold);opacity:.55;text-transform:uppercase;margin-bottom:14px;animation:fadeUp .7s ease both}
@@ -47,57 +99,115 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;o
 .statl{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:3px;color:var(--tx2);margin-top:3px;text-transform:uppercase}
 #progwrap{display:none}
 #progbar,#progfill,#progmeta{display:none}
-/* ══ TRACKER ══ */
-#tracker-wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 14px 4px;animation:fadeUp .9s .4s ease both}
-#tracker-title{text-align:center;padding:14px 0 10px}
-.trsec-label{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:5px;color:var(--gold);text-transform:uppercase}
-.trsec-sub{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--tx3);letter-spacing:2px;margin-top:4px}
-#predictor-card{background:var(--bg2);border:1px solid var(--gold-b);border-radius:12px;display:flex;gap:0;overflow:hidden;margin-bottom:8px}
-.pred-left{padding:18px 20px;min-width:140px;border-right:1px solid rgba(255,255,255,.05);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:rgba(201,168,76,.03)}
-.pred-score-wrap{display:flex;align-items:baseline;gap:4px;line-height:1}
-.pred-score-num{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:700;line-height:1;transition:color .4s}
-.pred-score-of{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--tx3)}
-.pred-score-lbl{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--tx3);text-transform:uppercase;margin-top:6px}
-.pred-score-sub{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--tx3);margin-top:4px;line-height:1.6;max-width:120px}
-.pred-right{flex:1;padding:16px 18px;display:flex;flex-direction:column;justify-content:center;gap:0}
-.pred-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:7px}
-.pred-bar-lbl{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:2px;width:36px;flex-shrink:0;font-weight:700}
-.pred-track{flex:1;height:7px;background:var(--bg4);border-radius:99px;overflow:hidden;display:flex}
-.pred-fill{height:100%;border-radius:99px;transition:width .5s cubic-bezier(.4,0,.2,1)}
-.pred-bar-val{font-family:'Share Tech Mono',monospace;font-size:9px;width:44px;text-align:right;flex-shrink:0;font-weight:700}
-.task-legend-item{display:flex;align-items:center;gap:5px;font-family:'Share Tech Mono',monospace;font-size:7.5px;color:var(--tx3);letter-spacing:1px}
-.tl-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-#task-legend-bar{display:flex;justify-content:center;gap:20px;padding:8px 0 10px;flex-wrap:wrap}
-.tlb-item{display:flex;align-items:center;gap:6px;font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--tx3);letter-spacing:1px}
-.tlb-pip{width:10px;height:10px;border-radius:2px;flex-shrink:0}
-#ch-tracker-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:7px}
-.ch-track-card{background:var(--bg2);border:1px solid rgba(255,255,255,.06);border-radius:10px;overflow:hidden;transition:border-color .2s,box-shadow .2s,opacity .2s}
+/* ══ TRACKER SECTION ══ */
+#sec-tracker #tracker-wrap{display:none} /* handled by sec-tracker styles */
+#sec-tracker{padding:52px 0 80px}
+
+/* DASHBOARD ROW */
+#trk-dashboard{display:grid;grid-template-columns:200px 1fr 1fr;gap:12px;max-width:960px;margin:0 auto;padding:20px 14px 12px}
+
+/* BASE CARD */
+.trk-card{background:var(--bg2);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:16px;position:relative;overflow:hidden;transition:border-color .2s}
+.trk-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold-b),transparent)}
+.trk-card:hover{border-color:var(--gold-b)}
+.trk-card-lbl{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--tx3);text-transform:uppercase;margin-bottom:12px}
+
+/* SCORE RING CARD */
+.trk-score-card{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px}
+#trk-score-ring{position:relative;width:110px;height:110px;flex-shrink:0}
+#trk-ring-svg{position:absolute;inset:0;transform:rotate(-90deg);width:100%;height:100%}
+.ring-bg{fill:none;stroke:rgba(255,255,255,.06);stroke-width:8}
+.ring-fill{fill:none;stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset .8s cubic-bezier(.4,0,.2,1),stroke .4s}
+#trk-ring-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0}
+.trk-big-num{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:700;line-height:1;transition:color .4s}
+.trk-big-denom{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--tx3)}
+.trk-score-msg{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--tx3);line-height:1.6;letter-spacing:.5px;max-width:160px;text-align:center}
+#trk-grade-badge{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;padding:3px 10px;border-radius:4px;background:rgba(201,168,76,.1);color:var(--gold);border:1px solid var(--gold-b);margin-top:2px}
+
+/* SUBJECT CARD */
+.trk-subj-card{display:flex;flex-direction:column;justify-content:center}
+.trk-subj-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.trk-subj-row:last-child{margin-bottom:0}
+.trk-subj-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:700;flex-shrink:0}
+.trk-subj-info{flex:1;min-width:0}
+.trk-subj-name{font-size:11px;font-weight:600;color:var(--tx);margin-bottom:5px}
+.trk-subj-bar-wrap{height:6px;background:var(--bg4);border-radius:99px;overflow:hidden}
+.trk-subj-bar{height:100%;border-radius:99px;width:0%;transition:width .6s cubic-bezier(.4,0,.2,1)}
+.trk-subj-val{font-family:'Share Tech Mono',monospace;font-size:16px;font-weight:700;width:30px;text-align:right;flex-shrink:0}
+
+/* TASK CARD */
+.trk-tasks-card{display:flex;flex-direction:column}
+.trk-task-stat-row{display:flex;justify-content:space-around;margin-bottom:12px}
+.trk-task-stat{display:flex;flex-direction:column;align-items:center;gap:4px}
+.trk-task-circle{position:relative;width:58px;height:58px}
+.trk-task-circle svg{position:absolute;inset:0;transform:rotate(-90deg)}
+.tc-bg{fill:none;stroke:rgba(255,255,255,.06);stroke-width:5}
+.tc-arc{fill:none;stroke-width:5;stroke-linecap:round;transition:stroke-dashoffset .6s cubic-bezier(.4,0,.2,1)}
+.trk-task-circle span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Share Tech Mono',monospace;font-size:12px;font-weight:700;color:var(--tx)}
+.trk-task-lbl{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:2px;color:var(--tx3);text-transform:uppercase}
+.trk-task-wt{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--gold);letter-spacing:1px}
+.trk-ch-summary{display:flex;gap:6px;justify-content:center;border-top:1px solid rgba(255,255,255,.05);padding-top:10px}
+.trk-ch-bubble{flex:1;text-align:center;padding:7px 4px;border-radius:8px;font-family:'Share Tech Mono',monospace}
+.trk-ch-bubble span{font-size:18px;font-weight:700;display:block;line-height:1}
+.trk-ch-bubble div{font-size:7px;letter-spacing:1px;margin-top:3px;text-transform:uppercase}
+.trk-ch-done{background:rgba(74,222,128,.08);color:var(--grn);border:1px solid rgba(74,222,128,.2)}
+.trk-ch-part{background:rgba(201,168,76,.08);color:var(--gold);border:1px solid var(--gold-b)}
+.trk-ch-none{background:rgba(255,255,255,.03);color:var(--tx3);border:1px solid rgba(255,255,255,.05)}
+
+/* FILTER BAR */
+#trk-filter-bar{display:flex;gap:5px;max-width:960px;margin:0 auto;padding:0 14px 12px;flex-wrap:wrap}
+.trk-flt{background:var(--bg3);border:1px solid rgba(255,255,255,.06);color:var(--tx3);font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:2px;padding:5px 10px;border-radius:5px;cursor:pointer;transition:all .15s;text-transform:uppercase}
+.trk-flt:hover{border-color:var(--gold-b);color:var(--tx)}
+.trk-flt.active{background:var(--gold);color:#000;border-color:var(--gold);font-weight:700}
+
+/* CHAPTER GRID */
+#ch-tracker-grid{max-width:960px;margin:0 auto;padding:0 14px 20px;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:8px}
+.ch-track-card{background:var(--bg2);border:1px solid rgba(255,255,255,.05);border-radius:10px;overflow:hidden;transition:border-color .2s,box-shadow .2s,opacity .2s;animation:cardIn .3s ease both}
 .ch-track-card:hover{border-color:var(--gold-b)}
-.ch-track-card.ch-complete{border-color:rgba(74,222,128,.45)!important;box-shadow:0 0 18px rgba(74,222,128,.1)!important}
-.ch-track-card.ch-partial{border-color:rgba(201,168,76,.35)}
-.ch-track-card.ch-none{opacity:.4}
-.ctc-hdr{display:flex;align-items:center;gap:8px;padding:9px 11px 6px}
+.ch-track-card.ch-complete{border-color:rgba(74,222,128,.4);box-shadow:0 0 16px rgba(74,222,128,.07)}
+.ch-track-card.ch-partial{border-color:rgba(201,168,76,.3)}
+.ch-track-card.ch-none{opacity:.45}
+.ch-track-card.trk-hidden{display:none}
+/* card header */
+.ctc-hdr{display:flex;align-items:center;gap:8px;padding:10px 12px 6px}
 .ctc-subj-tag{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:2px;padding:2px 6px;border-radius:3px;font-weight:700;flex-shrink:0;text-transform:uppercase}
 .ctc-name{font-size:11px;font-weight:600;color:var(--tx);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ctc-status{font-family:'Share Tech Mono',monospace;font-size:9px;flex-shrink:0;font-weight:700}
-.ctc-tasks{padding:3px 11px 8px;display:flex;flex-direction:column;gap:3px}
-.ctc-task{display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:5px;border:1px solid transparent;transition:background .15s,border-color .15s;cursor:default}
-.ctc-task.t-done{background:rgba(74,222,128,.07);border-color:rgba(74,222,128,.18)}
-.ctc-pip{width:9px;height:9px;border-radius:50%;flex-shrink:0;border:1.5px solid var(--tx3);transition:all .25s}
-.ctc-task.t-done .ctc-pip{border:none}
-.ctc-lbl{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:1px;flex:1;text-transform:uppercase;color:var(--tx3)}
-.ctc-task.t-done .ctc-lbl{color:var(--tx2)}
-.ctc-wt{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--tx3);flex-shrink:0}
-.ctc-task.t-done .ctc-wt{color:var(--grn)}
-.ctc-tick{font-size:10px;font-weight:900;flex-shrink:0;opacity:0;transition:opacity .2s}
-.ctc-task.t-done .ctc-tick{opacity:1;color:var(--grn)}
-.ctc-score-row{display:flex;align-items:center;gap:8px;padding:3px 11px 10px}
-.ctc-score-track{flex:1;height:4px;background:var(--bg4);border-radius:99px;overflow:hidden}
-.ctc-score-fill{height:100%;border-radius:99px;transition:width .5s cubic-bezier(.4,0,.2,1)}
-.ctc-score-val{font-family:'Share Tech Mono',monospace;font-size:9px;flex-shrink:0;font-weight:700}
-.ctc-unassigned{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--tx3);padding:4px 11px 10px;letter-spacing:1px;font-style:italic}
-.ctc-complete-badge{display:none;font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:2px;padding:1px 6px;border-radius:3px;background:rgba(74,222,128,.15);color:var(--grn);border:1px solid rgba(74,222,128,.3);flex-shrink:0}
+.ctc-complete-badge{display:none;font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:1px;padding:1px 6px;border-radius:3px;background:rgba(74,222,128,.12);color:var(--grn);border:1px solid rgba(74,222,128,.25);flex-shrink:0}
 .ch-track-card.ch-complete .ctc-complete-badge{display:inline-block}
+/* 3 task pips row */
+.ctc-pip-row{display:flex;gap:5px;padding:4px 12px 6px;align-items:center}
+.ctc-pip-item{flex:1;display:flex;flex-direction:column;gap:3px;align-items:center}
+.ctc-pip-bar{width:100%;height:5px;border-radius:99px;transition:background .3s,box-shadow .3s}
+.ctc-pip-txt{font-family:'Share Tech Mono',monospace;font-size:6px;letter-spacing:1px;color:var(--tx3);text-align:center}
+.ctc-pip-item.pi-done .ctc-pip-txt{color:var(--tx2)}
+/* task detail rows */
+.ctc-tasks{padding:2px 12px 6px;display:flex;flex-direction:column;gap:3px}
+.ctc-task{display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:5px;border:1px solid transparent;transition:background .12s}
+.ctc-task.t-done{background:rgba(74,222,128,.06);border-color:rgba(74,222,128,.15)}
+.ctc-pip-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;border:1.5px solid var(--tx3);transition:all .2s}
+.ctc-task.t-done .ctc-pip-dot{border:none}
+.ctc-lbl{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:1px;flex:1;color:var(--tx3);text-transform:uppercase}
+.ctc-task.t-done .ctc-lbl{color:var(--tx2)}
+.ctc-wt{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--tx3)}
+.ctc-task.t-done .ctc-wt{color:var(--grn)}
+.ctc-tick{font-size:10px;font-weight:900;flex-shrink:0;opacity:0;transition:opacity .2s;color:var(--grn)}
+.ctc-task.t-done .ctc-tick{opacity:1}
+/* marks bar */
+.ctc-marks-row{display:flex;align-items:center;gap:8px;padding:4px 12px 10px}
+.ctc-marks-track{flex:1;height:4px;background:var(--bg4);border-radius:99px;overflow:hidden}
+.ctc-marks-fill{height:100%;border-radius:99px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.ctc-marks-val{font-family:'Share Tech Mono',monospace;font-size:9px;flex-shrink:0;font-weight:700}
+.ctc-unassigned{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--tx3);padding:4px 12px 10px;letter-spacing:1px}
+
+/* section divider label in grid */
+.trk-grid-sep{grid-column:1/-1;font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--tx3);text-transform:uppercase;padding:8px 2px 4px;border-top:1px solid rgba(255,255,255,.05);margin-top:4px}
+
+@media(max-width:700px){
+  #trk-dashboard{grid-template-columns:1fr;gap:8px;padding:14px 10px 8px}
+  #ch-tracker-grid{grid-template-columns:1fr;padding:0 10px 20px}
+  #trk-filter-bar{padding:0 10px 10px}
+}
 @media(max-width:580px){#predictor-card{flex-direction:column}.pred-left{border-right:none;border-bottom:1px solid rgba(255,255,255,.05);padding:14px}}
 
 /* ══ HINT BANNER ══ */
@@ -331,187 +441,258 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;o
 </head>
 <body>
 
-<div id="hdr">
-  <div class="h-eyebrow">Operation Final Shot &bull; 2026</div>
-  <div id="htitle">JEE WAR</div>
-  <div class="h-rule"></div>
-  <div id="hsub">21 March &rarr; 4 April &bull; 15 Days of Conquest</div>
-  <div id="hclock">Time: <span id="clockspan">--:--:--</span></div>
-  <div id="cdwrap">
-    <div class="cdbox"><div class="cdnum" id="cd-d">--</div><div class="cdlbl">Days</div></div>
-    <div class="cdsep">:</div>
-    <div class="cdbox"><div class="cdnum" id="cd-h">--</div><div class="cdlbl">Hours</div></div>
-    <div class="cdsep">:</div>
-    <div class="cdbox"><div class="cdnum" id="cd-m">--</div><div class="cdlbl">Mins</div></div>
-    <div class="cdsep">:</div>
-    <div class="cdbox"><div class="cdnum" id="cd-s">--</div><div class="cdlbl">Secs</div></div>
+<!-- ══ STICKY NAV ══ -->
+<nav id="nav">
+  <div id="nav-brand">⚔ JEE WAR 2026</div>
+  <div id="nav-tabs">
+    <button class="ntab active" data-sec="sec-home" onclick="switchTab(this,'sec-home')">🏠 Home</button>
+    <button class="ntab" data-sec="sec-plan" onclick="switchTab(this,'sec-plan')">📅 Plan</button>
+    <button class="ntab" data-sec="sec-tracker" onclick="switchTab(this,'sec-tracker')">📊 Tracker</button>
   </div>
-</div>
+  <div id="nav-clock" id="clockspan-nav"><span id="clockspan">--:--:--</span></div>
+</nav>
 
-<div id="stats-row">
-  <div class="stat"><div class="statn" id="st-left" style="color:var(--gold)">--</div><div class="statl">Days Left</div></div>
-  <div class="stat"><div class="statn" id="st-done" style="color:var(--grn)">0</div><div class="statl">Done</div></div>
-  <div class="stat"><div class="statn" id="st-tot" style="color:var(--tx)">--</div><div class="statl">Total Tasks</div></div>
-  <div class="stat"><div class="statn" id="st-pct" style="color:var(--gold-l)">0%</div><div class="statl">Progress</div></div>
-  <div class="stat"><div class="statn" id="st-mmax" style="color:var(--pc)">252</div><div class="statl">Max /300</div></div>
-  <div class="stat"><div class="statn" id="st-mreal" style="color:var(--grn)">226</div><div class="statl">Realistic /300</div></div>
-</div>
+<!-- ══════════════════════════════════════════════
+     SECTION 1 — HOME
+══════════════════════════════════════════════ -->
+<section id="sec-home" class="sec active">
 
-<div id="progwrap"><div id="progmeta"><span>Completion</span><span id="progtxt">0/0</span></div><div id="progbar"><div id="progfill"></div></div></div>
-
-<div id="tracker-wrap">
-
-  <!-- ══ SECTION TITLE ══ -->
-  <div id="tracker-title">
-    <div class="trsec-label">Progress Tracker &amp; Score Predictor</div>
-    <div class="trsec-sub">Tick tasks inside each day — score updates live</div>
+  <div id="hdr">
+    <div class="h-eyebrow">Operation Final Shot &bull; 2026</div>
+    <div id="htitle">JEE WAR</div>
+    <div class="h-rule"></div>
+    <div id="hsub">21 March &rarr; 4 April &bull; 15 Days of Conquest</div>
   </div>
 
-  <!-- ══ SCORE PREDICTOR BAR ══ -->
-  <div id="predictor-card">
-    <div class="pred-left">
-      <div class="pred-score-wrap">
-        <div class="pred-score-num" id="pred-total">0</div>
-        <div class="pred-score-of">/ 300</div>
-      </div>
-      <div class="pred-score-lbl">Predicted Score</div>
-      <div class="pred-score-sub" id="pred-score-sub-txt">Tick tasks inside day cards to see your score</div>
+  <!-- TIMER BLOCK -->
+  <div id="timer-block">
+    <div id="timer-label-top">
+      <span id="timer-label-txt">STUDY TIME REMAINING</span>
+      <span id="timer-sublabel">Until 3 April, 8:00 PM — Revision Night</span>
     </div>
-    <div class="pred-right">
-      <div class="pred-bar-row">
-        <div class="pred-bar-lbl" style="color:#4a9eff">PHY</div>
-        <div class="pred-track"><div class="pred-fill" id="pf-phy" style="background:#4a9eff;width:0%"></div></div>
-        <div class="pred-bar-val" id="pv-phy" style="color:#4a9eff">0/100</div>
-      </div>
-      <div class="pred-bar-row">
-        <div class="pred-bar-lbl" style="color:#34d399">CHEM</div>
-        <div class="pred-track"><div class="pred-fill" id="pf-chem" style="background:#34d399;width:0%"></div></div>
-        <div class="pred-bar-val" id="pv-chem" style="color:#34d399">0/100</div>
-      </div>
-      <div class="pred-bar-row">
-        <div class="pred-bar-lbl" style="color:#c084fc">MATH</div>
-        <div class="pred-track"><div class="pred-fill" id="pf-math" style="background:#c084fc;width:0%"></div></div>
-        <div class="pred-bar-val" id="pv-math" style="color:#c084fc">0/100</div>
-      </div>
-      <!-- chapter progress bar -->
-      <div class="pred-bar-row" style="margin-top:6px;border-top:1px solid rgba(255,255,255,.05);padding-top:8px">
-        <div class="pred-bar-lbl" style="color:var(--gold)">CHS</div>
-        <div class="pred-track">
-          <div class="pred-fill" id="pf-ch-done" style="background:var(--grn);width:0%"></div>
-          <div class="pred-fill" id="pf-ch-part" style="background:var(--gold);width:0%"></div>
+    <div id="cdwrap">
+      <div class="cdbox"><div class="cdnum" id="cd-d">--</div><div class="cdlbl">Days</div></div>
+      <div class="cdsep">:</div>
+      <div class="cdbox"><div class="cdnum" id="cd-h">--</div><div class="cdlbl">Hours</div></div>
+      <div class="cdsep">:</div>
+      <div class="cdbox"><div class="cdnum" id="cd-m">--</div><div class="cdlbl">Mins</div></div>
+      <div class="cdsep">:</div>
+      <div class="cdbox"><div class="cdnum" id="cd-s">--</div><div class="cdlbl">Secs</div></div>
+    </div>
+    <div id="timer-bar-wrap">
+      <div id="timer-bar-fill"></div>
+    </div>
+    <div id="timer-meta">
+      <span id="timer-meta-left">-- days of study left</span>
+      <span id="timer-meta-exam">Exam: 4 Apr, 9 AM</span>
+    </div>
+  </div>
+
+  <!-- STATS GRID -->
+  <div id="stats-row">
+    <div class="stat"><div class="statn" id="st-left" style="color:var(--gold)">--</div><div class="statl">Days Left</div></div>
+    <div class="stat"><div class="statn" id="st-done" style="color:var(--grn)">0</div><div class="statl">Done</div></div>
+    <div class="stat"><div class="statn" id="st-tot" style="color:var(--tx)">--</div><div class="statl">Total Tasks</div></div>
+    <div class="stat"><div class="statn" id="st-pct" style="color:var(--gold-l)">0%</div><div class="statl">Progress</div></div>
+    <div class="stat"><div class="statn" id="st-mmax" style="color:var(--pc)">252</div><div class="statl">Max /300</div></div>
+    <div class="stat"><div class="statn" id="st-mreal" style="color:var(--grn)">226</div><div class="statl">Realistic /300</div></div>
+  </div>
+
+  <!-- MARKS SUMMARY STRIP -->
+  <div id="marks-summary">
+    <div class="ms-block">
+      <div class="ms-num" style="color:var(--pc)" id="ms-max">252 / 300</div>
+      <div class="ms-lbl">Max Potential</div>
+      <div class="ms-sub">All chapters perfect</div>
+    </div>
+    <div class="ms-block">
+      <div class="ms-num" style="color:var(--grn)" id="ms-real">226 / 300</div>
+      <div class="ms-lbl">Realistic Target</div>
+      <div class="ms-sub">JEE Jan 2026 data</div>
+    </div>
+    <div class="ms-block">
+      <div class="ms-num" style="color:var(--phy)" id="ms-phy">76-84</div>
+      <div class="ms-lbl">Physics</div>
+      <div class="ms-sub">Realistic – Max / 100</div>
+    </div>
+    <div class="ms-block">
+      <div class="ms-num" style="color:var(--chem)" id="ms-chem">90-96</div>
+      <div class="ms-lbl">Chemistry</div>
+      <div class="ms-sub">Realistic – Max / 100</div>
+    </div>
+    <div class="ms-block">
+      <div class="ms-num" style="color:var(--math)" id="ms-math">60-72</div>
+      <div class="ms-lbl">Maths</div>
+      <div class="ms-sub">Realistic – Max / 100</div>
+    </div>
+  </div>
+
+  <div id="home-cta">
+    <button class="cta-btn" onclick="switchTabById('sec-plan')">📅 Open Study Plan</button>
+    <button class="cta-btn cta-sec" onclick="switchTabById('sec-tracker')">📊 View Tracker</button>
+  </div>
+
+  <div class="sec-banner">&#9670; 21 March to 4 April &mdash; Every Hour Counts &mdash; You Will Not Regret This &#9670;</div>
+
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 2 — PLAN
+══════════════════════════════════════════════ -->
+<section id="sec-plan" class="sec">
+
+  <div class="sec-header">
+    <div class="sec-header-title">Study Plan</div>
+    <div class="sec-header-sub">Drag chapters from pool &bull; Click to assign to selected day</div>
+  </div>
+
+  <div id="progwrap"><div id="progmeta"><span>Completion</span><span id="progtxt">0/0</span></div><div id="progbar"><div id="progfill"></div></div></div>
+
+  <div id="hint-banner">&#9670; Click a day to open &bull; Drag chapters from pool into days &bull; Click chapter in pool to assign &#9670;</div>
+
+  <div id="main">
+    <div id="pool-panel">
+      <div class="pool-title">Chapter Pool</div>
+      <div class="pool-hint"><span>Click</span> to assign to selected day &bull; <span>Drag</span> to any day</div>
+      <div id="pool-groups"></div>
+      <div class="pool-drop-zone" id="pool-drop-zone">&#8617; Drop here to unassign</div>
+      <div class="pool-empty" id="pool-empty" style="display:none">All chapters assigned &#10003;</div>
+    </div>
+    <div id="days-panel"></div>
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 3 — TRACKER
+══════════════════════════════════════════════ -->
+<section id="sec-tracker" class="sec">
+
+  <!-- TOP DASHBOARD ROW -->
+  <div id="trk-dashboard">
+
+    <!-- BIG SCORE CARD -->
+    <div class="trk-card trk-score-card">
+      <div class="trk-card-lbl">Predicted Score</div>
+      <div id="trk-score-ring">
+        <svg viewBox="0 0 120 120" id="trk-ring-svg">
+          <circle cx="60" cy="60" r="50" class="ring-bg"/>
+          <circle cx="60" cy="60" r="50" class="ring-fill" id="ring-fill-total"
+            stroke-dasharray="314.16" stroke-dashoffset="314.16"/>
+        </svg>
+        <div id="trk-ring-inner">
+          <div id="pred-total" class="trk-big-num">0</div>
+          <div class="trk-big-denom">/300</div>
         </div>
-        <div class="pred-bar-val" id="pv-chs" style="color:var(--gold)">0/0</div>
       </div>
-      <div style="display:flex;gap:12px;margin-top:5px">
-        <div class="task-legend-item"><div class="tl-dot" style="background:var(--grn)"></div><span>Complete</span></div>
-        <div class="task-legend-item"><div class="tl-dot" style="background:var(--gold)"></div><span>Partial</span></div>
-        <div class="task-legend-item"><div class="tl-dot" style="background:var(--bg4)"></div><span>Not started</span></div>
+      <div id="pred-score-sub-txt" class="trk-score-msg">Go to Plan &rarr; tick tasks</div>
+      <div id="trk-grade-badge">—</div>
+    </div>
+
+    <!-- SUBJECT SCORE CARDS -->
+    <div class="trk-card trk-subj-card">
+      <div class="trk-card-lbl">Subject Breakdown</div>
+      <div class="trk-subj-row">
+        <div class="trk-subj-icon" style="background:rgba(74,158,255,.12);color:#4a9eff">P</div>
+        <div class="trk-subj-info">
+          <div class="trk-subj-name">Physics</div>
+          <div class="trk-subj-bar-wrap"><div class="trk-subj-bar" id="sb-phy" style="background:#4a9eff"></div></div>
+        </div>
+        <div class="trk-subj-val" id="sv-phy" style="color:#4a9eff">0</div>
+      </div>
+      <div class="trk-subj-row">
+        <div class="trk-subj-icon" style="background:rgba(52,211,153,.1);color:#34d399">C</div>
+        <div class="trk-subj-info">
+          <div class="trk-subj-name">Chemistry</div>
+          <div class="trk-subj-bar-wrap"><div class="trk-subj-bar" id="sb-chem" style="background:#34d399"></div></div>
+        </div>
+        <div class="trk-subj-val" id="sv-chem" style="color:#34d399">0</div>
+      </div>
+      <div class="trk-subj-row">
+        <div class="trk-subj-icon" style="background:rgba(192,132,252,.1);color:#c084fc">M</div>
+        <div class="trk-subj-info">
+          <div class="trk-subj-name">Maths</div>
+          <div class="trk-subj-bar-wrap"><div class="trk-subj-bar" id="sb-math" style="background:#c084fc"></div></div>
+        </div>
+        <div class="trk-subj-val" id="sv-math" style="color:#c084fc">0</div>
       </div>
     </div>
-  </div>
 
-  <!-- ══ TASK LEGEND ══ -->
-  <div id="task-legend-bar">
-    <div class="tlb-item"><div class="tlb-pip" style="background:#4a9eff"></div>VIDEO — Lecture / Revise (30% of marks)</div>
-    <div class="tlb-item"><div class="tlb-pip" style="background:#fb923c"></div>MUST-DO — 50+ Questions (40% of marks)</div>
-    <div class="tlb-item"><div class="tlb-pip" style="background:#c084fc"></div>JEE 2026 PYQs (30% of marks)</div>
-  </div>
-
-  <!-- ══ CHAPTER TRACKER GRID ══ -->
-  <div id="ch-tracker-grid">
-    <!-- rendered by JS -->
-  </div>
-
-</div>
-
-<div id="marks-summary">
-  <div class="ms-block">
-    <div class="ms-num" style="color:var(--pc)" id="ms-max">252 / 300</div>
-    <div class="ms-lbl">Max Potential</div>
-    <div class="ms-sub">If you ace all chapters</div>
-  </div>
-  <div class="ms-block">
-    <div class="ms-num" style="color:var(--grn)" id="ms-real">226 / 300</div>
-    <div class="ms-lbl">Realistic Target</div>
-    <div class="ms-sub">JEE Jan 2026 analysis</div>
-  </div>
-  <div class="ms-block">
-    <div class="ms-num" style="color:var(--phy)" id="ms-phy">76-84</div>
-    <div class="ms-lbl">Physics</div>
-    <div class="ms-sub">Real – Max / 100</div>
-  </div>
-  <div class="ms-block">
-    <div class="ms-num" style="color:var(--chem)" id="ms-chem">90-96</div>
-    <div class="ms-lbl">Chemistry</div>
-    <div class="ms-sub">Real – Max / 100</div>
-  </div>
-  <div class="ms-block">
-    <div class="ms-num" style="color:var(--math)" id="ms-math">60-72</div>
-    <div class="ms-lbl">Maths</div>
-    <div class="ms-sub">Real – Max / 100</div>
-  </div>
-</div>
-<div id="predictor">
-  <div id="pred-box">
-    <div id="pred-top">
-      <div class="pred-subj">
-        <div class="pred-subj-n" style="color:var(--phy)" id="pp-phy">0</div>
-        <div class="pred-subj-lbl">Physics / 100</div>
-        <div class="pred-subj-bar"><div class="pred-subj-fill" id="pp-phy-bar" style="background:var(--phy)"></div></div>
+    <!-- TASK COMPLETION CARD -->
+    <div class="trk-card trk-tasks-card">
+      <div class="trk-card-lbl">Task Completion</div>
+      <div class="trk-task-stat-row">
+        <div class="trk-task-stat">
+          <div class="trk-task-circle" id="tc-vid" style="--c:#4a9eff">
+            <svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="24" class="tc-bg"/><circle cx="30" cy="30" r="24" class="tc-arc" id="ta-vid" stroke="#4a9eff" stroke-dasharray="150.8" stroke-dashoffset="150.8"/></svg>
+            <span id="tv-vid">0</span>
+          </div>
+          <div class="trk-task-lbl">VIDEO</div>
+          <div class="trk-task-wt">30%</div>
+        </div>
+        <div class="trk-task-stat">
+          <div class="trk-task-circle" id="tc-mdo" style="--c:#fb923c">
+            <svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="24" class="tc-bg"/><circle cx="30" cy="30" r="24" class="tc-arc" id="ta-mdo" stroke="#fb923c" stroke-dasharray="150.8" stroke-dashoffset="150.8"/></svg>
+            <span id="tv-mdo">0</span>
+          </div>
+          <div class="trk-task-lbl">MUST-DO</div>
+          <div class="trk-task-wt">40%</div>
+        </div>
+        <div class="trk-task-stat">
+          <div class="trk-task-circle" id="tc-pyq" style="--c:#c084fc">
+            <svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="24" class="tc-bg"/><circle cx="30" cy="30" r="24" class="tc-arc" id="ta-pyq" stroke="#c084fc" stroke-dasharray="150.8" stroke-dashoffset="150.8"/></svg>
+            <span id="tv-pyq">0</span>
+          </div>
+          <div class="trk-task-lbl">PYQ 2026</div>
+          <div class="trk-task-wt">30%</div>
+        </div>
       </div>
-      <div class="pred-subj">
-        <div class="pred-subj-n" style="color:var(--chem)" id="pp-chem">0</div>
-        <div class="pred-subj-lbl">Chemistry / 100</div>
-        <div class="pred-subj-bar"><div class="pred-subj-fill" id="pp-chem-bar" style="background:var(--chem)"></div></div>
-      </div>
-      <div class="pred-subj">
-        <div class="pred-subj-n" style="color:var(--math)" id="pp-math">0</div>
-        <div class="pred-subj-lbl">Maths / 100</div>
-        <div class="pred-subj-bar"><div class="pred-subj-fill" id="pp-math-bar" style="background:var(--math)"></div></div>
+      <div class="trk-ch-summary">
+        <div class="trk-ch-bubble trk-ch-done"><span id="ch-done-n">0</span><div>Complete</div></div>
+        <div class="trk-ch-bubble trk-ch-part"><span id="ch-part-n">0</span><div>Partial</div></div>
+        <div class="trk-ch-bubble trk-ch-none"><span id="ch-none-n">0</span><div>Pending</div></div>
       </div>
     </div>
-    <div id="pred-bottom">
-      <div id="pred-total-wrap">
-        <div id="pred-total-label">Predicted Score</div>
-        <div id="pred-total">0 / 300</div>
-        <div id="pred-total-sub">complete tasks to increase</div>
-      </div>
-      <div id="pred-grade-wrap">
-        <div id="pred-grade" style="color:var(--tx3)">—</div>
-        <div id="pred-grade-lbl">Percentile Range</div>
-      </div>
-    </div>
-    <div id="pred-message" style="color:var(--tx3)">Start completing chapters to see your predicted score</div>
-  </div>
-</div>
-<div id="hint-banner">&#9670; Click a day to open &bull; Drag chapters from pool into days &bull; Click chapter in pool to assign to selected day &#9670;</div>
 
-<div id="main">
-  <!-- POOL PANEL (desktop) -->
-  <div id="pool-panel">
-    <div class="pool-title">Chapter Pool</div>
-    <div class="pool-hint"><span>Click</span> a chapter to assign to selected day &bull; <span>Drag</span> chapters to any day &bull; Drop chapter here to unassign</div>
-    <div id="pool-groups"></div>
-    <div class="pool-drop-zone" id="pool-drop-zone">&#8617; Drop here to unassign</div>
-    <div class="pool-empty" id="pool-empty" style="display:none">All chapters assigned &#10003;</div>
   </div>
 
-  <!-- DAYS PANEL -->
-  <div id="days-panel"></div>
-</div>
+  <!-- FILTER BAR -->
+  <div id="trk-filter-bar">
+    <button class="trk-flt active" data-flt="all" onclick="filterTracker(this,'all')">All</button>
+    <button class="trk-flt" data-flt="done" onclick="filterTracker(this,'done')">&#10003; Done</button>
+    <button class="trk-flt" data-flt="partial" onclick="filterTracker(this,'partial')">&#9670; Partial</button>
+    <button class="trk-flt" data-flt="none" onclick="filterTracker(this,'none')">&#9675; Pending</button>
+    <button class="trk-flt" data-flt="phy" onclick="filterTracker(this,'phy')">Physics</button>
+    <button class="trk-flt" data-flt="chem" onclick="filterTracker(this,'chem')">Inorganic</button>
+    <button class="trk-flt" data-flt="org" onclick="filterTracker(this,'org')">Organic</button>
+    <button class="trk-flt" data-flt="pc" onclick="filterTracker(this,'pc')">Phys Chem</button>
+    <button class="trk-flt" data-flt="math" onclick="filterTracker(this,'math')">Maths</button>
+  </div>
+
+  <!-- CHAPTER GRID -->
+  <div id="ch-tracker-grid"></div>
+
+  <!-- hidden compat IDs -->
+  <div style="display:none">
+    <span id="pf-phy"></span><span id="pf-chem"></span><span id="pf-math"></span>
+    <span id="pv-phy"></span><span id="pv-chem"></span><span id="pv-math"></span>
+    <span id="pf-ch-done"></span><span id="pf-ch-part"></span><span id="pv-chs"></span>
+  </div>
+
+</section>
 
 <!-- Mobile drawer -->
 <div id="drawer-backdrop" onclick="closeDrawer()"></div>
 <div id="pool-drawer">
   <div class="drawer-handle"></div>
   <div class="pool-title">Chapter Pool</div>
-  <div class="pool-hint"><span>Click</span> a chapter to assign to selected day &bull; <span>Drag</span> to a day</div>
+  <div class="pool-hint"><span>Click</span> to assign &bull; <span>Drag</span> to a day</div>
   <div id="pool-groups-mobile"></div>
 </div>
 
 <button id="floatbtn">&#9670; Today</button>
 <button id="resetbtn">&#8635; Reset</button>
-<button id="pool-toggle" onclick="toggleDrawer()">&#9776; Chapter Pool</button>
+<button id="pool-toggle" onclick="toggleDrawer()">&#9776; Pool</button>
 
 <script>
 try {
@@ -596,8 +777,8 @@ var DAYS = [
 ];
 
 var DEFAULT_ASSIGN = {
-  d1:['p1'], d2:['p2','i1'], d3:['p3','i2'], d4:['p4','i3'],
-  d5:['p5','m1'], d6:['p6','o1'], d7:['p7','o2'], d8:['p8','o3'],
+  d1:['p1'], d2:['p2','m1'], d3:['p3','i1'], d4:['p4','i2'],
+  d5:['p5','i3'], d6:['p6','o1'], d7:['p7','o2'], d8:['p8','o3'],
   d9:['p9','m2'], d10:['p10','pc1'], d11:['m3','pc2'],
   d12:['m4','m5'], d13:['m6','cp1'],
   rev:[], exam:[]
@@ -607,20 +788,22 @@ var TASK_LABELS = ['[VIDEO]','[MUST-DO]','[2026]'];
 var TASK_DESCS  = ['Lecture / Revise Notes','Must-Do Questions (50+)','JEE Mains Jan 2026 Questions'];
 
 var DT = {d1:[2026,2,21],d2:[2026,2,22],d3:[2026,2,23],d4:[2026,2,24],d5:[2026,2,25],d6:[2026,2,26],d7:[2026,2,27],d8:[2026,2,28],d9:[2026,2,29],d10:[2026,2,30],d11:[2026,2,31],d12:[2026,3,1],d13:[2026,3,2],rev:[2026,3,3],exam:[2026,3,4]};
-var EXAM_START = new Date(2026,3,4,9,0,0);
+var STUDY_END = new Date(2026,3,3,20,0,0);  /* 3 April 2026 8:00 PM — Revision Night */
+var EXAM_START = new Date(2026,3,4,9,0,0);  /* 4 April 2026 9:00 AM — Exam Day */
+var PLAN_START = new Date(2026,2,21,0,0,0); /* 21 March 2026 — Plan Start */
 
 /* ══ STATE ══ */
 var ASSIGN, TASKS, REV_TASKS, OPEN_DAYS, selectedDay = null, dragState = null;
 
 function loadState(){
-  try{var a=localStorage.getItem('jwa');ASSIGN=a?JSON.parse(a):JSON.parse(JSON.stringify(DEFAULT_ASSIGN));}catch(e){ASSIGN=JSON.parse(JSON.stringify(DEFAULT_ASSIGN));}
+  try{var a=localStorage.getItem('jwa3');ASSIGN=a?JSON.parse(a):JSON.parse(JSON.stringify(DEFAULT_ASSIGN));}catch(e){ASSIGN=JSON.parse(JSON.stringify(DEFAULT_ASSIGN));}
   try{var t=localStorage.getItem('jwt');TASKS=t?JSON.parse(t):{};}catch(e){TASKS={};}
   try{var r=localStorage.getItem('jwr');REV_TASKS=r?JSON.parse(r):{};}catch(e){REV_TASKS={};}
   try{var o=localStorage.getItem('jwo');OPEN_DAYS=o?JSON.parse(o):{};}catch(e){OPEN_DAYS={};}
   // Auto-open today
   var tid=getTID();if(tid&&!OPEN_DAYS[tid])OPEN_DAYS[tid]=true;
 }
-function saveAssign(){try{localStorage.setItem('jwa',JSON.stringify(ASSIGN));}catch(e){}}
+function saveAssign(){try{localStorage.setItem('jwa3',JSON.stringify(ASSIGN));}catch(e){}}
 function saveTasks(){try{localStorage.setItem('jwt',JSON.stringify(TASKS));}catch(e){}}
 function saveRevTasks(){try{localStorage.setItem('jwr',JSON.stringify(REV_TASKS));}catch(e){}}
 function saveOpen(){try{localStorage.setItem('jwo',JSON.stringify(OPEN_DAYS));}catch(e){}}
@@ -806,114 +989,184 @@ function renderChTrackerGrid(){
   }
 }
 
-function makeChCard(chId,ch,dayId,assigned){
-  var done=assigned?chTasksDone(dayId,chId):[false,false,false];
-  var countDone=done.filter(Boolean).length;
-  var score=0;
-  if(assigned) for(var ti=0;ti<3;ti++) if(done[ti]) score+=TASK_WEIGHTS[ti]*ch.mReal;
-  score=Math.round(score);
-  var pct=Math.round((countDone/3)*100);
-  var col=SUBJ_COLORS[ch.subj]||'#c9a84c';
+function makeChCard(chId, ch, dayId, assigned){
+  var done    = assigned ? chTasksDone(dayId, chId) : [false,false,false];
+  var cntDone = done.filter(Boolean).length;
+  var score   = 0;
+  if(assigned) for(var ti=0;ti<3;ti++) if(done[ti]) score += TASK_WEIGHTS[ti] * ch.mReal;
+  score = Math.round(score);
+  var pct   = Math.round((cntDone/3)*100);
+  var col   = SUBJ_COLORS[ch.subj] || '#c9a84c';
+  var state = !assigned ? 'none' : cntDone===3 ? 'done' : cntDone>0 ? 'partial' : 'none';
 
-  var card=document.createElement('div');
-  var cls='ch-track-card';
-  if(!assigned)cls+=' ch-none';
-  else if(countDone===3)cls+=' ch-complete';
-  else if(countDone>0)cls+=' ch-partial';
-  card.className=cls;
+  var card = document.createElement('div');
+  card.className = 'ch-track-card' + (!assigned?' ch-none':cntDone===3?' ch-complete':cntDone>0?' ch-partial':'');
+  card.setAttribute('data-subj',  ch.subj);
+  card.setAttribute('data-state', state);
 
   /* HEADER */
-  var hdr=document.createElement('div');hdr.className='ctc-hdr';
-  var stag=document.createElement('div');stag.className='ctc-subj-tag';
-  stag.textContent=SUBJ_LABELS[ch.subj]||ch.subj;
-  stag.style.background=col+'22';stag.style.color=col;stag.style.border='1px solid '+col+'55';
+  var hdr = document.createElement('div'); hdr.className = 'ctc-hdr';
+  var stag = document.createElement('div'); stag.className = 'ctc-subj-tag';
+  stag.textContent = SUBJ_LABELS[ch.subj] || ch.subj;
+  stag.style.background = col+'1a'; stag.style.color = col; stag.style.border = '1px solid '+col+'44';
   hdr.appendChild(stag);
-  var nm=document.createElement('div');nm.className='ctc-name';nm.textContent=ch.label;hdr.appendChild(nm);
+  var nm = document.createElement('div'); nm.className = 'ctc-name'; nm.textContent = ch.label; hdr.appendChild(nm);
   /* complete badge */
-  var badge=document.createElement('span');badge.className='ctc-complete-badge';badge.textContent='DONE ✓';hdr.appendChild(badge);
-  /* status */
-  var st=document.createElement('div');st.className='ctc-status';
-  if(!assigned){st.textContent='POOL';st.style.color='var(--tx3)';}
-  else if(countDone===3){st.textContent='100%';st.style.color='var(--grn)';}
-  else if(countDone>0){st.textContent=Math.round((countDone/3)*100)+'%';st.style.color='var(--gold)';}
-  else{st.textContent='0%';st.style.color='var(--tx3)';}
+  var badge = document.createElement('span'); badge.className = 'ctc-complete-badge'; badge.textContent = '✓ DONE'; hdr.appendChild(badge);
+  /* % status */
+  var st = document.createElement('div'); st.className = 'ctc-status';
+  st.textContent = pct+'%';
+  st.style.color = cntDone===3?'var(--grn)':cntDone>0?'var(--gold)':'var(--tx3)';
   hdr.appendChild(st);
   card.appendChild(hdr);
 
   if(!assigned){
-    var ua=document.createElement('div');ua.className='ctc-unassigned';
-    ua.textContent='Drag to a day or click in pool →';
+    var ua = document.createElement('div'); ua.className = 'ctc-unassigned';
+    ua.textContent = 'Not assigned — drag to a day or click in pool';
     card.appendChild(ua);
     return card;
   }
 
-  /* TASK ROWS */
-  var taskDefs=[
-    {label:'[VIDEO] Lecture / Revise Notes', wt:'30%', pip:'#4a9eff', ti:0},
-    {label:'[MUST-DO] 50+ Questions',        wt:'40%', pip:'#fb923c', ti:1},
-    {label:'[2026] JEE Jan 2026 PYQs',       wt:'30%', pip:'#c084fc', ti:2}
+  /* 3-PIP BAR ROW */
+  var pipDefs = [
+    {label:'VIDEO',   col:'#4a9eff', ti:0},
+    {label:'MUST-DO', col:'#fb923c', ti:1},
+    {label:'PYQ',     col:'#c084fc', ti:2}
   ];
-  var taskWrap=document.createElement('div');taskWrap.className='ctc-tasks';
+  var pipRow = document.createElement('div'); pipRow.className = 'ctc-pip-row';
+  pipDefs.forEach(function(pd){
+    var item = document.createElement('div');
+    item.className = 'ctc-pip-item' + (done[pd.ti]?' pi-done':'');
+    var bar = document.createElement('div'); bar.className = 'ctc-pip-bar';
+    bar.style.background = done[pd.ti] ? pd.col : 'rgba(255,255,255,.07)';
+    if(done[pd.ti]) bar.style.boxShadow = '0 0 6px '+pd.col+'55';
+    var txt = document.createElement('div'); txt.className = 'ctc-pip-txt';
+    txt.textContent = pd.label;
+    item.appendChild(bar); item.appendChild(txt);
+    pipRow.appendChild(item);
+  });
+  card.appendChild(pipRow);
+
+  /* TASK DETAIL ROWS */
+  var taskDefs = [
+    {label:'[VIDEO] Lecture / Revise',   wt:'30%', col:'#4a9eff', ti:0},
+    {label:'[MUST-DO] 50+ Questions',    wt:'40%', col:'#fb923c', ti:1},
+    {label:'[2026] JEE Jan PYQs',        wt:'30%', col:'#c084fc', ti:2}
+  ];
+  var taskWrap = document.createElement('div'); taskWrap.className = 'ctc-tasks';
   taskDefs.forEach(function(td){
-    var row=document.createElement('div');
-    row.className='ctc-task '+(done[td.ti]?'t-done':'t-pending');
-    var pip=document.createElement('div');pip.className='ctc-pip';
-    pip.style.background=done[td.ti]?td.pip:'transparent';
-    pip.style.borderColor=done[td.ti]?td.pip:'var(--tx3)';
-    row.appendChild(pip);
-    var lbl=document.createElement('div');lbl.className='ctc-lbl';lbl.textContent=td.label;row.appendChild(lbl);
-    var wt=document.createElement('div');wt.className='ctc-wt';wt.textContent=td.wt;row.appendChild(wt);
-    var tick=document.createElement('div');tick.className='ctc-tick';tick.textContent='✓';row.appendChild(tick);
+    var row = document.createElement('div'); row.className = 'ctc-task '+(done[td.ti]?'t-done':'t-pending');
+    var dot = document.createElement('div'); dot.className = 'ctc-pip-dot';
+    dot.style.background   = done[td.ti] ? td.col : 'transparent';
+    dot.style.borderColor  = done[td.ti] ? td.col : 'var(--tx3)';
+    dot.style.boxShadow    = done[td.ti] ? '0 0 5px '+td.col+'66' : 'none';
+    var lbl = document.createElement('div'); lbl.className = 'ctc-lbl'; lbl.textContent = td.label;
+    var wt  = document.createElement('div'); wt.className  = 'ctc-wt';  wt.textContent  = td.wt;
+    var tick = document.createElement('div'); tick.className = 'ctc-tick'; tick.textContent = '✓';
+    row.appendChild(dot); row.appendChild(lbl); row.appendChild(wt); row.appendChild(tick);
     taskWrap.appendChild(row);
   });
   card.appendChild(taskWrap);
 
-  /* SCORE BAR */
-  var srow=document.createElement('div');srow.className='ctc-score-row';
-  var strack=document.createElement('div');strack.className='ctc-score-track';
-  var sfill=document.createElement('div');sfill.className='ctc-score-fill';
-  sfill.style.width=pct+'%';
-  var scoreCol=countDone===3?'var(--grn)':countDone>0?'var(--gold)':'var(--tx3)';
-  sfill.style.background=col;
-  strack.appendChild(sfill);srow.appendChild(strack);
-  var sval=document.createElement('div');sval.className='ctc-score-val';
-  sval.textContent='~'+score+'/'+ch.mReal+'m';
-  sval.style.color=scoreCol;
-  srow.appendChild(sval);
-  card.appendChild(srow);
+  /* MARKS BAR */
+  var mrow  = document.createElement('div'); mrow.className = 'ctc-marks-row';
+  var mtrack = document.createElement('div'); mtrack.className = 'ctc-marks-track';
+  var mfill  = document.createElement('div'); mfill.className  = 'ctc-marks-fill';
+  mfill.style.width      = pct+'%';
+  mfill.style.background = cntDone===3?'var(--grn)':cntDone>0?'var(--gold)':col;
+  if(cntDone===3) mfill.style.boxShadow = '0 0 8px rgba(74,222,128,.4)';
+  mtrack.appendChild(mfill);
+  var mval = document.createElement('div'); mval.className = 'ctc-marks-val';
+  mval.textContent = '~'+score+' / '+ch.mReal+' m';
+  mval.style.color = cntDone===3?'var(--grn)':cntDone>0?'var(--gold)':'var(--tx3)';
+  mrow.appendChild(mtrack); mrow.appendChild(mval);
+  card.appendChild(mrow);
 
   return card;
+}
+
+
+/* ══ CURRENT FILTER STATE ══ */
+var TRK_FILTER = 'all';
+
+function filterTracker(btn, flt){
+  TRK_FILTER = flt;
+  document.querySelectorAll('.trk-flt').forEach(function(b){b.classList.remove('active');});
+  if(btn) btn.classList.add('active');
+  /* show/hide cards */
+  document.querySelectorAll('.ch-track-card[data-subj]').forEach(function(card){
+    var subj  = card.getAttribute('data-subj');
+    var state = card.getAttribute('data-state');
+    var show  = flt==='all'
+      || (flt==='done'    && state==='done')
+      || (flt==='partial' && state==='partial')
+      || (flt==='none'    && state==='none')
+      || (flt===subj);
+    card.classList.toggle('trk-hidden', !show);
+  });
 }
 
 /* ══ MASTER UPDATE TRACKER ══ */
 function updateTracker(){
   try{
-    var pred=calcPredictedScore();
-    var info=scoreToMsg(pred.total);
-    /* predictor score */
-    var pn=document.getElementById('pred-total');
-    if(pn){pn.textContent=pred.total;pn.style.color=info.col;}
-    var ps=document.getElementById('pred-score-sub-txt');
-    if(ps)ps.textContent=info.msg;
-    /* bars */
-    var set=function(fillId,valId,val,max){
-      var f=document.getElementById(fillId);if(f)f.style.width=(val/max*100)+'%';
-      var v=document.getElementById(valId);if(v)v.textContent=val+'/'+max;
-    };
-    set('pf-phy','pv-phy',pred.phy,100);
-    set('pf-chem','pv-chem',pred.chem,100);
-    set('pf-math','pv-math',pred.math,100);
-    /* chapter progress bar */
-    var totChs=Math.max(pred.totChs,1);
-    var doneW=Math.round(pred.doneChs/totChs*100);
-    var partW=Math.round(pred.partChs/totChs*100);
-    var pfd=document.getElementById('pf-ch-done');if(pfd)pfd.style.width=doneW+'%';
-    var pfp=document.getElementById('pf-ch-part');if(pfp)pfp.style.width=partW+'%';
-    var pcv=document.getElementById('pv-chs');
-    if(pcv)pcv.textContent=pred.doneChs+'/'+pred.totChs+' complete';
-    /* rebuild chapter grid */
+    var pred = calcPredictedScore();
+    var info = scoreToMsg(pred.total);
+    var totChs = Math.max(pred.totChs, 1);
+
+    /* ── BIG SCORE RING ── */
+    var pn = document.getElementById('pred-total');
+    if(pn){ pn.textContent = pred.total; pn.style.color = info.col; }
+    var ps = document.getElementById('pred-score-sub-txt');
+    if(ps) ps.textContent = info.msg;
+    /* ring stroke */
+    var ring = document.getElementById('ring-fill-total');
+    if(ring){
+      var circ = 314.16;
+      var offset = circ - (pred.total / 300) * circ;
+      ring.style.strokeDashoffset = offset;
+      ring.style.stroke = info.col;
+    }
+    /* grade badge */
+    var gb = document.getElementById('trk-grade-badge');
+    if(gb){
+      var grade = pred.total>=240?'S — IIT ZONE':pred.total>=210?'A+ — 99%ILE':pred.total>=180?'A — TOP NIT':pred.total>=150?'B+ — NIT SURE':pred.total>=100?'B — KEEP GOING':pred.total>0?'C — MORE TASKS':'START TASKS';
+      gb.textContent = grade;
+      gb.style.color = info.col;
+      gb.style.borderColor = info.col+'55';
+      gb.style.background   = info.col+'15';
+    }
+
+    /* ── SUBJECT BARS ── */
+    function setSb(barId, valId, val){
+      var b = document.getElementById(barId); if(b) b.style.width = val + '%';
+      var v = document.getElementById(valId);  if(v) v.textContent = val;
+    }
+    setSb('sb-phy',  'sv-phy',  pred.phy);
+    setSb('sb-chem', 'sv-chem', pred.chem);
+    setSb('sb-math', 'sv-math', pred.math);
+
+    /* ── TASK CIRCLES ── */
+    var circ2 = 150.8;
+    function setCirc(arcId, numId, done, total){
+      var a = document.getElementById(arcId);
+      if(a) a.style.strokeDashoffset = total>0 ? circ2 - (done/total)*circ2 : circ2;
+      var n = document.getElementById(numId);
+      if(n) n.textContent = done;
+    }
+    setCirc('ta-vid', 'tv-vid', pred.totalVid, pred.totChs);
+    setCirc('ta-mdo', 'tv-mdo', pred.totalMdo, pred.totChs);
+    setCirc('ta-pyq', 'tv-pyq', pred.totalPyq, pred.totChs);
+
+    /* ── CHAPTER BUBBLES ── */
+    var cdn = document.getElementById('ch-done-n'); if(cdn) cdn.textContent = pred.doneChs;
+    var cpn = document.getElementById('ch-part-n'); if(cpn) cpn.textContent = pred.partChs;
+    var cnn = document.getElementById('ch-none-n'); if(cnn) cnn.textContent = Math.max(0, pred.totChs - pred.doneChs - pred.partChs);
+
+    /* ── CHAPTER GRID ── */
     renderChTrackerGrid();
-  }catch(e){console.error('tracker',e);}
+    filterTracker(null, TRK_FILTER);  /* re-apply filter */
+
+  }catch(e){ console.error('tracker', e); }
 }
 
 function dayMarks(dayId){
@@ -940,12 +1193,40 @@ function priColor(pri){
 function tick(){
   try{
     var n=new Date();
+    /* nav clock */
     document.getElementById('clockspan').textContent=pad(n.getHours())+':'+pad(n.getMinutes())+':'+pad(n.getSeconds());
-    var diff=EXAM_START-n;if(diff<0)diff=0;
+    /* countdown to 3 April 8PM (study end) */
+    var diff=STUDY_END-n;
+    var isOver=diff<=0;
+    if(isOver)diff=0;
     document.getElementById('cd-d').textContent=pad(Math.floor(diff/86400000));
     document.getElementById('cd-h').textContent=pad(Math.floor((diff%86400000)/3600000));
     document.getElementById('cd-m').textContent=pad(Math.floor((diff%3600000)/60000));
     document.getElementById('cd-s').textContent=pad(Math.floor((diff%60000)/1000));
+    /* switch label when study ends */
+    var lbl=document.getElementById('timer-label-txt');
+    var sub=document.getElementById('timer-sublabel');
+    if(isOver){
+      var diffExam=EXAM_START-n; if(diffExam<0)diffExam=0;
+      document.getElementById('cd-d').textContent=pad(Math.floor(diffExam/86400000));
+      document.getElementById('cd-h').textContent=pad(Math.floor((diffExam%86400000)/3600000));
+      document.getElementById('cd-m').textContent=pad(Math.floor((diffExam%3600000)/60000));
+      document.getElementById('cd-s').textContent=pad(Math.floor((diffExam%60000)/1000));
+      if(lbl)lbl.textContent='EXAM COUNTDOWN';
+      if(sub)sub.textContent='Until 4 April, 9:00 AM — JEE MAINS 2026';
+    } else {
+      if(lbl)lbl.textContent='STUDY TIME REMAINING';
+      if(sub)sub.textContent='Until 3 April, 8:00 PM — Revision Night';
+    }
+    /* timer progress bar: 21 Mar → 3 Apr 8PM */
+    var totalDur=STUDY_END-PLAN_START;
+    var elapsed=n-PLAN_START;
+    var pct=Math.min(100,Math.max(0,Math.round(elapsed/totalDur*100)));
+    var bar=document.getElementById('timer-bar-fill');
+    if(bar)bar.style.width=pct+'%';
+    var ml=document.getElementById('timer-meta-left');
+    var daysLeft=Math.max(0,Math.ceil(diff/86400000));
+    if(ml)ml.textContent=daysLeft+(isOver?' days to exam':' study days left');
   }catch(e){}
 }
 
@@ -1472,6 +1753,27 @@ renderAll();
 updateTracker();
 tick();
 setInterval(tick,1000);
+
+/* ══ TAB SWITCHING ══ */
+function switchTab(btn,secId){
+  document.querySelectorAll('.ntab').forEach(function(b){b.classList.remove('active');});
+  document.querySelectorAll('.sec').forEach(function(s){s.classList.remove('active');});
+  if(btn)btn.classList.add('active');
+  var sec=document.getElementById(secId);
+  if(sec){sec.classList.add('active');window.scrollTo(0,0);}
+  var pt=document.getElementById('pool-toggle');
+  if(pt)pt.style.display=secId==='sec-plan'?'':'none';
+  if(secId==='sec-tracker')updateTracker();
+}
+function switchTabById(secId){
+  var btn=document.querySelector('[data-sec="'+secId+'"]');
+  switchTab(btn,secId);
+}
+
+/* init pool-toggle hidden */
+var _pt=document.getElementById('pool-toggle');
+if(_pt)_pt.style.display='none';
+
 setTimeout(function(){
   selectDay(TID);
   var el=document.getElementById('day-'+TID);

@@ -110,7 +110,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;o
 .trk-card{background:var(--bg2);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:16px;position:relative;overflow:hidden;transition:border-color .2s}
 .trk-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold-b),transparent)}
 .trk-card:hover{border-color:var(--gold-b)}
-.trk-card-lbl{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--tx3);text-transform:uppercase;margin-bottom:12px}
+.trk-card-lbl{font-family:'Share Tech Mono',monospace;font-size:15px;letter-spacing:3px;color:var(--tx3);text-transform:uppercase;margin-bottom:12px}
 
 /* SCORE RING CARD */
 .trk-score-card{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px}
@@ -119,21 +119,21 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;o
 .ring-bg{fill:none;stroke:rgba(255,255,255,.06);stroke-width:8}
 .ring-fill{fill:none;stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset .8s cubic-bezier(.4,0,.2,1),stroke .4s}
 #trk-ring-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0}
-.trk-big-num{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:700;line-height:1;transition:color .4s}
-.trk-big-denom{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--tx3)}
-.trk-score-msg{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--tx3);line-height:1.6;letter-spacing:.5px;max-width:160px;text-align:center}
-#trk-grade-badge{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;padding:3px 10px;border-radius:4px;background:rgba(201,168,76,.1);color:var(--gold);border:1px solid var(--gold-b);margin-top:2px}
+.trk-big-num{font-family:'Cormorant Garamond',serif;font-size:56px;font-weight:700;line-height:1;transition:color .4s}
+.trk-big-denom{font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--tx3)}
+.trk-score-msg{font-family:'Share Tech Mono',monospace;font-size:14px;color:var(--tx3);line-height:1.6;letter-spacing:.5px;max-width:160px;text-align:center}
+#trk-grade-badge{font-family:'Share Tech Mono',monospace;font-size:14px;letter-spacing:2px;padding:4px 12px;border-radius:4px;background:rgba(201,168,76,.1);color:var(--gold);border:1px solid var(--gold-b);margin-top:2px}
 
 /* SUBJECT CARD */
 .trk-subj-card{display:flex;flex-direction:column;justify-content:center}
 .trk-subj-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
 .trk-subj-row:last-child{margin-bottom:0}
-.trk-subj-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:700;flex-shrink:0}
+.trk-subj-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:700;flex-shrink:0}
 .trk-subj-info{flex:1;min-width:0}
-.trk-subj-name{font-size:11px;font-weight:600;color:var(--tx);margin-bottom:5px}
+.trk-subj-name{font-size:18px;font-weight:600;color:var(--tx);margin-bottom:6px}
 .trk-subj-bar-wrap{height:6px;background:var(--bg4);border-radius:99px;overflow:hidden}
 .trk-subj-bar{height:100%;border-radius:99px;width:0%;transition:width .6s cubic-bezier(.4,0,.2,1)}
-.trk-subj-val{font-family:'Share Tech Mono',monospace;font-size:16px;font-weight:700;width:30px;text-align:right;flex-shrink:0}
+.trk-subj-val{font-family:'Share Tech Mono',monospace;font-size:26px;font-weight:700;width:30px;text-align:right;flex-shrink:0}
 
 /* TASK CARD */
 .trk-tasks-card{display:flex;flex-direction:column}
@@ -143,20 +143,20 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;o
 .trk-task-circle svg{position:absolute;inset:0;transform:rotate(-90deg)}
 .tc-bg{fill:none;stroke:rgba(255,255,255,.06);stroke-width:5}
 .tc-arc{fill:none;stroke-width:5;stroke-linecap:round;transition:stroke-dashoffset .6s cubic-bezier(.4,0,.2,1)}
-.trk-task-circle span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Share Tech Mono',monospace;font-size:12px;font-weight:700;color:var(--tx)}
-.trk-task-lbl{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:2px;color:var(--tx3);text-transform:uppercase}
-.trk-task-wt{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--gold);letter-spacing:1px}
+.trk-task-circle span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Share Tech Mono',monospace;font-size:15px;font-weight:700;color:var(--tx)}
+.trk-task-lbl{font-family:'Share Tech Mono',monospace;font-size:14px;letter-spacing:2px;color:var(--tx3);text-transform:uppercase}
+.trk-task-wt{font-family:'Share Tech Mono',monospace;font-size:14px;color:var(--gold);letter-spacing:1px}
 .trk-ch-summary{display:flex;gap:6px;justify-content:center;border-top:1px solid rgba(255,255,255,.05);padding-top:10px}
 .trk-ch-bubble{flex:1;text-align:center;padding:7px 4px;border-radius:8px;font-family:'Share Tech Mono',monospace}
-.trk-ch-bubble span{font-size:18px;font-weight:700;display:block;line-height:1}
-.trk-ch-bubble div{font-size:7px;letter-spacing:1px;margin-top:3px;text-transform:uppercase}
+.trk-ch-bubble span{font-size:30px;font-weight:700;display:block;line-height:1}
+.trk-ch-bubble div{font-size:13px;letter-spacing:1px;margin-top:3px;text-transform:uppercase}
 .trk-ch-done{background:rgba(74,222,128,.08);color:var(--grn);border:1px solid rgba(74,222,128,.2)}
 .trk-ch-part{background:rgba(201,168,76,.08);color:var(--gold);border:1px solid var(--gold-b)}
 .trk-ch-none{background:rgba(255,255,255,.03);color:var(--tx3);border:1px solid rgba(255,255,255,.05)}
 
 /* FILTER BAR */
 #trk-filter-bar{display:flex;gap:5px;max-width:960px;margin:0 auto;padding:0 14px 12px;flex-wrap:wrap}
-.trk-flt{background:var(--bg3);border:1px solid rgba(255,255,255,.06);color:var(--tx3);font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:2px;padding:5px 10px;border-radius:5px;cursor:pointer;transition:all .15s;text-transform:uppercase}
+.trk-flt{background:var(--bg3);border:1px solid rgba(255,255,255,.06);color:var(--tx3);font-family:'Share Tech Mono',monospace;font-size:13px;letter-spacing:2px;padding:7px 14px;border-radius:5px;cursor:pointer;transition:all .15s;text-transform:uppercase}
 .trk-flt:hover{border-color:var(--gold-b);color:var(--tx)}
 .trk-flt.active{background:var(--gold);color:#000;border-color:var(--gold);font-weight:700}
 
@@ -170,39 +170,111 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;o
 .ch-track-card.trk-hidden{display:none}
 /* card header */
 .ctc-hdr{display:flex;align-items:center;gap:8px;padding:10px 12px 6px}
-.ctc-subj-tag{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:2px;padding:2px 6px;border-radius:3px;font-weight:700;flex-shrink:0;text-transform:uppercase}
-.ctc-name{font-size:11px;font-weight:600;color:var(--tx);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ctc-status{font-family:'Share Tech Mono',monospace;font-size:9px;flex-shrink:0;font-weight:700}
-.ctc-complete-badge{display:none;font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:1px;padding:1px 6px;border-radius:3px;background:rgba(74,222,128,.12);color:var(--grn);border:1px solid rgba(74,222,128,.25);flex-shrink:0}
+.ctc-subj-tag{font-family:'Share Tech Mono',monospace;font-size:12px;letter-spacing:2px;padding:3px 8px;border-radius:3px;font-weight:700;flex-shrink:0;text-transform:uppercase}
+.ctc-name{font-size:15px;font-weight:600;color:var(--tx);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ctc-status{font-family:'Share Tech Mono',monospace;font-size:15px;flex-shrink:0;font-weight:700}
+.ctc-complete-badge{display:none;font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:1px;padding:1px 6px;border-radius:3px;background:rgba(74,222,128,.12);color:var(--grn);border:1px solid rgba(74,222,128,.25);flex-shrink:0}
 .ch-track-card.ch-complete .ctc-complete-badge{display:inline-block}
 /* 3 task pips row */
 .ctc-pip-row{display:flex;gap:5px;padding:4px 12px 6px;align-items:center}
 .ctc-pip-item{flex:1;display:flex;flex-direction:column;gap:3px;align-items:center}
 .ctc-pip-bar{width:100%;height:5px;border-radius:99px;transition:background .3s,box-shadow .3s}
-.ctc-pip-txt{font-family:'Share Tech Mono',monospace;font-size:6px;letter-spacing:1px;color:var(--tx3);text-align:center}
+.ctc-pip-txt{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--tx3);text-align:center}
 .ctc-pip-item.pi-done .ctc-pip-txt{color:var(--tx2)}
 /* task detail rows */
 .ctc-tasks{padding:2px 12px 6px;display:flex;flex-direction:column;gap:3px}
-.ctc-task{display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:5px;border:1px solid transparent;transition:background .12s}
+.ctc-task{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:6px;border:1px solid transparent;transition:background .12s}
 .ctc-task.t-done{background:rgba(74,222,128,.06);border-color:rgba(74,222,128,.15)}
 .ctc-pip-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;border:1.5px solid var(--tx3);transition:all .2s}
 .ctc-task.t-done .ctc-pip-dot{border:none}
-.ctc-lbl{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:1px;flex:1;color:var(--tx3);text-transform:uppercase}
+.ctc-lbl{font-family:'Share Tech Mono',monospace;font-size:13px;letter-spacing:1px;flex:1;color:var(--tx3);text-transform:uppercase}
 .ctc-task.t-done .ctc-lbl{color:var(--tx2)}
-.ctc-wt{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--tx3)}
+.ctc-wt{font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--tx3)}
 .ctc-task.t-done .ctc-wt{color:var(--grn)}
-.ctc-tick{font-size:10px;font-weight:900;flex-shrink:0;opacity:0;transition:opacity .2s;color:var(--grn)}
+.ctc-tick{font-size:13px;font-weight:900;flex-shrink:0;opacity:0;transition:opacity .2s;color:var(--grn)}
 .ctc-task.t-done .ctc-tick{opacity:1}
 /* marks bar */
 .ctc-marks-row{display:flex;align-items:center;gap:8px;padding:4px 12px 10px}
 .ctc-marks-track{flex:1;height:4px;background:var(--bg4);border-radius:99px;overflow:hidden}
 .ctc-marks-fill{height:100%;border-radius:99px;transition:width .5s cubic-bezier(.4,0,.2,1)}
-.ctc-marks-val{font-family:'Share Tech Mono',monospace;font-size:9px;flex-shrink:0;font-weight:700}
+.ctc-marks-val{font-family:'Share Tech Mono',monospace;font-size:15px;flex-shrink:0;font-weight:700}
 .ctc-unassigned{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--tx3);padding:4px 12px 10px;letter-spacing:1px}
 
 /* section divider label in grid */
-.trk-grid-sep{grid-column:1/-1;font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--tx3);text-transform:uppercase;padding:8px 2px 4px;border-top:1px solid rgba(255,255,255,.05);margin-top:4px}
+.trk-grid-sep{grid-column:1/-1;font-family:'Share Tech Mono',monospace;font-size:13px;letter-spacing:3px;color:var(--tx3);text-transform:uppercase;padding:8px 2px 4px;border-top:1px solid rgba(255,255,255,.05);margin-top:4px}
 
+/* ══ MUST-DO SECTION ══ */
+#sec-mustdo{padding:52px 0 90px}
+#md-wrap{max-width:960px;margin:0 auto;padding:0 14px 40px}
+/* dashboard */
+#md-dashboard{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:18px 0 14px}
+.md-dash-card{background:var(--bg2);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:14px 16px;text-align:center;position:relative;overflow:hidden}
+.md-dash-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold-b),transparent)}
+.md-dash-n{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:700;line-height:1}
+.md-dash-l{font-family:'Share Tech Mono',monospace;font-size:14px;letter-spacing:3px;color:var(--tx3);margin-top:4px;text-transform:uppercase}
+.md-dash-sub{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--tx3);margin-top:2px}
+/* score bar */
+#md-score-bar{background:var(--bg2);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:14px 18px;margin-bottom:14px}
+.md-sb-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.md-sb-lbl{font-family:'Share Tech Mono',monospace;font-size:13px;letter-spacing:3px;color:var(--tx3);text-transform:uppercase}
+.md-sb-val{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700}
+.md-sb-tracks{display:flex;flex-direction:column;gap:5px}
+.md-sb-row{display:flex;align-items:center;gap:10px}
+.md-sb-rlbl{font-family:'Share Tech Mono',monospace;font-size:14px;letter-spacing:1px;width:44px;flex-shrink:0}
+.md-sb-track{flex:1;height:6px;background:var(--bg4);border-radius:99px;overflow:hidden}
+.md-sb-fill{height:100%;border-radius:99px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.md-sb-rval{font-family:'Share Tech Mono',monospace;font-size:14px;width:48px;text-align:right;flex-shrink:0;font-weight:700}
+/* subject blocks */
+.md-subject-block{margin-bottom:18px}
+.md-subj-hdr{display:flex;align-items:center;gap:10px;padding:10px 0 8px;border-bottom:1px solid rgba(255,255,255,.05);margin-bottom:8px}
+.md-subj-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.md-subj-name{font-family:'Share Tech Mono',monospace;font-size:16px;letter-spacing:4px;text-transform:uppercase;font-weight:700;flex:1}
+.md-subj-score{font-family:'Share Tech Mono',monospace;font-size:14px;color:var(--tx3)}
+.md-subj-prog{font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--tx3);margin-left:8px}
+/* chapter cards */
+.md-ch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:8px}
+.md-card{background:var(--bg2);border:1px solid rgba(255,255,255,.05);border-radius:10px;overflow:hidden;transition:border-color .2s,box-shadow .2s}
+.md-card:hover{border-color:var(--gold-b)}
+.md-card.md-done{border-color:rgba(74,222,128,.35);box-shadow:0 0 14px rgba(74,222,128,.07)}
+.md-card.md-partial{border-color:rgba(201,168,76,.28)}
+/* card header */
+.md-ch-hdr{display:flex;align-items:center;gap:8px;padding:10px 12px 8px;cursor:pointer;user-select:none}
+.md-ch-hdr:hover{background:rgba(255,255,255,.02)}
+.md-ch-num{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;min-width:28px;line-height:1}
+.md-ch-info{flex:1;min-width:0}
+.md-ch-name{font-size:18px;font-weight:700;color:var(--tx)}
+.md-ch-meta{font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--tx3);margin-top:3px;letter-spacing:1px}
+.md-ch-marks-tag{font-family:'Share Tech Mono',monospace;font-size:13px;border-radius:4px;padding:2px 7px;flex-shrink:0;font-weight:700}
+.md-done-badge{display:none;font-family:'Share Tech Mono',monospace;font-size:13px;padding:3px 8px;border-radius:3px;background:rgba(74,222,128,.12);color:var(--grn);border:1px solid rgba(74,222,128,.25);flex-shrink:0}
+.md-card.md-done .md-done-badge{display:inline-block}
+.md-chev{font-family:'Share Tech Mono',monospace;font-size:14px;color:var(--tx3);transition:transform .2s;flex-shrink:0}
+.md-card.md-open .md-chev{transform:rotate(180deg);color:var(--gold)}
+/* pip bar quick view */
+.md-pip-row{display:flex;gap:4px;padding:0 12px 8px}
+.md-pip{flex:1;height:4px;border-radius:99px;background:rgba(255,255,255,.07);transition:background .3s}
+/* tasks body */
+.md-body{display:none;padding:0 12px 12px}
+.md-card.md-open .md-body{display:block}
+.md-task{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:6px;margin-bottom:4px;cursor:pointer;border:1px solid transparent;transition:background .12s,border-color .12s;user-select:none}
+.md-task:hover{background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.06)}
+.md-task.md-checked{opacity:.45}
+.md-task.md-checked .md-task-txt{text-decoration:line-through;color:var(--tx3)}
+.md-cb{width:16px;height:16px;border-radius:4px;border:1.5px solid var(--tx3);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+.md-task.md-checked .md-cb{border:none}
+.md-cb-tick{font-size:9px;font-weight:900;display:none}
+.md-task.md-checked .md-cb-tick{display:block;color:#000}
+.md-task-tag{font-family:'Share Tech Mono',monospace;font-size:13px;flex-shrink:0;width:76px;letter-spacing:1px}
+.md-task-txt{font-size:14px;color:var(--tx);flex:1;line-height:1.5;font-weight:500}
+.md-task-pts{font-family:'Share Tech Mono',monospace;font-size:13px;flex-shrink:0;color:var(--tx3)}
+.md-task.md-checked .md-task-pts{color:var(--grn)}
+/* progress bar per card */
+.md-card-prog{padding:4px 12px 10px}
+.md-card-track{height:3px;background:var(--bg4);border-radius:99px;overflow:hidden}
+.md-card-fill{height:100%;border-radius:99px;transition:width .4s}
+@media(max-width:700px){
+  #md-dashboard{grid-template-columns:repeat(3,1fr);gap:6px}
+  .md-ch-grid{grid-template-columns:1fr}
+}
 @media(max-width:700px){
   #trk-dashboard{grid-template-columns:1fr;gap:8px;padding:14px 10px 8px}
   #ch-tracker-grid{grid-template-columns:1fr;padding:0 10px 20px}
@@ -448,6 +520,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;o
     <button class="ntab active" data-sec="sec-home" onclick="switchTab(this,'sec-home')">🏠 Home</button>
     <button class="ntab" data-sec="sec-plan" onclick="switchTab(this,'sec-plan')">📅 Plan</button>
     <button class="ntab" data-sec="sec-tracker" onclick="switchTab(this,'sec-tracker')">📊 Tracker</button>
+    <button class="ntab" data-sec="sec-mustdo" onclick="switchTab(this,'sec-mustdo')">🎯 Must-Do</button>
   </div>
   <div id="nav-clock" id="clockspan-nav"><span id="clockspan">--:--:--</span></div>
 </nav>
@@ -681,6 +754,70 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;o
 
 </section>
 
+<!-- ══════════════════════════════════════════════
+     SECTION 4 — MUST DO SHEET
+══════════════════════════════════════════════ -->
+<section id="sec-mustdo" class="sec">
+
+  <div class="sec-header">
+    <div class="sec-header-title">Must-Do Sheet</div>
+    <div class="sec-header-sub">27 highest-yield chapters &bull; Compulsory tasks &bull; Minimum marks guaranteed</div>
+  </div>
+
+  <div id="md-wrap">
+
+    <!-- DASHBOARD -->
+    <div id="md-dashboard">
+      <div class="md-dash-card">
+        <div class="md-dash-n" id="md-total-score" style="color:var(--gold)">0</div>
+        <div class="md-dash-l">Predicted Score</div>
+        <div class="md-dash-sub">Out of 300</div>
+      </div>
+      <div class="md-dash-card">
+        <div class="md-dash-n" id="md-tasks-done" style="color:var(--grn)">0</div>
+        <div class="md-dash-l">Tasks Done</div>
+        <div class="md-dash-sub" id="md-tasks-sub">of 0 total</div>
+      </div>
+      <div class="md-dash-card">
+        <div class="md-dash-n" id="md-chs-done" style="color:var(--pc)">0</div>
+        <div class="md-dash-l">Chapters Done</div>
+        <div class="md-dash-sub">of 27 must-do</div>
+      </div>
+    </div>
+
+    <!-- SCORE BAR -->
+    <div id="md-score-bar">
+      <div class="md-sb-top">
+        <div class="md-sb-lbl">Minimum Marks Guaranteed</div>
+        <div class="md-sb-val" id="md-min-score" style="color:var(--gold)">0 / 216</div>
+      </div>
+      <div class="md-sb-tracks">
+        <div class="md-sb-row">
+          <span class="md-sb-rlbl" style="color:#4a9eff">PHYSICS</span>
+          <div class="md-sb-track"><div class="md-sb-fill" id="mdsb-phy" style="background:#4a9eff;width:0%"></div></div>
+          <span class="md-sb-rval" id="mdsbv-phy" style="color:#4a9eff">0/72</span>
+        </div>
+        <div class="md-sb-row">
+          <span class="md-sb-rlbl" style="color:#34d399">CHEM</span>
+          <div class="md-sb-track"><div class="md-sb-fill" id="mdsb-chem" style="background:#34d399;width:0%"></div></div>
+          <span class="md-sb-rval" id="mdsbv-chem" style="color:#34d399">0/72</span>
+        </div>
+        <div class="md-sb-row">
+          <span class="md-sb-rlbl" style="color:#c084fc">MATHS</span>
+          <div class="md-sb-track"><div class="md-sb-fill" id="mdsb-math" style="background:#c084fc;width:0%"></div></div>
+          <span class="md-sb-rval" id="mdsbv-math" style="color:#c084fc">0/72</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHAPTER GRIDS rendered by JS -->
+    <div id="md-grid-phy"></div>
+    <div id="md-grid-math"></div>
+    <div id="md-grid-chem"></div>
+
+  </div>
+</section>
+
 <!-- Mobile drawer -->
 <div id="drawer-backdrop" onclick="closeDrawer()"></div>
 <div id="pool-drawer">
@@ -777,10 +914,19 @@ var DAYS = [
 ];
 
 var DEFAULT_ASSIGN = {
-  d1:['p1'], d2:['p2','m1'], d3:['p3','i1'], d4:['p4','i2'],
-  d5:['p5','i3'], d6:['p6','o1'], d7:['p7','o2'], d8:['p8','o3'],
-  d9:['p9','m2'], d10:['p10','pc1'], d11:['m3','pc2'],
-  d12:['m4','m5'], d13:['m6','cp1'],
+  d1:['p1'],
+  d2:['p2','pc1'],
+  d3:['p3','pc2'],
+  d4:['p4','m1'],
+  d5:['p5','i1'],
+  d6:['p6','i2'],
+  d7:['p7','i3'],
+  d8:['p8','m2'],
+  d9:['p9','o1'],
+  d10:['p10','o2'],
+  d11:['m3','o3'],
+  d12:['m4','cp1'],
+  d13:['m5','m6'],
   rev:[], exam:[]
 };
 
@@ -796,14 +942,14 @@ var PLAN_START = new Date(2026,2,21,0,0,0); /* 21 March 2026 — Plan Start */
 var ASSIGN, TASKS, REV_TASKS, OPEN_DAYS, selectedDay = null, dragState = null;
 
 function loadState(){
-  try{var a=localStorage.getItem('jwa3');ASSIGN=a?JSON.parse(a):JSON.parse(JSON.stringify(DEFAULT_ASSIGN));}catch(e){ASSIGN=JSON.parse(JSON.stringify(DEFAULT_ASSIGN));}
+  try{var a=localStorage.getItem('jwa4');ASSIGN=a?JSON.parse(a):JSON.parse(JSON.stringify(DEFAULT_ASSIGN));}catch(e){ASSIGN=JSON.parse(JSON.stringify(DEFAULT_ASSIGN));}
   try{var t=localStorage.getItem('jwt');TASKS=t?JSON.parse(t):{};}catch(e){TASKS={};}
   try{var r=localStorage.getItem('jwr');REV_TASKS=r?JSON.parse(r):{};}catch(e){REV_TASKS={};}
   try{var o=localStorage.getItem('jwo');OPEN_DAYS=o?JSON.parse(o):{};}catch(e){OPEN_DAYS={};}
   // Auto-open today
   var tid=getTID();if(tid&&!OPEN_DAYS[tid])OPEN_DAYS[tid]=true;
 }
-function saveAssign(){try{localStorage.setItem('jwa3',JSON.stringify(ASSIGN));}catch(e){}}
+function saveAssign(){try{localStorage.setItem('jwa4',JSON.stringify(ASSIGN));}catch(e){}}
 function saveTasks(){try{localStorage.setItem('jwt',JSON.stringify(TASKS));}catch(e){}}
 function saveRevTasks(){try{localStorage.setItem('jwr',JSON.stringify(REV_TASKS));}catch(e){}}
 function saveOpen(){try{localStorage.setItem('jwo',JSON.stringify(OPEN_DAYS));}catch(e){}}
@@ -1779,6 +1925,437 @@ setTimeout(function(){
   var el=document.getElementById('day-'+TID);
   if(el)el.scrollIntoView({behavior:'smooth',block:'center'});
 },500);
+
+/* ══════════════════════════════════════════════════
+   MUST-DO SHEET DATA
+   minMarks = guaranteed if chapter done in exam
+   tasks = [tag, description, points contribution]
+══════════════════════════════════════════════════ */
+var MD_CHAPTERS = {
+  /* ── PHYSICS ── */
+  mp1:{id:'mp1',subj:'phy',num:1,name:'Modern Physics (incl Semiconductor)',  minM:12, col:'#4a9eff',
+    tasks:[
+      ['[FORMULA]',  'Photoelectric effect — all formulae + threshold freq',    2],
+      ['[MUST-DO]',  'Bohr model / hydrogen spectrum (5–7 Qs)',                 3],
+      ['[MUST-DO]',  'Radioactive decay, half-life, binding energy',            3],
+      ['[MUST-DO]',  'Semiconductor: pn junction, diode, logic gates',          2],
+      ['[PYQ 2026]', 'Solve all Jan 2026 questions from this chapter',          2]
+    ]},
+  mp2:{id:'mp2',subj:'phy',num:2,name:'KTG & Thermodynamics',                  minM:12, col:'#4a9eff',
+    tasks:[
+      ['[FORMULA]',  'All KTG formulae — vrms, mean KE, degrees of freedom',   2],
+      ['[MUST-DO]',  'First law applications — cyclic, isothermal, adiabatic',  3],
+      ['[MUST-DO]',  'Carnot engine, efficiency, heat pumps (6–8 Qs)',          3],
+      ['[MUST-DO]',  'Maxwell distribution, mean free path',                    2],
+      ['[PYQ 2026]', 'Solve all Jan 2026 questions from this chapter',          2]
+    ]},
+  mp3:{id:'mp3',subj:'phy',num:3,name:'Optics — Ray + Wave + EMW',             minM:12, col:'#4a9eff',
+    tasks:[
+      ['[FORMULA]',  'Lens / mirror formula, refraction, TIR, prism',           2],
+      ['[MUST-DO]',  'Ray optics numericals — lens systems, optical instruments',3],
+      ['[MUST-DO]',  'YDDS, diffraction, polarisation (wave optics)',           3],
+      ['[MUST-DO]',  'EM spectrum, properties, energy of photon',               2],
+      ['[PYQ 2026]', 'Solve all Jan 2026 questions from this chapter',          2]
+    ]},
+  mp4:{id:'mp4',subj:'phy',num:4,name:'Electrostatics + Capacitor',            minM:12, col:'#4a9eff',
+    tasks:[
+      ['[FORMULA]',  'Coulomb\'s law, field, potential, dipole formulae',        2],
+      ['[MUST-DO]',  'Gauss law applications — sphere, cylinder, plate',        3],
+      ['[MUST-DO]',  'Capacitor — series/parallel, energy, dielectric',         3],
+      ['[MUST-DO]',  'Potential & field problems (6–8 standard Qs)',            2],
+      ['[PYQ 2026]', 'Solve all Jan 2026 questions from this chapter',          2]
+    ]},
+  mp5:{id:'mp5',subj:'phy',num:5,name:'Current Electricity',                   minM:12, col:'#4a9eff',
+    tasks:[
+      ['[FORMULA]',  'Ohm\'s law, resistivity, temperature coefficient',         2],
+      ['[MUST-DO]',  'Kirchhoff\'s laws — complex networks (8–10 Qs)',           3],
+      ['[MUST-DO]',  'Wheatstone, meter bridge, potentiometer',                 3],
+      ['[MUST-DO]',  'Cell — internal resistance, max power theorem',           2],
+      ['[PYQ 2026]', 'Solve all Jan 2026 questions from this chapter',          2]
+    ]},
+  mp6:{id:'mp6',subj:'phy',num:6,name:'EMI + AC Circuits',                     minM:8,  col:'#4a9eff',
+    tasks:[
+      ['[FORMULA]',  'Faraday\'s law, Lenz\'s law, motional EMF formulae',        2],
+      ['[MUST-DO]',  'Self/mutual inductance, energy in inductor',              2],
+      ['[MUST-DO]',  'AC — Vrms, Irms, impedance, resonance, power factor',    2],
+      ['[PYQ 2026]', 'Solve all Jan 2026 questions from this chapter',          2]
+    ]},
+  mp7:{id:'mp7',subj:'phy',num:7,name:'Rotational Motion',                     minM:8,  col:'#4a9eff',
+    tasks:[
+      ['[FORMULA]',  'MOI of standard bodies, parallel/perpendicular axis',    2],
+      ['[MUST-DO]',  'Torque, angular momentum, conservation problems',        2],
+      ['[MUST-DO]',  'Rolling without slipping — 6–8 Qs',                     2],
+      ['[PYQ 2026]', 'Solve all Jan 2026 questions from this chapter',         2]
+    ]},
+  mp8:{id:'mp8',subj:'phy',num:8,name:'Gravitation',                           minM:8,  col:'#4a9eff',
+    tasks:[
+      ['[FORMULA]',  'Kepler\'s laws, orbital velocity, escape velocity, g',   2],
+      ['[MUST-DO]',  'Satellite orbits, energy, geostationary (5–7 Qs)',       3],
+      ['[MUST-DO]',  'Gravitational potential and field problems',             2],
+      ['[PYQ 2026]', 'Solve all Jan 2026 questions from this chapter',         1]
+    ]},
+  mp9:{id:'mp9',subj:'phy',num:9,name:'Work, Power & Energy',                  minM:8,  col:'#4a9eff',
+    tasks:[
+      ['[FORMULA]',  'Work-energy theorem, conservative forces, power',        2],
+      ['[MUST-DO]',  'Variable force problems, spring energy (6 Qs)',          2],
+      ['[MUST-DO]',  'Collisions — elastic/inelastic, coefficient of restitution',2],
+      ['[PYQ 2026]', 'Solve all Jan 2026 questions from this chapter',         2]
+    ]},
+
+  /* ── MATHS ── */
+  mm1:{id:'mm1',subj:'math',num:1,name:'Vectors & 3D Geometry',                minM:16, col:'#c084fc',
+    tasks:[
+      ['[FORMULA]',  'Dot / cross product, scalar triple product',             3],
+      ['[MUST-DO]',  'Lines & planes in 3D — 10+ standard Qs',                4],
+      ['[MUST-DO]',  'Angle between line and plane, shortest distance',        4],
+      ['[PYQ 2026]', 'Solve all Jan 2026 questions from this chapter',         3],
+      ['[MOCK]',     'Attempt 10 mixed problems under 20 mins',                2]
+    ]},
+  mm2:{id:'mm2',subj:'math',num:2,name:'Sequences & Series',                   minM:8,  col:'#c084fc',
+    tasks:[
+      ['[FORMULA]',  'AP, GP, HP formulae, sum of n terms, AGP',              2],
+      ['[MUST-DO]',  'Standard series problems — 8 Qs',                       3],
+      ['[MUST-DO]',  'Telescoping sums, method of differences',               2],
+      ['[PYQ 2026]', 'Solve all Jan 2026 questions from this chapter',         2]
+    ]},
+  mm3:{id:'mm3',subj:'math',num:3,name:'Matrices & Determinants',              minM:12, col:'#c084fc',
+    tasks:[
+      ['[FORMULA]',  'Properties of determinants, matrix operations',          2],
+      ['[MUST-DO]',  'Adjoint, inverse, rank — 8 standard Qs',                3],
+      ['[MUST-DO]',  'System of equations — Cramer\'s rule, consistency',      3],
+      ['[PYQ 2026]', 'Solve all Jan 2026 questions from this chapter',         2]
+    ]},
+  mm4:{id:'mm4',subj:'math',num:4,name:'Straight Lines',                       minM:8,  col:'#c084fc',
+    tasks:[
+      ['[FORMULA]',  'Distance from point, angle bisectors, family of lines',  2],
+      ['[MUST-DO]',  'Locus problems + pair of lines — 7 Qs',                 3],
+      ['[MUST-DO]',  'Complex straight line problems (JEE style)',             2],
+      ['[PYQ 2026]', 'Solve all Jan 2026 questions from this chapter',         2]
+    ]},
+  mm5:{id:'mm5',subj:'math',num:5,name:'Circles',                              minM:8,  col:'#c084fc',
+    tasks:[
+      ['[FORMULA]',  'General equation, tangent, normal, chord formulae',      2],
+      ['[MUST-DO]',  'Circle + line problems, radical axis — 7 Qs',           3],
+      ['[MUST-DO]',  'Family of circles, coaxial systems',                    2],
+      ['[PYQ 2026]', 'Solve all Jan 2026 questions from this chapter',         2]
+    ]},
+  mm6:{id:'mm6',subj:'math',num:6,name:'Conic Sections',                       minM:8,  col:'#c084fc',
+    tasks:[
+      ['[FORMULA]',  'Parabola, ellipse, hyperbola — all standard results',    2],
+      ['[MUST-DO]',  'Tangents, normals, chord of contact — 8 Qs',            3],
+      ['[MUST-DO]',  'Focal chord, reflection property problems',              2],
+      ['[PYQ 2026]', 'Solve all Jan 2026 questions from this chapter',         2]
+    ]},
+  mm7:{id:'mm7',subj:'math',num:7,name:'Permutations & Combinations',          minM:8,  col:'#c084fc',
+    tasks:[
+      ['[FORMULA]',  'nPr, nCr, multinomial, derangements',                   2],
+      ['[MUST-DO]',  'Selection + arrangement problems — 8 Qs',               3],
+      ['[MUST-DO]',  'Gaps method, circular permutation, restricted Qs',      2],
+      ['[PYQ 2026]', 'Solve all Jan 2026 questions from this chapter',         2]
+    ]},
+  mm8:{id:'mm8',subj:'math',num:8,name:'Binomial Theorem',                     minM:8,  col:'#c084fc',
+    tasks:[
+      ['[FORMULA]',  'General term, middle term, coefficient finding',         2],
+      ['[MUST-DO]',  'Standard binomial Qs — 8 problems',                     3],
+      ['[MUST-DO]',  'Binomial series sum, greatest term',                    2],
+      ['[PYQ 2026]', 'Solve all Jan 2026 questions from this chapter',         2]
+    ]},
+  mm9:{id:'mm9',subj:'math',num:9,name:'Probability + Statistics',             minM:8,  col:'#c084fc',
+    tasks:[
+      ['[FORMULA]',  'Bayes\' theorem, conditional prob, binomial distribution',2],
+      ['[MUST-DO]',  'Probability Qs — 8 standard problems',                  3],
+      ['[MUST-DO]',  'Mean, variance, standard deviation problems',            2],
+      ['[PYQ 2026]', 'Solve all Jan 2026 questions from this chapter',         2]
+    ]},
+
+  /* ── CHEMISTRY ── */
+  mc1:{id:'mc1',subj:'chem2',num:1,name:'Mole Concept + Solutions',            minM:8,  col:'#34d399',
+    tasks:[
+      ['[FORMULA]',  'Mole, normality, molality, mole fraction formulae',      2],
+      ['[MUST-DO]',  'Stoichiometry problems — 8 Qs (reactions + limiting reagent)',3],
+      ['[MUST-DO]',  'Colligative properties — elevation/depression, osmosis', 3],
+      ['[PYQ 2026]', 'Solve all Jan 2026 questions from this chapter',         2]
+    ]},
+  mc2:{id:'mc2',subj:'chem2',num:2,name:'Atomic Structure',                    minM:8,  col:'#34d399',
+    tasks:[
+      ['[FORMULA]',  'Bohr model, de Broglie, Heisenberg, quantum numbers',    2],
+      ['[MUST-DO]',  'Electronic configuration, aufbau, exceptions — 8 Qs',   3],
+      ['[MUST-DO]',  'Spectrum of H-atom, ionisation energy problems',         2],
+      ['[PYQ 2026]', 'Solve all Jan 2026 questions from this chapter',         2]
+    ]},
+  mc3:{id:'mc3',subj:'chem2',num:3,name:'Chemical Bonding',                    minM:8,  col:'#34d399',
+    tasks:[
+      ['[CONCEPT]',  'VSEPR theory — all shapes + hybridisation table',        2],
+      ['[MUST-DO]',  'Bond polarity, dipole moment, MO theory — 7 Qs',        3],
+      ['[MUST-DO]',  'Hydrogen bonding, VdW forces, solid state bonding',      2],
+      ['[PYQ 2026]', 'Solve all Jan 2026 questions from this chapter',         2]
+    ]},
+  mc4:{id:'mc4',subj:'chem2',num:4,name:'Coordination Compounds',              minM:12, col:'#34d399',
+    tasks:[
+      ['[CONCEPT]',  'IUPAC naming — all rules memorised + isomerism types',   3],
+      ['[MUST-DO]',  'Crystal field theory — splitting, colour, magnetism',    3],
+      ['[MUST-DO]',  'EAN rule, stability, organometallic basics — 8 Qs',     3],
+      ['[PYQ 2026]', 'Solve all Jan 2026 questions from this chapter',         3]
+    ]},
+  mc5:{id:'mc5',subj:'chem2',num:5,name:'d & f Block Elements',               minM:8,  col:'#34d399',
+    tasks:[
+      ['[CONCEPT]',  'Transition metals — properties, oxidation states table', 2],
+      ['[MUST-DO]',  'Lanthanides/actinides, interstitial compounds — 7 Qs',  3],
+      ['[MUST-DO]',  'Important compounds — KMnO4, K2Cr2O7 reactions',        2],
+      ['[PYQ 2026]', 'Solve all Jan 2026 questions from this chapter',         2]
+    ]},
+  mc6:{id:'mc6',subj:'chem2',num:6,name:'GOC (General Organic Chemistry)',     minM:8,  col:'#34d399',
+    tasks:[
+      ['[CONCEPT]',  'Inductive, mesomeric, hyperconjugation effects',         2],
+      ['[MUST-DO]',  'Stability of carbocations, carbanions, radicals — 8 Qs',3],
+      ['[MUST-DO]',  'Aromaticity, reaction mechanisms, named reactions list', 3],
+      ['[PYQ 2026]', 'Solve all Jan 2026 questions from this chapter',         2]
+    ]},
+  mc7:{id:'mc7',subj:'chem2',num:7,name:'Biomolecules & Amines',              minM:8,  col:'#34d399',
+    tasks:[
+      ['[CONCEPT]',  'Glucose, fructose, sucrose — structures + reactions',    2],
+      ['[MUST-DO]',  'Amino acids, proteins, enzymes — 5 Qs (NCERT-based)',    2],
+      ['[MUST-DO]',  'Amines — basicity order, diazonium reactions, 6 Qs',    2],
+      ['[PYQ 2026]', 'Solve all Jan 2026 questions from this chapter',         2]
+    ]},
+  mc8:{id:'mc8',subj:'chem2',num:8,name:'Carboxylic Acids & Derivatives',     minM:8,  col:'#34d399',
+    tasks:[
+      ['[CONCEPT]',  'Acidity order, COOH reactions, named reactions (Hell–Volhard)',2],
+      ['[MUST-DO]',  'Esters, anhydrides, acid chlorides — preparation & reactions',3],
+      ['[MUST-DO]',  'Aldehydes/Ketones distinction, Cannizzaro, Aldol — 8 Qs',3],
+      ['[PYQ 2026]', 'Solve all Jan 2026 questions from this chapter',         2]
+    ]},
+  mc9:{id:'mc9',subj:'chem2',num:9,name:'Electrochemistry + Chemical Kinetics',minM:12, col:'#34d399',
+    tasks:[
+      ['[FORMULA]',  'Nernst equation, EMF, cell potential, Faraday\'s law',   2],
+      ['[MUST-DO]',  'Galvanic / electrolytic cells, electrode reactions — 6 Qs',3],
+      ['[FORMULA]',  'Rate law, order, half-life, Arrhenius equation',         2],
+      ['[MUST-DO]',  'Kinetics problems — 6 Qs (integrated rate law)',         3],
+      ['[PYQ 2026]', 'Solve all Jan 2026 questions from this chapter',         2]
+    ]}
+};
+
+var MD_SUBJ_GROUPS = [
+  {key:'phy',   label:'PHYSICS',   col:'#4a9eff', ids:['mp1','mp2','mp3','mp4','mp5','mp6','mp7','mp8','mp9'], gridId:'md-grid-phy',  maxM:72},
+  {key:'math',  label:'MATHS',     col:'#c084fc', ids:['mm1','mm2','mm3','mm4','mm5','mm6','mm7','mm8','mm9'], gridId:'md-grid-math', maxM:72},
+  {key:'chem2', label:'CHEMISTRY', col:'#34d399', ids:['mc1','mc2','mc3','mc4','mc5','mc6','mc7','mc8','mc9'], gridId:'md-grid-chem', maxM:72}
+];
+
+/* ── MD STATE ── */
+var MD_TASKS = {};
+try{ var _mdt=localStorage.getItem('jeemd'); if(_mdt) MD_TASKS=JSON.parse(_mdt); }catch(e){}
+function mdSave(){ try{ localStorage.setItem('jeemd', JSON.stringify(MD_TASKS)); }catch(e){} }
+
+function mdKey(chId, ti){ return chId+'_'+ti; }
+
+function mdChDoneCount(chId){
+  var ch = MD_CHAPTERS[chId];
+  if(!ch) return {done:0, tot:ch? ch.tasks.length:0};
+  var done=0;
+  for(var ti=0;ti<ch.tasks.length;ti++) if(MD_TASKS[mdKey(chId,ti)]) done++;
+  return {done:done, tot:ch.tasks.length};
+}
+
+function mdChScore(chId){
+  var ch = MD_CHAPTERS[chId]; if(!ch) return 0;
+  var score=0;
+  for(var ti=0;ti<ch.tasks.length;ti++){
+    if(MD_TASKS[mdKey(chId,ti)]) score += ch.tasks[ti][2];
+  }
+  var totalPts = ch.tasks.reduce(function(a,t){return a+t[2];},0);
+  return totalPts>0 ? Math.round((score/totalPts)*ch.minM) : 0;
+}
+
+/* ── BUILD MD SECTION ── */
+function buildMustDo(){
+  MD_SUBJ_GROUPS.forEach(function(grp){
+    var container = document.getElementById(grp.gridId);
+    if(!container) return;
+    container.innerHTML = '';
+
+    /* subject header */
+    var shdr = document.createElement('div'); shdr.className = 'md-subject-block';
+    var shdrH = document.createElement('div'); shdrH.className = 'md-subj-hdr';
+    var sdot = document.createElement('div'); sdot.className = 'md-subj-dot';
+    sdot.style.background = grp.col; shdrH.appendChild(sdot);
+    var snm = document.createElement('div'); snm.className = 'md-subj-name';
+    snm.style.color = grp.col; snm.textContent = grp.label; shdrH.appendChild(snm);
+    var ssc = document.createElement('div'); ssc.className = 'md-subj-score';
+    ssc.id = 'md-subj-score-'+grp.key; ssc.textContent = '0 / '+grp.maxM+' marks'; shdrH.appendChild(ssc);
+    var spr = document.createElement('div'); spr.className = 'md-subj-prog';
+    spr.id = 'md-subj-prog-'+grp.key; spr.textContent = '0/9 done'; shdrH.appendChild(spr);
+    shdr.appendChild(shdrH);
+
+    var grid = document.createElement('div'); grid.className = 'md-ch-grid';
+    grp.ids.forEach(function(chId){
+      grid.appendChild(makeMdCard(chId));
+    });
+    shdr.appendChild(grid);
+    container.appendChild(shdr);
+  });
+  updateMustDo();
+}
+
+function makeMdCard(chId){
+  var ch = MD_CHAPTERS[chId];
+  var dc = mdChDoneCount(chId);
+  var score = mdChScore(chId);
+  var pct = dc.tot>0?Math.round(dc.done/dc.tot*100):0;
+  var isDone = dc.done===dc.tot && dc.tot>0;
+  var isPartial = dc.done>0 && !isDone;
+
+  var card = document.createElement('div');
+  card.className = 'md-card' + (isDone?' md-done':isPartial?' md-partial':'');
+  card.id = 'mdc-'+chId;
+
+  /* HEADER */
+  var hdr = document.createElement('div'); hdr.className = 'md-ch-hdr';
+  var num = document.createElement('div'); num.className = 'md-ch-num';
+  num.textContent = ch.num; num.style.color = ch.col; hdr.appendChild(num);
+  var info = document.createElement('div'); info.className = 'md-ch-info';
+  var nm = document.createElement('div'); nm.className = 'md-ch-name'; nm.textContent = ch.name; info.appendChild(nm);
+  var meta = document.createElement('div'); meta.className = 'md-ch-meta';
+  meta.textContent = dc.done+'/'+dc.tot+' tasks \u2022 min '+ch.minM+' marks'; info.appendChild(meta);
+  hdr.appendChild(info);
+  /* marks tag */
+  var mt = document.createElement('div'); mt.className = 'md-ch-marks-tag';
+  mt.textContent = '~'+score+'/'+ch.minM+'m';
+  mt.style.color = isDone?'var(--grn)':isPartial?'var(--gold)':'var(--tx3)';
+  mt.style.background = isDone?'rgba(74,222,128,.1)':isPartial?'rgba(201,168,76,.1)':'rgba(255,255,255,.04)';
+  mt.style.border = isDone?'1px solid rgba(74,222,128,.25)':'1px solid rgba(255,255,255,.06)';
+  hdr.appendChild(mt);
+  /* done badge */
+  var db = document.createElement('span'); db.className = 'md-done-badge'; db.textContent = '✓ DONE'; hdr.appendChild(db);
+  /* chev */
+  var cv = document.createElement('span'); cv.className = 'md-chev'; cv.textContent = '▾'; hdr.appendChild(cv);
+  /* toggle open */
+  (function(card){ hdr.onclick = function(){ card.classList.toggle('md-open'); }; })(card);
+  card.appendChild(hdr);
+
+  /* PIP ROW */
+  var pipRow = document.createElement('div'); pipRow.className = 'md-pip-row'; pipRow.id='mdpip-'+chId;
+  ch.tasks.forEach(function(t,ti){
+    var pip=document.createElement('div'); pip.className='md-pip';
+    if(MD_TASKS[mdKey(chId,ti)]) pip.style.background = ch.col;
+    pipRow.appendChild(pip);
+  });
+  card.appendChild(pipRow);
+
+  /* TASKS BODY */
+  var body = document.createElement('div'); body.className = 'md-body'; body.id='mdbody-'+chId;
+  ch.tasks.forEach(function(t,ti){
+    var k = mdKey(chId,ti);
+    var row = document.createElement('div');
+    row.className = 'md-task'+(MD_TASKS[k]?' md-checked':'');
+    row.id = 'mdrow-'+chId+'_'+ti;
+    var cb = document.createElement('div'); cb.className='md-cb';
+    cb.style.background = MD_TASKS[k]?ch.col:'transparent';
+    cb.style.borderColor = MD_TASKS[k]?ch.col:'var(--tx3)';
+    var tick=document.createElement('span'); tick.className='md-cb-tick'; tick.textContent='✓'; cb.appendChild(tick);
+    var tag=document.createElement('span'); tag.className='md-task-tag'; tag.textContent=t[0]; tag.style.color=ch.col; 
+    var txt=document.createElement('span'); txt.className='md-task-txt'; txt.textContent=t[1];
+    var pts=document.createElement('span'); pts.className='md-task-pts'; pts.textContent='+'+t[2]+'m';
+    row.appendChild(cb); row.appendChild(tag); row.appendChild(txt); row.appendChild(pts);
+    (function(k,row,chId,ti,cb){
+      row.onclick=function(){
+        MD_TASKS[k]=!MD_TASKS[k];
+        row.classList.toggle('md-checked',!!MD_TASKS[k]);
+        cb.style.background = MD_TASKS[k]?MD_CHAPTERS[chId].col:'transparent';
+        cb.style.borderColor = MD_TASKS[k]?MD_CHAPTERS[chId].col:'var(--tx3)';
+        mdSave(); refreshMdCard(chId); updateMustDo();
+      };
+    })(k,row,chId,ti,cb);
+    body.appendChild(row);
+  });
+  card.appendChild(body);
+
+  /* PROGRESS BAR */
+  var prog=document.createElement('div'); prog.className='md-card-prog'; prog.id='mdprog-'+chId;
+  var trk=document.createElement('div'); trk.className='md-card-track';
+  var fill=document.createElement('div'); fill.className='md-card-fill';
+  fill.style.width=pct+'%'; fill.style.background=isDone?'var(--grn)':isPartial?ch.col:'rgba(255,255,255,.1)';
+  if(isDone)fill.style.boxShadow='0 0 8px rgba(74,222,128,.35)';
+  trk.appendChild(fill); prog.appendChild(trk); card.appendChild(prog);
+
+  return card;
+}
+
+function refreshMdCard(chId){
+  var ch=MD_CHAPTERS[chId]; if(!ch)return;
+  var dc=mdChDoneCount(chId);
+  var score=mdChScore(chId);
+  var pct=dc.tot>0?Math.round(dc.done/dc.tot*100):0;
+  var isDone=dc.done===dc.tot&&dc.tot>0;
+  var isPartial=dc.done>0&&!isDone;
+  var card=document.getElementById('mdc-'+chId); if(!card)return;
+
+  card.className='md-card'+(isDone?' md-done':isPartial?' md-partial':'');
+
+  /* update pip row */
+  var pipRow=document.getElementById('mdpip-'+chId);
+  if(pipRow){ var pips=pipRow.querySelectorAll('.md-pip');
+    ch.tasks.forEach(function(t,ti){ if(pips[ti]) pips[ti].style.background=MD_TASKS[mdKey(chId,ti)]?ch.col:'rgba(255,255,255,.07)'; }); }
+
+  /* update marks tag */
+  var mt=card.querySelector('.md-ch-marks-tag');
+  if(mt){ mt.textContent='~'+score+'/'+ch.minM+'m';
+    mt.style.color=isDone?'var(--grn)':isPartial?'var(--gold)':'var(--tx3)';
+    mt.style.background=isDone?'rgba(74,222,128,.1)':isPartial?'rgba(201,168,76,.1)':'rgba(255,255,255,.04)'; }
+
+  /* update meta */
+  var meta=card.querySelector('.md-ch-meta');
+  if(meta)meta.textContent=dc.done+'/'+dc.tot+' tasks \u2022 min '+ch.minM+' marks';
+
+  /* update progress bar */
+  var fill=card.querySelector('.md-card-fill');
+  if(fill){ fill.style.width=pct+'%';
+    fill.style.background=isDone?'var(--grn)':isPartial?ch.col:'rgba(255,255,255,.1)';
+    fill.style.boxShadow=isDone?'0 0 8px rgba(74,222,128,.35)':'none'; }
+}
+
+function updateMustDo(){
+  var phyS=0,mathS=0,chemS=0;
+  var phyD=0,mathD=0,chemD=0;
+  var totDone=0,totTasks=0,totChsDone=0;
+
+  Object.keys(MD_CHAPTERS).forEach(function(chId){
+    var ch=MD_CHAPTERS[chId];
+    var dc=mdChDoneCount(chId);
+    var sc=mdChScore(chId);
+    totDone+=dc.done; totTasks+=dc.tot;
+    if(dc.done===dc.tot&&dc.tot>0)totChsDone++;
+    if(ch.subj==='phy'){phyS+=sc;if(dc.done===dc.tot&&dc.tot>0)phyD++;}
+    else if(ch.subj==='math'){mathS+=sc;if(dc.done===dc.tot&&dc.tot>0)mathD++;}
+    else if(ch.subj==='chem2'){chemS+=sc;if(dc.done===dc.tot&&dc.tot>0)chemD++;}
+  });
+  phyS=Math.min(phyS,72); mathS=Math.min(mathS,72); chemS=Math.min(chemS,72);
+  var total=phyS+mathS+chemS;
+
+  /* dashboard */
+  var el=function(id){return document.getElementById(id);};
+  if(el('md-total-score')) el('md-total-score').textContent=total;
+  if(el('md-tasks-done'))  el('md-tasks-done').textContent=totDone;
+  if(el('md-tasks-sub'))   el('md-tasks-sub').textContent='of '+totTasks+' total';
+  if(el('md-chs-done'))    el('md-chs-done').textContent=totChsDone;
+  if(el('md-min-score'))   el('md-min-score').textContent=total+' / 216';
+  /* subject bars */
+  function setBar(fillId,valId,score,max){
+    var f=el(fillId); if(f)f.style.width=Math.round(score/max*100)+'%';
+    var v=el(valId);  if(v)v.textContent=score+'/'+max;
+  }
+  setBar('mdsb-phy','mdsbv-phy',phyS,72);
+  setBar('mdsb-math','mdsbv-math',mathS,72);
+  setBar('mdsb-chem','mdsbv-chem',chemS,72);
+  /* subject labels */
+  MD_SUBJ_GROUPS.forEach(function(grp){
+    var sc2=grp.key==='phy'?phyS:grp.key==='math'?mathS:chemS;
+    var dn2=grp.key==='phy'?phyD:grp.key==='math'?mathD:chemD;
+    var ss=el('md-subj-score-'+grp.key); if(ss)ss.textContent=sc2+' / '+grp.maxM+' marks';
+    var sp=el('md-subj-prog-'+grp.key);  if(sp)sp.textContent=dn2+'/9 done';
+  });
+}
+
+buildMustDo();
 
 }catch(err){
   document.body.innerHTML='<div style="padding:30px;color:#f87171;font-family:monospace;font-size:13px;background:#050608;min-height:100vh">FATAL ERROR: '+err.message+'<br><br>'+err.stack+'</div>';

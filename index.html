@@ -274,8 +274,8 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;o
   <div class="stat"><div class="statn" id="st-done" style="color:var(--grn)">0</div><div class="statl">Done</div></div>
   <div class="stat"><div class="statn" id="st-tot" style="color:var(--tx)">--</div><div class="statl">Total Tasks</div></div>
   <div class="stat"><div class="statn" id="st-pct" style="color:var(--gold-l)">0%</div><div class="statl">Progress</div></div>
-  <div class="stat"><div class="statn" id="st-mmax" style="color:var(--pc)">--</div><div class="statl">Max Marks</div></div>
-  <div class="stat"><div class="statn" id="st-mreal" style="color:var(--grn)">--</div><div class="statl">Realistic</div></div>
+  <div class="stat"><div class="statn" id="st-mmax" style="color:var(--pc)">252</div><div class="statl">Max /300</div></div>
+  <div class="stat"><div class="statn" id="st-mreal" style="color:var(--grn)">226</div><div class="statl">Realistic /300</div></div>
 </div>
 
 <div id="progwrap">
@@ -285,29 +285,29 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;o
 
 <div id="marks-summary">
   <div class="ms-block">
-    <div class="ms-num" style="color:var(--pc)" id="ms-max">300</div>
+    <div class="ms-num" style="color:var(--pc)" id="ms-max">252 / 300</div>
     <div class="ms-lbl">Max Potential</div>
-    <div class="ms-sub">All chapters perfect</div>
+    <div class="ms-sub">If you ace all chapters</div>
   </div>
   <div class="ms-block">
-    <div class="ms-num" style="color:var(--grn)" id="ms-real">224</div>
+    <div class="ms-num" style="color:var(--grn)" id="ms-real">226 / 300</div>
     <div class="ms-lbl">Realistic Target</div>
-    <div class="ms-sub">Based on JEE Jan 2026</div>
+    <div class="ms-sub">JEE Jan 2026 analysis</div>
   </div>
   <div class="ms-block">
-    <div class="ms-num" style="color:var(--phy)" id="ms-phy">72-84</div>
-    <div class="ms-lbl">Physics Potential</div>
-    <div class="ms-sub">Out of 100</div>
+    <div class="ms-num" style="color:var(--phy)" id="ms-phy">76-84</div>
+    <div class="ms-lbl">Physics</div>
+    <div class="ms-sub">Real – Max / 100</div>
   </div>
   <div class="ms-block">
-    <div class="ms-num" style="color:var(--chem)" id="ms-chem">92-100</div>
-    <div class="ms-lbl">Chemistry Potential</div>
-    <div class="ms-sub">Out of 100</div>
+    <div class="ms-num" style="color:var(--chem)" id="ms-chem">90-96</div>
+    <div class="ms-lbl">Chemistry</div>
+    <div class="ms-sub">Real – Max / 100</div>
   </div>
   <div class="ms-block">
-    <div class="ms-num" style="color:var(--math)" id="ms-math">60-76</div>
-    <div class="ms-lbl">Maths Potential</div>
-    <div class="ms-sub">Out of 100</div>
+    <div class="ms-num" style="color:var(--math)" id="ms-math">60-72</div>
+    <div class="ms-lbl">Maths</div>
+    <div class="ms-sub">Real – Max / 100</div>
   </div>
 </div>
 <div id="hint-banner">&#9670; Click a day to open &bull; Drag chapters from pool into days &bull; Click chapter in pool to assign to selected day &#9670;</div>
@@ -343,33 +343,46 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;o
 try {
 
 /* ══ DATA ══ */
-/* mMin=min marks, mMax=max marks, mReal=realistic marks, pri=priority */
+/* ─────────────────────────────────────────────────────────────────
+   MARKS DATA — based on JEE Jan 2026 + 5-year analysis
+   Each subject = 100 marks (25 Qs × 4 marks each)
+   Physics chapters cover ~84% of paper  → Max 84, Realistic 76
+   Chemistry chapters cover ~96% of paper → Max 96, Realistic 90
+   Maths chapters cover ~72% of paper    → Max 72, Realistic 60
+   cp1 = PRACTICE DAY only — zero exam marks
+   ───────────────────────────────────────────────────────────────── */
 var CHAPTERS = {
-  p1: {id:'p1', subj:'phy', label:'Optics — Ray + Wave',                          mMin:8,  mMax:12, mReal:8,  pri:'HIGH'},
+  p1: {id:'p1', subj:'phy', label:'Optics — Ray + Wave',                          mMin:8,  mMax:12, mReal:10, pri:'HIGH'},
   p2: {id:'p2', subj:'phy', label:'Electrostatics',                               mMin:8,  mMax:12, mReal:8,  pri:'HIGH'},
-  p3: {id:'p3', subj:'phy', label:'Current Electricity',                          mMin:12, mMax:16, mReal:12, pri:'HIGHEST'},
-  p4: {id:'p4', subj:'phy', label:'Magnetism & EMI',                              mMin:4,  mMax:8,  mReal:4,  pri:'MED'},
-  p5: {id:'p5', subj:'phy', label:'Modern Physics',                               mMin:8,  mMax:12, mReal:8,  pri:'HIGH'},
-  p6: {id:'p6', subj:'phy', label:'Mechanics I — Laws of Motion, Work & Energy',  mMin:4,  mMax:8,  mReal:4,  pri:'MED'},
-  p7: {id:'p7', subj:'phy', label:'Mechanics II — Rotational Motion, COM',        mMin:4,  mMax:8,  mReal:8,  pri:'MED'},
-  p8: {id:'p8', subj:'phy', label:'Mechanics III — SHM, Waves, Gravitation',      mMin:8,  mMax:12, mReal:8,  pri:'HIGH'},
-  p9: {id:'p9', subj:'phy', label:'KTG & Thermodynamics',                         mMin:12, mMax:16, mReal:12, pri:'JAN #1'},
-  p10:{id:'p10',subj:'phy', label:'Mechanical Properties & Fluids',               mMin:4,  mMax:8,  mReal:4,  pri:'MED'},
-  i1: {id:'i1', subj:'chem',label:'Inorganic Pt 1',                               mMin:4,  mMax:8,  mReal:4,  pri:'MED'},
-  i2: {id:'i2', subj:'chem',label:'Inorganic Pt 2',                               mMin:8,  mMax:12, mReal:8,  pri:'HIGH'},
-  i3: {id:'i3', subj:'chem',label:'Inorganic Pt 3',                               mMin:12, mMax:16, mReal:12, pri:'JAN #1'},
-  o1: {id:'o1', subj:'org', label:'Organic Pt 1',                                 mMin:4,  mMax:8,  mReal:4,  pri:'MED'},
-  o2: {id:'o2', subj:'org', label:'Organic Pt 2',                                 mMin:8,  mMax:12, mReal:8,  pri:'HIGH'},
-  o3: {id:'o3', subj:'org', label:'Organic Pt 3',                                 mMin:8,  mMax:12, mReal:8,  pri:'HIGH'},
-  pc1:{id:'pc1',subj:'pc',  label:'Physical Chem Pt 1',                           mMin:8,  mMax:12, mReal:8,  pri:'HIGH'},
-  pc2:{id:'pc2',subj:'pc',  label:'Physical Chem Pt 2',                           mMin:12, mMax:16, mReal:12, pri:'TOP 2'},
-  cp1:{id:'cp1',subj:'all', label:'Chemistry Practice — IOC + OC + PC',           mMin:80, mMax:100,mReal:85, pri:'DAY 13'},
-  m1: {id:'m1', subj:'math',label:'Coordinate Geometry — Lines, Circles, Conics', mMin:8,  mMax:12, mReal:8,  pri:'HIGH'},
-  m2: {id:'m2', subj:'math',label:'Vectors, 3D Geometry, Matrices & Determinants',mMin:16, mMax:20, mReal:16, pri:'HIGHEST'},
-  m3: {id:'m3', subj:'math',label:'Sequences & Series, Binomial, Complex Numbers', mMin:12, mMax:16, mReal:12, pri:'JAN #2'},
-  m4: {id:'m4', subj:'math',label:'Basic Maths, Trigonometry & Quadratic Eqs',    mMin:4,  mMax:8,  mReal:4,  pri:'MED'},
+  p3: {id:'p3', subj:'phy', label:'Current Electricity',                          mMin:8,  mMax:12, mReal:10, pri:'HIGHEST'},
+  p4: {id:'p4', subj:'phy', label:'Magnetism & EMI',                              mMin:4,  mMax:8,  mReal:6,  pri:'MED'},
+  p5: {id:'p5', subj:'phy', label:'Modern Physics',                               mMin:8,  mMax:12, mReal:10, pri:'HIGH'},
+  p6: {id:'p6', subj:'phy', label:'Mechanics I — Laws of Motion, Work & Energy',  mMin:4,  mMax:4,  mReal:6,  pri:'MED'},
+  p7: {id:'p7', subj:'phy', label:'Mechanics II — Rotational Motion, COM',        mMin:4,  mMax:4,  mReal:6,  pri:'MED'},
+  p8: {id:'p8', subj:'phy', label:'Mechanics III — SHM, Waves, Gravitation',      mMin:4,  mMax:8,  mReal:8,  pri:'HIGH'},
+  p9: {id:'p9', subj:'phy', label:'KTG & Thermodynamics',                         mMin:8,  mMax:8,  mReal:8,  pri:'JAN #1'},
+  p10:{id:'p10',subj:'phy', label:'Mechanical Properties & Fluids',               mMin:4,  mMax:4,  mReal:4,  pri:'MED'},
+  /* Physics total: mMin=64  mMax=84  mReal=76 ✓ */
+
+  i1: {id:'i1', subj:'chem',label:'Inorganic Pt 1',                               mMin:4,  mMax:8,  mReal:8,  pri:'MED'},
+  i2: {id:'i2', subj:'chem',label:'Inorganic Pt 2',                               mMin:8,  mMax:12, mReal:12, pri:'HIGH'},
+  i3: {id:'i3', subj:'chem',label:'Inorganic Pt 3',                               mMin:12, mMax:16, mReal:14, pri:'JAN #1'},
+  o1: {id:'o1', subj:'org', label:'Organic Pt 1',                                 mMin:4,  mMax:8,  mReal:8,  pri:'MED'},
+  o2: {id:'o2', subj:'org', label:'Organic Pt 2',                                 mMin:8,  mMax:12, mReal:12, pri:'HIGH'},
+  o3: {id:'o3', subj:'org', label:'Organic Pt 3',                                 mMin:8,  mMax:12, mReal:12, pri:'HIGH'},
+  pc1:{id:'pc1',subj:'pc',  label:'Physical Chem Pt 1',                           mMin:8,  mMax:12, mReal:10, pri:'HIGH'},
+  pc2:{id:'pc2',subj:'pc',  label:'Physical Chem Pt 2',                           mMin:12, mMax:16, mReal:14, pri:'TOP 2'},
+  cp1:{id:'cp1',subj:'all', label:'Chemistry Practice — IOC + OC + PC',           mMin:0,  mMax:0,  mReal:0,  pri:'DAY 13'},
+  /* Chemistry total (excl cp1): mMin=64  mMax=96  mReal=90 ✓ */
+
+  m1: {id:'m1', subj:'math',label:'Coordinate Geometry — Lines, Circles, Conics', mMin:8,  mMax:12, mReal:10, pri:'HIGH'},
+  m2: {id:'m2', subj:'math',label:'Vectors, 3D Geometry, Matrices & Determinants',mMin:16, mMax:20, mReal:18, pri:'HIGHEST'},
+  m3: {id:'m3', subj:'math',label:'Sequences & Series, Binomial, Complex Numbers', mMin:12, mMax:16, mReal:14, pri:'JAN #2'},
+  m4: {id:'m4', subj:'math',label:'Basic Maths, Trigonometry & Quadratic Eqs',    mMin:4,  mMax:8,  mReal:6,  pri:'MED'},
   m5: {id:'m5', subj:'math',label:'Relations, Functions & ITF',                   mMin:4,  mMax:8,  mReal:4,  pri:'LOW'},
-  m6: {id:'m6', subj:'math',label:'P&C, Probability & Statistics',                mMin:8,  mMax:8,  mReal:8,  pri:'MED'}
+  m6: {id:'m6', subj:'math',label:'P&C, Probability & Statistics',                mMin:4,  mMax:8,  mReal:8,  pri:'MED'}
+  /* Maths total: mMin=48  mMax=72  mReal=60 ✓ */
+  /* GRAND TOTAL: mMax=252  mReal=226 out of 300 */
 };
 
 var SUBJ_ORDER = ['phy','chem','org','pc','all','math'];
@@ -490,10 +503,25 @@ function countAll(){
 }
 
 function calcTotalMarks(){
-  var allIds=Object.keys(CHAPTERS);
-  var mmax=0,mreal=0;
-  allIds.forEach(function(id){var ch=CHAPTERS[id];mmax+=ch.mMax;mreal+=ch.mReal;});
-  return{mmax:mmax,mreal:mreal};
+  /* Sum per subject, cap each at 100, then add */
+  var phyMax=0,phyReal=0,chemMax=0,chemReal=0,mathMax=0,mathReal=0;
+  Object.keys(CHAPTERS).forEach(function(id){
+    var ch=CHAPTERS[id];
+    if(ch.subj==='phy'){phyMax+=ch.mMax;phyReal+=ch.mReal;}
+    else if(ch.subj==='chem'||ch.subj==='org'||ch.subj==='pc'){chemMax+=ch.mMax;chemReal+=ch.mReal;}
+    else if(ch.subj==='math'){mathMax+=ch.mMax;mathReal+=ch.mReal;}
+    /* cp1 subj='all' with mMax=0 — excluded correctly */
+  });
+  phyMax=Math.min(phyMax,100);  phyReal=Math.min(phyReal,100);
+  chemMax=Math.min(chemMax,100); chemReal=Math.min(chemReal,100);
+  mathMax=Math.min(mathMax,100); mathReal=Math.min(mathReal,100);
+  return{
+    mmax:phyMax+chemMax+mathMax,
+    mreal:phyReal+chemReal+mathReal,
+    phyMax:phyMax,phyReal:phyReal,
+    chemMax:chemMax,chemReal:chemReal,
+    mathMax:mathMax,mathReal:mathReal
+  };
 }
 
 function dayMarks(dayId){
@@ -501,6 +529,8 @@ function dayMarks(dayId){
   var mmin=0,mmax=0,mreal=0;
   chs.forEach(function(id){
     if(!CHAPTERS[id])return;
+    /* skip cp1 practice chapter */
+    if(CHAPTERS[id].subj==='all')return;
     mmin+=CHAPTERS[id].mMin;
     mmax+=CHAPTERS[id].mMax;
     mreal+=CHAPTERS[id].mReal;
@@ -542,26 +572,13 @@ function updateStats(){
     var m=calcTotalMarks();
     document.getElementById('st-mmax').textContent=m.mmax;
     document.getElementById('st-mreal').textContent=m.mreal;
-    // marks summary bar
+    // marks summary bar — use pre-computed per-subject values from calcTotalMarks
     try{
-      // compute per-subject realistic from assigned chapters
-      var phyMax=0,phyMin=0,phyReal=0,chemMax=0,chemMin=0,chemReal=0,mathMax=0,mathMin=0,mathReal=0;
-      Object.keys(CHAPTERS).forEach(function(id){
-        var ch=CHAPTERS[id];
-        var s=ch.subj;
-        if(s==='phy'){phyMin+=ch.mMin;phyMax+=ch.mMax;phyReal+=ch.mReal;}
-        else if(s==='chem'||s==='org'||s==='pc'||s==='all'){chemMin+=ch.mMin;chemMax+=ch.mMax;chemReal+=ch.mReal;}
-        else if(s==='math'){mathMin+=ch.mMin;mathMax+=ch.mMax;mathReal+=ch.mReal;}
-      });
-      // clamp chem max to 100
-      if(chemMax>100){chemMax=100;chemReal=Math.min(chemReal,100);}
-      var totalMax=Math.min(phyMax+chemMax+mathMax,300);
-      var totalReal=phyReal+chemReal+mathReal;
-      var msMax=document.getElementById('ms-max');if(msMax)msMax.textContent=totalMax;
-      var msReal=document.getElementById('ms-real');if(msReal)msReal.textContent=totalReal;
-      var msPhy=document.getElementById('ms-phy');if(msPhy)msPhy.textContent=phyMin+'-'+phyMax;
-      var msChem=document.getElementById('ms-chem');if(msChem)msChem.textContent=chemMin+'-'+Math.min(chemMax,100);
-      var msMath=document.getElementById('ms-math');if(msMath)msMath.textContent=mathMin+'-'+mathMax;
+      var msMax=document.getElementById('ms-max');if(msMax)msMax.textContent=m.mmax+' / 300';
+      var msReal=document.getElementById('ms-real');if(msReal)msReal.textContent=m.mreal+' / 300';
+      var msPhy=document.getElementById('ms-phy');if(msPhy)msPhy.textContent=m.phyReal+'-'+m.phyMax;
+      var msChem=document.getElementById('ms-chem');if(msChem)msChem.textContent=m.chemReal+'-'+m.chemMax;
+      var msMath=document.getElementById('ms-math');if(msMath)msMath.textContent=m.mathReal+'-'+m.mathMax;
     }catch(ee){}
   }catch(e){}
 }

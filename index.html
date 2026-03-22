@@ -45,10 +45,60 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;o
 .stat::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold-b),transparent)}
 .statn{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:600;line-height:1}
 .statl{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:3px;color:var(--tx2);margin-top:3px;text-transform:uppercase}
-#progwrap{position:relative;z-index:1;max-width:860px;margin:16px auto 6px;padding:0 20px;animation:fadeUp .9s .4s ease both}
-#progmeta{display:flex;justify-content:space-between;font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--tx3);margin-bottom:6px;letter-spacing:2px;text-transform:uppercase}
-#progbar{height:2px;background:var(--bg4);border-radius:99px;overflow:hidden}
-#progfill{height:100%;width:0%;background:linear-gradient(90deg,var(--gold),var(--gold-l));border-radius:99px;transition:width .5s cubic-bezier(.4,0,.2,1);box-shadow:0 0 10px rgba(201,168,76,.5)}
+#progwrap{display:none}
+#progbar,#progfill,#progmeta{display:none}
+/* ══ TRACKER ══ */
+#tracker-wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 14px 4px;animation:fadeUp .9s .4s ease both}
+#tracker-title{text-align:center;padding:14px 0 10px}
+.trsec-label{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:5px;color:var(--gold);text-transform:uppercase}
+.trsec-sub{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--tx3);letter-spacing:2px;margin-top:4px}
+#predictor-card{background:var(--bg2);border:1px solid var(--gold-b);border-radius:12px;display:flex;gap:0;overflow:hidden;margin-bottom:8px}
+.pred-left{padding:18px 20px;min-width:140px;border-right:1px solid rgba(255,255,255,.05);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:rgba(201,168,76,.03)}
+.pred-score-wrap{display:flex;align-items:baseline;gap:4px;line-height:1}
+.pred-score-num{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:700;line-height:1;transition:color .4s}
+.pred-score-of{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--tx3)}
+.pred-score-lbl{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--tx3);text-transform:uppercase;margin-top:6px}
+.pred-score-sub{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--tx3);margin-top:4px;line-height:1.6;max-width:120px}
+.pred-right{flex:1;padding:16px 18px;display:flex;flex-direction:column;justify-content:center;gap:0}
+.pred-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:7px}
+.pred-bar-lbl{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:2px;width:36px;flex-shrink:0;font-weight:700}
+.pred-track{flex:1;height:7px;background:var(--bg4);border-radius:99px;overflow:hidden;display:flex}
+.pred-fill{height:100%;border-radius:99px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.pred-bar-val{font-family:'Share Tech Mono',monospace;font-size:9px;width:44px;text-align:right;flex-shrink:0;font-weight:700}
+.task-legend-item{display:flex;align-items:center;gap:5px;font-family:'Share Tech Mono',monospace;font-size:7.5px;color:var(--tx3);letter-spacing:1px}
+.tl-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+#task-legend-bar{display:flex;justify-content:center;gap:20px;padding:8px 0 10px;flex-wrap:wrap}
+.tlb-item{display:flex;align-items:center;gap:6px;font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--tx3);letter-spacing:1px}
+.tlb-pip{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+#ch-tracker-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:7px}
+.ch-track-card{background:var(--bg2);border:1px solid rgba(255,255,255,.06);border-radius:10px;overflow:hidden;transition:border-color .2s,box-shadow .2s,opacity .2s}
+.ch-track-card:hover{border-color:var(--gold-b)}
+.ch-track-card.ch-complete{border-color:rgba(74,222,128,.45)!important;box-shadow:0 0 18px rgba(74,222,128,.1)!important}
+.ch-track-card.ch-partial{border-color:rgba(201,168,76,.35)}
+.ch-track-card.ch-none{opacity:.4}
+.ctc-hdr{display:flex;align-items:center;gap:8px;padding:9px 11px 6px}
+.ctc-subj-tag{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:2px;padding:2px 6px;border-radius:3px;font-weight:700;flex-shrink:0;text-transform:uppercase}
+.ctc-name{font-size:11px;font-weight:600;color:var(--tx);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ctc-status{font-family:'Share Tech Mono',monospace;font-size:9px;flex-shrink:0;font-weight:700}
+.ctc-tasks{padding:3px 11px 8px;display:flex;flex-direction:column;gap:3px}
+.ctc-task{display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:5px;border:1px solid transparent;transition:background .15s,border-color .15s;cursor:default}
+.ctc-task.t-done{background:rgba(74,222,128,.07);border-color:rgba(74,222,128,.18)}
+.ctc-pip{width:9px;height:9px;border-radius:50%;flex-shrink:0;border:1.5px solid var(--tx3);transition:all .25s}
+.ctc-task.t-done .ctc-pip{border:none}
+.ctc-lbl{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:1px;flex:1;text-transform:uppercase;color:var(--tx3)}
+.ctc-task.t-done .ctc-lbl{color:var(--tx2)}
+.ctc-wt{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--tx3);flex-shrink:0}
+.ctc-task.t-done .ctc-wt{color:var(--grn)}
+.ctc-tick{font-size:10px;font-weight:900;flex-shrink:0;opacity:0;transition:opacity .2s}
+.ctc-task.t-done .ctc-tick{opacity:1;color:var(--grn)}
+.ctc-score-row{display:flex;align-items:center;gap:8px;padding:3px 11px 10px}
+.ctc-score-track{flex:1;height:4px;background:var(--bg4);border-radius:99px;overflow:hidden}
+.ctc-score-fill{height:100%;border-radius:99px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.ctc-score-val{font-family:'Share Tech Mono',monospace;font-size:9px;flex-shrink:0;font-weight:700}
+.ctc-unassigned{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--tx3);padding:4px 11px 10px;letter-spacing:1px;font-style:italic}
+.ctc-complete-badge{display:none;font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:2px;padding:1px 6px;border-radius:3px;background:rgba(74,222,128,.15);color:var(--grn);border:1px solid rgba(74,222,128,.3);flex-shrink:0}
+.ch-track-card.ch-complete .ctc-complete-badge{display:inline-block}
+@media(max-width:580px){#predictor-card{flex-direction:column}.pred-left{border-right:none;border-bottom:1px solid rgba(255,255,255,.05);padding:14px}}
 
 /* ══ HINT BANNER ══ */
 #hint-banner{position:relative;z-index:1;text-align:center;padding:14px 16px;background:rgba(201,168,76,.04);border-top:1px solid var(--gold-b);border-bottom:1px solid var(--gold-b);font-family:'Share Tech Mono',monospace;font-size:clamp(7px,1.5vw,10px);letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:0;animation:fadeUp .9s .45s ease both}
@@ -76,6 +126,35 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;o
 .pg-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
 .pg-label{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;flex:1}
 .pg-count{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--tx3)}
+
+/* ── SCORE PREDICTOR PANEL ── */
+#predictor{position:relative;z-index:1;max-width:900px;margin:10px auto 0;padding:0 14px;animation:fadeUp .9s .52s ease both}
+#pred-box{background:var(--bg3);border:1px solid var(--gold-b);border-radius:12px;overflow:hidden}
+#pred-top{display:flex;align-items:stretch;border-bottom:1px solid rgba(255,255,255,.05)}
+.pred-subj{flex:1;padding:14px 12px;text-align:center;border-right:1px solid rgba(255,255,255,.05)}
+.pred-subj:last-child{border-right:none}
+.pred-subj-n{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;line-height:1;transition:all .3s}
+.pred-subj-lbl{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:2px;color:var(--tx3);margin-top:3px;text-transform:uppercase}
+.pred-subj-bar{height:4px;border-radius:99px;margin-top:7px;background:rgba(255,255,255,.06);overflow:hidden}
+.pred-subj-fill{height:100%;border-radius:99px;width:0%;transition:width .5s cubic-bezier(.4,0,.2,1)}
+#pred-bottom{display:flex;align-items:center;gap:0;padding:12px 16px}
+#pred-total-wrap{flex:1}
+#pred-total-label{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--tx3);text-transform:uppercase;margin-bottom:4px}
+#pred-total{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:700;color:var(--gold-l);line-height:1;transition:all .3s}
+#pred-total-sub{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--tx3);margin-top:2px}
+#pred-grade-wrap{text-align:right}
+#pred-grade{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:700;line-height:1;transition:all .3s}
+#pred-grade-lbl{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:2px;color:var(--tx3);text-transform:uppercase;margin-top:2px}
+#pred-message{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;text-align:center;padding:8px 16px;border-top:1px solid rgba(255,255,255,.04);text-transform:uppercase;transition:all .3s}
+
+/* chapter progress bar inside day */
+.ch-prog-wrap{padding:4px 10px 8px}
+.ch-prog-bar-bg{height:4px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden}
+.ch-prog-bar-fill{height:100%;border-radius:99px;width:0%;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.ch-prog-label{display:flex;justify-content:space-between;margin-bottom:3px}
+.ch-prog-lbl{font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--tx3);letter-spacing:2px;text-transform:uppercase}
+.ch-prog-pct{font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--gold);letter-spacing:1px}
+.ch-pred-marks{font-family:'Share Tech Mono',monospace;font-size:8px;text-align:right;margin-top:3px;letter-spacing:1px}
 .pg-chips{display:flex;flex-direction:column;gap:4px}
 
 /* ── CHIP (pool chapter) ── */
@@ -278,9 +357,71 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;o
   <div class="stat"><div class="statn" id="st-mreal" style="color:var(--grn)">226</div><div class="statl">Realistic /300</div></div>
 </div>
 
-<div id="progwrap">
-  <div id="progmeta"><span>Completion</span><span id="progtxt">0 / 0</span></div>
-  <div id="progbar"><div id="progfill"></div></div>
+<div id="progwrap"><div id="progmeta"><span>Completion</span><span id="progtxt">0/0</span></div><div id="progbar"><div id="progfill"></div></div></div>
+
+<div id="tracker-wrap">
+
+  <!-- ══ SECTION TITLE ══ -->
+  <div id="tracker-title">
+    <div class="trsec-label">Progress Tracker &amp; Score Predictor</div>
+    <div class="trsec-sub">Tick tasks inside each day — score updates live</div>
+  </div>
+
+  <!-- ══ SCORE PREDICTOR BAR ══ -->
+  <div id="predictor-card">
+    <div class="pred-left">
+      <div class="pred-score-wrap">
+        <div class="pred-score-num" id="pred-total">0</div>
+        <div class="pred-score-of">/ 300</div>
+      </div>
+      <div class="pred-score-lbl">Predicted Score</div>
+      <div class="pred-score-sub" id="pred-score-sub-txt">Tick tasks inside day cards to see your score</div>
+    </div>
+    <div class="pred-right">
+      <div class="pred-bar-row">
+        <div class="pred-bar-lbl" style="color:#4a9eff">PHY</div>
+        <div class="pred-track"><div class="pred-fill" id="pf-phy" style="background:#4a9eff;width:0%"></div></div>
+        <div class="pred-bar-val" id="pv-phy" style="color:#4a9eff">0/100</div>
+      </div>
+      <div class="pred-bar-row">
+        <div class="pred-bar-lbl" style="color:#34d399">CHEM</div>
+        <div class="pred-track"><div class="pred-fill" id="pf-chem" style="background:#34d399;width:0%"></div></div>
+        <div class="pred-bar-val" id="pv-chem" style="color:#34d399">0/100</div>
+      </div>
+      <div class="pred-bar-row">
+        <div class="pred-bar-lbl" style="color:#c084fc">MATH</div>
+        <div class="pred-track"><div class="pred-fill" id="pf-math" style="background:#c084fc;width:0%"></div></div>
+        <div class="pred-bar-val" id="pv-math" style="color:#c084fc">0/100</div>
+      </div>
+      <!-- chapter progress bar -->
+      <div class="pred-bar-row" style="margin-top:6px;border-top:1px solid rgba(255,255,255,.05);padding-top:8px">
+        <div class="pred-bar-lbl" style="color:var(--gold)">CHS</div>
+        <div class="pred-track">
+          <div class="pred-fill" id="pf-ch-done" style="background:var(--grn);width:0%"></div>
+          <div class="pred-fill" id="pf-ch-part" style="background:var(--gold);width:0%"></div>
+        </div>
+        <div class="pred-bar-val" id="pv-chs" style="color:var(--gold)">0/0</div>
+      </div>
+      <div style="display:flex;gap:12px;margin-top:5px">
+        <div class="task-legend-item"><div class="tl-dot" style="background:var(--grn)"></div><span>Complete</span></div>
+        <div class="task-legend-item"><div class="tl-dot" style="background:var(--gold)"></div><span>Partial</span></div>
+        <div class="task-legend-item"><div class="tl-dot" style="background:var(--bg4)"></div><span>Not started</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ TASK LEGEND ══ -->
+  <div id="task-legend-bar">
+    <div class="tlb-item"><div class="tlb-pip" style="background:#4a9eff"></div>VIDEO — Lecture / Revise (30% of marks)</div>
+    <div class="tlb-item"><div class="tlb-pip" style="background:#fb923c"></div>MUST-DO — 50+ Questions (40% of marks)</div>
+    <div class="tlb-item"><div class="tlb-pip" style="background:#c084fc"></div>JEE 2026 PYQs (30% of marks)</div>
+  </div>
+
+  <!-- ══ CHAPTER TRACKER GRID ══ -->
+  <div id="ch-tracker-grid">
+    <!-- rendered by JS -->
+  </div>
+
 </div>
 
 <div id="marks-summary">
@@ -308,6 +449,39 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;o
     <div class="ms-num" style="color:var(--math)" id="ms-math">60-72</div>
     <div class="ms-lbl">Maths</div>
     <div class="ms-sub">Real – Max / 100</div>
+  </div>
+</div>
+<div id="predictor">
+  <div id="pred-box">
+    <div id="pred-top">
+      <div class="pred-subj">
+        <div class="pred-subj-n" style="color:var(--phy)" id="pp-phy">0</div>
+        <div class="pred-subj-lbl">Physics / 100</div>
+        <div class="pred-subj-bar"><div class="pred-subj-fill" id="pp-phy-bar" style="background:var(--phy)"></div></div>
+      </div>
+      <div class="pred-subj">
+        <div class="pred-subj-n" style="color:var(--chem)" id="pp-chem">0</div>
+        <div class="pred-subj-lbl">Chemistry / 100</div>
+        <div class="pred-subj-bar"><div class="pred-subj-fill" id="pp-chem-bar" style="background:var(--chem)"></div></div>
+      </div>
+      <div class="pred-subj">
+        <div class="pred-subj-n" style="color:var(--math)" id="pp-math">0</div>
+        <div class="pred-subj-lbl">Maths / 100</div>
+        <div class="pred-subj-bar"><div class="pred-subj-fill" id="pp-math-bar" style="background:var(--math)"></div></div>
+      </div>
+    </div>
+    <div id="pred-bottom">
+      <div id="pred-total-wrap">
+        <div id="pred-total-label">Predicted Score</div>
+        <div id="pred-total">0 / 300</div>
+        <div id="pred-total-sub">complete tasks to increase</div>
+      </div>
+      <div id="pred-grade-wrap">
+        <div id="pred-grade" style="color:var(--tx3)">—</div>
+        <div id="pred-grade-lbl">Percentile Range</div>
+      </div>
+    </div>
+    <div id="pred-message" style="color:var(--tx3)">Start completing chapters to see your predicted score</div>
   </div>
 </div>
 <div id="hint-banner">&#9670; Click a day to open &bull; Drag chapters from pool into days &bull; Click chapter in pool to assign to selected day &#9670;</div>
@@ -524,13 +698,230 @@ function calcTotalMarks(){
   };
 }
 
+/* ══ SCORE PREDICTOR ══
+   Scoring model per chapter (based on tasks completed):
+   0 / 3 tasks = 0%    of mReal
+   1 / 3 tasks = 35%   (watched lecture — know the content)
+   2 / 3 tasks = 70%   (done must-do questions — practiced)
+   3 / 3 tasks = 100%  (done PYQs too — exam ready)
+*/
+function chapterCompletionFraction(dayId, chId){
+  var done=0;
+  for(var ti=0;ti<3;ti++) if(TASKS[taskKey(dayId,chId,ti)]) done++;
+  return done; /* 0,1,2,3 */
+}
+
+/* ══ TASK WEIGHTS: VIDEO=30%, MUST-DO=40%, PYQ=30% ══ */
+var TASK_WEIGHTS = [0.30, 0.40, 0.30];
+var SUBJ_COLORS  = {phy:'#4a9eff',chem:'#34d399',org:'#fb923c',pc:'#38bdf8',math:'#c084fc',all:'#c9a84c'};
+var SUBJ_LABELS  = {phy:'PHYSICS',chem:'INORGANIC',org:'ORGANIC',pc:'PHYS CHEM',math:'MATHS',all:'PRACTICE'};
+
+/* Get {dayId, chId} for every assigned non-practice chapter */
+function getAllAssignedChapters(){
+  var list=[];
+  DAYS.forEach(function(dd){
+    if(dd.type==='exam'||dd.type==='rev')return;
+    (ASSIGN[dd.id]||[]).forEach(function(chId){
+      var ch=CHAPTERS[chId];
+      if(!ch||ch.subj==='all')return;
+      list.push({dayId:dd.id,chId:chId,ch:ch});
+    });
+  });
+  return list;
+}
+
+function chTasksDone(dayId,chId){
+  var done=[false,false,false];
+  for(var ti=0;ti<3;ti++) done[ti]=!!TASKS[taskKey(dayId,chId,ti)];
+  return done;
+}
+
+function calcPredictedScore(){
+  var phyS=0,chemS=0,mathS=0;
+  var totChs=0,doneChs=0,partChs=0;
+  var items=getAllAssignedChapters();
+  items.forEach(function(item){
+    totChs++;
+    var done=chTasksDone(item.dayId,item.chId);
+    var countDone=done.filter(Boolean).length;
+    if(countDone===3)doneChs++;
+    else if(countDone>0)partChs++;
+    var score=0;
+    for(var ti=0;ti<3;ti++) if(done[ti]) score+=TASK_WEIGHTS[ti]*item.ch.mReal;
+    score=Math.round(score*10)/10;
+    if(item.ch.subj==='phy')phyS+=score;
+    else if(item.ch.subj==='chem'||item.ch.subj==='org'||item.ch.subj==='pc')chemS+=score;
+    else if(item.ch.subj==='math')mathS+=score;
+  });
+  phyS=Math.min(Math.round(phyS),100);
+  chemS=Math.min(Math.round(chemS),100);
+  mathS=Math.min(Math.round(mathS),100);
+  return{phy:phyS,chem:chemS,math:mathS,total:phyS+chemS+mathS,
+         totChs:totChs,doneChs:doneChs,partChs:partChs};
+}
+
+function scoreToMsg(s){
+  if(s>=240)return{msg:'IIT territory — incredible!',col:'#e8c96d'};
+  if(s>=210)return{msg:'99 percentile zone — push harder!',col:'var(--grn)'};
+  if(s>=180)return{msg:'Top NIT guaranteed — keep going',col:'var(--chem)'};
+  if(s>=150)return{msg:'Good NIT range — Chemistry = free marks',col:'var(--phy)'};
+  if(s>=100)return{msg:'Push to 150+ — focus on Chemistry first',col:'var(--org)'};
+  if(s>0)   return{msg:'Keep completing chapters — you\'re building!',col:'var(--gold)'};
+  return{msg:'Tick tasks inside day cards to see your score',col:'var(--tx3)'};
+}
+
+/* ══ RENDER CHAPTER TRACKER GRID ══ */
+function renderChTrackerGrid(){
+  var grid=document.getElementById('ch-tracker-grid');
+  if(!grid)return;
+  grid.innerHTML='';
+
+  /* Group chapters: assigned first (by subject order), then unassigned */
+  var assignedItems=getAllAssignedChapters();
+  var assignedIds={};
+  assignedItems.forEach(function(i){assignedIds[i.chId]=i;});
+
+  var unassigned=Object.keys(CHAPTERS).filter(function(id){
+    return !assignedIds[id]&&CHAPTERS[id].subj!=='all';
+  });
+
+  /* render assigned */
+  if(assignedItems.length===0&&unassigned.length===0){
+    grid.innerHTML='<div style="grid-column:1/-1;text-align:center;font-family:Share Tech Mono,monospace;font-size:9px;color:var(--tx3);padding:20px">No chapters assigned yet — drag from pool to days</div>';
+    return;
+  }
+
+  assignedItems.forEach(function(item){
+    grid.appendChild(makeChCard(item.chId,item.ch,item.dayId,true));
+  });
+
+  if(unassigned.length>0){
+    var sep=document.createElement('div');
+    sep.style.cssText='grid-column:1/-1;font-family:Share Tech Mono,monospace;font-size:8px;letter-spacing:3px;color:var(--tx3);text-transform:uppercase;padding:8px 2px 4px;border-top:1px solid rgba(255,255,255,.05);margin-top:4px';
+    sep.textContent='Not yet assigned to days';
+    grid.appendChild(sep);
+    unassigned.forEach(function(chId){
+      grid.appendChild(makeChCard(chId,CHAPTERS[chId],null,false));
+    });
+  }
+}
+
+function makeChCard(chId,ch,dayId,assigned){
+  var done=assigned?chTasksDone(dayId,chId):[false,false,false];
+  var countDone=done.filter(Boolean).length;
+  var score=0;
+  if(assigned) for(var ti=0;ti<3;ti++) if(done[ti]) score+=TASK_WEIGHTS[ti]*ch.mReal;
+  score=Math.round(score);
+  var pct=Math.round((countDone/3)*100);
+  var col=SUBJ_COLORS[ch.subj]||'#c9a84c';
+
+  var card=document.createElement('div');
+  var cls='ch-track-card';
+  if(!assigned)cls+=' ch-none';
+  else if(countDone===3)cls+=' ch-complete';
+  else if(countDone>0)cls+=' ch-partial';
+  card.className=cls;
+
+  /* HEADER */
+  var hdr=document.createElement('div');hdr.className='ctc-hdr';
+  var stag=document.createElement('div');stag.className='ctc-subj-tag';
+  stag.textContent=SUBJ_LABELS[ch.subj]||ch.subj;
+  stag.style.background=col+'22';stag.style.color=col;stag.style.border='1px solid '+col+'55';
+  hdr.appendChild(stag);
+  var nm=document.createElement('div');nm.className='ctc-name';nm.textContent=ch.label;hdr.appendChild(nm);
+  /* complete badge */
+  var badge=document.createElement('span');badge.className='ctc-complete-badge';badge.textContent='DONE ✓';hdr.appendChild(badge);
+  /* status */
+  var st=document.createElement('div');st.className='ctc-status';
+  if(!assigned){st.textContent='POOL';st.style.color='var(--tx3)';}
+  else if(countDone===3){st.textContent='100%';st.style.color='var(--grn)';}
+  else if(countDone>0){st.textContent=Math.round((countDone/3)*100)+'%';st.style.color='var(--gold)';}
+  else{st.textContent='0%';st.style.color='var(--tx3)';}
+  hdr.appendChild(st);
+  card.appendChild(hdr);
+
+  if(!assigned){
+    var ua=document.createElement('div');ua.className='ctc-unassigned';
+    ua.textContent='Drag to a day or click in pool →';
+    card.appendChild(ua);
+    return card;
+  }
+
+  /* TASK ROWS */
+  var taskDefs=[
+    {label:'[VIDEO] Lecture / Revise Notes', wt:'30%', pip:'#4a9eff', ti:0},
+    {label:'[MUST-DO] 50+ Questions',        wt:'40%', pip:'#fb923c', ti:1},
+    {label:'[2026] JEE Jan 2026 PYQs',       wt:'30%', pip:'#c084fc', ti:2}
+  ];
+  var taskWrap=document.createElement('div');taskWrap.className='ctc-tasks';
+  taskDefs.forEach(function(td){
+    var row=document.createElement('div');
+    row.className='ctc-task '+(done[td.ti]?'t-done':'t-pending');
+    var pip=document.createElement('div');pip.className='ctc-pip';
+    pip.style.background=done[td.ti]?td.pip:'transparent';
+    pip.style.borderColor=done[td.ti]?td.pip:'var(--tx3)';
+    row.appendChild(pip);
+    var lbl=document.createElement('div');lbl.className='ctc-lbl';lbl.textContent=td.label;row.appendChild(lbl);
+    var wt=document.createElement('div');wt.className='ctc-wt';wt.textContent=td.wt;row.appendChild(wt);
+    var tick=document.createElement('div');tick.className='ctc-tick';tick.textContent='✓';row.appendChild(tick);
+    taskWrap.appendChild(row);
+  });
+  card.appendChild(taskWrap);
+
+  /* SCORE BAR */
+  var srow=document.createElement('div');srow.className='ctc-score-row';
+  var strack=document.createElement('div');strack.className='ctc-score-track';
+  var sfill=document.createElement('div');sfill.className='ctc-score-fill';
+  sfill.style.width=pct+'%';
+  var scoreCol=countDone===3?'var(--grn)':countDone>0?'var(--gold)':'var(--tx3)';
+  sfill.style.background=col;
+  strack.appendChild(sfill);srow.appendChild(strack);
+  var sval=document.createElement('div');sval.className='ctc-score-val';
+  sval.textContent='~'+score+'/'+ch.mReal+'m';
+  sval.style.color=scoreCol;
+  srow.appendChild(sval);
+  card.appendChild(srow);
+
+  return card;
+}
+
+/* ══ MASTER UPDATE TRACKER ══ */
+function updateTracker(){
+  try{
+    var pred=calcPredictedScore();
+    var info=scoreToMsg(pred.total);
+    /* predictor score */
+    var pn=document.getElementById('pred-total');
+    if(pn){pn.textContent=pred.total;pn.style.color=info.col;}
+    var ps=document.getElementById('pred-score-sub-txt');
+    if(ps)ps.textContent=info.msg;
+    /* bars */
+    var set=function(fillId,valId,val,max){
+      var f=document.getElementById(fillId);if(f)f.style.width=(val/max*100)+'%';
+      var v=document.getElementById(valId);if(v)v.textContent=val+'/'+max;
+    };
+    set('pf-phy','pv-phy',pred.phy,100);
+    set('pf-chem','pv-chem',pred.chem,100);
+    set('pf-math','pv-math',pred.math,100);
+    /* chapter progress bar */
+    var totChs=Math.max(pred.totChs,1);
+    var doneW=Math.round(pred.doneChs/totChs*100);
+    var partW=Math.round(pred.partChs/totChs*100);
+    var pfd=document.getElementById('pf-ch-done');if(pfd)pfd.style.width=doneW+'%';
+    var pfp=document.getElementById('pf-ch-part');if(pfp)pfp.style.width=partW+'%';
+    var pcv=document.getElementById('pv-chs');
+    if(pcv)pcv.textContent=pred.doneChs+'/'+pred.totChs+' complete';
+    /* rebuild chapter grid */
+    renderChTrackerGrid();
+  }catch(e){console.error('tracker',e);}
+}
+
 function dayMarks(dayId){
   var chs=ASSIGN[dayId]||[];
   var mmin=0,mmax=0,mreal=0;
   chs.forEach(function(id){
     if(!CHAPTERS[id])return;
-    /* skip cp1 practice chapter */
-    if(CHAPTERS[id].subj==='all')return;
+    if(CHAPTERS[id].subj==='all')return; /* skip practice day */
     mmin+=CHAPTERS[id].mMin;
     mmax+=CHAPTERS[id].mMax;
     mreal+=CHAPTERS[id].mReal;
@@ -569,6 +960,7 @@ function updateStats(){
     document.getElementById('st-pct').textContent=pct+'%';
     document.getElementById('progfill').style.width=pct+'%';
     document.getElementById('progtxt').textContent=c.done+' / '+c.tot;
+    updateTracker();
     var m=calcTotalMarks();
     document.getElementById('st-mmax').textContent=m.mmax;
     document.getElementById('st-mreal').textContent=m.mreal;
@@ -790,7 +1182,7 @@ function renderDays(){
           el.addEventListener('click',function(){
             REV_TASKS[k]=!REV_TASKS[k];
             el.classList.toggle('checked',!!REV_TASKS[k]);
-            saveRevTasks();updateStats();
+            saveRevTasks();updateStats();updateTracker();
           });
         })(rk,rcr);
         rb.appendChild(rcr);
@@ -895,6 +1287,24 @@ function buildChapterItem(dayId,chId){
   var pw5=document.createElement('span');pw5.className='ch-marks-label';pw5.textContent='5-YR TREND ✓';mRow.appendChild(pw5);
   item.appendChild(mRow);
 
+  /* CHAPTER PROGRESS BAR */
+  var progWrap=document.createElement('div');progWrap.className='ch-prog-wrap';
+  var progLbl=document.createElement('div');progLbl.className='ch-prog-label';
+  var plLeft=document.createElement('span');plLeft.className='ch-prog-lbl';plLeft.textContent='Chapter Progress';
+  var plRight=document.createElement('span');plRight.className='ch-prog-pct';plRight.id='ch-ppct-'+dayId+'-'+chId;plRight.textContent='0%';
+  progLbl.appendChild(plLeft);progLbl.appendChild(plRight);
+  var progBg=document.createElement('div');progBg.className='ch-prog-bar-bg';
+  var progFill=document.createElement('div');progFill.className='ch-prog-bar-fill';
+  progFill.id='ch-pbar-'+dayId+'-'+chId;
+  var sm2=SUBJ_META[ch.subj]||SUBJ_META['math'];
+  progFill.style.background=sm2.color;
+  progBg.appendChild(progFill);
+  var predMks=document.createElement('div');predMks.className='ch-pred-marks';
+  predMks.id='ch-ppred-'+dayId+'-'+chId;predMks.textContent='Predicting: ~0 / '+ch.mReal+' marks';
+  predMks.style.color='var(--tx3)';
+  progWrap.appendChild(progLbl);progWrap.appendChild(progBg);progWrap.appendChild(predMks);
+  item.appendChild(progWrap);
+
   var divider=document.createElement('div');divider.className='ch-divider';item.appendChild(divider);
 
   var taskRows=document.createElement('div');taskRows.className='task-rows';
@@ -906,7 +1316,7 @@ function buildChapterItem(dayId,chId){
       row.addEventListener('click',function(){
         TASKS[k]=!TASKS[k];
         row.classList.toggle('checked',!!TASKS[k]);
-        saveTasks();updateStats();
+        saveTasks();updateStats();updateTracker();
         // update done state on card
         var card=document.getElementById('day-'+dayId);
         if(card){card.classList.toggle('done-card',isDayDone(dayId));}
@@ -1014,7 +1424,7 @@ function renderAll(){
   renderPool(document.getElementById('pool-groups-mobile'));
   renderDays();
   setupPoolDrop();
-  updateStats();
+  updateStats();updateTracker();
   if(selectedDay)selectDay(selectedDay);
 }
 
@@ -1059,6 +1469,7 @@ document.getElementById('floatbtn').addEventListener('click',function(){
 /* ══ INIT ══ */
 loadState();
 renderAll();
+updateTracker();
 tick();
 setInterval(tick,1000);
 setTimeout(function(){

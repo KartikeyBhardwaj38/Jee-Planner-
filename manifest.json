@@ -1,0 +1,15 @@
+{
+  "name": "JEE Advanced 2026 Tracker",
+  "short_name": "JEE 2026",
+  "description": "Personal JEE Advanced 2026 Study Tracker",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#080810",
+  "theme_color": "#080810",
+  "orientation": "any",
+  "icons": [
+    { "src": "icons/icon-192.svg", "sizes": "192x192", "type": "image/svg+xml" },
+    { "src": "icons/icon-512.svg", "sizes": "512x512", "type": "image/svg+xml" },
+    { "src": "icons/icon-192.svg", "sizes": "192x192", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}
